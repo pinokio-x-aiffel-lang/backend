@@ -1,0 +1,30 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# === Mac only ===
+.DS_Store
+
+# === Jupyter / notebooks ===
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# === logs ===
+logs/
+*.log
+*.out
+*.err
+
+# 환경변수
+.env
+.env.*
+
+# 허용
+!.env.example
