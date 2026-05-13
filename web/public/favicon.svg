@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- 연한 파란 배경 (둥근 사각형) -->
+  <rect width="32" height="32" rx="8" fill="#EEF2FF"/>
+  <!-- 코 실루엣 (반투명 채움) -->
+  <path
+    d="M16 4 C16 4 12 10 10 16 C8.5 20 10.5 26 16 26 C21.5 26 23.5 20 22 16 C20 10 16 4 16 4Z"
+    fill="#4F7FE0"
+    opacity="0.18"
+  />
+  <!-- 코 세로 몸통 -->
+  <path
+    d="M16 4 L16 21"
+    stroke="#4F7FE0"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+  <!-- 코 끝 곡선 (오른쪽→왼쪽) -->
+  <path
+    d="M16 21 Q12.5 26 9 24"
+    stroke="#4F7FE0"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
