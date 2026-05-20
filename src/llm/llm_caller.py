@@ -6,9 +6,12 @@ from functools import lru_cache
 from dotenv import load_dotenv
 
 from src.llm.client import ChatClient, ChatResponse, LlmError, fetch_hcx_native
-from src.llm.provider import PROVIDERS
-
-_HCX_NATIVE_MODELS = {"hcx-007"}
+from src.llm.provider import (
+    GPT_MAX_COMPLETION_TOKENS_MODELS,
+    GPT_RESPONSES_MODELS,
+    HCX_NATIVE_MODELS,
+    PROVIDERS,
+)
 
 
 def _get_required_env(name: str) -> str:
@@ -58,14 +61,13 @@ class LlmCaller:
                 f"[{model_name}] provider는 json_object 모드를 지원하지 않습니다."
             )
 
-        if model_alias == "hyperclova" and model_name.lower() in _HCX_NATIVE_MODELS:
+        if model_alias == "hyperclova" and model_name.lower() in HCX_NATIVE_MODELS:
             if provider.native_url is None:
                 raise LlmError("native_url이 설정되지 않았습니다.")
-            native_url = provider.native_url
             api_key = _get_required_env(provider.api_key_env)
             return fetch_hcx_native(
                 api_key=api_key,
-                url=native_url,
+                url=provider.native_url,
                 messages=messages,
                 max_tokens=max_tokens,
                 temperature=temperature,
@@ -74,6 +76,25 @@ class LlmCaller:
             )
 
         client = self._get_client(model_alias)
+
+        if model_alias == "openai":
+            if model_name in GPT_RESPONSES_MODELS:
+                return client.fetch_responses(
+                    messages=messages,
+                    model_name=model_name,
+                    max_tokens=max_tokens,
+                    timeout=timeout,
+                )
+            return client.fetch_chat(
+                messages=messages,
+                model_name=model_name,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                use_max_completion_tokens=model_name in GPT_MAX_COMPLETION_TOKENS_MODELS,
+                json_mode=json_mode,
+                json_structure=json_structure,
+                timeout=timeout,
+            )
 
         return client.fetch_chat(
             messages=messages,

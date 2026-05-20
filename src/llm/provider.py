@@ -25,28 +25,38 @@ GPT_MODELS = [
     "gpt-4o",
     "gpt-4o-mini",
     # o-series (reasoning)
-    "o3-pro",
     "o3",
     "o3-mini",
     "o4-mini",
     # legacy
     "o1-pro",
     "o1",
-    "o1-mini",
     "gpt-4-turbo",
     "gpt-4",
     "gpt-3.5-turbo",
 ]
 
-# 출처: https://guide.ncloud-docs.com/docs/clovastudio-model (2026-05 기준)
-HCX_MODELS = [
-    "HCX-007",
-    "HCX-005",
-    "HCX-DASH-002",
-    "HCX-003",
-    "HCX-DASH-001",
-]
+# gpt-5.x 및 o-series는 max_tokens 대신 max_completion_tokens를 사용
+GPT_MAX_COMPLETION_TOKENS_MODELS: frozenset[str] = frozenset({
+    "gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5.4-nano",
+    "gpt-5", "gpt-5-mini", "gpt-5-nano",
+    "o3", "o3-mini",
+    "o4-mini",
+    "o1",
+})
 
+# /v1/completions 전용 — base 모델 (instruction tuning 없음)
+GPT_COMPLETIONS_MODELS: frozenset[str] = frozenset()
+
+# /v1/responses 전용 — OpenAI Responses API
+GPT_RESPONSES_MODELS: frozenset[str] = frozenset({
+    "gpt-5.5-pro",
+    "gpt-5.4-pro",
+    "gpt-5-pro",
+    "o1-pro",
+})
+
+# 출처: https://guide.ncloud-docs.com/docs/clovastudio-model (2026-05 기준)
 # context_window: 입력+출력 합산 한도 / max_output_tokens: 출력 단독 한도
 # HCX-DASH-001은 context_window(3,500)가 병목 — max_tokens는 입력 길이를 고려해 설정해야 함
 HCX_MODEL_INFO: dict[str, dict] = {
@@ -56,6 +66,9 @@ HCX_MODEL_INFO: dict[str, dict] = {
     "HCX-003":      {"context_window":   7_600, "max_output_tokens":  4_096},
     "HCX-DASH-001": {"context_window":   3_500, "max_output_tokens":  4_096},
 }
+HCX_MODELS: list[str] = list(HCX_MODEL_INFO)
+# v3 native endpoint를 사용하는 모델 (소문자 비교용)
+HCX_NATIVE_MODELS: frozenset[str] = frozenset({"hcx-007"})
 
 # 출처: https://ai.google.dev/gemini-api/docs/models (2026-05 기준, 텍스트 생성 + 무료 tier)
 GEMINI_MODELS = [
@@ -63,16 +76,13 @@ GEMINI_MODELS = [
     "gemini-3.5-flash",
     "gemini-3.1-flash-lite",
     # Gemini 3.x (preview)
-    "gemini-3.1-pro-preview",
     "gemini-3-flash-preview",
     "gemini-3.1-flash-lite-preview",
     # Gemini 2.5 (stable)
-    "gemini-2.5-pro",
     "gemini-2.5-flash",
     "gemini-2.5-flash-lite",
-    # deprecated — 2026-06-01 이후 사용 불가
-    "gemini-2.0-flash",
-    "gemini-2.0-flash-lite",
+    # Gemini 2.5 (preview)
+    "gemini-2.5-flash-lite-preview-09-2025",
 ]
 
 # 출처: https://platform.claude.com/docs/en/docs/about-claude/models (2026-05 기준)
@@ -86,15 +96,11 @@ CLAUDE_MODELS = [
     "claude-sonnet-4-5-20250929",
     "claude-opus-4-5-20251101",
     "claude-opus-4-1-20250805",
-    # deprecated — 2026-06-15 이후 사용 불가
-    "claude-sonnet-4-20250514",
-    "claude-opus-4-20250514",
 ]
 
 
 @dataclass(frozen=True)
 class ProviderConfig:
-    model_alias: str
     api_key_env: str
     supports_json_object: bool
     supports_structured_output: bool
@@ -104,28 +110,24 @@ class ProviderConfig:
 
 PROVIDERS: dict[str, ProviderConfig] = {
     "openai": ProviderConfig(
-        model_alias="openai",
         api_key_env="OPENAI_API_KEY",
         supports_json_object=True,
         supports_structured_output=True,
     ),
     "hyperclova": ProviderConfig(
-        model_alias="hyperclova",
         api_key_env="CLOVASTUDIO_API_KEY",
-        supports_json_object=True,
+        supports_json_object=False,   # v1/openai compat endpoint rejects response_format
         supports_structured_output=True,
         base_url=CLOVASTUDIO_BASE_URL,
         native_url=CLOVASTUDIO_BASE_URL_STRUCTURED,
     ),
     "claude": ProviderConfig(
-        model_alias="claude",
         api_key_env="ANTHROPIC_API_KEY",
         supports_json_object=False,
         supports_structured_output=False,
         base_url=ANTHROPIC_BASE_URL,
     ),
     "gemini": ProviderConfig(
-        model_alias="gemini",
         api_key_env="GEMINI_API_KEY",
         supports_json_object=True,
         supports_structured_output=True,

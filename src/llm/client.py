@@ -57,8 +57,9 @@ def fetch_hcx_native(
     if temperature is not None:
         body["temperature"] = temperature
     if json_structure is not None:
+        hcx_schema = {k: v for k, v in json_structure.items() if k != "additionalProperties"}
         body["thinking"] = {"effort": "none"}  # thinking과 responseFormat은 동시 사용 불가
-        body["responseFormat"] = {"type": "json", "schema": json_structure}
+        body["responseFormat"] = {"type": "json", "schema": hcx_schema}
 
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -98,8 +99,6 @@ class ChatClient:
         timeout: float = DEFAULT_TIMEOUT_S,
     ) -> None:
 
-        self.timeout = timeout
-
         sdk_kwargs: dict[str, Any] = {
             "api_key": api_key,
             "timeout": timeout,
@@ -117,6 +116,7 @@ class ChatClient:
         model_name: str,
         temperature: float | None = None,
         max_tokens: int | None = None,
+        use_max_completion_tokens: bool = False,
         json_mode: bool = False,
         json_structure: dict | None = None,
         timeout: float | None = None,
@@ -128,11 +128,15 @@ class ChatClient:
         if temperature is not None:
             kwargs["temperature"] = temperature
         if max_tokens is not None:
-            kwargs["max_tokens"] = max_tokens
+            token_key = "max_completion_tokens" if use_max_completion_tokens else "max_tokens"
+            kwargs[token_key] = max_tokens
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
         if json_structure is not None:
-            kwargs["response_format"] = {"type": "json_schema", "json_schema": json_structure}
+            kwargs["response_format"] = {
+                "type": "json_schema",
+                "json_schema": {"name": "response", "strict": True, "schema": json_structure},
+            }
         if timeout is not None:
             kwargs["timeout"] = timeout
 
@@ -144,14 +148,82 @@ class ChatClient:
         latency_s = time.time() - start_s
 
         choice = sdk_response.choices[0]
+        return self._build_response(sdk_response, choice.message.content or "", latency_s)
+
+    @staticmethod
+    def _build_response(sdk_response: Any, text: str, latency_s: float) -> ChatResponse:
         usage = sdk_response.usage
         return ChatResponse(
-            text=choice.message.content or "",
+            text=text,
             total_tokens=usage.total_tokens if usage else 0,
             prompt_tokens=usage.prompt_tokens if usage else 0,
             completion_tokens=usage.completion_tokens if usage else 0,
             model=sdk_response.model,
-            finish_reason=choice.finish_reason or "",
+            finish_reason=sdk_response.choices[0].finish_reason or "",
+            latency_s=latency_s,
+            raw=sdk_response.model_dump(),
+        )
+
+    def fetch_completion(
+        self,
+        messages: list[dict],
+        model_name: str,
+        max_tokens: int | None = None,
+        temperature: float | None = None,
+        timeout: float | None = None,
+    ) -> ChatResponse:
+        """Legacy /v1/completions endpoint. Base 모델 전용."""
+        prompt = "\n".join(
+            f"{m['role'].upper()}: {m['content']}" for m in messages
+        ) + "\nASSISTANT:"
+
+        kwargs: dict[str, Any] = {"model": model_name, "prompt": prompt}
+        if max_tokens is not None:
+            kwargs["max_tokens"] = max_tokens
+        if temperature is not None:
+            kwargs["temperature"] = temperature
+        if timeout is not None:
+            kwargs["timeout"] = timeout
+
+        start_s = time.time()
+        try:
+            sdk_response = self._sdk.completions.create(**kwargs)
+        except APIError as e:
+            raise LlmError(f"❌ LLM 호출 실패: {e}") from e
+        latency_s = time.time() - start_s
+
+        choice = sdk_response.choices[0]
+        return self._build_response(sdk_response, choice.text or "", latency_s)
+
+    def fetch_responses(
+        self,
+        messages: list[dict],
+        model_name: str,
+        max_tokens: int | None = None,
+        timeout: float | None = None,
+    ) -> ChatResponse:
+        """OpenAI Responses API (/v1/responses). o1-pro, gpt-5-pro 전용."""
+        kwargs: dict[str, Any] = {"model": model_name, "input": messages}
+        if max_tokens is not None:
+            kwargs["max_output_tokens"] = max_tokens
+        if timeout is not None:
+            kwargs["timeout"] = timeout
+
+        start_s = time.time()
+        try:
+            sdk_response = self._sdk.responses.create(**kwargs)
+        except APIError as e:
+            raise LlmError(f"LLM 호출 실패: {e}") from e
+        latency_s = time.time() - start_s
+
+        usage = sdk_response.usage
+        return ChatResponse(
+            text=sdk_response.output_text or "",
+            total_tokens=usage.total_tokens if usage else 0,
+            prompt_tokens=usage.input_tokens if usage else 0,
+            completion_tokens=usage.output_tokens if usage else 0,
+            model=sdk_response.model,
+            finish_reason="stop",
             latency_s=latency_s,
             raw=sdk_response.model_dump(),
         )
