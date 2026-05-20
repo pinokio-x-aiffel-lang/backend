@@ -1,6 +1,6 @@
 ---
 name: git-convention
-description: Use when the user creates commits, writes commit messages, creates branches, opens PRs, merges, or pushes. Defines branch strategy (main/dev + feat/fix/chore/exp), Conventional Commits, PR targets, merge methods.
+description: Use this skill whenever the user asks to create commits, write commit messages, create branches, open pull requests, or merge branches. Enforces this project's branch strategy (main/develop with feat/fix/chore/exp working branches), Conventional Commits format, PR target rules, merge methods, and commit message standards.
 ---
 
 # Git Convention
@@ -57,23 +57,21 @@ fix(api): handle missing response field
 ## Claude behavior
 
 **New branch** — from `dev` (hotfix: from `main`):
-```bash
+
+```shellscript
 git checkout dev && git pull && git checkout -b feat/xxx
 ```
-
-**Before push**:
-- `main` → STOP, warn user.
-- `dev` → confirm once.
-- working branch → proceed.
 
 **Tests** — include with logic changes when feasible.
 
 **After merge** — delete branch (except `exp/*`):
-```bash
+
+```shellscript
 git branch -d feat/xxx && git push origin --delete feat/xxx
 ```
 
 **Hotfix → main** — back-port to `dev`:
-```bash
+
+```shellscript
 git checkout dev && git pull && git merge main && git push
 ```

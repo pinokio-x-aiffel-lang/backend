@@ -55,7 +55,7 @@ class LlmCaller:
 
         if json_mode and not provider.supports_json_object:
             raise LlmError(
-                f"{model_name} provider는 json_object 모드를 지원하지 않습니다."
+                f"[{model_name}] provider는 json_object 모드를 지원하지 않습니다."
             )
 
         if model_alias == "hyperclova" and model_name.lower() in _HCX_NATIVE_MODELS:

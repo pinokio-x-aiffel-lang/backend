@@ -1,15 +1,36 @@
 from src.llm.llm_caller import LlmCaller
+from src.llm.provider import CLAUDE_MODELS
 
-# LLM 호출 모듈 인스턴스 생성
-llm_caller = LlmCaller()  # .env 로딩
+llm_caller = LlmCaller()
 
-response = llm_caller.chat(
-    model_alias="claude",  # provider.py에 등록된 alias
-    model_name="claude-haiku-4-5-20251001",         # 실제 모델명
-    messages=[{"role": "user", "content": "지금 미국 대통령은 누구지?"}],
-    json_mode=True,
-    max_tokens=4080,
-)
+models = CLAUDE_MODELS
 
-print(response.text)
-print(response.total_tokens, response.latency_s)
+for model_name in models:
+    try:
+        response = llm_caller.chat(
+            model_alias="claude",
+            model_name=model_name,
+            messages=[{"role": "user", "content": "지금 미국 대통령은 누구지?"}],
+            json_mode=True,
+            max_tokens=4080,
+        )
+        print(f"[{model_name}] {response.text}")
+        print(f"  tokens={response.total_tokens}, latency={response.latency_s:.2f}s")
+        print("-" * 50)
+    except Exception as e:
+        print(f"[{model_name}] 실패: {e}")
+
+
+for model_name in models:
+    try:
+        response = llm_caller.chat(
+            model_alias="claude",
+            model_name=model_name,
+            messages=[{"role": "user", "content": "지금 미국 대통령은 누구지?"}],
+            max_tokens=4080,
+        )
+        print(f"[{model_name}] {response.text}")
+        print(f"  tokens={response.total_tokens}, latency={response.latency_s:.2f}s")
+        print("-" * 50)
+    except Exception as e:
+        print(f"[{model_name}] 실패: {e}")
