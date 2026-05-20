@@ -21,10 +21,3 @@ logs/
 *.log
 *.out
 *.err
-
-# 환경변수
-.env
-.env.*
-
-# 허용
-!.env.example
