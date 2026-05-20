@@ -1,25 +1,25 @@
-"""LLM 클라이언트 — NCP HyperCLOVA X (OpenAI 호환 모드).
+"""LLM 클라이언트 (OpenAI 호환 모드).
 
-호출자는 `ChatClient.fetch_chat()` 한 메서드만 알면 됨. messages 받아서
-`ChatResponse` 돌려줌. 재시도/로깅/비용 누적/대화 히스토리/JSON 파싱은
-모두 호출자 책임.
+호출자는 실제 api_key, base_url, model, messages를 전달한다.
+ChatClient는 SDK를 통해 LLM을 1회 호출하고 ChatResponse를 반환한다.
 
-기준 결정 문서: ../../docs/llm_client_spec.md
+하지 않음:
+- .env 로딩
+- provider 선택
+- model alias 해석
+- 재시도
+- 로깅
+- 비용 계산
+- JSON 파싱
 """
 from __future__ import annotations
-
-import os
 import time
 from dataclasses import dataclass
 from typing import Any
-
-from dotenv import load_dotenv
 from openai import APIError, OpenAI
 
 
-DEFAULT_BASE_URL = "https://clovastudio.stream.ntruss.com/v1/openai"
 DEFAULT_TIMEOUT_S = 60.0
-ENV_API_KEY = "HCX_API_KEY"
 
 
 class LlmError(Exception):
@@ -41,43 +41,30 @@ class ChatResponse:
 
 
 class ChatClient:
-    """NCP HyperCLOVA X 채팅 API 호출용 클라이언트.
-
-    책임 — messages 를 받아 SDK 한 번 호출하고 ChatResponse 돌려주기.
-    APIError 를 LlmError 로 wrap.
-
-    안 함 — 재시도, 로깅, 비용 누적, 대화 히스토리, 프롬프트 작성, JSON 파싱.
-    """
-
     def __init__(
         self,
-        api_key: str | None = None,
+        api_key: str,
         base_url: str | None = None,
-        default_model: str | None = None,
         timeout: float = DEFAULT_TIMEOUT_S,
     ) -> None:
-        if api_key is None:
-            load_dotenv()
-            api_key = os.getenv(ENV_API_KEY)
-            if api_key is None:
-                raise LlmError(
-                    f"API 키를 찾을 수 없음. 환경변수 {ENV_API_KEY} 를 설정하거나 "
-                    f"api_key 인자로 전달하세요."
-                )
 
-        self.default_model = default_model
         self.timeout = timeout
-        self._sdk = OpenAI(
-            api_key=api_key,
-            base_url=base_url or DEFAULT_BASE_URL,
-            timeout=timeout,
-            max_retries=0,
-        )
+
+        sdk_kwargs: dict[str, Any] = {
+            "api_key": api_key,
+            "timeout": timeout,
+            "max_retries": 0,
+        }
+
+        if base_url is not None:
+            sdk_kwargs["base_url"] = base_url
+
+        self._sdk = OpenAI(**sdk_kwargs)
 
     def fetch_chat(
         self,
         messages: list[dict],
-        model: str | None = None,
+        model: str,
         temperature: float | None = None,
         max_tokens: int | None = None,
         json_mode: bool = False,
@@ -89,13 +76,9 @@ class ChatClient:
 
         Raises:
             LlmError: SDK APIError 발생 시. 원본은 __cause__ 로 보존.
-            ValueError: model 도 default_model 도 None 일 때.
         """
-        used_model = model or self.default_model
-        if used_model is None:
-            raise ValueError("model 인자 또는 default_model 중 하나는 필수")
 
-        kwargs: dict[str, Any] = {"messages": messages, "model": used_model}
+        kwargs: dict[str, Any] = {"messages": messages, "model": model}
         if temperature is not None:
             kwargs["temperature"] = temperature
         if max_tokens is not None:
