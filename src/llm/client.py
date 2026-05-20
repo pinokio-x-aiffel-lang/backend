@@ -16,6 +16,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 from typing import Any
+import httpx
 from openai import APIError, OpenAI
 
 
@@ -38,6 +39,55 @@ class ChatResponse:
     finish_reason: str
     latency_s: float
     raw: dict
+
+
+def fetch_hcx_native(
+    api_key: str,
+    url: str,
+    messages: list[dict],
+    max_tokens: int | None = None,
+    temperature: float | None = None,
+    json_structure: dict | None = None,
+    timeout: float = DEFAULT_TIMEOUT_S,
+) -> ChatResponse:
+    """HCX v3 네이티브 엔드포인트 직접 호출. OpenAI SDK를 거치지 않음."""
+    body: dict[str, Any] = {"messages": messages}
+    if max_tokens is not None:
+        body["maxCompletionTokens"] = max_tokens
+    if temperature is not None:
+        body["temperature"] = temperature
+    if json_structure is not None:
+        body["thinking"] = {"effort": "none"}  # thinking과 responseFormat은 동시 사용 불가
+        body["responseFormat"] = {"type": "json", "schema": json_structure}
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    start_s = time.time()
+    try:
+        resp = httpx.post(url, json=body, headers=headers, timeout=timeout)
+        resp.raise_for_status()
+    except httpx.HTTPStatusError as e:
+        raise LlmError(f"LLM 호출 실패: {e.response.status_code} {e.response.text}") from e
+    except httpx.RequestError as e:
+        raise LlmError(f"LLM 호출 실패: {e}") from e
+    latency_s = time.time() - start_s
+
+    data = resp.json()
+    result = data.get("result", {})
+    message = result.get("message", {})
+    return ChatResponse(
+        text=message.get("content", ""),
+        total_tokens=result.get("inputLength", 0) + result.get("outputLength", 0),
+        prompt_tokens=result.get("inputLength", 0),
+        completion_tokens=result.get("outputLength", 0),
+        model=url.rsplit("/", 1)[-1],
+        finish_reason=result.get("stopReason", ""),
+        latency_s=latency_s,
+        raw=data,
+    )
 
 
 class ChatClient:
@@ -64,27 +114,25 @@ class ChatClient:
     def fetch_chat(
         self,
         messages: list[dict],
-        model: str,
+        model_name: str,
         temperature: float | None = None,
         max_tokens: int | None = None,
         json_mode: bool = False,
+        json_structure: dict | None = None,
         timeout: float | None = None,
     ) -> ChatResponse:
-        """LLM 한 번 호출. 재시도 없음. 실패 시 LlmError.
+        """OpenAI 호환 엔드포인트 1회 호출. 재시도 없음. 실패 시 LlmError."""
 
-        timeout 은 호출 1회 기준. 재시도가 없으므로 곧 총 시간.
+        kwargs: dict[str, Any] = {"messages": messages, "model": model_name}
 
-        Raises:
-            LlmError: SDK APIError 발생 시. 원본은 __cause__ 로 보존.
-        """
-
-        kwargs: dict[str, Any] = {"messages": messages, "model": model}
         if temperature is not None:
             kwargs["temperature"] = temperature
         if max_tokens is not None:
             kwargs["max_tokens"] = max_tokens
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
+        if json_structure is not None:
+            kwargs["response_format"] = {"type": "json_schema", "json_schema": json_structure}
         if timeout is not None:
             kwargs["timeout"] = timeout
 

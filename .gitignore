@@ -21,3 +21,6 @@ logs/
 *.log
 *.out
 *.err
+
+# === env ===
+.env

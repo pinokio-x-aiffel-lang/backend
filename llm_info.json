@@ -1,0 +1,6 @@
+CLOVASTUDIO_BASE_URL=https://clovastudio.stream.ntruss.com/v1/openai
+CLOVASTUDIO_BASE_URL_STRUCTURED=https://clovastudio.stream.ntruss.com/v3/chat-completions/HCX-007
+
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+
+ANTHROPIC_BASE_URL=https://api.anthropic.com/v1
