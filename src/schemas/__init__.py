@@ -1,3 +1,31 @@
-from src.schemas.claim import Claim, Claims, PeriodType, ValueSlot
+from src.schemas.claim import (
+    Article,
+    Claim,
+    ClaimAnalysis,
+    ClaimResult,
+    Claims,
+    Evidence,
+    KosisQuery,
+    KosisSearch,
+    PeriodType,
+    SlotSchemaMaster,
+    ValueSlot,
+    Verifications,
+    VerificationSummary,
+)
 
-__all__ = ["Claim", "Claims", "PeriodType", "ValueSlot"]
+__all__ = [
+    "Article",
+    "Claim",
+    "ClaimAnalysis",
+    "ClaimResult",
+    "Claims",
+    "Evidence",
+    "KosisQuery",
+    "KosisSearch",
+    "PeriodType",
+    "SlotSchemaMaster",
+    "ValueSlot",
+    "Verifications",
+    "VerificationSummary",
+]
