@@ -1,0 +1,8 @@
+# 기존 pyproject.toml 은 수정 금지이므로 API 추가 의존성만 별도 명시.
+# 설치: uv pip install -r src/api/requirements.txt
+# (openai / python-dotenv / pydantic 는 pyproject 에 이미 있음)
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic-settings>=2.0
+# 참고: stream 엔드포인트는 이번 PoC 스코프 제외 → sse-starlette 미사용.
+# 참고: HCX 시크릿은 Infisical CLI(infisical run)가 주입 → infisicalsdk 미사용.
