@@ -45,9 +45,6 @@ GPT_MAX_COMPLETION_TOKENS_MODELS: frozenset[str] = frozenset({
     "o1",
 })
 
-# /v1/completions 전용 — base 모델 (instruction tuning 없음)
-GPT_COMPLETIONS_MODELS: frozenset[str] = frozenset()
-
 # /v1/responses 전용 — OpenAI Responses API
 GPT_RESPONSES_MODELS: frozenset[str] = frozenset({
     "gpt-5.5-pro",
@@ -81,8 +78,6 @@ GEMINI_MODELS = [
     # Gemini 2.5 (stable)
     "gemini-2.5-flash",
     "gemini-2.5-flash-lite",
-    # Gemini 2.5 (preview)
-    "gemini-2.5-flash-lite-preview-09-2025",
 ]
 
 # 출처: https://platform.claude.com/docs/en/docs/about-claude/models (2026-05 기준)
@@ -97,6 +92,16 @@ CLAUDE_MODELS = [
     "claude-opus-4-5-20251101",
     "claude-opus-4-1-20250805",
 ]
+
+# json_schema(Structured Outputs) 미지원 모델
+NO_STRUCTURED_OUTPUT_MODELS: frozenset[str] = frozenset({
+    # OpenAI legacy — gpt-4o 이전 모델
+    "gpt-4-turbo",
+    "gpt-4",
+    "gpt-3.5-turbo",
+    # Anthropic Claude — 구조화 출력 미지원
+    *CLAUDE_MODELS,
+})
 
 
 @dataclass(frozen=True)

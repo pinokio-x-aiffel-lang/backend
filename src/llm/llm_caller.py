@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from functools import lru_cache
 
 from dotenv import load_dotenv
 
@@ -11,6 +10,7 @@ from src.llm.provider import (
     GPT_RESPONSES_MODELS,
     HCX_NATIVE_MODELS,
     PROVIDERS,
+    ProviderConfig,
 )
 
 
@@ -26,21 +26,18 @@ class LlmCaller:
 
     def __init__(self) -> None:
         load_dotenv()
+        self._clients: dict[str, ChatClient] = {}
 
-    # 함수 결과를 메모리에 저장해두고, 같은 인자로 다시 호출되면 함수를 실행하지 않고 저장된 결과를 바로 반환. 여기서 캐시 key는 provider_name이 된다.
-    @lru_cache(maxsize=16)
-    def _get_client(self, model_alias: str) -> ChatClient:
-        provider = PROVIDERS[model_alias]
-        api_key = _get_required_env(provider.api_key_env)
-        return ChatClient(
-            api_key=api_key,
-            base_url=provider.base_url,
-        )
+    def _get_client(self, model_alias: str, provider: ProviderConfig) -> ChatClient:
+        if model_alias not in self._clients:
+            api_key = _get_required_env(provider.api_key_env)
+            self._clients[model_alias] = ChatClient(api_key=api_key, base_url=provider.base_url)
+        return self._clients[model_alias]
 
     def chat(
         self,
         model_alias: str,
-        model_name: str | None,
+        model_name: str,
         messages: list[dict],
         temperature: float | None = None,
         max_tokens: int | None = None,
@@ -50,9 +47,6 @@ class LlmCaller:
     ) -> ChatResponse:
         if model_alias not in PROVIDERS:
             raise LlmError(f"등록되지 않은 provider: {model_alias}")
-
-        if not model_name:
-            raise LlmError("model_name이 전달되지 않았습니다.")
 
         provider = PROVIDERS[model_alias]
 
@@ -75,7 +69,7 @@ class LlmCaller:
                 timeout=timeout or 60.0,
             )
 
-        client = self._get_client(model_alias)
+        client = self._get_client(model_alias, provider)
 
         if model_alias == "openai":
             if model_name in GPT_RESPONSES_MODELS:

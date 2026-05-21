@@ -78,14 +78,15 @@ def fetch_hcx_native(
 
     data = resp.json()
     result = data.get("result", {})
+    usage = result.get("usage", {})
     message = result.get("message", {})
     return ChatResponse(
         text=message.get("content", ""),
-        total_tokens=result.get("inputLength", 0) + result.get("outputLength", 0),
-        prompt_tokens=result.get("inputLength", 0),
-        completion_tokens=result.get("outputLength", 0),
+        total_tokens=usage.get("totalTokens", 0),
+        prompt_tokens=usage.get("promptTokens", 0),
+        completion_tokens=usage.get("completionTokens", 0),
         model=url.rsplit("/", 1)[-1],
-        finish_reason=result.get("stopReason", ""),
+        finish_reason=result.get("finishReason", ""),
         latency_s=latency_s,
         raw=data,
     )
@@ -164,36 +165,19 @@ class ChatClient:
             raw=sdk_response.model_dump(),
         )
 
-    def fetch_completion(
-        self,
-        messages: list[dict],
-        model_name: str,
-        max_tokens: int | None = None,
-        temperature: float | None = None,
-        timeout: float | None = None,
-    ) -> ChatResponse:
-        """Legacy /v1/completions endpoint. Base 모델 전용."""
-        prompt = "\n".join(
-            f"{m['role'].upper()}: {m['content']}" for m in messages
-        ) + "\nASSISTANT:"
-
-        kwargs: dict[str, Any] = {"model": model_name, "prompt": prompt}
-        if max_tokens is not None:
-            kwargs["max_tokens"] = max_tokens
-        if temperature is not None:
-            kwargs["temperature"] = temperature
-        if timeout is not None:
-            kwargs["timeout"] = timeout
-
-        start_s = time.time()
-        try:
-            sdk_response = self._sdk.completions.create(**kwargs)
-        except APIError as e:
-            raise LlmError(f"❌ LLM 호출 실패: {e}") from e
-        latency_s = time.time() - start_s
-
-        choice = sdk_response.choices[0]
-        return self._build_response(sdk_response, choice.text or "", latency_s)
+    @staticmethod
+    def _build_responses_response(sdk_response: Any, latency_s: float) -> ChatResponse:
+        usage = sdk_response.usage
+        return ChatResponse(
+            text=sdk_response.output_text or "",
+            total_tokens=usage.total_tokens if usage else 0,
+            prompt_tokens=usage.input_tokens if usage else 0,
+            completion_tokens=usage.output_tokens if usage else 0,
+            model=sdk_response.model,
+            finish_reason="stop",
+            latency_s=latency_s,
+            raw=sdk_response.model_dump(),
+        )
 
     def fetch_responses(
         self,
@@ -216,14 +200,4 @@ class ChatClient:
             raise LlmError(f"LLM 호출 실패: {e}") from e
         latency_s = time.time() - start_s
 
-        usage = sdk_response.usage
-        return ChatResponse(
-            text=sdk_response.output_text or "",
-            total_tokens=usage.total_tokens if usage else 0,
-            prompt_tokens=usage.input_tokens if usage else 0,
-            completion_tokens=usage.output_tokens if usage else 0,
-            model=sdk_response.model,
-            finish_reason="stop",
-            latency_s=latency_s,
-            raw=sdk_response.model_dump(),
-        )
+        return self._build_responses_response(sdk_response, latency_s)
