@@ -3,9 +3,9 @@ from src.llm.provider import (
     CLAUDE_MODELS,
     GEMINI_MODELS,
     GPT_MODELS,
+    NO_STRUCTURED_OUTPUT_MODELS,
     HCX_MODEL_INFO,
     HCX_MODELS,
-    PROVIDERS,
 )
 
 llm_caller = LlmCaller()
@@ -40,7 +40,17 @@ def _max_tokens(model_alias: str, model_name: str) -> int:
 _JSON_HINT = ' 반드시 {"이름": "...", "국적": "..."} 형식의 JSON으로만 답해.'
 
 
+def _supports_structured(model_name: str) -> bool:
+    return model_name not in NO_STRUCTURED_OUTPUT_MODELS
+
+
 def _call(model_alias: str, model_name: str, structured: bool) -> None:
+    label = "🀫🀫🀫 구조화 🀫🀫🀫" if structured else "🀫🀫🀫  일반  🀫🀫🀫"
+
+    if structured and not _supports_structured(model_name):
+        print(f"{label}\n구조화를 지원하지 않는 모델\n")
+        return
+
     kwargs: dict = dict(
         model_alias=model_alias,
         model_name=model_name,
@@ -57,7 +67,6 @@ def _call(model_alias: str, model_name: str, structured: bool) -> None:
         else:
             kwargs["json_structure"] = SCHEMA
 
-    label = "🀫🀫🀫 구조화 🀫🀫🀫" if structured else "🀫🀫🀫  일반  🀫🀫🀫"
     try:
         response = llm_caller.chat(**kwargs)
         print(f"{label}\n{response.text}")
@@ -68,15 +77,10 @@ def _call(model_alias: str, model_name: str, structured: bool) -> None:
 
 
 for model_alias, models in ALL_MODELS.items():
-    provider = PROVIDERS[model_alias]
-    supports_structured = provider.supports_json_object or provider.supports_structured_output
-
     for model_name in models:
         print(f"\n{'='*100}")
         print(f"  🍏 [{model_alias}] {model_name}")
         print(f"{'='*100}")
 
         _call(model_alias, model_name, structured=False)
-
-        if supports_structured:
-            _call(model_alias, model_name, structured=True)
+        _call(model_alias, model_name, structured=True)

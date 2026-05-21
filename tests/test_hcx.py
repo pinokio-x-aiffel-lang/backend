@@ -44,7 +44,7 @@ def _call(model_name: str, structured: bool) -> None:
         print("-" * 40)
         print(f"[ 💰 tokens: {response.total_tokens}, ⌛️ latency: {response.latency_s:.2f}s ]\n")
     except Exception as e:
-        print(f"{label} 실패: {e}")
+        print(f"{label}\n실패: {e}")
 
 
 for model_name in HCX_MODELS:
