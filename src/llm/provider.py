@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
 CLOVASTUDIO_BASE_URL = "https://clovastudio.stream.ntruss.com/v1/openai"
-CLOVASTUDIO_BASE_URL_STRUCTURED = "https://clovastudio.stream.ntruss.com/v3/chat-completions/HCX-007"
+# v3 native 엔드포인트 base — 실제 호출 시 뒤에 /{model_name}을 붙인다
+CLOVASTUDIO_NATIVE_BASE_URL = "https://clovastudio.stream.ntruss.com/v3/chat-completions"
 GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 ANTHROPIC_BASE_URL = "https://api.anthropic.com/v1"
 
@@ -64,8 +65,22 @@ HCX_MODEL_INFO: dict[str, dict] = {
     "HCX-DASH-001": {"context_window":   3_500, "max_output_tokens":  4_096},
 }
 HCX_MODELS: list[str] = list(HCX_MODEL_INFO)
-# v3 native endpoint를 사용하는 모델 (소문자 비교용)
-HCX_NATIVE_MODELS: frozenset[str] = frozenset({"hcx-007"})
+HCX_MODELS_LOWER: frozenset[str] = frozenset(m.lower() for m in HCX_MODELS)
+# v3 native endpoint를 사용하는 HCX 모델 (소문자 비교용).
+# 이 3종은 동시에 (1) v3 native 호출 대상이며, (2) function calling을 지원하고,
+# (3) 이미지 입력/튜닝/Function Calling/Structured Outputs/Thinking 중 한 번에 하나만
+# 사용 가능하다(동시 사용 불가).
+HCX_NATIVE_MODELS: frozenset[str] = frozenset({"hcx-005", "hcx-007", "hcx-dash-002"})
+# thinking 파라미터를 지원하는 모델 (나머지 HCX는 thinking 전송 시 400 에러, 소문자 비교용)
+HCX_THINKING_MODELS: frozenset[str] = frozenset({"hcx-007"})
+# thinking.effort 유효값 (실호출 검증: "mid"는 400, "medium"이 정상)
+HCX_THINKING_EFFORTS: frozenset[str] = frozenset({"none", "low", "medium", "high"})
+# structured outputs를 지원하는 HCX 모델 (소문자 비교용).
+# HCX-007만 지원하며, 나머지 HCX는 responseFormat 전송 시 400(native) 또는
+# json_schema가 무시됨(v1 compat) → 호출 전에 차단한다.
+HCX_STRUCTURED_OUTPUT_MODELS: frozenset[str] = frozenset({"hcx-007"})
+# HCX function calling 호출 시 max_tokens 하한 (미만이면 tools와 호환 안 됨 → 400)
+HCX_FUNCTION_CALLING_MIN_TOKENS = 1024
 
 # 출처: https://ai.google.dev/gemini-api/docs/models (2026-05 기준, 텍스트 생성 + 무료 tier)
 GEMINI_MODELS = [
@@ -74,7 +89,6 @@ GEMINI_MODELS = [
     "gemini-3.1-flash-lite",
     # Gemini 3.x (preview)
     "gemini-3-flash-preview",
-    "gemini-3.1-flash-lite-preview",
     # Gemini 2.5 (stable)
     "gemini-2.5-flash",
     "gemini-2.5-flash-lite",
@@ -103,6 +117,17 @@ NO_STRUCTURED_OUTPUT_MODELS: frozenset[str] = frozenset({
     *CLAUDE_MODELS,
 })
 
+# function calling(tool use)을 지원하는 모델 (소문자 비교용). 실호출로 검증함.
+# - HCX: HCX_NATIVE_MODELS(005/007/DASH-002)만 지원
+# - GPT/Gemini/Claude: 전 모델 지원 (GPT_RESPONSES_MODELS 포함 — fetch_responses가
+#   tools를 Responses 포맷으로 변환해 전송하며 4종 모두 실호출로 tool_calls 확인됨)
+FUNCTION_CALLING_MODELS: frozenset[str] = (
+    HCX_NATIVE_MODELS
+    | frozenset(m.lower() for m in GPT_MODELS)
+    | frozenset(m.lower() for m in GEMINI_MODELS)
+    | frozenset(m.lower() for m in CLAUDE_MODELS)
+)
+
 
 @dataclass(frozen=True)
 class ProviderConfig:
@@ -110,7 +135,7 @@ class ProviderConfig:
     supports_json_object: bool
     supports_structured_output: bool
     base_url: str | None = None
-    native_url: str | None = None  # v3 native endpoint (httpx 직접 호출용)
+    native_url: str | None = None  # v3 native endpoint base (httpx 직접 호출용, /{model_name} 추가)
 
 
 PROVIDERS: dict[str, ProviderConfig] = {
@@ -124,7 +149,7 @@ PROVIDERS: dict[str, ProviderConfig] = {
         supports_json_object=False,   # v1/openai compat endpoint rejects response_format
         supports_structured_output=True,
         base_url=CLOVASTUDIO_BASE_URL,
-        native_url=CLOVASTUDIO_BASE_URL_STRUCTURED,
+        native_url=CLOVASTUDIO_NATIVE_BASE_URL,
     ),
     "claude": ProviderConfig(
         api_key_env="ANTHROPIC_API_KEY",
