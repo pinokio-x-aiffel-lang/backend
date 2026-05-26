@@ -13,12 +13,12 @@ API 키는 프로젝트 루트의 .env 파일에서 읽는다.
     KOSIS_API_KEY=발급받은_인증키
 """
 import json
-from kosis_metadata import KosisMetadataCollector
+from kosis_metadata_crolling import KosisMetadataCollector
 
 c = KosisMetadataCollector()
 
 
-data = c.fetch_meta_item("101", "DT_1YL20581", "TBL")
+data = c.fetch_meta_item("101", "DT_1E10B35", "TBL")
 print("=== type=TBL ===")
 print(json.dumps(data, ensure_ascii=False, indent=2)[:1500])
 
