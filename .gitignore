@@ -30,3 +30,7 @@ logs/
 
 # === Claude Code local settings (machine-specific) ===
 .claude/settings.local.json
+
+# === kosis generated artifacts ===
+kosis/result_ztitle.csv
+kosis/ztitle_full.ckpt
