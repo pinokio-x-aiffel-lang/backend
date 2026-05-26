@@ -24,3 +24,9 @@ logs/
 
 # === env ===
 .env
+
+# === MCP (contains API keys in plaintext) ===
+.mcp.json
+
+# === Claude Code local settings (machine-specific) ===
+.claude/settings.local.json
