@@ -25,5 +25,5 @@ logs/
 # === env ===
 .env
 
-result_ztitle.csv
-ztitle_full.ckpt
+kosis/result_ztitle.csv
+kosis/ztitle_full.ckpt
