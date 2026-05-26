@@ -1,3 +1,4 @@
+import asyncio
 import time
 from src.schemas.verify import (
     Article,
@@ -10,6 +11,44 @@ from src.schemas.verify import (
     VerifyRequest,
     VerifyResponse,
 )
+
+
+_STEPS = [
+    "기사 내용 확인",
+    "클레임 추출",
+    "KOSIS 통계표 찾기",
+    "KOSIS 조회",
+    "한국어 수사 산술로 변환",
+    "통계 수치 비교 판단",
+    "통계수치와 문장의 정합성 판단",
+    "종합 분석",
+    "설명 생각",
+    "검증 결과 생성",
+]
+
+
+async def run_pipeline_with_queue(q: asyncio.Queue, content: str) -> None:
+    try:
+        for i, step_name in enumerate(_STEPS, 1):
+            t0 = time.monotonic()
+            await asyncio.sleep(1)  # TODO: 실제 단계별 작업으로 교체
+            duration_ms = int((time.monotonic() - t0) * 1000)
+            await q.put({
+                "event": "step",
+                "data": {
+                    "step": i,
+                    "name": step_name,
+                    "status": "done",
+                    "duration_ms": duration_ms,
+                },
+            })
+
+        result = await verify_article(VerifyRequest(content=content))
+        await q.put({"event": "result", "data": result.model_dump()})
+    except Exception as e:
+        await q.put({"event": "error", "data": {"message": str(e)}})
+    finally:
+        await q.put(None)
 
 
 async def verify_article(request: VerifyRequest) -> VerifyResponse:
@@ -88,13 +127,6 @@ async def verify_article(request: VerifyRequest) -> VerifyResponse:
         ),
         claim_results=claim_results,
     )
-
-    print("- 실제 검증 파이프라인을 실행합니다.")
-    time.sleep(1)
-    print("- 클레임 추출중")
-    time.sleep(1)
-    print("- KOSIS 조회중")
-    time.sleep(1)
 
     return VerifyResponse(
         article=article,
