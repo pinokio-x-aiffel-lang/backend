@@ -75,6 +75,9 @@ HCX_NATIVE_MODELS: frozenset[str] = frozenset({"hcx-005", "hcx-007", "hcx-dash-0
 HCX_THINKING_MODELS: frozenset[str] = frozenset({"hcx-007"})
 # thinking.effort 유효값 (실호출 검증: "mid"는 400, "medium"이 정상)
 HCX_THINKING_EFFORTS: frozenset[str] = frozenset({"none", "low", "medium", "high"})
+# effort가 높을수록 추론이 토큰을 더 소비 → max_tokens 미지정 시 effort별 기본 budget.
+# (실측 completion_tokens: none~245 / low~636 / medium~1216 / high~1230, 여유 포함)
+HCX_THINKING_EFFORT_MAX_TOKENS: dict[str, int] = {"low": 2048, "medium": 4096, "high": 8192}
 # structured outputs를 지원하는 HCX 모델 (소문자 비교용).
 # HCX-007만 지원하며, 나머지 HCX는 responseFormat 전송 시 400(native) 또는
 # json_schema가 무시됨(v1 compat) → 호출 전에 차단한다.
