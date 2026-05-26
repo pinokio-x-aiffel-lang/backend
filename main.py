@@ -1,54 +1,57 @@
 from fastapi import FastAPI
-from src.schemas.verify import VerifyRequest, VerifyResponse
-from src.services.verify_service import verify_article
-from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
+from sse_starlette.sse import EventSourceResponse
+from src.schemas.verify import VerifyRequest
+from src.services.verify_service import run_pipeline_with_queue
 import json, asyncio, uuid
 
-jobs: dict[str, asyncio.Queue] = {}  # job_id → 이벤트 큐
+jobs: dict[str, tuple[asyncio.Queue, asyncio.Task]] = {}
 
 app = FastAPI(
     title="Fake News Verification API",
     version="0.1.0",
 )
 
-from fastapi.middleware.cors import CORSMiddleware
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite 개발 서버 주소
+    allow_origins=["http://localhost:5174"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
 
 
-@app.post("/verify", response_model=VerifyResponse)
-async def verify(request: VerifyRequest, background_tasks: BackgroundTasks):
+@app.post("/verify")
+async def verify(request: VerifyRequest):
     job_id = str(uuid.uuid4())
-    jobs[job_id] = asyncio.Queue()
-    background_tasks.add_task(run_pipeline, job_id, req.content)
+    q: asyncio.Queue = asyncio.Queue()
+    task = asyncio.create_task(run_pipeline_with_queue(q, request.content))
+    jobs[job_id] = (q, task)
     return {"job_id": job_id}
-    # return await verify_article(request)
 
-async def run_pipeline(job_id: str, content: str):
-    q = jobs[job_id]
-    # 각 단계마다
-    await q.put({"event": "step", "data": {...}})
-    # 완료 시
-    await q.put({"event": "result", "data": verify_response})
-    await q.put(None)  # 종료 신호
 
 @app.get("/verify/stream")
-  async def stream(job_id: str):
-      async def generator():
-          q = jobs[job_id]
-          while True:
-              item = await q.get()
-              if item is None:
-                  del jobs[job_id]
-                  break
-              yield f"event: {item['event']}\ndata: {json.dumps(item['data'])}\n\n"
-      return EventSourceResponse(generator())
+async def stream(job_id: str):
+    if job_id not in jobs:
+        async def not_found():
+            yield {"event": "error", "data": json.dumps({"message": "job not found"}, ensure_ascii=False)}
+        return EventSourceResponse(not_found())
+
+    q, task = jobs[job_id]
+
+    async def generator():
+        try:
+            while True:
+                item = await q.get()
+                if item is None:
+                    break
+                yield {"event": item["event"], "data": json.dumps(item["data"], ensure_ascii=False)}
+        finally:
+            task.cancel()
+            jobs.pop(job_id, None)
+
+    return EventSourceResponse(generator())
