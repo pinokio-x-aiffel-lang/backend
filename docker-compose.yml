@@ -1,0 +1,59 @@
+# fake-news-detector 배포 스택 (일반 Linux VM 대상)
+#   app : FastAPI(main:app), Infisical 로 시크릿 주입
+#   db  : PostgreSQL + pgvector (임베딩 검색용)
+#
+# 사용:
+#   cp .env.docker.example .env.docker   # 값 채우기 (커밋 금지)
+#   docker compose --env-file .env.docker up -d --build
+#
+# 주의: 호스트 5432 는 infra/langfuse 의 postgres 가 점유하므로
+#       pgvector 는 기본 5433(호스트)→5432(컨테이너) 로 매핑한다.
+name: fake-news-detector
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-fnd}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fnd}
+      POSTGRES_DB: ${POSTGRES_DB:-fnd}
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+      # 외부 노출 최소화: localhost 바인딩. 원격 접근이 필요하면 바인딩 주소를 조정.
+      - "127.0.0.1:${DB_HOST_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # 최초 DB 초기화 시 1회 실행 (CREATE EXTENSION vector 등)
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fnd} -d ${POSTGRES_DB:-fnd}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Infisical: 프로젝트+환경에 스코프된 서비스/머신 토큰. 비우면 시크릿 주입 없이 기동.
+      INFISICAL_TOKEN: ${INFISICAL_TOKEN:-}
+      # KOSIS 키는 Infisical 외부(로컬 .env) 관리이므로 compose 가 직접 주입.
+      KOSIS_API_KEY: ${KOSIS_API_KEY:-}
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+      # 앱이 향후 DB 연동 시 사용할 DSN (컨테이너 내부 네트워크 기준 호스트=db, 포트=5432)
+      DATABASE_URL: ${DATABASE_URL:-postgresql://fnd:fnd@db:5432/fnd}
+    ports:
+      - "${APP_HOST_PORT:-8000}:8000"
+
+volumes:
+  pgdata:
+    driver: local
