@@ -34,3 +34,9 @@ logs/
 # === kosis generated artifacts ===
 kosis/result_ztitle.csv
 kosis/ztitle_full.ckpt
+
+# === kosis/innnn/ async crawl outputs (regenerable, too large for git) ===
+kosis/innnn/*.csv
+kosis/innnn/*.json
+kosis/innnn/*.jsonl
+kosis/innnn/*.checkpoint
