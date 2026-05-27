@@ -12,6 +12,7 @@ dependencies = [
     "uvicorn>=0.20.0",
     "sse-starlette>=2.0.0",
     "requests>=2.34.2",
+    "langfuse>=4.6.1",
 ]
 
 [build-system]
