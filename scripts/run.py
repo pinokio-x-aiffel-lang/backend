@@ -7,5 +7,5 @@ infisical run --env dev --path / --path /LangFuse -- uv run python <스크립트
 
 def main():
     sys.exit(subprocess.call(
-        ["infisical", "run", "--", "uv", "run", *sys.argv[1:]]
+        ["infisical", "run", "--path", "/", "--path", "/LangFuse", "--", "uv", "run", *sys.argv[1:]]
     ))
