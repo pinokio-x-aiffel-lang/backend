@@ -67,6 +67,15 @@ class LlmCaller:
         # effort가 미지정이거나 "none"이면 추론 OFF로 간주
         thinking_on = thinking or (thinking_effort not in (None, "none"))
 
+        # effort 지정 + max_tokens 미지정이면 effort에 맞는 기본 budget 자동 선택
+        # (effort가 높을수록 추론이 토큰을 더 쓰므로 답변이 잘리지 않게)
+        if (
+            max_tokens is None
+            and model_lower in HCX_THINKING_MODELS
+            and thinking_effort in HCX_THINKING_EFFORT_MAX_TOKENS
+        ):
+            max_tokens = HCX_THINKING_EFFORT_MAX_TOKENS[thinking_effort]
+
         # (1) HCX native 모델(HCX-005/007/DASH-002)은 Function Calling / Structured Outputs /
         #     Thinking 중 하나만 사용 가능 — 둘 이상 켜져 있으면 호출 전에 차단
         if model_lower in HCX_NATIVE_MODELS:

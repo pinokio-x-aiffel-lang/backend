@@ -94,6 +94,8 @@ resp.tool_calls    # function calling 결과(list) 또는 None
 > HCX-007의 세 기능(FC/structured/thinking)은 **동시에 하나만** 쓸 수 있습니다. function calling은 `max_tokens >= 1024` 필요.
 >
 > **thinking.effort**: HCX-007의 추론 강도는 `none` / `low` / `medium` / `high`로 조절할 수 있습니다(실호출 검증값 — `mid`는 400, `medium`이 정상. `none`은 추론 비활성화). `chat(..., thinking_effort="high")`로 지정하며, 일반 호출(FC·structured 미사용)에서만 적용됩니다. function calling·structured outputs 사용 시에는 충돌 방지를 위해 `effort:none`이 자동 전송됩니다.
+>
+> **effort별 max_tokens 자동 선택**: 추론이 토큰을 소비해 답변이 잘리지 않도록, `max_tokens`를 지정하지 않으면 effort에 맞는 기본 budget이 자동 적용됩니다 — `low`→2048, `medium`→4096, `high`→8192. `max_tokens`를 명시하면 그 값을 그대로 씁니다.
 
 ```python
 # HCX-007 — 일반 (추론은 기본 ON)
