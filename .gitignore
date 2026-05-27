@@ -24,6 +24,8 @@ logs/
 
 # === env ===
 .env
+# 배포용 시크릿(.env.docker.example 만 커밋)
+.env.docker
 
 # === MCP (contains API keys in plaintext) ===
 .mcp.json

@@ -1,0 +1,7 @@
+# Docker/배포 관련 파일은 OS와 무관하게 항상 LF 로 체크아웃.
+# (CRLF 로 바뀌면 Linux 컨테이너에서 'bash\r' 등으로 entrypoint 가 깨진다)
+*.sh            text eol=lf
+Dockerfile      text eol=lf
+docker-compose.yml text eol=lf
+.dockerignore   text eol=lf
+db/init/*.sql   text eol=lf
