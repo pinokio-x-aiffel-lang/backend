@@ -10,7 +10,10 @@ account_id 가 '-표준계정코드 미사용-' 인 회사나 감사보고서 �
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
+
+_logger = logging.getLogger("dart.accounts")
 
 
 @dataclass(frozen=True)
@@ -49,6 +52,32 @@ _CONCEPTS: tuple[AccountConcept, ...] = (
         frozenset({"ifrs-full_FeeAndCommissionIncome"}),
         frozenset({"수수료수익"}),
     ),
+    # 재무상태표·현금흐름·주당지표 (삼성전자 OFS+CFS 검증).
+    AccountConcept(
+        "자산총계",
+        frozenset({"ifrs-full_Assets"}),
+        frozenset({"자산총계"}),
+    ),
+    AccountConcept(
+        "부채총계",
+        frozenset({"ifrs-full_Liabilities"}),
+        frozenset({"부채총계"}),
+    ),
+    AccountConcept(
+        "자본총계",
+        frozenset({"ifrs-full_Equity"}),
+        frozenset({"자본총계"}),
+    ),
+    AccountConcept(
+        "영업활동현금흐름",
+        frozenset({"ifrs-full_CashFlowsFromUsedInOperatingActivities"}),
+        frozenset({"영업활동현금흐름", "영업활동으로인한현금흐름"}),
+    ),
+    AccountConcept(
+        "기본주당이익",
+        frozenset({"ifrs-full_BasicEarningsLossPerShare"}),
+        frozenset({"기본주당이익", "기본주당이익(손실)", "주당순이익"}),
+    ),
 )
 
 
@@ -63,3 +92,16 @@ def resolve_account(account_nm: str) -> tuple[frozenset[str], frozenset[str]]:
         if target == concept.key or target in concept.aliases:
             return concept.account_ids, concept.aliases
     return frozenset(), frozenset({target})
+
+
+def log_account_miss(account_nm: str, corp_name: str, bsns_year: str, available_names) -> None:
+    """구조화 재무에 데이터는 있으나 account_nm 매칭이 실패했을 때 호출.
+
+    사전 확장(_CONCEPTS 추가) 후보가 되도록 '사용 가능한 계정명'을 로그로 남긴다 —
+    miss→log→add 루프의 'log' 단계('add'는 사람이 검토 후 수동, [[dart-module-design]]).
+    """
+    names = sorted({(n or "").strip() for n in available_names if n and n.strip()})
+    _logger.warning(
+        "DART 계정 매칭 실패(사전 확장 후보) | 요청=%r corp=%s year=%s | 사용가능 계정=%s",
+        account_nm, corp_name, bsns_year, names[:40],
+    )
