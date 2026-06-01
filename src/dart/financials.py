@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 
-from src.dart.accounts import resolve_account
+from src.dart.accounts import log_account_miss, resolve_account
 from src.dart.client import DartError, call_dart, fetch_zip_xml
 from src.dart.types import DartFact, DartQuery
 
@@ -53,6 +53,7 @@ def find_account_row(rows: list[dict], account_nm: str, sj_div: str = "") -> dic
 def fetch_structured_fact(corp_code: str, query: DartQuery, api_key: str) -> DartFact | None:
     """fnlttSinglAcntAll 에서 당기 금액 조회. 수록 대상 아니면(013) None."""
     fs_divs = [query.fs_div] + [d for d in ("OFS", "CFS") if d != query.fs_div]
+    available: list[dict] = []
     for fs_div in fs_divs:
         data = call_dart("fnlttSinglAcntAll.json", {
             "crtfc_key": api_key,
@@ -63,7 +64,9 @@ def fetch_structured_fact(corp_code: str, query: DartQuery, api_key: str) -> Dar
         })
         if data.get("status") == "013":
             continue
-        row = find_account_row(data.get("list", []), query.account_nm, query.sj_div)
+        rows = data.get("list", [])
+        available = rows or available
+        row = find_account_row(rows, query.account_nm, query.sj_div)
         if row is None:
             continue
         raw_amt = (row.get("thstrm_amount") or "").strip()
@@ -82,6 +85,9 @@ def fetch_structured_fact(corp_code: str, query: DartQuery, api_key: str) -> Dar
             period_label=(row.get("thstrm_nm") or "").strip() or None,
             raw=row,
         )
+    if available:  # 데이터는 있었으나 계정 매칭 실패 → 사전 확장 후보 로깅
+        log_account_miss(query.account_nm, query.corp_name, query.bsns_year,
+                         [r.get("account_nm") for r in available])
     return None
 
 
@@ -129,6 +135,12 @@ def _to_plain(doc_bytes: bytes) -> str:
 # 천단위로 그룹된 금액만 인정 → 주석 열의 비그룹 숫자("21,26")는 배제. 괄호=음수.
 _AMOUNT = r"-?\(?\d{1,3}(?:,\d{3})+\)?"
 
+# 감사보고서 표 셀 파싱용(평문 폴백보다 견고): <TR> 행의 <TE>/<TD>/<TH> 셀.
+_ROW_RE = re.compile(r"<TR[^>]*>(.*?)</TR>", re.IGNORECASE | re.DOTALL)
+_CELL_RE = re.compile(r"<T[EDH][^>]*>(.*?)</T[EDH]>", re.IGNORECASE | re.DOTALL)
+_GROUPED_AMOUNT = re.compile(r"^-?\(?\d{1,3}(?:,\d{3})+\)?$")
+_LABEL_LEAD = re.compile(r"^[\sⅠ-Ⅻ0-9IVXivx().\-_]+")  # "Ⅰ.매출액" → "매출액"
+
 _UNIT_MULTIPLIERS = {"원": 1, "천원": 1_000, "백만원": 1_000_000, "십억원": 1_000_000_000}
 
 
@@ -153,27 +165,55 @@ def detect_unit_multiplier(doc_bytes: bytes, near: str | None = None) -> int:
     return _UNIT_MULTIPLIERS.get(unit, 1)
 
 
-def parse_income_statement_amount(doc_bytes: bytes, account_nm: str) -> tuple[str | None, str | None]:
-    """감사보고서 원문에서 account_nm 의 당기(첫 번째) 금액을 best-effort 추출.
+def _cell_text(raw_cell: str) -> str:
+    """셀 안쪽 태그 제거 + 전각공백(　) 정리 → 평문."""
+    text = re.sub(r"<[^>]+>", "", raw_cell).replace("　", " ")
+    return re.sub(r"\s+", " ", text).strip()
 
-    손익계산서 표는 "과목 [주석] 당기 전기" 구조이고 당기가 왼쪽 금액열이다.
-    라벨(긴 별칭 우선)을 찾은 뒤 그 뒤에서 '천단위로 그룹된 첫 금액'을 당기로 본다
-    → 주석 열의 비그룹 숫자(예 "21,26")는 건너뛴다. (?<![가-힣])·(?![가-힣]) 로
-    '제품매출액' 같은 합성어 오매칭을 피하고, 라벨 출현마다 인근 금액을 확인한다.
-    단위 배율은 detect_unit_multiplier 로 별도 적용(여긴 원문 그대로 반환).
-    한계: 표 구조가 비정형이면 빗나갈 수 있어 source(rcept_no)로 검증 권장.
 
-    Returns: (당기 금액 원문, 기수 라벨 예 "제 23(당) 기") — 못 찾으면 (None, None).
+def _amount_from_cells(markup: str, names: frozenset[str]) -> str | None:
+    """표 <TR> 행을 파싱해 라벨 셀과 같은 행의 '첫 그룹형 금액 셀'(=당기) 반환.
+
+    주석칸("21,26")·빈칸("　")은 그룹형 금액이 아니라 자동 배제된다.
     """
-    plain = _to_plain(doc_bytes)
-    _, names = resolve_account(account_nm)
+    for row in _ROW_RE.findall(markup):
+        cells = [_cell_text(c) for c in _CELL_RE.findall(row)]
+        for i, cell in enumerate(cells):
+            if _LABEL_LEAD.sub("", cell).strip() in names:
+                for amt in cells[i + 1:]:
+                    if _GROUPED_AMOUNT.match(amt):
+                        return amt
+                break  # 라벨 행은 찾았으나 금액 없음 → 다음 행
+    return None
+
+
+def _amount_from_plain(plain: str, names: frozenset[str]) -> str | None:
+    """평문 폴백: 라벨(긴 별칭 우선) 뒤 첫 그룹형 금액. (?<![가-힣])로 합성어 회피."""
     for label in sorted(names, key=len, reverse=True):
         for lm in re.finditer(rf"(?<![가-힣]){re.escape(label)}(?![가-힣])", plain):
             am = re.search(_AMOUNT, plain[lm.end():lm.end() + 60])
             if am:
-                period = re.search(r"제\s*\d+\s*\(\s*당\s*\)\s*기", plain)
-                return am.group(0), (period.group(0) if period else None)
-    return None, None
+                return am.group(0)
+    return None
+
+
+def parse_income_statement_amount(doc_bytes: bytes, account_nm: str) -> tuple[str | None, str | None]:
+    """감사보고서 원문에서 account_nm 의 당기(첫 번째) 금액을 best-effort 추출.
+
+    1차) 표 <TR>/<TE|TD> 셀 구조 파싱 — 라벨 셀과 같은 행의 첫 그룹형 금액(당기).
+         주석칸("21,26")·빈칸("　")은 그룹형이 아니라 자동 배제.
+    2차) 셀 파싱 실패 시 태그를 걷어낸 평문에서 라벨 뒤 첫 그룹형 금액(폴백).
+    단위 배율은 detect_unit_multiplier 로 별도 적용(여긴 원문 그대로 반환).
+    한계: 표 구조가 매우 비정형이면 빗나갈 수 있어 source(rcept_no)로 검증 권장.
+
+    Returns: (당기 금액 원문, 기수 라벨 예 "제 23(당) 기") — 못 찾으면 (None, None).
+    """
+    _, names = resolve_account(account_nm)
+    raw = _amount_from_cells(_decode(doc_bytes), names) or _amount_from_plain(_to_plain(doc_bytes), names)
+    if raw is None:
+        return None, None
+    period = re.search(r"제\s*\d+\s*\(\s*당\s*\)\s*기", _to_plain(doc_bytes))
+    return raw, (period.group(0) if period else None)
 
 
 def fetch_audit_report_fact(corp_code: str, query: DartQuery, api_key: str) -> DartFact | None:
