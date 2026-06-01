@@ -1,7 +1,8 @@
-"""슬롯 스키마 마스터 Pydantic 모델.
+"""런타임 스키마 — 파이프라인 1건의 전체 산출물 Pydantic 모델.
 
-기준 문서: src/schemas/slot_schema_master_v2.json
+기준 문서: docs/slot_schema_master.json
 파이프라인 1건의 전체 산출물(article → claims → analysis → verifications)을 표현한다.
+도메인 모델 전체를 이 한 파일에 모아두고, 조립 루트는 MasterSchema 다.
 """
 from __future__ import annotations
 
@@ -23,6 +24,7 @@ class Article(BaseModel):
     content: str
     published_at: str
     source: str
+    url: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -178,12 +180,18 @@ class Verifications(BaseModel):
 # --------------------------------------------------------------------------- #
 # master record
 # --------------------------------------------------------------------------- #
-class SlotSchemaMaster(BaseModel):
-    """파이프라인 1건 전체 산출물 (slot_schema_master_v2.json 루트)."""
+class MasterSchema(BaseModel):
+    """파이프라인 1건 전체 산출물 (docs/slot_schema_master.json 루트).
 
-    article: Article
+    파이프라인을 직접 흐르는 스키마. 진행 중에는 단계들이 필드를 순차적으로
+    채우므로 상위 필드는 Optional(미완성 허용)이다. `content`는 원본 입력으로,
+    흐르되 직렬화(model_dump)에는 포함하지 않는다(exclude=True).
+    """
+
+    content: str | None = Field(default=None, exclude=True)  # 원본 입력 (URL/본문)
+    article: Article | None = None
     claims: list[Claim] = Field(default_factory=list)
     analysis: list[ClaimAnalysis] = Field(default_factory=list)
-    verifications: Verifications
+    verifications: Verifications | None = None
 
     model_config = ConfigDict(populate_by_name=True)

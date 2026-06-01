@@ -1,4 +1,4 @@
-from src.schemas.claim import (
+from src.schemas.runtime import (
     Article,
     Claim,
     ClaimAnalysis,
@@ -7,8 +7,8 @@ from src.schemas.claim import (
     Evidence,
     KosisQuery,
     KosisSearch,
+    MasterSchema,
     PeriodType,
-    SlotSchemaMaster,
     ValueSlot,
     Verifications,
     VerificationSummary,
@@ -24,7 +24,7 @@ __all__ = [
     "KosisQuery",
     "KosisSearch",
     "PeriodType",
-    "SlotSchemaMaster",
+    "MasterSchema",
     "ValueSlot",
     "Verifications",
     "VerificationSummary",

@@ -42,3 +42,8 @@ kosis/innnn/*.csv
 kosis/innnn/*.json
 kosis/innnn/*.jsonl
 kosis/innnn/*.checkpoint
+
+kosis/aain/*.csv
+kosis/aain/*.jsonl
+kosis/aain/*.idx
+kosis/aain/*.backup

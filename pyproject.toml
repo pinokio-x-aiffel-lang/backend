@@ -16,6 +16,7 @@ dependencies = [
     "psycopg[binary]>=3.3.4",
     "pgvector>=0.4.2",
     "sqlalchemy>=2.0.50",
+    "aiohttp>=3.13.5",
 ]
 
 [build-system]

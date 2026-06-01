@@ -271,3 +271,75 @@ analysis[]:
   ]
 }
 ```
+
+---
+
+## 구현 아키텍처 (코드 구조)
+
+> §1~3은 *데이터 형태* 명세, 이 절은 *코드 구조·설계 결정* 명세다.
+> (정립일: 2026-05-31, **흐름 방식 결정: 2026-06-01 — option 2 채택**)
+
+### A. 핵심 원칙
+- **데이터(스키마)와 동작(로직)을 분리**한다: 스키마는 `src/schemas/`, 단계 동작은 `src/modules/`(또는 runner 인라인).
+- **`MasterSchema`(런타임 스키마)가 직접 파이프라인을 흐른다.** 별도 ctx를 두지 않는다.
+- 각 단계는 **`record`(MasterSchema)를 받아 자기 필드만 제자리에서 채운다** (`(record: MasterSchema) -> None`).
+- 실패는 **`raise`** — runner가 받아 `StepEvent(error)`로 변환·중단한다 (성공/실패 봉투 없음).
+- **DTO는 시스템 경계(HTTP)에만** 둔다.
+
+### B. 폴더 구조
+```
+src/
+  schemas/
+    __init__.py        # 공개 façade — runtime.py 의 모델을 re-export
+    runtime.py         # 런타임/도메인 스키마 전체 (1파일로 통합)
+  modules/             # 파이프라인 단계 구현 (단계당 1파일)
+    load_article.py, extract_statistical_claims.py, ...
+  pipeline/
+    runner.py          # 단계 조립·실행, MasterSchema 생성·흐름, 이벤트 스트리밍
+    events.py          # StepEvent / ResultEvent(record: MasterSchema)
+  api/
+    verify.py          # /verify 의 HTTP 요청/응답 DTO (VerifyRequest 등)
+    schemas.py, main.py, routers/, providers/   # 별도 앱(LLM 게이트웨이)
+  services/verify_service.py   # 파이프라인 ↔ HTTP 연결
+docs/slot_schema_master.json   # 사람용 예시 1건 (코드가 로드 안 함)
+main.py                        # 검증 제품 FastAPI 앱 (/verify, /verify/stream)
+```
+
+### C. 런타임 스키마 (`src/schemas/runtime.py`)
+- 단일 파일에 도메인 모델 13개 + 루트 **`MasterSchema`**(옛 `SlotSchemaMaster`).
+- 파이프라인을 직접 흐르므로 **상위 필드는 Optional**(`article`/`verifications` = `... | None = None`, 진행 중 미완성 허용).
+- `content`(원본 입력 URL/본문)는 **`exclude=True` 투명 필드** — 흐르되 `model_dump()` 직렬화에는 빠진다.
+- Pydantic = 데이터 형태 + 런타임 검증, 비즈니스 로직 없음. 필드 명세는 §1~3. `__init__.py` façade 경유 사용.
+- 스키마 개념별 분해는 검토했으나 **통합(1파일) 선택** — 모델이 작고 밀결합이라 단순함 우선.
+
+### D. MasterSchema 직접 흐름 (option 2)
+- 검토한 3안: ① 단계별 입출력 DTO  ② **대형 스키마 직접 흐름(채택)**  ③ ctx + 끝단 병합.
+- 채택 이유: 타입 하나로 단순 — 누산기와 도메인 레코드를 분리하지 않는다.
+- 대가: 흐르려면 미완성 상태가 합법이어야 해 **상위 필드를 Optional로 풀었다** → 도메인 타입이 "완성 보장"을 잃는다. 소비자(DB/API)는 필요 시 None 체크.
+- (선택) 각 단계의 read/write 표면을 **Protocol**로 좁힐 수 있으나, 현재는 단순화를 위해 `record: MasterSchema`를 그대로 받는다. 좁히려면 전 단계 일괄 적용.
+
+### E. 단계(step) 규칙
+- 시그니처: **`async def step(record: MasterSchema) -> None`** — 받은 record를 제자리에서 채움, 반환 없음.
+- runner 루프: `await fn(record)` (반환 재할당 없음).
+- 실패: **`raise`** (예: `ArticleLoadError`). runner `try/except`가 `StepEvent(error)`로 변환·중단.
+- 단계 구현은 `src/modules/`로 점진 이전. `load_article.py`가 템플릿. (현재 runner는 인라인 stub 사용.)
+
+### F. 결과 직렬화
+- 파이프라인 끝에서 `ResultEvent.record`(MasterSchema)를 그대로 `model_dump()` → SSE `result` 이벤트. `content`는 exclude라 제외.
+- **별도 병합/완성 게이트 없음** (전부 Optional). 완성 보장이 필요하면 경계에서 명시 가드(`if record.article is None: ...`)를 둔다.
+
+### G. 네이밍 / 결정 이력
+- `schemas/claim.py` → `schemas/runtime.py` (파일명)
+- 루트 클래스 `SlotSchemaMaster` → `MasterSchema` (클래스명)
+- `schemas/slot_schema_master_v2.json` → `docs/slot_schema_master.json` (사람용 참고)
+- `schemas/verify.py` → `api/verify.py` (HTTP 경계 DTO)
+- 스키마 개념별 분해(article/claim/...) → `runtime.py` 한 파일로 통합
+- **흐름 방식: ctx 별도(option 3) 검토 후 → MasterSchema 직접 흐름(option 2) 채택, `PipelineContext` 제거**
+
+### H. 미결정 / 할 일
+- **단계 구현 이전**: runner 인라인 stub(`_article_parse` 등)을 `src/modules/*.py`로 옮기고 `_STEPS` 정합 + 실제 로직 채우기.
+- **`Article` 메타**: `title`/`source`/`published_at` 필수인데 본문만 입력될 때 (a) Optional 완화 / (b) 플레이스홀더 / (c) 입력 계약에서 받기 중 결정.
+- **느슨한 계약 보완**: MasterSchema 전부 Optional → 필요한 경계(DB 저장·응답)에 완성 가드를 둘지 결정.
+- **`verify.py` 응답 모델**: `VerifyResponse` 등 미사용 — 응답 형식 확정 시 정리·배선 (현재는 `model_dump()` 원형 전송).
+- **§1~3 ↔ runtime.py 드리프트**: 일부 필드(evidence `period_value`/`kosis_url`/`kosis_tbl_name` vs 구현 `period`/`url`/`table_name`, verification 구조)가 어긋남 → 정합화.
+- **HITL / calculation / explanation**: 도메인 모델 없음. 기능 구체화 시 추가.

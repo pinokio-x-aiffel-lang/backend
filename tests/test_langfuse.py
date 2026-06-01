@@ -3,7 +3,9 @@
 실행:
     uv run x test_langfuse_aain.py
 """
-from src.observability.tracing import traced_chat
+
+from src.observability import traced_chat
+
 
 def main() -> None:
     messages = [{"role": "user", "content": "안녕! 한 문장으로 짧게 자기소개 해줘."}]
