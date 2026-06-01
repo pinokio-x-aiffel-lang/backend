@@ -13,14 +13,19 @@
 | 당기순이익 | `ifrs-full_ProfitLoss` | 당기순이익 / 당기순이익(손실) |
 | 이자수익(금융) | `ifrs-full_RevenueFromInterest` | 이자수익 |
 | 수수료수익(금융) | `ifrs-full_FeeAndCommissionIncome` | 수수료수익 |
+| 자산총계 | `ifrs-full_Assets` | 자산총계 |
+| 부채총계 | `ifrs-full_Liabilities` | 부채총계 |
+| 자본총계 | `ifrs-full_Equity` | 자본총계 |
+| 영업활동현금흐름 | `ifrs-full_CashFlowsFromUsedInOperatingActivities` | 영업활동현금흐름 / 영업활동으로인한현금흐름 |
+| 기본주당이익 | `ifrs-full_BasicEarningsLossPerShare` | 기본주당이익(손실) / 주당순이익 |
 
 > **금융사 주의:** 은행·금융지주는 단일 '매출/영업수익' 표준계정이 **없다**(수익이 이자·수수료·보험 등으로 분해). `매출`에 섞지 말고 위 구성요소로 질의 — 클레임의 '매출'이 어느 항목인지는 상류 LLM 라우팅이 특정.
 
 ## 확장 정책: miss → log → add
 모든 업종을 미리 망라하지 않는다. **가짜뉴스 클레임에 실제 등장하는 업종부터.**
 
-1. 매칭 실패(`None`) 발생 → **로깅**.
-2. 해당 기업 원본에서 실제 account_id **확인**.
+1. 매칭 실패 → **로깅** (`accounts.log_account_miss`: 데이터는 있는데 계정 매칭 실패 시 "사용 가능한 계정명"을 WARNING으로 남김).
+2. 로그의 후보에서 실제 account_id **확인**.
 3. 검증된 id/별칭을 `_CONCEPTS`에 **한 줄 추가**.
 
 업종별 변형(예: 금융사 매출 = `영업수익`, 다른 표준ID)도 이 루프로 흡수한다.
