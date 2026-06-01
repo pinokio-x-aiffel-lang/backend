@@ -99,6 +99,26 @@ def test_detect_unit_multiplier():
     assert detect_unit_multiplier("단위 표기 없음".encode("utf-8")) == 1
 
 
+def test_resolve_account_balance_sheet_and_cashflow():
+    ids, _ = resolve_account("자산총계")
+    assert "ifrs-full_Assets" in ids
+    ids, _ = resolve_account("영업활동현금흐름")
+    assert "ifrs-full_CashFlowsFromUsedInOperatingActivities" in ids
+    assert resolve_account("영업활동으로인한현금흐름") == resolve_account("영업활동현금흐름")
+
+
+# 로쏘 실제 구조: <TE> 셀 + 전각공백(　) 주석칸
+_TE_FIXTURE = (
+    "<TR><TE>Ⅰ.매출액</TE><TE>　</TE>"
+    "<TE>124,315,432,968</TE><TE>81,736,550,003</TE></TR>"
+).encode("utf-8")
+
+
+def test_parse_cell_te_skips_empty_note_cell():
+    raw, _ = parse_income_statement_amount(_TE_FIXTURE, "매출")
+    assert raw == "124,315,432,968"  # 빈 주석칸(　) 건너뛰고 당기
+
+
 def test_detect_unit_multiplier_position_aware():
     # 로쏘 케이스: 본문=원, 주석=천원 혼재. 금액 직전은 '원' 이어야 한다.
     doc = (
