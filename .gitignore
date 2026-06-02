@@ -47,3 +47,5 @@ kosis/aain/*.csv
 kosis/aain/*.jsonl
 kosis/aain/*.idx
 kosis/aain/*.backup
+
+data/*.*

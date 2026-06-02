@@ -7,24 +7,24 @@ class ExtractStatisticalClaimsError(Exception):
     """클레임 추출 실패 — LLM 응답 파싱 오류 등."""
 
 
-async def extract_statistical_claims(record: MasterSchema) -> None:
+async def extract_statistical_claims(master_schema: MasterSchema) -> None:
     """
     [2] Extract Statistical Claims
 
     Input:
-        record.article        # [1]에서 적재된 기사
+        master_schema.article        # [1]에서 적재된 기사
 
     Output:
-        record.claims         # list[Claim] (각 claim_id 부여)
+        master_schema.claims         # list[Claim] (각 claim_id 부여)
 
     Responsibility:
         기사 본문에서 수치 기반 사실 주장을 LLM(HCX)으로 추출해
-        record.claims 에 채운다.
+        master_schema.claims 에 채운다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     # TODO: 실제 구현 — LLM(HCX) 주장 추출. 현재는 happy-path 더미 1건.
-    article_id = record.article.article_id if record.article else "art-0001"
-    record.claims = [
+    article_id = master_schema.article.article_id if master_schema.article else "art-0001"
+    master_schema.claims = [
         Claim(
             claim_id="clm-0001",
             article_id=article_id,

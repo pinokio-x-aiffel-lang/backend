@@ -7,12 +7,12 @@ class SaveHitlFeedbackError(Exception):
     """HITL 피드백 저장 실패."""
 
 
-async def save_hitl_feedback(record: MasterSchema) -> None:
+async def save_hitl_feedback(master_schema: MasterSchema) -> None:
     """
     [HITL] Save HITL Feedback — 선형 파이프라인 밖(검토 후 별도 진입점).
 
     Input:
-        record + 사람 검토 결과 (입력 계약 TBD)
+        master_schema + 사람 검토 결과 (입력 계약 TBD)
 
     Output:
         반영된 판정(verdict_human / verdict_human_note 등) 저장

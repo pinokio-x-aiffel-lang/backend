@@ -7,13 +7,13 @@ class CalculateMetricError(Exception):
     """수치 비교 계산 실패."""
 
 
-async def calculate_metric(record: MasterSchema) -> None:
+async def calculate_metric(master_schema: MasterSchema) -> None:
     """
-    [7] Calculate Metric
+    [6] Calculate Metric
 
     Input:
-        record.claims[*].value.llm_value   # 정규화된 주장 수치
-        record.analysis (선정 Evidence)     # KOSIS 공식 수치
+        master_schema.claims[*].value.llm_value   # 정규화된 주장 수치
+        master_schema.analysis (선정 Evidence)     # KOSIS 공식 수치
 
     Output:
         claim별 초기 verdict / mismatch_type
@@ -24,5 +24,5 @@ async def calculate_metric(record: MasterSchema) -> None:
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     # TODO: 실제 구현 — 주장 vs 증거 수치 비교.
-    #       판정 조립은 [9] decide_verdict 에서. happy-path 에선 no-op.
+    #       판정 조립은 [8] decide_verdict 에서. happy-path 에선 no-op.
     pass

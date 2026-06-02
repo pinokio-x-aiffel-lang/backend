@@ -7,16 +7,16 @@ class NormalizeClaimError(Exception):
     """클레임 정규화 실패 — 한국어 수치/시점 파싱 오류 등."""
 
 
-async def normalize_claim(record: MasterSchema) -> None:
+async def normalize_claim(master_schema: MasterSchema) -> None:
     """
     [3] Normalize Claim
 
     Input:
-        record.claims
+        master_schema.claims
 
     Output:
-        record.claims[*].value.llm_value
-        record.claims[*].period_value.llm_value
+        master_schema.claims[*].value.llm_value
+        master_schema.claims[*].period_value.llm_value
 
     Responsibility:
         "약 23만" → "230000", "전년" → "2023" 등 한국어 수사·시점을
@@ -24,6 +24,6 @@ async def normalize_claim(record: MasterSchema) -> None:
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     # TODO: 실제 구현 — 한국어 수치/시점 정규화. 현재는 happy-path 더미.
-    for claim in record.claims:
+    for claim in master_schema.claims:
         claim.value.llm_value = "0.72"
         claim.period_value.llm_value = "2024"

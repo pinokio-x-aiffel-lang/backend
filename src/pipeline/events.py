@@ -22,7 +22,7 @@ class StepEvent:
 class ResultEvent:
     """파이프라인 최종 결과 — 채워진 MasterSchema."""
 
-    record: MasterSchema
+    master_schema: MasterSchema
 
 
 # Pipeline.run()이 yield하는 타입

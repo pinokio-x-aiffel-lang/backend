@@ -29,7 +29,7 @@ async def run_pipeline_with_queue(q: asyncio.Queue, content: str) -> None:
                 })
             elif isinstance(event, ResultEvent):
                 # 경계 매핑: MasterSchema → VerifyResponse(프론트 계약)
-                payload = to_verify_response(event.record)
+                payload = to_verify_response(event.master_schema)
                 await q.put({"event": "result", "data": payload.model_dump()})
     except Exception as e:
         await q.put({"event": "error", "data": {"message": str(e)}})
