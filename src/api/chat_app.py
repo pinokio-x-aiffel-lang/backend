@@ -1,6 +1,6 @@
 """FastAPI 앱 — 라우터 등록, 글로벌 예외 핸들러, 기동 시 fail-fast.
 
-기동:  uv run x uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+기동:  uv run x uvicorn src.api.chat_app:app --host 0.0.0.0 --port 8000
       (= infisical run -- uv run uvicorn ... → CLOVASTUDIO_API_KEY 주입)
 """
 from __future__ import annotations

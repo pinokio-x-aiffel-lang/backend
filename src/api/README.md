@@ -24,7 +24,7 @@ uv pip install -r src/api/requirements.txt
 ```bash
 bash src/api/run.sh
 # 또는 프로젝트 루트에서 직접:
-uv run x uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+uv run x uvicorn src.api.chat_app:app --host 0.0.0.0 --port 8000
 ```
 
 `uv run x` 가 `infisical run -- uv run` 으로 풀려 `CLOVASTUDIO_API_KEY` 가
