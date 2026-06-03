@@ -63,7 +63,8 @@ class Pipeline:
                 error=str(e),
             )
             raise
-
+        
+        # 멈췄다 재개하며 여러 값을 시간차로 내보내기 위해
         yield StepEvent(
             step=step, name=name, status="done",
             duration_ms=int((time.monotonic() - t0) * 1000),
