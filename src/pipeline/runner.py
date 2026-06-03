@@ -37,15 +37,15 @@ class Pipeline:
     async def run(self, content: str) -> AsyncGenerator[PipelineEvent, None]:
         master_schema = MasterSchema(content=content)
 
-        async for ev in self._step(1, "기사 내용 확인",               load_article,               master_schema): yield ev
-        async for ev in self._step(2, "클레임 추출",                  extract_statistical_claims, master_schema): yield ev
-        async for ev in self._step(3, "한국어 수사 산술로 변환",        normalize_claim,            master_schema): yield ev
-        async for ev in self._step(4, "KOSIS 통계표 찾기",            retrieve_kosis_candidates,  master_schema): yield ev
-        async for ev in self._step(5, "KOSIS 조회",                  fetch_kosis_data,           master_schema): yield ev
-        async for ev in self._step(6, "통계 수치 비교 판단",           calculate_metric,           master_schema): yield ev
-        async for ev in self._step(7, "통계수치와 문장의 정합성 판단",   check_alignment,            master_schema): yield ev
-        async for ev in self._step(8, "종합 분석·검증 결과 생성",       decide_verdict,             master_schema): yield ev
-        async for ev in self._step(9, "설명 생성",                   generate_explanation,       master_schema): yield ev
+        async for ev in self._step(1, "기사 내용 확인", load_article, master_schema): yield ev
+        async for ev in self._step(2, "클레임 추출", extract_statistical_claims, master_schema): yield ev
+        async for ev in self._step(3, "한국어 수사 산술로 변환", normalize_claim, master_schema): yield ev
+        async for ev in self._step(4, "KOSIS 통계표 찾기", retrieve_kosis_candidates, master_schema): yield ev
+        async for ev in self._step(5, "KOSIS 조회", fetch_kosis_data, master_schema): yield ev
+        async for ev in self._step(6, "통계 수치 비교 판단", calculate_metric, master_schema): yield ev
+        async for ev in self._step(7, "통계수치와 문장의 정합성 판단", check_alignment, master_schema): yield ev
+        async for ev in self._step(8, "종합 분석·검증 결과 생성", decide_verdict, master_schema): yield ev
+        async for ev in self._step(9, "설명 생성", generate_explanation, master_schema): yield ev
 
         yield ResultEvent(master_schema=master_schema)
 
