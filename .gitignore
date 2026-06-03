@@ -49,3 +49,6 @@ kosis/aain/*.idx
 kosis/aain/*.backup
 
 data/*.*
+
+# === large files (>50MB, regenerable / too large for git) ===
+data/processed/candidates_prelabeled.csv
