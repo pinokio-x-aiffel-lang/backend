@@ -47,3 +47,12 @@ kosis/aain/*.csv
 kosis/aain/*.jsonl
 kosis/aain/*.idx
 kosis/aain/*.backup
+
+# === large processed data (regenerable, >50 MB) ===
+data/processed/*.csv
+data/processed/*.parquet
+
+# === Excel temp files ===
+~$*.xlsx
+~$*.xls
+~$*.xlsm

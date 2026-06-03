@@ -1,0 +1,48 @@
+[
+  {
+    "claim_id": "clm-0001",
+    "article_id": "art-manual-001",
+    "sentence": "렉스턴 스포츠는 지난해 판매량이 1만2779대에 그쳤고",
+    "claim_type": "수치",
+    "subject": "렉스턴 스포츠 판매량",
+    "value": {
+      "raw": "1만2779대",
+      "llm_value": "",
+      "is_inferred": false
+    },
+    "unit": "대",
+    "aggregation": "값",
+    "period_type": "Y",
+    "period_value": {
+      "raw": "지난해",
+      "llm_value": "",
+      "is_inferred": false
+    },
+    "compare_period_value": null,
+    "population": "자동차 시장",
+    "cited_source": "불명"
+  },
+  {
+    "claim_id": "clm-0002",
+    "article_id": "art-manual-001",
+    "sentence": "콜로라도도 지난해에는 368대에 머물렀다.",
+    "claim_type": "수치",
+    "subject": "콜로라도 판매량",
+    "value": {
+      "raw": "368대",
+      "llm_value": "",
+      "is_inferred": false
+    },
+    "unit": "대",
+    "aggregation": "값",
+    "period_type": "Y",
+    "period_value": {
+      "raw": "지난해",
+      "llm_value": "",
+      "is_inferred": false
+    },
+    "compare_period_value": null,
+    "population": "자동차 시장",
+    "cited_source": "불명"
+  }
+]
