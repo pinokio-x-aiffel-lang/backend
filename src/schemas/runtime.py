@@ -42,6 +42,14 @@ class ValueSlot(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
+class CompareGroup(BaseModel):
+    """동일 비교 대상을 묶는 그룹 식별자. 같은 compare_id끼리 비교군이다."""
+
+    compare_id: int
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
 class Claim(BaseModel):
     """기사 한 문장에서 추출된 수치 기반 사실 주장."""
 
@@ -56,6 +64,7 @@ class Claim(BaseModel):
     period_type: PeriodType
     period_value: ValueSlot
     compare_period_value: ValueSlot | None = None
+    compare_group: CompareGroup | None = None
     population: str
     cited_source: str
 
