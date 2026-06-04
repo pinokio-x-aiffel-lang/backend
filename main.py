@@ -15,7 +15,9 @@ app = FastAPI(
 
 # CORS 허용 origin: 로컬 개발 + 운영 프론트엔드 + FRONTEND_ORIGINS(쉼표 구분) 환경변수
 _default_origins = [
+    "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:5174",
     "http://127.0.0.1:5174",
     "https://pinokiox-frontend.onrender.com",
 ]
