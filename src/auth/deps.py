@@ -1,0 +1,36 @@
+"""FastAPI 의존성: 현재 인증된 사용자 반환.
+
+사용법:
+    @app.post("/verify", dependencies=[Depends(get_current_user)])
+    또는
+    async def endpoint(user: dict = Depends(get_current_user)):
+        ...
+"""
+from __future__ import annotations
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
+from src.auth.jwt_handler import decode_access_token
+
+_bearer = HTTPBearer(auto_error=False)
+
+
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(_bearer),
+) -> dict:
+    """Bearer 토큰 검증 후 payload 반환. 미인증 시 401."""
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="로그인이 필요합니다.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    payload = decode_access_token(credentials.credentials)
+    if not payload or "sub" not in payload:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="유효하지 않은 인증 토큰입니다.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return payload

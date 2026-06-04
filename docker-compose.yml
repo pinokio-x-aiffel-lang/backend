@@ -49,8 +49,12 @@ services:
       KOSIS_API_KEY: ${KOSIS_API_KEY:-}
       APP_HOST: 0.0.0.0
       APP_PORT: 8000
-      # 앱이 향후 DB 연동 시 사용할 DSN (컨테이너 내부 네트워크 기준 호스트=db, 포트=5432)
+      # 프론트(브라우저) origin — CORS 허용(쉼표 구분). 비우면 로컬 개발 origin만 허용.
+      FRONTEND_ORIGINS: ${FRONTEND_ORIGINS:-https://pinokiox-frontend.onrender.com}
+      # DB DSN (컨테이너 내부 네트워크: 호스트=db, 포트=5432)
       DATABASE_URL: ${DATABASE_URL:-postgresql://fnd:fnd@db:5432/fnd}
+      # JWT 서명 키 — 운영 시 반드시 안전한 랜덤값으로 교체
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change-me-in-production}
     ports:
       - "${APP_HOST_PORT:-8000}:8000"
 

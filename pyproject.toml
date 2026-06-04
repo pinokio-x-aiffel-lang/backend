@@ -16,6 +16,11 @@ dependencies = [
     "psycopg[binary]>=3.3.4",
     "pgvector>=0.4.2",
     "sqlalchemy>=2.0.50",
+    "aiohttp>=3.13.5",
+    "pydantic-settings>=2.14.1",
+    "httpx>=0.28.1",
+    "python-jose[cryptography]>=3.5.0",
+    "passlib[bcrypt]>=1.7.4",
 ]
 
 [build-system]
@@ -27,9 +32,12 @@ packages = ["src"]
 
 [dependency-groups]
 dev = [
+    "openpyxl>=3.1.5",
     "pytest>=9.0.3",
+    "pytest-asyncio>=1.4.0",
     "rust-just>=1.51.0",
     "taskipy>=1.14.1",
+    "watchfiles>=1.2.0",
 ]
 
 [tool.pytest.ini_options]
