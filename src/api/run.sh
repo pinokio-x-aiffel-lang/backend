@@ -9,4 +9,4 @@ cd "$(dirname "$0")/../.."   # → 프로젝트 루트
 HOST="${APP_HOST:-0.0.0.0}"
 PORT="${APP_PORT:-8000}"
 
-exec uv run x uvicorn src.api.main:app --host "$HOST" --port "$PORT"
+exec uv run x uvicorn src.api.chat_app:app --host "$HOST" --port "$PORT"

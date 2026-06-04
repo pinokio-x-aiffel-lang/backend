@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from src.pipeline.context import PipelineContext
+from src.schemas.runtime import MasterSchema
 
 
 @dataclass
@@ -20,9 +20,9 @@ class StepEvent:
 
 @dataclass
 class ResultEvent:
-    """파이프라인 최종 결과."""
+    """파이프라인 최종 결과 — 채워진 MasterSchema."""
 
-    context: PipelineContext
+    master_schema: MasterSchema
 
 
 # Pipeline.run()이 yield하는 타입

@@ -1,125 +1,71 @@
 """Pipeline — 단계 조립·실행, 이벤트 스트리밍.
 
-단계 함수: _article_parse ~ _verdict
-  - (ctx: PipelineContext) -> PipelineContext 시그니처
-  - 각 함수가 ctx의 해당 필드를 채우고 반환
-  - 구현 준비되면 raise NotImplementedError를 실제 로직으로 교체
+단계 구현은 src/modules/ 에 단계당 1파일·1함수로 있고, 여기서 import 해 조립한다.
+  - 각 함수 시그니처: (master_schema: MasterSchema) -> None (제자리 변경, 반환 없음)
+  - 실패 시 raise → runner try/except 가 StepEvent(error) 로 변환·중단
 
 Pipeline.run():
-  - 단계 함수들을 순서대로 실행
-  - 각 단계 시작/완료/오류를 StepEvent로 yield
+  - MasterSchema 하나를 만들어 단계들이 차례로 채운다 (직접 흐름)
+  - 각 단계 시작/완료/오류를 StepEvent 로 yield
   - 전 단계 완료 후 ResultEvent yield
   - HTTP / SSE / Queue 등 전송 방식은 모름 → 호출자(verify_service)의 몫
+
+HITL(create_hitl_task / save_hitl_feedback)은 선형 흐름 밖이라 run() 단계에 없다.
 """
 from __future__ import annotations
 
+import asyncio
 import time
 from collections.abc import AsyncGenerator
 
-from src.pipeline.context import PipelineContext
+from src.modules.calculate_metric import calculate_metric
+from src.modules.check_alignment import check_alignment
+from src.modules.decide_verdict import decide_verdict
+from src.modules.extract_statistical_claims import extract_statistical_claims
+from src.modules.fetch_kosis_data import fetch_kosis_data
+from src.modules.generate_explanation import generate_explanation
+from src.modules.load_article import load_article
+from src.modules.normalize_claim import normalize_claim
+from src.modules.retrieve_kosis_candidates import retrieve_kosis_candidates
 from src.pipeline.events import PipelineEvent, ResultEvent, StepEvent
-
-
-# ── 단계 함수들 ──────────────────────────────────────────────────────────────
-
-async def _article_parse(ctx: PipelineContext) -> PipelineContext:
-    # TODO: URL 판별 → 크롤링 / 본문 직접 입력 처리
-    #       article_id 생성, ctx.article 채우기
-    raise NotImplementedError
-
-
-async def _claim_extract(ctx: PipelineContext) -> PipelineContext:
-    # TODO: LLM(HCX)으로 수치 기반 주장 추출
-    #       ctx.claims 채우기 (Claim 스키마, claim_id 부여)
-    raise NotImplementedError
-
-
-async def _kosis_search(ctx: PipelineContext) -> PipelineContext:
-    # TODO: claim별 subject+unit → KOSIS statisticsSearch.do
-    #       가장 적합한 테이블 선정, ctx.analysis 초기화
-    raise NotImplementedError
-
-
-async def _kosis_query(ctx: PipelineContext) -> PipelineContext:
-    # TODO: 선정 테이블에서 period/population 맞는 행 조회
-    #       src.kosis.fetch_cell 사용, ctx.analysis[*].evidence 채우기
-    raise NotImplementedError
-
-
-async def _normalize(ctx: PipelineContext) -> PipelineContext:
-    # TODO: "약 23만" → 230000, "전년" → 2023 등 한국어 수치 정규화
-    #       src.numeric 활용, claim.value.llm_value 갱신
-    raise NotImplementedError
-
-
-async def _compare(ctx: PipelineContext) -> PipelineContext:
-    # TODO: claim 수치(llm_value) vs KOSIS evidence.value 수치 비교
-    #       verdict / mismatch_type 초기 판정
-    raise NotImplementedError
-
-
-async def _coherence(ctx: PipelineContext) -> PipelineContext:
-    # TODO: 수치 비교만으로 판단 어려운 케이스 LLM 재판정
-    #       단위 불일치·집계 방식 차이 등 모호 케이스 처리
-    raise NotImplementedError
-
-
-async def _synthesize(ctx: PipelineContext) -> PipelineContext:
-    # TODO: 전체 claim verdict 종합 → overall_verdict, average_confidence
-    raise NotImplementedError
-
-
-async def _explain(ctx: PipelineContext) -> PipelineContext:
-    # TODO: verdict + 수치 차이 → 한국어 자연어 설명 (LLM)
-    #       ctx.analysis[*].verification.explanation 채우기
-    raise NotImplementedError
-
-
-async def _verdict(ctx: PipelineContext) -> PipelineContext:
-    # TODO: analysis 데이터를 Verifications 스키마로 조립
-    #       ctx.verifications 채우기
-    raise NotImplementedError
-
-
-# ── 단계 목록 (순서 고정) ─────────────────────────────────────────────────────
-
-_STEPS = [
-    ("기사 내용 확인",                _article_parse),
-    ("클레임 추출",                   _claim_extract),
-    ("KOSIS 통계표 찾기",             _kosis_search),
-    ("KOSIS 조회",                    _kosis_query),
-    ("한국어 수사 산술로 변환",        _normalize),
-    ("통계 수치 비교 판단",            _compare),
-    ("통계수치와 문장의 정합성 판단",  _coherence),
-    ("종합 분석",                     _synthesize),
-    ("설명 생각",                     _explain),
-    ("검증 결과 생성",                _verdict),
-]
+from src.schemas.runtime import MasterSchema
 
 
 # ── Pipeline ─────────────────────────────────────────────────────────────────
 
 class Pipeline:
     async def run(self, content: str) -> AsyncGenerator[PipelineEvent, None]:
-        ctx = PipelineContext(content=content)
+        master_schema = MasterSchema(content=content)
 
-        for i, (name, fn) in enumerate(_STEPS, 1):
-            t0 = time.monotonic()
-            yield StepEvent(step=i, name=name, status="running")
+        async for ev in self._step(1, "기사 내용 확인", load_article, master_schema): yield ev
+        async for ev in self._step(2, "클레임 추출", extract_statistical_claims, master_schema): yield ev
+        async for ev in self._step(3, "한국어 수사 산술로 변환", normalize_claim, master_schema): yield ev
+        async for ev in self._step(4, "KOSIS 통계표 찾기", retrieve_kosis_candidates, master_schema): yield ev
+        async for ev in self._step(5, "KOSIS 조회", fetch_kosis_data, master_schema): yield ev
+        async for ev in self._step(6, "통계 수치 비교 판단", calculate_metric, master_schema): yield ev
+        async for ev in self._step(7, "통계수치와 문장의 정합성 판단", check_alignment, master_schema): yield ev
+        async for ev in self._step(8, "종합 분석·검증 결과 생성", decide_verdict, master_schema): yield ev
+        async for ev in self._step(9, "설명 생성", generate_explanation, master_schema): yield ev
 
-            try:
-                ctx = await fn(ctx)
-            except Exception as e:
-                yield StepEvent(
-                    step=i, name=name, status="error",
-                    duration_ms=int((time.monotonic() - t0) * 1000),
-                    error=str(e),
-                )
-                raise
+        yield ResultEvent(master_schema=master_schema)
 
+    async def _step(self, step, name, fn, master_schema) -> AsyncGenerator[PipelineEvent, None]:
+        t0 = time.monotonic()
+        yield StepEvent(step=step, name=name, status="running")
+        await asyncio.sleep(0.3)  # TEMP(ngrok SSE 테스트): 더미가 즉시 끝나 이벤트가 한 버스트로 몰리는 것 방지. 검증 후 제거.
+
+        try:
+            await fn(master_schema)
+        except Exception as e:
             yield StepEvent(
-                step=i, name=name, status="done",
+                step=step, name=name, status="error",
                 duration_ms=int((time.monotonic() - t0) * 1000),
+                error=str(e),
             )
-
-        yield ResultEvent(context=ctx)
+            raise
+        
+        # 멈췄다 재개하며 여러 값을 시간차로 내보내기 위해
+        yield StepEvent(
+            step=step, name=name, status="done",
+            duration_ms=int((time.monotonic() - t0) * 1000),
+        )

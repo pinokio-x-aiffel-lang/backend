@@ -1,6 +1,7 @@
-"""루트 검증 서버(main:app) 중앙 설정.
+"""검증 서버(루트 `main:app`) 중앙 설정.
 
-환경변수 이름은 필드명과 동일(대문자). 예: GOOGLE_CLIENT_ID=xxx
+값은 코드 기본값 + 환경변수 override(pydantic-settings). 시크릿은 넣지 않는다.
+(예: `RATE_MAX_HITS=20` 환경변수가 `rate_max_hits` 기본값을 덮는다.)
 """
 from __future__ import annotations
 
@@ -8,42 +9,20 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    """검증 서버 설정. 필드명(대문자)과 동일한 환경변수로 override 가능."""
+
     model_config = SettingsConfigDict(extra="ignore")
 
-    # ── DB ──────────────────────────────────────────────────────────────────
-    database_url: str = "postgresql://fnd:fnd@db:5432/fnd"
-
-    # ── Google OAuth 2.0 ────────────────────────────────────────────────────
-    google_client_id: str = ""
-    google_client_secret: str = ""
-
-    # ── JWT ─────────────────────────────────────────────────────────────────
-    jwt_secret_key: str = "change-me-in-production"
-    jwt_expire_days: int = 7
-
-    # ── 서비스 URL ───────────────────────────────────────────────────────────
-    # 백엔드 기준 콜백 URL 생성에 사용. 운영 시 실제 도메인으로 설정 필요.
-    backend_base_url: str = "http://localhost:8000"
-    # 로그인 성공 후 리다이렉트할 프론트엔드 URL.
-    frontend_base_url: str = "http://localhost:5174"
-
-    # ── CORS 추가 허용 origin (쉼표 구분) ────────────────────────────────────
-    frontend_origins: str = ""
-
-    @property
-    def google_redirect_uri(self) -> str:
-        return f"{self.backend_base_url}/auth/google/callback"
-
-    @property
-    def database_url_async(self) -> str:
-        """SQLAlchemy 비동기(psycopg3) 드라이버 URL로 변환."""
-        return self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
-
-    @property
-    def cookie_secure(self) -> bool:
-        """HTTPS 환경이면 OAuth state 쿠키에 Secure 플래그 적용."""
-        return self.backend_base_url.startswith("https://")
+    # ── 레이트리밋 / IP 차단 (src/security.py) ──────────────────────────────
+    rate_window_seconds: int = 60        # 슬라이딩 윈도우 길이(초)
+    rate_max_hits: int = 6               # 윈도우당 허용 횟수 → 7번째부터 적발
+    block_first_seconds: int = 3600      # 1·2차 적발 차단(1시간)
+    block_repeat_seconds: int = 86400    # 3차+ 적발 차단(24시간)
+    repeat_threshold: int = 3            # 누적 적발 이 값 이상이면 장기 차단
+    offense_decay_seconds: int = 86400   # 마지막 적발 후 이 시간 무사고면 누적 0으로 리셋
+    ratelimit_sweep_seconds: int = 600   # 만료 IP 항목 정리 주기(메모리 누수 방지)
 
 
 def load_settings() -> Settings:
+    """설정 1회 로드."""
     return Settings()

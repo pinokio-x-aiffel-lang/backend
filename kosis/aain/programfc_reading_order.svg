@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="660" viewBox="0 0 900 660" font-family="AppleGothic, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">
+  <rect width="900" height="660" fill="#ffffff"/>
+
+  <!-- STEP 1 -->
+  <rect x="40" y="18" width="820" height="92" rx="14" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="64" y="54" font-size="22" font-weight="bold" fill="#111827">STEP 1  ·  10분 — 큰 그림 잡기</text>
+  <text x="64" y="86" font-size="20" fill="#374151">Abstract → Figure 1 → "1분 요약" → Figure 7</text>
+  <polygon points="436,118 464,118 450,136" fill="#6b7280"/>
+
+  <!-- STEP 2 (가장 중요) -->
+  <rect x="40" y="146" width="820" height="92" rx="14" fill="#FECACA" stroke="#DC2626" stroke-width="3"/>
+  <text x="64" y="182" font-size="22" font-weight="bold" fill="#111827">★ STEP 2  ·  20분 — 방법 정독  (가장 중요)</text>
+  <text x="64" y="214" font-size="20" fill="#374151">프로그램 생성 → 서브태스크 함수 → 실행  (Figure 2·3)</text>
+  <polygon points="436,246 464,246 450,264" fill="#6b7280"/>
+
+  <!-- STEP 3 -->
+  <rect x="40" y="274" width="820" height="92" rx="14" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+  <text x="64" y="310" font-size="22" font-weight="bold" fill="#111827">STEP 3  ·  15분 — 결과 확인</text>
+  <text x="64" y="342" font-size="20" fill="#374151">Table 1 + Figure 4·5  ("언제·왜 이득인가"를 숫자로)</text>
+  <polygon points="436,374 464,374 450,392" fill="#6b7280"/>
+
+  <!-- STEP 4 -->
+  <rect x="40" y="402" width="820" height="92" rx="14" fill="#DCFCE7" stroke="#16A34A" stroke-width="2"/>
+  <text x="64" y="438" font-size="22" font-weight="bold" fill="#111827">STEP 4  ·  10분 — 실패 모드 파악</text>
+  <text x="64" y="470" font-size="20" fill="#374151">오류 분석 Table 2 + Figure 6·8  (= 우리가 피할 함정)</text>
+  <polygon points="436,502 464,502 450,520" fill="#6b7280"/>
+
+  <!-- STEP 5 -->
+  <rect x="40" y="530" width="820" height="92" rx="14" fill="#E5E7EB" stroke="#6B7280" stroke-width="2"/>
+  <text x="64" y="566" font-size="22" font-weight="bold" fill="#111827">STEP 5  ·  5분 — 마무리</text>
+  <text x="64" y="598" font-size="20" fill="#374151">결론·한계  (Related Work·일부 baseline은 스킵 OK)</text>
+</svg>
