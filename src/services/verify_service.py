@@ -11,7 +11,6 @@ import asyncio
 from src.api.verify import to_verify_response
 from src.pipeline import Pipeline, ResultEvent, StepEvent
 
-
 async def run_pipeline_with_queue(q: asyncio.Queue, content: str) -> None:
     try:
         pipeline = Pipeline()

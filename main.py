@@ -56,6 +56,9 @@ async def health_check():
 
 @app.post("/verify", dependencies=[Depends(rate_limit)])
 async def verify(request: VerifyRequest):
+    # 인증된 사람인가?를 따져볼 것.
+
+    
     job_id = str(uuid.uuid4())
     q: asyncio.Queue = asyncio.Queue()
     task = asyncio.create_task(run_pipeline_with_queue(q, request.content))
