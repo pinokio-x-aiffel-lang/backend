@@ -1,7 +1,7 @@
 """레이트리밋 + IP 차단(블랙리스트) — `POST /verify` 보호.
 
 규칙(값은 src/config.py, 환경변수로 override):
-- 60초 슬라이딩 윈도우에서 `rate_max_hits`(기본 15)를 초과하면(=16번째) '적발'.
+- 60초 슬라이딩 윈도우에서 `rate_max_hits`(기본 6)를 초과하면(=7번째) '적발'.
 - 1·2차 적발 = `block_first_seconds`(1시간), 3차+ = `block_repeat_seconds`(24시간) 차단.
 - 마지막 적발 후 `offense_decay_seconds`(24시간) 무사고면 누적 적발 카운트를 0으로
   리셋한다(영구 누적 방지 → 최대 벌칙은 24시간).

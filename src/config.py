@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 
     # ── 레이트리밋 / IP 차단 (src/security.py) ──────────────────────────────
     rate_window_seconds: int = 60        # 슬라이딩 윈도우 길이(초)
-    rate_max_hits: int = 15              # 윈도우당 허용 횟수 → 16번째부터 적발
+    rate_max_hits: int = 6               # 윈도우당 허용 횟수 → 7번째부터 적발
     block_first_seconds: int = 3600      # 1·2차 적발 차단(1시간)
     block_repeat_seconds: int = 86400    # 3차+ 적발 차단(24시간)
     repeat_threshold: int = 3            # 누적 적발 이 값 이상이면 장기 차단
