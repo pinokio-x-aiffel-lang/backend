@@ -50,5 +50,11 @@ kosis/aain/*.backup
 
 data/*.*
 
-# === large files (>50MB, regenerable / too large for git) ===
-data/processed/candidates_prelabeled.csv
+# === large processed data (regenerable, >50 MB) ===
+data/processed/*.csv
+data/processed/*.parquet
+
+# === Excel temp files ===
+~$*.xlsx
+~$*.xls
+~$*.xlsm
