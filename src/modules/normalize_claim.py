@@ -289,15 +289,15 @@ def _normalize_period(raw: str) -> str:
 
 # ── 엔트리포인트 ──────────────────────────────────────────────────────────────
 
-async def normalize_claim(record: MasterSchema) -> None:
+async def normalize_claim(master_schema: MasterSchema) -> None:
     """
     [3] Normalize Claim
 
-    Input:  record.claims[*].value.raw / period_value.raw
-    Output: record.claims[*].value.llm_value / period_value.llm_value
+    Input:  master_schema.claims[*].value.raw / period_value.raw
+    Output: master_schema.claims[*].value.llm_value / period_value.llm_value
 
     한국어 수사·시점을 산술값으로 정규화한다.
     """
-    for claim in record.claims:
+    for claim in master_schema.claims:
         claim.value.llm_value = _parse_value(claim.value.raw)
         claim.period_value.llm_value = _normalize_period(claim.period_value.raw)

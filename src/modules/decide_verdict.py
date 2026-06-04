@@ -13,29 +13,29 @@ class DecideVerdictError(Exception):
     """검증 결과 판정/조립 실패."""
 
 
-async def decide_verdict(record: MasterSchema) -> None:
+async def decide_verdict(master_schema: MasterSchema) -> None:
     """
-    [9] Decide Verdict (옛 _synthesize + _verdict 통합)
+    [8] Decide Verdict (옛 _synthesize + _verdict 통합)
 
     Input:
-        record.claims + 비교·정합성 결과([7]~[8])
+        master_schema.claims + 비교·정합성 결과([6]~[7])
 
     Output:
-        record.verifications   # summary(overall_verdict, average_confidence) + claim_results
+        master_schema.verifications   # summary(overall_verdict, average_confidence) + claim_results
 
     Responsibility:
         claim별 판정을 종합해 overall_verdict / average_confidence 를 산출하고,
-        결과를 Verifications 스키마로 조립해 record.verifications 에 채운다.
+        결과를 Verifications 스키마로 조립해 master_schema.verifications 에 채운다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
-    # TODO: 실제 구현 — [7]~[8] 결과로 판정. 현재는 happy-path 더미(UNVERIFIED).
+    # TODO: 실제 구현 — [6]~[7] 결과로 판정. 현재는 happy-path 더미(UNVERIFIED).
     claim_results = [
         ClaimResult(
             claim_id=claim.claim_id,
             verdict="UNVERIFIED",
             claim_value=claim.value.llm_value,
             kosis_value="0.72",
-            explanation="",  # [10] generate_explanation 에서 채움
+            explanation="",  # [9] generate_explanation 에서 채움
             confidence=0.0,
             llm_model="(더미)",
             evidence=[
@@ -59,9 +59,9 @@ async def decide_verdict(record: MasterSchema) -> None:
                 )
             ],
         )
-        for claim in record.claims
+        for claim in master_schema.claims
     ]
-    record.verifications = Verifications(
+    master_schema.verifications = Verifications(
         summary=VerificationSummary(
             total_claims=len(claim_results),
             overall_verdict="UNVERIFIED",

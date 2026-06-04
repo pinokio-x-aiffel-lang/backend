@@ -7,24 +7,24 @@ class RetrieveKosisCandidatesError(Exception):
     """KOSIS 후보 통계표 검색 실패."""
 
 
-async def retrieve_kosis_candidates(record: MasterSchema) -> None:
+async def retrieve_kosis_candidates(master_schema: MasterSchema) -> None:
     """
     [4] Retrieve KOSIS Candidates
 
     Input:
-        record.claims         # subject / unit / period 등
+        master_schema.claims         # subject / unit / period 등
 
     Output:
-        record.analysis       # claim별 ClaimAnalysis 초기화 (kosis_search 채움)
+        master_schema.analysis       # claim별 ClaimAnalysis 초기화 (kosis_search 채움)
 
     Responsibility:
         claim별 subject+unit 로 KOSIS 통합검색(statisticsSearch.do)을 호출해
-        후보 통계표를 찾고 가장 적합한 테이블을 선정, record.analysis 를 초기화한다.
+        후보 통계표를 찾고 가장 적합한 테이블을 선정, master_schema.analysis 를 초기화한다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     # TODO: 실제 구현 — KOSIS statisticsSearch.do 호출. 현재는 happy-path 더미.
     #       kosis_query 는 placeholder 로 두고 [5] fetch_kosis_data 에서 채운다.
-    record.analysis = [
+    master_schema.analysis = [
         ClaimAnalysis(
             claim_id=claim.claim_id,
             kosis_search=KosisSearch(
@@ -46,5 +46,5 @@ async def retrieve_kosis_candidates(record: MasterSchema) -> None:
                 duration_ms=0,
             ),
         )
-        for claim in record.claims
+        for claim in master_schema.claims
     ]

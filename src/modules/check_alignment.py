@@ -7,12 +7,12 @@ class CheckAlignmentError(Exception):
     """정합성 판단 실패."""
 
 
-async def check_alignment(record: MasterSchema) -> None:
+async def check_alignment(master_schema: MasterSchema) -> None:
     """
-    [8] Check Alignment
+    [7] Check Alignment
 
     Input:
-        record.claims + 비교 결과([7])
+        master_schema.claims + 비교 결과([6])
 
     Output:
         모호 케이스 재판정 결과

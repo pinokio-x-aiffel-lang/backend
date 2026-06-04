@@ -103,16 +103,16 @@ def _overall_verdict(codes: list[str]) -> str:
     return "+".join(present) if present else "NEI"
 
 
-def to_verify_response(record: MasterSchema) -> VerifyResponse:
+def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
     """완성된 MasterSchema를 프론트 계약(VerifyResponse)으로 변환."""
-    if record.article is None or record.verifications is None:
-        raise ValueError("완성되지 않은 record는 VerifyResponse로 변환할 수 없습니다.")
+    if master_schema.article is None or master_schema.verifications is None:
+        raise ValueError("완성되지 않은 master_schema는 VerifyResponse로 변환할 수 없습니다.")
 
     article = Article(
-        title=record.article.title,
-        source=record.article.source,
-        published_at=record.article.published_at,
-        content=record.article.content,
+        title=master_schema.article.title,
+        source=master_schema.article.source,
+        published_at=master_schema.article.published_at,
+        content=master_schema.article.content,
     )
 
     claims = [
@@ -133,12 +133,12 @@ def to_verify_response(record: MasterSchema) -> VerifyResponse:
                 cited_source=c.cited_source,
             ),
         )
-        for c in record.claims
+        for c in master_schema.claims
     ]
 
     codes: list[str] = []
     claim_results: list[ClaimResult] = []
-    for r in record.verifications.claim_results:
+    for r in master_schema.verifications.claim_results:
         code = _verdict_code(r.verdict)
         codes.append(code)
         claim_results.append(
@@ -167,7 +167,7 @@ def to_verify_response(record: MasterSchema) -> VerifyResponse:
             )
         )
 
-    s = record.verifications.summary
+    s = master_schema.verifications.summary
     summary = VerificationSummary(
         total_claims=s.total_claims,
         overall_verdict=_overall_verdict(codes),

@@ -48,6 +48,8 @@ kosis/aain/*.jsonl
 kosis/aain/*.idx
 kosis/aain/*.backup
 
+data/*.*
+
 # === large processed data (regenerable, >50 MB) ===
 data/processed/*.csv
 data/processed/*.parquet

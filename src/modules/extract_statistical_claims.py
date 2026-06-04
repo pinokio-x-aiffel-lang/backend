@@ -51,27 +51,27 @@ class ExtractStatisticalClaimsError(Exception):
     """클레임 추출 실패 — LLM 응답 파싱 오류 등."""
 
 
-async def extract_statistical_claims(record: MasterSchema) -> None:
+async def extract_statistical_claims(master_schema: MasterSchema) -> None:
     """
     [2] Extract Statistical Claims
 
     Input:
-        record.article        # [1]에서 적재된 기사
+        master_schema.article        # [1]에서 적재된 기사
 
     Output:
-        record.claims         # list[Claim] (각 claim_id 부여)
+        master_schema.claims         # list[Claim] (각 claim_id 부여)
 
     Responsibility:
         경량 LLM(HCX-003)으로 기사 본문에서 수치 기반 통계 주장을 추출해
-        record.claims 에 채운다.
+        master_schema.claims 에 채운다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
-    if not record.article:
-        raise ExtractStatisticalClaimsError("record.article 이 없습니다.")
+    if not master_schema.article:
+        raise ExtractStatisticalClaimsError("master_schema.article 이 없습니다.")
 
     messages = [
         {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": _USER_TMPL.format(content=record.article.content)},
+        {"role": "user", "content": _USER_TMPL.format(content=master_schema.article.content)},
     ]
 
     try:
@@ -105,7 +105,7 @@ async def extract_statistical_claims(record: MasterSchema) -> None:
         claims.append(
             Claim(
                 claim_id=f"clm-{idx:04d}",
-                article_id=record.article.article_id,
+                article_id=master_schema.article.article_id,
                 sentence=_to_str(item.get("sentence"), ""),
                 claim_type="수치",
                 subject=_to_str(item.get("subject")),
@@ -120,4 +120,4 @@ async def extract_statistical_claims(record: MasterSchema) -> None:
             )
         )
 
-    record.claims = claims
+    master_schema.claims = claims

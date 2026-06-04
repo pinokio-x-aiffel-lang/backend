@@ -7,15 +7,15 @@ class FetchKosisDataError(Exception):
     """KOSIS 통계자료 조회 실패."""
 
 
-async def fetch_kosis_data(record: MasterSchema) -> None:
+async def fetch_kosis_data(master_schema: MasterSchema) -> None:
     """
     [5] Fetch KOSIS Data
 
     Input:
-        record.analysis       # [4]에서 선정된 통계표 (selected_tbl_id)
+        master_schema.analysis       # [4]에서 선정된 통계표 (selected_tbl_id)
 
     Output:
-        record.analysis[*].kosis_query   # 조회 로그
+        master_schema.analysis[*].kosis_query   # 조회 로그
         + 조회된 공식 수치 (Evidence 후보)
 
     Responsibility:
@@ -25,7 +25,7 @@ async def fetch_kosis_data(record: MasterSchema) -> None:
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     # TODO: 실제 구현 — KOSIS statisticsData.do 조회 + Evidence 수집. 현재는 더미.
-    for item in record.analysis:
+    for item in master_schema.analysis:
         item.kosis_query = KosisQuery(
             api="statisticsData.do",
             tbl_id=item.kosis_search.selected_tbl_id or "DT_DUMMY",

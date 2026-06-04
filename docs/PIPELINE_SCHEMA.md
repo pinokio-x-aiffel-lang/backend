@@ -282,7 +282,7 @@ analysis[]:
 ### A. 핵심 원칙
 - **데이터(스키마)와 동작(로직)을 분리**한다: 스키마는 `src/schemas/`, 단계 동작은 `src/modules/`(또는 runner 인라인).
 - **`MasterSchema`(런타임 스키마)가 직접 파이프라인을 흐른다.** 별도 ctx를 두지 않는다.
-- 각 단계는 **`record`(MasterSchema)를 받아 자기 필드만 제자리에서 채운다** (`(record: MasterSchema) -> None`).
+- 각 단계는 **`master_schema`(MasterSchema)를 받아 자기 필드만 제자리에서 채운다** (`(master_schema: MasterSchema) -> None`).
 - 실패는 **`raise`** — runner가 받아 `StepEvent(error)`로 변환·중단한다 (성공/실패 봉투 없음).
 - **DTO는 시스템 경계(HTTP)에만** 둔다.
 
@@ -296,7 +296,7 @@ src/
     load_article.py, extract_statistical_claims.py, ...
   pipeline/
     runner.py          # 단계 조립·실행, MasterSchema 생성·흐름, 이벤트 스트리밍
-    events.py          # StepEvent / ResultEvent(record: MasterSchema)
+    events.py          # StepEvent / ResultEvent(master_schema: MasterSchema)
   api/
     verify.py          # /verify 의 HTTP 요청/응답 DTO (VerifyRequest 등)
     schemas.py, main.py, routers/, providers/   # 별도 앱(LLM 게이트웨이)
@@ -316,17 +316,17 @@ main.py                        # 검증 제품 FastAPI 앱 (/verify, /verify/str
 - 검토한 3안: ① 단계별 입출력 DTO  ② **대형 스키마 직접 흐름(채택)**  ③ ctx + 끝단 병합.
 - 채택 이유: 타입 하나로 단순 — 누산기와 도메인 레코드를 분리하지 않는다.
 - 대가: 흐르려면 미완성 상태가 합법이어야 해 **상위 필드를 Optional로 풀었다** → 도메인 타입이 "완성 보장"을 잃는다. 소비자(DB/API)는 필요 시 None 체크.
-- (선택) 각 단계의 read/write 표면을 **Protocol**로 좁힐 수 있으나, 현재는 단순화를 위해 `record: MasterSchema`를 그대로 받는다. 좁히려면 전 단계 일괄 적용.
+- (선택) 각 단계의 read/write 표면을 **Protocol**로 좁힐 수 있으나, 현재는 단순화를 위해 `master_schema: MasterSchema`를 그대로 받는다. 좁히려면 전 단계 일괄 적용.
 
 ### E. 단계(step) 규칙
-- 시그니처: **`async def step(record: MasterSchema) -> None`** — 받은 record를 제자리에서 채움, 반환 없음.
-- runner 루프: `await fn(record)` (반환 재할당 없음).
+- 시그니처: **`async def step(master_schema: MasterSchema) -> None`** — 받은 master_schema를 제자리에서 채움, 반환 없음.
+- runner 루프: `await fn(master_schema)` (반환 재할당 없음).
 - 실패: **`raise`** (예: `ArticleLoadError`). runner `try/except`가 `StepEvent(error)`로 변환·중단.
 - 단계 구현은 `src/modules/`로 점진 이전. `load_article.py`가 템플릿. (현재 runner는 인라인 stub 사용.)
 
 ### F. 결과 직렬화
-- 파이프라인 끝에서 `ResultEvent.record`(MasterSchema)를 그대로 `model_dump()` → SSE `result` 이벤트. `content`는 exclude라 제외.
-- **별도 병합/완성 게이트 없음** (전부 Optional). 완성 보장이 필요하면 경계에서 명시 가드(`if record.article is None: ...`)를 둔다.
+- 파이프라인 끝에서 `ResultEvent.master_schema`(MasterSchema)를 그대로 `model_dump()` → SSE `result` 이벤트. `content`는 exclude라 제외.
+- **별도 병합/완성 게이트 없음** (전부 Optional). 완성 보장이 필요하면 경계에서 명시 가드(`if master_schema.article is None: ...`)를 둔다.
 
 ### G. 네이밍 / 결정 이력
 - `schemas/claim.py` → `schemas/runtime.py` (파일명)
