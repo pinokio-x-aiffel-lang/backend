@@ -4,7 +4,7 @@
 
   1) 서버 기동 (이 터미널은 서버가 점유함)
 
-  uv run x uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+  uv run x uvicorn src.api.chat_app:app --host 0.0.0.0 --port 8000
   # 또는
   bash src/api/run.sh
 
@@ -75,12 +75,12 @@
   참고:
   - provider 가능값: hcx-dash-001, hcx-003, hcx-005, hcx-007
   - 이 채팅에서 제가 직접 켜서 호출하길 원하시면, 위 1)을 제가 백그라운드로 실행하고 결과를 보여드릴 수도 있습니다. 직접 해보실 거면 터미널 입력창에 ! 를 붙여 !uv run
-  x uvicorn src.api.main:app --port 8000 처럼 실행하면 출력이 이 세션에 그대로 들어옵니다.
+  x uvicorn src.api.chat_app:app --port 8000 처럼 실행하면 출력이 이 세션에 그대로 들어옵니다.
 
 ✻ Cooked for 13s
 
 ※ recap: Built a FastAPI server in src/api/ wrapping the existing LLM client, with Infisical CLI key injection verified working. It's complete and tested. Next: you
-  run `uv run x uvicorn src.api.main:app --port 8000` from the project root and call it via the curl commands provided.
+  run `uv run x uvicorn src.api.chat_app:app --port 8000` from the project root and call it via the curl commands provided.
       "max_tokens": 512
     }'
 
@@ -89,12 +89,12 @@
   참고:
   - provider 가능값: hcx-dash-001, hcx-003, hcx-005, hcx-007
   - 이 채팅에서 제가 직접 켜서 호출하길 원하시면, 위 1)을 제가 백그라운드로 실행하고 결과를 보여드릴 수도 있습니다. 직접 해보실 거면 터미널
-  입력창에 ! 를 붙여 !uv run x uvicorn src.api.main:app --port 8000 처럼 실행하면 출력이 이 세션에 그대로 들어옵니다.
+  입력창에 ! 를 붙여 !uv run x uvicorn src.api.chat_app:app --port 8000 처럼 실행하면 출력이 이 세션에 그대로 들어옵니다.
 
 ✻ Cooked for 13s
 
 ※ recap: Built a FastAPI server in src/api/ wrapping the existing LLM client, with Infisical CLI key injection verifieworking. It's complete
-   and tested. Next: you run `uv run x uvicorn src.api.main:app --port 8000` from the project root and call it via thecurl commands provided.
+   and tested. Next: you run `uv run x uvicorn src.api.chat_app:app --port 8000` from the project root and call it via thecurl commands provided.
 
   브라우저로 테스트하려면 http://localhost:8000/docs (Swagger UI)에서 바로 호출할 수도 있습니다.
 
@@ -105,13 +105,13 @@
   참고:
   - provider 가능값: hcx-dash-001, hcx-003, hcx-005, hcx-007
   - 이 채팅에서 제가 직접 켜서 호출하길 원하시면, 위 1)을 제가 백그라운드로 실행하고 결과를 보여드릴 수도 있습니다.
-  직접 해보실 거면 터미널 입력창에 ! 를 붙여 !uv run x uvicorn src.api.main:app --port 8000 처럼 실행하면 출력이 이
+  직접 해보실 거면 터미널 입력창에 ! 를 붙여 !uv run x uvicorn src.api.chat_app:app --port 8000 처럼 실행하면 출력이 이
   세션에 그대로 들어옵니다.
 
 ✻ Cooked for 13s
 
 ※ recap: Built a FastAPI server in src/api/ wrapping the existing LLM client, with Infisical CLI key injection verified
-   working. It's complete and tested. Next: you run `uv run x uvicorn src.api.main:app --port 8000` from the project
+   working. It's complete and tested. Next: you run `uv run x uvicorn src.api.chat_app:app --port 8000` from the project
   root and call it via the curl commands provided. (disable recaps in /config)
 
 ❯ 8000으로 접근하니까 안되는데? port번호랑 접속 주소 다시 확인해봐.                                                    

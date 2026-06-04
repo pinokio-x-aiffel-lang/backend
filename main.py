@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 from src.api.verify import VerifyRequest
+from src.security import RateLimited, rate_limit, ratelimited_handler
 from src.services.verify_service import run_pipeline_with_queue
 import json, asyncio, uuid, os
 
@@ -27,6 +28,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 레이트리밋 차단(RateLimited) → 429 JSON 응답으로 변환
+app.add_exception_handler(RateLimited, ratelimited_handler)
+
 
 @app.get("/")
 async def root():
@@ -48,7 +52,7 @@ async def health_check():
     return {"status": "ok"}
 
 
-@app.post("/verify")
+@app.post("/verify", dependencies=[Depends(rate_limit)])
 async def verify(request: VerifyRequest):
     job_id = str(uuid.uuid4())
     q: asyncio.Queue = asyncio.Queue()
