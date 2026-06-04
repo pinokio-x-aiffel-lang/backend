@@ -22,6 +22,18 @@ class Settings(BaseSettings):
     offense_decay_seconds: int = 86400   # 마지막 적발 후 이 시간 무사고면 누적 0으로 리셋
     ratelimit_sweep_seconds: int = 600   # 만료 IP 항목 정리 주기(메모리 누수 방지)
 
+    # ── DB ──────────────────────────────────────────────────────────────────
+    database_url: str = "postgresql://fnd:fnd@db:5432/fnd"
+
+    # ── JWT ─────────────────────────────────────────────────────────────────
+    jwt_secret_key: str = "change-me-in-production"
+    jwt_expire_days: int = 7
+
+    @property
+    def database_url_async(self) -> str:
+        """SQLAlchemy 비동기(psycopg3) 드라이버 URL로 변환."""
+        return self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
 
 def load_settings() -> Settings:
     """설정 1회 로드."""
