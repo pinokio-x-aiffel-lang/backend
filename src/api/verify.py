@@ -41,7 +41,7 @@ class Claim(BaseModel):
 class Evidence(BaseModel):
     source: str
     subject: str
-    value: str
+    value: str | None = None
     unit: str | None = None
     period: str | None = None
     population: str | None = None
@@ -154,7 +154,7 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
                     Evidence(
                         source=e.source,
                         subject=e.subject,
-                        value=str(e.value),
+                        value=str(e.value) if e.value is not None else None,
                         unit=e.unit,
                         period=e.period,
                         population=e.population,

@@ -40,22 +40,14 @@ async def decide_verdict(master_schema: MasterSchema) -> None:
             llm_model="(더미)",
             evidence=[
                 Evidence(
-                    evidence_id="ev-0001",
                     claim_id=claim.claim_id,
                     source="KOSIS",
                     subject=claim.subject,
-                    value=0.72,
                     unit=claim.unit,
                     period_type=claim.period_type,
                     period=claim.period_value.llm_value,
                     population=claim.population,
-                    kosis_org_id="101",
-                    kosis_tbl_id="DT_DUMMY",
-                    table_name="(더미) 인구동향조사",
-                    kosis_item_id="T1",
-                    url="https://kosis.kr",
-                    last_updated="2024-01-01",
-                    retrieved_at="2024-01-01",
+                    # value·kosis_*·table_name·url·날짜는 KOSIS 조회([4]~[7]) 전이라 None(기본값)
                 )
             ],
         )

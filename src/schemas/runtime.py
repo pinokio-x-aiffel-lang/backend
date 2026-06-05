@@ -142,25 +142,30 @@ class ClaimAnalysis(BaseModel):
 # verifications
 # --------------------------------------------------------------------------- #
 class Evidence(BaseModel):
-    """검증 근거 — KOSIS 공식 수치 및 출처 메타데이터."""
+    """검증 근거 — KOSIS 공식 수치 및 출처 메타데이터.
 
-    evidence_id: str
+    KOSIS 조회([4]~[7])로 채워지는 필드는 조회 전이면 값이 없으므로 None 허용
+    (더미값을 내보내지 않는다).
+    """
+
     claim_id: str
     source: str
     subject: str
-    value: float
     unit: str
     period_type: PeriodType
     period: str
     population: str
-    kosis_org_id: str
-    kosis_tbl_id: str
-    table_name: str
-    kosis_item_id: str
-    url: str
+    # KOSIS 조회로 채워지는 필드 — 미조회 시 None
+    evidence_id: str | None = None
+    value: float | None = None
+    kosis_org_id: str | None = None
+    kosis_tbl_id: str | None = None
+    table_name: str | None = None
+    kosis_item_id: str | None = None
+    url: str | None = None
     classification: dict[str, str] = Field(default_factory=dict)
-    last_updated: str
-    retrieved_at: str
+    last_updated: str | None = None
+    retrieved_at: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)
 
