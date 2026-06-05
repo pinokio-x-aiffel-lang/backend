@@ -11,3 +11,4 @@
 - `src/llm/provider.py`(모델 메타·라우팅), `src/llm/client.py`(`LlmError` 등)도 이 경유 안에서만 사용한다.
 - 금지: OpenAI/Anthropic 등 LLM SDK 직접 import, CLOVA Studio(HCX) 등 LLM 엔드포인트로 직접 HTTP 호출(`requests`/`httpx`/`aiohttp`), `src/llm` 밖에서의 자체 LLM 클라이언트 작성.
 - 새 provider/모델이 필요하면 `src/llm` 안에 추가하고 `LlmCaller` 경유를 유지한다.
+- 모델 호출 파라미터(provider/model/max_tokens/temperature)는 `src/llm/model_presets.py` 의 `ModelPreset` 에서만 가져온다(호출부 리터럴 금지). 상세는 `model-presets` 스킬.
