@@ -46,7 +46,8 @@ _default_origins = [
     "http://localhost:5174",
     "http://127.0.0.1:5174",
     "https://pinokiox-frontend.onrender.com",
-    "https://frontend-1-b3s0.onrender.com"
+    "https://frontend-1-b3s0.onrender.com",
+    "https://frontend-uo3a.onrender.com",
 ]
 _env_origins = [o.strip() for o in os.environ.get("FRONTEND_ORIGINS", "").split(",") if o.strip()]
 # CORS Origin 은 scheme://host[:port] 형태 — 끝의 '/' 나 경로는 브라우저 Origin 헤더와
