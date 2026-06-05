@@ -34,22 +34,22 @@ from src.schemas.runtime import MasterSchema
 # ── Pipeline ─────────────────────────────────────────────────────────────────
 
 class Pipeline:
-    async def run(self, content: str) -> AsyncGenerator[PipelineEvent, None]:
+    async def run(self, content: str, on_step=None) -> AsyncGenerator[PipelineEvent, None]:
         master_schema = MasterSchema(content=content)
 
-        async for ev in self._step(1, "기사 내용 확인", load_article, master_schema): yield ev
-        async for ev in self._step(2, "클레임 추출", extract_statistical_claims, master_schema): yield ev
-        async for ev in self._step(3, "한국어 수사 산술로 변환", normalize_claim, master_schema): yield ev
-        async for ev in self._step(4, "KOSIS 통계표 찾기", retrieve_kosis_candidates, master_schema): yield ev
-        async for ev in self._step(5, "KOSIS 조회", fetch_kosis_data, master_schema): yield ev
-        async for ev in self._step(6, "통계 수치 비교 판단", calculate_metric, master_schema): yield ev
-        async for ev in self._step(7, "통계수치와 문장의 정합성 판단", check_alignment, master_schema): yield ev
-        async for ev in self._step(8, "종합 분석·검증 결과 생성", decide_verdict, master_schema): yield ev
-        async for ev in self._step(9, "설명 생성", generate_explanation, master_schema): yield ev
+        async for ev in self._step(1, "기사 내용 확인", load_article, master_schema, on_step): yield ev
+        async for ev in self._step(2, "클레임 추출", extract_statistical_claims, master_schema, on_step): yield ev
+        async for ev in self._step(3, "한국어 수사 산술로 변환", normalize_claim, master_schema, on_step): yield ev
+        async for ev in self._step(4, "KOSIS 통계표 찾기", retrieve_kosis_candidates, master_schema, on_step): yield ev
+        async for ev in self._step(5, "KOSIS 조회", fetch_kosis_data, master_schema, on_step): yield ev
+        async for ev in self._step(6, "통계 수치 비교 판단", calculate_metric, master_schema, on_step): yield ev
+        async for ev in self._step(7, "통계수치와 문장의 정합성 판단", check_alignment, master_schema, on_step): yield ev
+        async for ev in self._step(8, "종합 분석·검증 결과 생성", decide_verdict, master_schema, on_step): yield ev
+        async for ev in self._step(9, "설명 생성", generate_explanation, master_schema, on_step): yield ev
 
         yield ResultEvent(master_schema=master_schema)
 
-    async def _step(self, step, name, fn, master_schema) -> AsyncGenerator[PipelineEvent, None]:
+    async def _step(self, step, name, fn, master_schema, on_step=None) -> AsyncGenerator[PipelineEvent, None]:
         t0 = time.monotonic()
         yield StepEvent(step=step, name=name, status="running")
         await asyncio.sleep(0.3)  # TEMP(ngrok SSE 테스트): 더미가 즉시 끝나 이벤트가 한 버스트로 몰리는 것 방지. 검증 후 제거.
@@ -64,8 +64,69 @@ class Pipeline:
             )
             raise
         
+        duration_ms = int((time.monotonic() - t0) * 1000)
+        if on_step is not None:
+            on_step(step, name, master_schema)
+
         # 멈췄다 재개하며 여러 값을 시간차로 내보내기 위해
         yield StepEvent(
             step=step, name=name, status="done",
-            duration_ms=int((time.monotonic() - t0) * 1000),
+            duration_ms=duration_ms,
         )
+
+
+
+_MISSING = object()
+
+
+def _flatten(value, prefix: str = "") -> dict:
+    """MasterSchema model_dump → {점표기 경로: 스칼라} 평탄화."""
+    out: dict = {}
+    if isinstance(value, dict):
+        for k, v in value.items():
+            out.update(_flatten(v, f"{prefix}.{k}" if prefix else str(k)))
+    elif isinstance(value, list):
+        for i, v in enumerate(value):
+            out.update(_flatten(v, f"{prefix}[{i}]"))
+    else:
+        out[prefix] = value
+    return out
+
+
+def _delta_md(old_flat: dict, new_flat: dict) -> str:
+    """직전 스냅샷 대비 추가/변경된 경로만 마크다운 불릿으로 — '그 단계가 채운 부분'."""
+    lines: list[str] = []
+    for path, new_val in new_flat.items():
+        old_val = old_flat.get(path, _MISSING)
+        if old_val is _MISSING:
+            lines.append(f"- **{path}**: {new_val}")
+        elif old_val != new_val:
+            lines.append(f"- **{path}**: {old_val} → {new_val}")
+    return "\n".join(lines) if lines else "_(변경 없음)_"
+
+
+if __name__ == "__main__":
+    import sys
+    from pathlib import Path
+
+    async def _main() -> None:
+        content = sys.argv[1] if len(sys.argv) > 1 else "기사가 없습니다."
+        result_path = Path(__file__).resolve().parents[2] / "tests" / "result.md"
+        result_path.write_text("# 단계별 기록 (각 단계가 채운 부분)\n", encoding="utf-8")
+
+        # 시작 스냅샷(전부 비어 있음) 기준으로 단계별 델타만 기록한다.
+        prev = _flatten(MasterSchema(content=content).model_dump(by_alias=False))
+
+        def record(step: int, name: str, ms: MasterSchema) -> None:
+            nonlocal prev
+            curr = _flatten(ms.model_dump(by_alias=False))
+            section = f"\n## {step}. {name}\n\n{_delta_md(prev, curr)}\n"
+            with result_path.open("a", encoding="utf-8") as f:
+                f.write(section)
+            prev = curr
+
+        async for ev in Pipeline().run(content, on_step=record):
+            print(ev)
+        print(f"[result.md 저장] {result_path}")
+
+    asyncio.run(_main())
