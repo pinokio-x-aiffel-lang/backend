@@ -159,9 +159,6 @@ def extract_content(jsonld: Optional[dict[str, Any]], page_html: str) -> str:
        있다 — 단순 <p> 수집으론 본문 대부분을 놓침.)
 
     통계 기사의 표 수치도 claim 후보이므로 include_tables=True.
-    favor_recall=True: 일부 언론사(예: 동아일보)는 기본 설정에서 trafilatura 가
-    본문 대신 공유 <iframe> 블록을 본문으로 오판해 boilerplate 만 뽑는다. recall
-    우선이면 본문을 정상 회수한다(기존에 잘 되던 사이트들은 출력 불변 — 회귀 없음).
     """
     if jsonld:
         body = jsonld.get("articleBody")
@@ -171,6 +168,5 @@ def extract_content(jsonld: Optional[dict[str, Any]], page_html: str) -> str:
         page_html,
         include_comments=False,
         include_tables=True,
-        favor_recall=True,
     )
     return (text or "").strip()
