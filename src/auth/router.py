@@ -16,16 +16,28 @@ from src.auth.jwt_handler import create_access_token
 from src.auth.models import User
 from src.auth.password import hash_password, verify_password
 from src.auth.schemas import LoginRequest, LoginResponse, RegisterRequest, UserInfo
+from src.config import load_settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+_s = load_settings()
 
-def _make_response(user: User) -> LoginResponse:
-    token = create_access_token(user.user_id, user.name)
+
+def _make_response(user_id: str, name: str | None) -> LoginResponse:
+    token = create_access_token(user_id, name)
     return LoginResponse(
         access_token=token,
-        user=UserInfo(id=user.user_id, user_id=user.user_id, name=user.name),
+        user=UserInfo(id=user_id, user_id=user_id, name=name),
     )
+
+
+def _admin_ok(user_id: str, password: str) -> bool:
+    """서버에 저장된 단일 admin 자격증명과 일치하는지 검증."""
+    if not _s.admin_password_hash:          # 미설정이면 로그인 차단
+        return False
+    if user_id != _s.admin_id:
+        return False
+    return verify_password(password, _s.admin_password_hash)
 
 
 @router.post("/register", response_model=LoginResponse, status_code=status.HTTP_201_CREATED)
@@ -43,21 +55,18 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)) ->
     db.add(user)
     await db.commit()
     await db.refresh(user)
-    return _make_response(user)
+    return _make_response(user.user_id, user.name)
 
 
 @router.post("/login", response_model=LoginResponse)
-async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)) -> LoginResponse:
-    """로그인. 실패 시 401."""
-    result = await db.execute(select(User).where(User.user_id == body.user_id))
-    user = result.scalar_one_or_none()
-
-    if user is None or not verify_password(body.password, user.hashed_password):
+async def login(body: LoginRequest) -> LoginResponse:
+    """로그인. 서버에 저장된 admin 자격증명과 일치할 때만 통과, 실패 시 401."""
+    if not _admin_ok(body.user_id, body.password):
         raise HTTPException(
             status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
-    return _make_response(user)
+    return _make_response(_s.admin_id, _s.admin_name)
 
 
 @router.get("/me")

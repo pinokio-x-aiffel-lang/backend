@@ -29,6 +29,14 @@ class Settings(BaseSettings):
     jwt_secret_key: str = "change-me-in-production"
     jwt_expire_days: int = 7
 
+    # ── Admin 로그인 (단일 계정) ──────────────────────────────────────────────
+    # ADMIN_ID 와 일치 + ADMIN_PASSWORD_HASH(bcrypt) 검증 통과 시에만 로그인 허용.
+    # 평문 비밀번호는 저장하지 않는다. 해시 생성:
+    #   uv run python -c "from src.auth.password import hash_password; print(hash_password('비번'))"
+    admin_id: str = "admin"
+    admin_password_hash: str = ""   # 비어 있으면 로그인 전면 차단(미설정)
+    admin_name: str = "admin"
+
     @property
     def database_url_async(self) -> str:
         """SQLAlchemy 비동기(psycopg3) 드라이버 URL로 변환."""

@@ -55,6 +55,10 @@ services:
       DATABASE_URL: ${DATABASE_URL:-postgresql://fnd:fnd@db:5432/fnd}
       # JWT 서명 키 — 운영 시 반드시 안전한 랜덤값으로 교체
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change-me-in-production}
+      # 단일 admin 로그인 자격증명. 비밀번호는 평문이 아닌 bcrypt 해시로 주입.
+      ADMIN_ID: ${ADMIN_ID:-admin}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+      ADMIN_NAME: ${ADMIN_NAME:-admin}
     ports:
       - "${APP_HOST_PORT:-8000}:8000"
 
