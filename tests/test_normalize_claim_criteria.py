@@ -13,7 +13,7 @@ expected 값 규약:
 import pytest
 
 from src.modules.normalize_claim import normalize_claim
-from src.schemas.runtime import Article, Claim, MasterSchema, ValueSlot
+from src.schemas.runtime import Article, Claim, ClaimType, MasterSchema, ValueSlot
 
 
 # ------------------------------------------------------------------ #
@@ -28,7 +28,7 @@ def _make(value_raw: str, period_raw: str = "2024년", unit: str = "명") -> Mas
         claim_id="c-0001",
         article_id="art-0001",
         sentence=f"테스트: {value_raw}",
-        claim_type="수치",
+        claim_type=ClaimType.OTHER,
         subject="테스트",
         value=_vs(value_raw),
         unit=unit,

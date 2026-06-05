@@ -4,6 +4,7 @@ import pytest
 from src.modules.generate_explanation import generate_explanation
 from src.schemas.runtime import (
     Claim,
+    ClaimType,
     ClaimResult,
     Evidence,
     MasterSchema,
@@ -42,7 +43,7 @@ def _make_claim(claim_id: str = "c01", period_type: str = "Y", period: str = "20
         claim_id=claim_id,
         article_id="art-001",
         sentence="테스트 문장",
-        claim_type="규모",
+        claim_type=ClaimType.ABSOLUTE,
         subject="합계출산율",
         value=ValueSlot(**{"Original_table": "0.72", "LLM_Metrics": "0.72", "Inferred": False}),
         unit="명",
