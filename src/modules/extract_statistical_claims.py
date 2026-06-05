@@ -5,7 +5,7 @@ import json
 
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller
-from src.schemas.runtime import Claim, MasterSchema, ValueSlot
+from src.schemas.runtime import Claim, ClaimType, MasterSchema, ValueSlot
 
 _llm = LlmCaller()
 
@@ -107,7 +107,7 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
                 claim_id=f"clm-{idx:04d}",
                 article_id=master_schema.article.article_id,
                 sentence=_to_str(item.get("sentence"), ""),
-                claim_type="수치",
+                claim_type=ClaimType.OTHER,  # TODO: 연산 유형 분류 미구현 — 기본 예외값
                 subject=_to_str(item.get("subject")),
                 value=ValueSlot(raw=_to_str(item.get("value_raw")), llm_value="", is_inferred=False),
                 unit=_to_str(item.get("unit")),

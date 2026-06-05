@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+from enum import Enum
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -50,13 +51,28 @@ class CompareGroup(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
+class ClaimType(str, Enum):
+    """주장의 검증 연산 형태 분류. 값은 WEB_API_CONTRACT §2.3 enum 코드.
+
+    한글 라벨은 프론트(web/src/lib/format.ts CLAIM_TYPE_LABELS)에서 매핑한다.
+    """
+
+    ABSOLUTE = "absolute"          # 절대값 — 단일 시점 값 직접 비교
+    CHANGE_RATE = "change_rate"    # 증감률 — (신−구)/구
+    RATIO = "ratio"                # 비율 — A/B
+    DISTRIBUTION = "distribution"  # 분포 — 구성비/점유율
+    COMPARISON = "comparison"      # 비교 — 그룹 간 부등식
+    METAPHORIC = "metaphoric"      # 정성/추상 — 수치 검증 불가
+    OTHER = "other"                # 예외 — 6개 연산 유형에 안 맞는 분류 fallback
+
+
 class Claim(BaseModel):
     """기사 한 문장에서 추출된 수치 기반 사실 주장."""
 
     claim_id: str
     article_id: str
     sentence: str
-    claim_type: str
+    claim_type: ClaimType
     subject: str
     value: ValueSlot
     unit: str
