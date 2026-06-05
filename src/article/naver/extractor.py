@@ -9,7 +9,6 @@
 """
 from __future__ import annotations
 
-import html
 import logging
 import re
 from typing import Optional
@@ -17,6 +16,7 @@ from urllib.parse import urlparse
 
 from selectolax.lexbor import LexborHTMLParser
 
+from src.article.generic import clean
 from src.article.naver.repair import repair_selectors
 from src.article.naver.selectors import apply_selector, load_selectors, save_selectors
 
@@ -39,17 +39,9 @@ def is_naver(url: str) -> bool:
     return host.endswith("naver.com") and "news" in host
 
 
-def _clean(value: Optional[str]) -> Optional[str]:
-    """HTML 엔티티 해제 + 공백 정리."""
-    if not value:
-        return None
-    cleaned = html.unescape(value).strip()
-    return cleaned or None
-
-
 def _extract(tree: LexborHTMLParser) -> dict[str, Optional[str]]:
     return {
-        field: _clean(apply_selector(tree, spec))
+        field: clean(apply_selector(tree, spec))
         for field, spec in _selectors.items()
     }
 
