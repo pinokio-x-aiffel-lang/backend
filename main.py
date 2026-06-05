@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 import json
 import asyncio
+import logging
 import uuid
 import os
 
@@ -17,10 +18,18 @@ from src.auth.deps import get_current_user
 
 jobs: dict[str, tuple[asyncio.Queue, asyncio.Task]] = {}
 
+logger = logging.getLogger(__name__)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()
+    # DB 는 선택적: 미가용(DATABASE_URL 미설정/호스트 미해결)이어도 기동을 막지 않는다.
+    # admin 로그인 등 DB 불필요 기능은 정상 동작하고, DB 의존 기능(register 등)은
+    # DB 연결이 가능해진 뒤 사용할 수 있다.
+    try:
+        await init_db()
+    except Exception as exc:
+        logger.warning("init_db 건너뜀 — DB 미가용으로 기동 계속: %s", exc)
     yield
 
 
