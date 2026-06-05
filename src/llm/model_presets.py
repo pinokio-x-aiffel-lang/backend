@@ -42,3 +42,13 @@ EXTRACT_CLAIMS = ModelPreset(
     model_name="HCX-007",
     max_tokens=2048,
 )
+
+# 네이버 셀렉터 자동 복구 (src/article/naver/repair.py)
+# 레이아웃 변경 감지 시 축약 HTML 을 주고 바뀐 요소의 셀렉터를 찾게 한다.
+# 결정론적 추출이 필요하므로 temperature 를 낮게 둔다.
+NAVER_SELECTOR_REPAIR = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=1024,
+    temperature=0.1,
+)

@@ -1,0 +1,5 @@
+{
+  "title": { "selector": "meta[property=\"og:title\"]", "attr": "content" },
+  "published_at": { "selector": "[data-date-time]", "attr": "data-date-time" },
+  "source": { "selector": ".media_end_head_top_logo img", "attr": "alt" }
+}
