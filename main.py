@@ -46,12 +46,16 @@ _default_origins = [
     "http://localhost:5174",
     "http://127.0.0.1:5174",
     "https://pinokiox-frontend.onrender.com",
+    "https://frontend-1-b3s0.onrender.com"
 ]
 _env_origins = [o.strip() for o in os.environ.get("FRONTEND_ORIGINS", "").split(",") if o.strip()]
+# CORS Origin 은 scheme://host[:port] 형태 — 끝의 '/' 나 경로는 브라우저 Origin 헤더와
+# 매칭되지 않으므로 제거(예: ".../" 로 넣으면 영원히 안 맞음).
+_allow_origins = [o.rstrip("/") for o in (*_default_origins, *_env_origins)]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[*_default_origins, *_env_origins],
+    allow_origins=_allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
