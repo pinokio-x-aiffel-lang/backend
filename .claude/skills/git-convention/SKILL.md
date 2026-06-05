@@ -33,6 +33,7 @@ Format: `<type>(<scope>): <subject>` — scope optional.
 Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`, `ci`, `exp`.
 
 Rules:
+- Language: **English** — type, scope, subject, and body all in English.
 - Imperative (`add`, not `added`).
 - Subject ≤ 50 chars, no trailing period.
 - One commit = one purpose.
