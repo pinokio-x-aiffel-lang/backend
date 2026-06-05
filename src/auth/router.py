@@ -8,12 +8,14 @@ POST /auth/logout    — 로그아웃 (best-effort, 멱등)
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.database import get_db
+from src.auth.denylist import revoke
 from src.auth.deps import get_current_user
-from src.auth.jwt_handler import create_access_token
+from src.auth.jwt_handler import create_access_token, decode_access_token
 from src.auth.models import User
 from src.auth.password import hash_password, verify_password
 from src.auth.schemas import LoginRequest, LoginResponse, RegisterRequest, UserInfo
@@ -22,6 +24,8 @@ from src.config import load_settings
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 _s = load_settings()
+# 로그아웃은 토큰이 없어도 통과(멱등)해야 하므로 auto_error=False 의 선택적 Bearer.
+_optional_bearer = HTTPBearer(auto_error=False)
 
 
 def _make_response(user_id: str, name: str | None) -> LoginResponse:
@@ -77,15 +81,22 @@ async def me(payload: dict = Depends(get_current_user)) -> dict:
 
 
 @router.post("/logout")
-async def logout() -> dict:
+async def logout(
+    credentials: HTTPAuthorizationCredentials | None = Depends(_optional_bearer),
+) -> dict:
     """로그아웃 (best-effort, 멱등) — auth-spec.md §5-3.
 
-    stateless JWT 라 서버 측 토큰 폐기는 없다. 프론트(auth.ts)가 클라이언트에
-    저장된 토큰을 제거한다. 인증이 없거나 토큰이 만료/무효여도 막지 않고 항상
-    200 을 반환한다(로그아웃은 항상 성공 처리). 204 가 아닌 JSON body 로 응답한다
-    (프론트 apiFetch 가 res.json() 을 호출하므로 빈 본문이면 에러).
+    토큰이 있으면 그 jti 를 in-memory denylist 에 등록해 만료 전이라도 무효화한다
+    (이후 get_current_user 가 401 로 거부). 인증이 없거나 토큰이 만료/무효여도
+    막지 않고 항상 200 을 반환한다. 204 가 아닌 JSON body 로 응답한다(프론트
+    apiFetch 가 res.json() 을 호출하므로 빈 본문이면 에러).
 
-    NOTE: 발급된 토큰은 만료까지 서버에서 유효하다(즉시 무효화 불가). 즉시 폐기가
-    필요하면 JWT 에 jti 추가 + denylist(Redis) 도입 — auth-spec.md §5-2 참고.
+    NOTE: denylist 는 in-memory 라 앱 재시작/재배포 시 사라진다(영속·공유 필요 시
+    Redis/Postgres 로 src/auth/denylist.py 교체) — auth-spec.md §5-2 참고.
     """
+    if credentials:
+        payload = decode_access_token(credentials.credentials)
+        jti, exp = payload.get("jti"), payload.get("exp")
+        if jti and exp:
+            revoke(jti, float(exp))
     return {"ok": True}

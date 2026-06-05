@@ -11,6 +11,7 @@ from __future__ import annotations
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from src.auth.denylist import is_revoked
 from src.auth.jwt_handler import decode_access_token
 
 _bearer = HTTPBearer(auto_error=False)
@@ -31,6 +32,12 @@ async def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="유효하지 않은 인증 토큰입니다.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    if is_revoked(payload.get("jti", "")):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="로그아웃된 토큰입니다. 다시 로그인하세요.",
             headers={"WWW-Authenticate": "Bearer"},
         )
     return payload
