@@ -21,10 +21,10 @@ class Article(BaseModel):
     """원문 기사 메타데이터."""
 
     article_id: str
-    title: str
+    title: str | bool | None = None
     content: str
-    published_at: str
-    source: str
+    published_at: str | bool | None = None
+    source: str | bool | None = None
     url: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)

@@ -21,6 +21,8 @@ dependencies = [
     "httpx>=0.28.1",
     "python-jose[cryptography]>=3.5.0",
     "bcrypt>=4.1",
+    "selectolax>=0.4.10",
+    "trafilatura>=2.0.0",
 ]
 
 [build-system]
