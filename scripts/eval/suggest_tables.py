@@ -11,7 +11,7 @@
 
 재사용:
   - src.llm.llm_caller.LlmCaller            (HCX-007 호출)
-  - kosis.kosis_search_by_keyword.KosisSearch (KOSIS 통합검색, KOSIS_API_KEY from .env)
+  - src.kosis.search_tables (KOSIS 통합검색, KOSIS_API_KEY from .env)
 
 키 출처:
   - CLOVASTUDIO_API_KEY  : Infisical CLI 주입
@@ -37,7 +37,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.llm.client import LlmError  # noqa: E402
 from src.llm.llm_caller import LlmCaller  # noqa: E402
-from kosis.kosis_search_by_keyword import KosisSearch, KosisAPIError  # noqa: E402
+from src.kosis import search_tables, KosisError  # noqa: E402
 
 OUT_DIR = ROOT / "data" / "eval"
 SUCCESS_JSONL = OUT_DIR / "labeling_base_success.jsonl"
@@ -124,7 +124,7 @@ def extract_keywords(llm: LlmCaller, query: str, cache: dict[str, list[str]]) ->
 
 
 def search_top(
-    kosis: KosisSearch, keywords: list[str], cache: dict[str, list]
+    keywords: list[str], cache: dict[str, list]
 ) -> list[dict]:
     """키워드들로 검색 → (org_id,tbl_id) dedup → 최선 순위 top 10."""
     merged: dict[tuple[str, str], dict] = {}
@@ -133,7 +133,7 @@ def search_top(
             hits = cache[kw]
         else:
             try:
-                hits_obj, _ = kosis.search(kw, top_n=TOP_N)
+                hits_obj = search_tables(kw, None, top_n=TOP_N)
                 hits = [
                     {
                         "org_id": h.org_id,
@@ -144,7 +144,7 @@ def search_top(
                     }
                     for h in hits_obj
                 ]
-            except (KosisAPIError, Exception) as exc:  # noqa: BLE001
+            except (KosisError, Exception) as exc:  # noqa: BLE001
                 print(f"    [warn] KOSIS 검색 실패 '{kw}': {exc}", file=sys.stderr)
                 hits = []
             cache[kw] = hits
@@ -213,7 +213,6 @@ def main() -> int:
     print(f"이번 실행 처리 대상: {len(todo)}")
 
     llm = LlmCaller()
-    kosis = KosisSearch()
     kw_cache: dict[str, list[str]] = {}
     search_cache: dict[str, list] = {}
 
@@ -227,7 +226,7 @@ def main() -> int:
             except LlmError as exc:
                 print(f"  [{i}/{len(todo)}] {cid} HCX 실패: {exc}", file=sys.stderr)
                 keywords = []
-            candidates = search_top(kosis, keywords, search_cache) if keywords else []
+            candidates = search_top(keywords, search_cache) if keywords else []
             rec = {
                 "article_id": claim["article_id"],
                 "claim_id": cid,
