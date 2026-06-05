@@ -3,6 +3,7 @@
 POST /auth/register  — 회원가입
 POST /auth/login     — 로그인 → JWT 발급
 GET  /auth/me        — 현재 사용자 정보
+POST /auth/logout    — 로그아웃 (best-effort, 멱등)
 """
 from __future__ import annotations
 
@@ -73,3 +74,18 @@ async def login(body: LoginRequest) -> LoginResponse:
 async def me(payload: dict = Depends(get_current_user)) -> dict:
     """현재 로그인된 사용자 정보."""
     return {"user_id": payload["sub"], "name": payload.get("name")}
+
+
+@router.post("/logout")
+async def logout() -> dict:
+    """로그아웃 (best-effort, 멱등) — auth-spec.md §5-3.
+
+    stateless JWT 라 서버 측 토큰 폐기는 없다. 프론트(auth.ts)가 클라이언트에
+    저장된 토큰을 제거한다. 인증이 없거나 토큰이 만료/무효여도 막지 않고 항상
+    200 을 반환한다(로그아웃은 항상 성공 처리). 204 가 아닌 JSON body 로 응답한다
+    (프론트 apiFetch 가 res.json() 을 호출하므로 빈 본문이면 에러).
+
+    NOTE: 발급된 토큰은 만료까지 서버에서 유효하다(즉시 무효화 불가). 즉시 폐기가
+    필요하면 JWT 에 jti 추가 + denylist(Redis) 도입 — auth-spec.md §5-2 참고.
+    """
+    return {"ok": True}
