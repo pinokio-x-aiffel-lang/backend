@@ -42,7 +42,7 @@ def _build_explanation(result: ClaimResult, claim: Claim | None) -> str:
     )
 
     ev = result.evidence[0] if result.evidence else None
-    source_note = f" (출처: {ev.table_name})" if ev else ""
+    source_note = f" (출처: {ev.table_name})" if ev and ev.table_name else ""
 
     claim_display = f"{result.claim_value}{unit}"
     kosis_display = f"{result.kosis_value}{unit}"
