@@ -34,8 +34,8 @@ _USER_TMPL = """\
   {{
     "sentence": "원문 문장",
     "subject": "통계 주제",
-    "value_raw": "수치 원문",
-    "unit": "단위",
+    "value_raw": "수치 원문 (증가/감소 등 방향어 있으면 포함)",
+    "unit": "측정 단위만 (%, %p, 명, 원, 억원 등). 퍼센트포인트는 '%p' 로 %와 반드시 구분",
     "period_raw": "시점 원문",
     "period_type": "Y 또는 M 또는 Q 또는 D",
     "population": "대상 집단",

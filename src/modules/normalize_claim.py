@@ -32,6 +32,17 @@ _INCREASE = re.compile(r"증가|상승|늘어|올라|증대|올랐|늘었")
 _DECREASE = re.compile(r"감소|하락|줄어|내려|하강|감축|내렸|줄었")
 
 
+def _fmt_decimal(x: float) -> str:
+    """소수 표기. 유효숫자 4자리로 자르되 정수도 소수점(.0)을 유지한다.
+
+    예: 1.0 → "1.0", 0.32 → "0.32", 0.005 → "0.005".
+    """
+    s = f"{x:.4g}"
+    if "." not in s and "e" not in s and "E" not in s:
+        s += ".0"
+    return s
+
+
 # ── ② 큰 수 단위 ──────────────────────────────────────────────────────────────
 
 def _coeff(s: str) -> float:
@@ -196,17 +207,12 @@ def _try_change(s: str) -> str | None:
     if s in ("갑절",):
         return "2.0"
 
-    # %p: "3%p 상승", "2%p 하락"
-    m = re.search(r"(\d+(?:\.\d+)?)\s*%[pP]\s*(상승|증가|올라|늘어|하락|감소|내려|줄어)?", s)
-    if m:
-        val = m.group(1)
-        sign = "-" if _DECREASE.search(s) else "+"
-        return f"{sign}{val}pp"
-
-    # 변화율: "3.2% 증가", "5% 감소"
-    m = re.search(r"(\d+(?:\.\d+)?)\s*%", s)
+    # 변화율: "3.2% 증가", "5% 감소", "1.5%p 상승", "2퍼센트포인트 하락"
+    # 단위(%, %p, 퍼센트)는 extract 가 unit 으로 분리 → 여기선 부호+수치만 둔다.
+    # %p vs % 구분은 claim.unit 이 보유(value 에 마커를 박지 않음).
+    m = re.search(r"(\d+(?:\.\d+)?)\s*(?:%|퍼센트)", s)
     if m and (_INCREASE.search(s) or _DECREASE.search(s)):
-        val = m.group(1)
+        val = _fmt_decimal(float(m.group(1)))
         sign = "-" if _DECREASE.search(s) else "+"
         return f"{sign}{val}"
 
@@ -255,7 +261,7 @@ def _try_ratio(s: str) -> str | None:
     m = re.fullmatch(r"(\d+(?:\.\d+)?)\s*(?:%|퍼센트)", s)
     if m:
         val = float(m.group(1)) / 100
-        return f"{val:.4g}"
+        return _fmt_decimal(val)
 
     return None
 
@@ -276,14 +282,42 @@ def _parse_value(raw: str) -> str:
 
 # ── 시점 정규화 ───────────────────────────────────────────────────────────────
 
-def _normalize_period(raw: str) -> str:
+def _parse_base(base: str) -> tuple[int | None, int | None]:
+    """기준 시점(기사 발행일 등) → (연, 월). 파싱 불가면 (None, None)."""
+    m = re.match(r"(\d{4})(?:[-/.](\d{1,2}))?", base.strip())
+    if not m:
+        return None, None
+    return int(m.group(1)), (int(m.group(2)) if m.group(2) else None)
+
+
+def _normalize_period(raw: str, base: str = "") -> str:
+    """시점 정규화. 상대 표현(전년/전월/전분기)은 base(기사 발행일) 기준 절대값으로.
+
+    절대 표기 → "YYYY" | "YYYY-MM". 상대 표기 → "YYYY"(전년) | "YYYY-MM"(전월)
+    | "YYYY-Qn"(전분기). base 가 없거나 파싱 불가면 상대 표현은 원문 그대로 둔다.
+    """
     s = raw.strip()
+    # 절대 표기: "YYYY년 [MM월]", "YYYY"
     m = re.match(r"(\d{4})년(?:\s*(\d{1,2})월)?", s)
     if m:
         year, month = m.group(1), m.group(2)
         return f"{year}-{int(month):02d}" if month else year
     if re.fullmatch(r"\d{4}", s):
         return s
+    # 상대 표기: base(연·월) 기준 해석
+    by, bm = _parse_base(base)
+    if by is not None:
+        if re.search(r"전년|작년|지난\s*해|전년도", s):
+            return str(by - 1)
+        if re.search(r"올해|금년|당해\s*연도", s):
+            return str(by)
+        if bm is not None and re.search(r"전월|전달|지난\s*달", s):
+            y, mo = (by - 1, 12) if bm == 1 else (by, bm - 1)
+            return f"{y}-{mo:02d}"
+        if bm is not None and re.search(r"전분기|지난\s*분기", s):
+            q = (bm - 1) // 3 + 1                       # 현재 분기
+            y, q = (by - 1, 4) if q == 1 else (by, q - 1)
+            return f"{y}-Q{q}"
     return raw
 
 
@@ -298,6 +332,8 @@ async def normalize_claim(master_schema: MasterSchema) -> None:
 
     한국어 수사·시점을 산술값으로 정규화한다.
     """
+    article = getattr(master_schema, "article", None)
+    base = article.published_at if article else ""  # 상대시점 해석 기준(기사 발행일)
     for claim in master_schema.claims:
         claim.value.llm_value = _parse_value(claim.value.raw)
-        claim.period_value.llm_value = _normalize_period(claim.period_value.raw)
+        claim.period_value.llm_value = _normalize_period(claim.period_value.raw, base)
