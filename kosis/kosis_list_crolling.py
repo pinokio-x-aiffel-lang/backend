@@ -212,63 +212,104 @@ class KosisListCrawler:
         *,
         root_parent_id: str = ROOT_PARENT_ID,
         max_nodes: Optional[int] = None,
+        max_tables: Optional[int] = None,
+        csv_path: Optional[str] = None,
+        flush_every: int = 100,
     ) -> list[StatTable]:
         """
         하나의 vwCd 트리를 너비우선(BFS)으로 끝까지 순회하여
         말단 통계표를 모두 수집한다.
 
+        root_parent_id : 순회 시작 목록ID. 기본은 최상위("").
+            특정 주제(예: '인구'=A)만 받으려면 그 LIST_ID를 지정한다.
         max_nodes : 방문할 목록 노드 수 상한(테스트/부분수집용). None이면 무제한.
+        max_tables : 수집할 통계표 수 상한. 도달 즉시 더 조회하지 않고 중단.
+        csv_path : 지정하면 통계표를 발견하는 즉시 이 CSV에 기록하고,
+            flush_every개마다 디스크에 flush한다(중간에 끊겨도 결과 보존).
+        flush_every : 디스크 flush 주기(통계표 개수). 기본 100.
         """
         tables: list[StatTable] = []
         seen_tables: set[tuple[str, str]] = set()
         queue: deque[str] = deque([root_parent_id])
         node_count = 0
 
+        # 중간 저장용 CSV (지정 시): 헤더 먼저 쓰고, flush_every마다 flush
+        csv_file = None
+        csv_writer = None
+        since_flush = 0
+        if csv_path:
+            csv_file = open(csv_path, "w", encoding="utf-8-sig", newline="")
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(["vwCd", "orgId", "tblId", "tblNm", "listId"])
+            csv_file.flush()
+
         logger.info("[%s] %s 순회 시작", vw_cd, VIEW_CODES.get(vw_cd, ""))
 
-        while queue:
-            list_id = queue.popleft()
-            if (vw_cd, list_id) in self._visited:
-                continue
-            if max_nodes is not None and node_count >= max_nodes:
-                logger.info("[%s] max_nodes(%d) 도달 — 중단", vw_cd, max_nodes)
-                break
+        try:
+            while queue:
+                list_id = queue.popleft()
+                if (vw_cd, list_id) in self._visited:
+                    continue
+                if max_nodes is not None and node_count >= max_nodes:
+                    logger.info("[%s] max_nodes(%d) 도달 — 중단", vw_cd, max_nodes)
+                    break
+                if max_tables is not None and len(tables) >= max_tables:
+                    logger.info("[%s] max_tables(%d) 도달 — 중단", vw_cd, max_tables)
+                    break
 
-            try:
-                children = self._request(vw_cd, list_id)
-            except KosisAPIError as exc:
-                logger.warning("[%s] 노드 '%s' 조회 실패: %s", vw_cd, list_id, exc)
+                try:
+                    children = self._request(vw_cd, list_id)
+                except KosisAPIError as exc:
+                    logger.warning("[%s] 노드 '%s' 조회 실패: %s", vw_cd, list_id, exc)
+                    self._mark_visited(vw_cd, list_id)
+                    time.sleep(self.sleep_between)
+                    continue
+
+                for node in children:
+                    # 말단 통계표: TBL_ID 보유
+                    if node.get("TBL_ID"):
+                        t = StatTable(
+                            vw_cd=vw_cd,
+                            org_id=str(node.get("ORG_ID", "")),
+                            tbl_id=str(node["TBL_ID"]),
+                            tbl_nm=str(node.get("TBL_NM", "")),
+                            list_id=list_id,
+                        )
+                        if t.key() not in seen_tables:
+                            seen_tables.add(t.key())
+                            tables.append(t)
+                            if csv_writer is not None:
+                                csv_writer.writerow(
+                                    [t.vw_cd, t.org_id, t.tbl_id, t.tbl_nm, t.list_id]
+                                )
+                                since_flush += 1
+                                if since_flush >= flush_every:
+                                    csv_file.flush()
+                                    since_flush = 0
+                                    logger.info(
+                                        "[%s] 중간 저장: 통계표 %d개 → %s",
+                                        vw_cd, len(tables), csv_path,
+                                    )
+                            if max_tables is not None and len(tables) >= max_tables:
+                                break  # 상한 도달 — 남은 자식 처리 중단
+                    # 중간 목록: LIST_ID 보유 -> 큐에 추가해 더 내려간다
+                    elif node.get("LIST_ID"):
+                        child_id = str(node["LIST_ID"])
+                        if (vw_cd, child_id) not in self._visited:
+                            queue.append(child_id)
+
                 self._mark_visited(vw_cd, list_id)
-                time.sleep(self.sleep_between)
-                continue
-
-            for node in children:
-                # 말단 통계표: TBL_ID 보유
-                if node.get("TBL_ID"):
-                    t = StatTable(
-                        vw_cd=vw_cd,
-                        org_id=str(node.get("ORG_ID", "")),
-                        tbl_id=str(node["TBL_ID"]),
-                        tbl_nm=str(node.get("TBL_NM", "")),
-                        list_id=list_id,
+                node_count += 1
+                if node_count % 50 == 0:
+                    logger.info(
+                        "[%s] 진행: 노드 %d개 방문, 통계표 %d개 누적",
+                        vw_cd, node_count, len(tables),
                     )
-                    if t.key() not in seen_tables:
-                        seen_tables.add(t.key())
-                        tables.append(t)
-                # 중간 목록: LIST_ID 보유 -> 큐에 추가해 더 내려간다
-                elif node.get("LIST_ID"):
-                    child_id = str(node["LIST_ID"])
-                    if (vw_cd, child_id) not in self._visited:
-                        queue.append(child_id)
-
-            self._mark_visited(vw_cd, list_id)
-            node_count += 1
-            if node_count % 50 == 0:
-                logger.info(
-                    "[%s] 진행: 노드 %d개 방문, 통계표 %d개 누적",
-                    vw_cd, node_count, len(tables),
-                )
-            time.sleep(self.sleep_between)
+                time.sleep(self.sleep_between)
+        finally:
+            if csv_file is not None:
+                csv_file.flush()
+                csv_file.close()
 
         logger.info(
             "[%s] 순회 완료: 노드 %d개, 통계표 %d개", vw_cd, node_count, len(tables)
@@ -283,20 +324,44 @@ class KosisListCrawler:
         view_codes: Optional[Iterable[str]] = None,
         *,
         max_nodes_per_view: Optional[int] = None,
+        root_parent_id: str = ROOT_PARENT_ID,
+        max_tables_per_view: Optional[int] = None,
+        csv_path: Optional[str] = None,
+        flush_every: int = 100,
     ) -> list[StatTable]:
         """
         지정한 vwCd들(기본: VIEW_CODES 전체)을 순회하여 모든 통계표를 수집한다.
         뷰가 달라도 같은 (orgId, tblId)는 한 번만 담는다.
+
+        root_parent_id : 순회 시작 목록ID. 기본은 최상위("").
+        max_tables_per_view : 뷰별 수집 통계표 상한. 도달 시 중단.
+        csv_path : 중간 저장 CSV 경로. 뷰가 1개일 때만 적용한다(여러 뷰면
+            뷰마다 파일을 덮어써 충돌하므로, 그 경우 최종 save_csv만 사용).
         """
         if view_codes is None:
             view_codes = list(VIEW_CODES.keys())
+        view_codes = list(view_codes)
+
+        # 중간 저장은 단일 뷰 순회에서만 의미가 있다.
+        incremental_csv = csv_path if len(view_codes) == 1 else None
+        if csv_path and incremental_csv is None:
+            logger.warning(
+                "중간 저장(csv_path)은 단일 뷰에서만 적용됩니다. "
+                "여러 뷰(%d개)라 중간 저장을 건너뛰고 최종 저장만 합니다.",
+                len(view_codes),
+            )
 
         all_tables: list[StatTable] = []
         global_seen: set[tuple[str, str]] = set()
 
         for vw_cd in view_codes:
             view_tables = self.crawl_view(
-                vw_cd, max_nodes=max_nodes_per_view
+                vw_cd,
+                root_parent_id=root_parent_id,
+                max_nodes=max_nodes_per_view,
+                max_tables=max_tables_per_view,
+                csv_path=incremental_csv,
+                flush_every=flush_every,
             )
             for t in view_tables:
                 if t.key() not in global_seen:
@@ -340,27 +405,58 @@ def main() -> None:
     parser.add_argument(
         "--views",
         nargs="*",
-        default=None,
-        help=f"순회할 vwCd 목록 (기본: 전체). 선택지: {', '.join(VIEW_CODES)}",
+        default=["MT_ZTITLE"],
+        help=f"순회할 vwCd 목록 (기본: MT_ZTITLE). 선택지: {', '.join(VIEW_CODES)}",
+    )
+    parser.add_argument(
+        "--parent",
+        default="A",
+        help="순회 시작 목록ID. 기본 'A'(인구). 최상위부터 받으려면 \"\" 지정.",
+    )
+    parser.add_argument(
+        "--max-tables",
+        type=int,
+        default=5000,
+        help="뷰별 수집 통계표 상한. 기본 5000. 도달 즉시 중단.",
     )
     parser.add_argument(
         "--max-nodes",
         type=int,
         default=None,
-        help="뷰별 방문 목록 노드 수 상한 (테스트용). 미지정 시 전체.",
+        help="뷰별 방문 목록 노드 수 상한. 기본 무제한(통계표 수로만 제한).",
     )
     parser.add_argument(
         "--checkpoint",
         default="kosis_list.checkpoint",
         help="이어받기용 체크포인트 파일 경로",
     )
-    parser.add_argument("--csv", default="kosis_tables.csv", help="출력 CSV 경로")
+    parser.add_argument(
+        "--reset",
+        action="store_true",
+        help="실행 전 체크포인트 파일을 삭제하고 처음부터 다시 순회한다.",
+    )
+    parser.add_argument("--csv", default="result_.csv", help="출력 CSV 경로")
+    parser.add_argument(
+        "--flush-every",
+        type=int,
+        default=100,
+        help="중간 저장 주기(통계표 개수). 기본 100. 단일 뷰 순회에서만 적용.",
+    )
     parser.add_argument("--json", default=None, help="출력 JSON 경로(선택)")
     args = parser.parse_args()
 
+    if args.reset and os.path.exists(args.checkpoint):
+        os.remove(args.checkpoint)
+        logger.info("체크포인트 삭제: %s — 처음부터 순회", args.checkpoint)
+
     crawler = KosisListCrawler(checkpoint_path=args.checkpoint)
     tables = crawler.crawl_all(
-        view_codes=args.views, max_nodes_per_view=args.max_nodes
+        view_codes=args.views,
+        max_nodes_per_view=args.max_nodes,
+        root_parent_id=args.parent,
+        max_tables_per_view=args.max_tables,
+        csv_path=args.csv,
+        flush_every=args.flush_every,
     )
     crawler.save_csv(tables, args.csv)
     if args.json:

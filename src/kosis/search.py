@@ -9,14 +9,11 @@ END_PRD_DE/...). 이 엔드포인트엔 PRD_DE 가 없고 수록 기간은 STRT_
 from __future__ import annotations
 
 import logging
-import os
 import time
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from dotenv import load_dotenv
-
-from src.kosis.client import SEARCH_URL, kosis_get
+from src.kosis.client import SEARCH_URL, kosis_get, resolve_api_key
 
 logger = logging.getLogger("kosis")
 
@@ -53,18 +50,6 @@ class SearchHit:
         )
 
 
-def _resolve_api_key(api_key: Optional[str]) -> str:
-    if api_key:
-        return api_key
-    load_dotenv()
-    key = os.getenv("KOSIS_API_KEY")
-    if not key:
-        raise ValueError(
-            "API 키가 없습니다. .env 파일에 KOSIS_API_KEY=... 를 지정하세요."
-        )
-    return key
-
-
 def search_tables(
     keyword: str,
     api_key: Optional[str] = None,
@@ -88,7 +73,7 @@ def search_tables(
         SEARCH_URL,
         {
             "method": "getList",
-            "apiKey": _resolve_api_key(api_key),
+            "apiKey": resolve_api_key(api_key),
             "searchNm": keyword.strip(),
             "startCount": "1",
             "resultCount": str(min(top_n, 1000)),  # resultCount 상한 1000

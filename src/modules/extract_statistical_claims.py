@@ -5,6 +5,7 @@ import json
 
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller
+from src.llm.model_presets import EXTRACT_CLAIMS
 from src.schemas.runtime import Claim, ClaimType, MasterSchema, ValueSlot
 
 _llm = LlmCaller()
@@ -47,6 +48,16 @@ _USER_TMPL = """\
 {content}"""
 
 
+# json_structure 가 None 만 아니면 HCX-007 은 thinking 을 끄고(effort:none) JSON 을
+# 강제한다. 필드 상세는 프롬프트(_USER_TMPL)가 지정하고 파싱도 .get() 으로 방어하므로,
+# 스키마는 최상위 형태(claims 배열)만 잡으면 충분하다.
+CLAIMS_SCHEMA = {
+    "type": "object",
+    "properties": {"claims": {"type": "array", "items": {"type": "object"}}},
+    "required": ["claims"],
+}
+
+
 class ExtractStatisticalClaimsError(Exception):
     """클레임 추출 실패 — LLM 응답 파싱 오류 등."""
 
@@ -62,8 +73,8 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
         master_schema.claims         # list[Claim] (각 claim_id 부여)
 
     Responsibility:
-        경량 LLM(HCX-003)으로 기사 본문에서 수치 기반 통계 주장을 추출해
-        master_schema.claims 에 채운다.
+        LLM으로 기사 본문에서 수치 기반 통계 주장을 추출
+        master_schema.claims 에 채움
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     if not master_schema.article:
@@ -77,10 +88,11 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
     try:
         response = await asyncio.to_thread(
             _llm.chat,
-            "hyperclova",
-            "HCX-007",
+            EXTRACT_CLAIMS.model_alias,
+            EXTRACT_CLAIMS.model_name,
             messages,
-            max_tokens=2048,
+            max_tokens=EXTRACT_CLAIMS.max_tokens,
+            json_structure=CLAIMS_SCHEMA,  # HCX-007: JSON 강제 → thinking 자동 off
         )
     except LlmError as e:
         raise ExtractStatisticalClaimsError(f"LLM 호출 실패: {e}") from e

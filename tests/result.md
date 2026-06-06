@@ -1,13 +1,11 @@
-> ⚠️ 임시 파일 — 테스트 산출물 덤프. 커밋 대상 아님.
-
 # 단계별 기록 (각 단계가 채운 부분)
 
 ## 1. 기사 내용 확인
 
 - **article.article_id**: art-0001
 - **article.title**: None
-- **article.content**: 통계청에 따르면 2024년 합계출산율은 0.72명이다.
-- **article.published_at**: None
+- **article.content**: 통계청에 따르면 지난달 한국 근로자의 주당 평균 근로시간은 38.8시간이다. 맥킨지는 노동시장 참여율을 높이는 것도 방법이라고 했다. 이 중 고령 인구가 노동시장에 남는 비율, 즉 ‘근로 수명’을 높이는 것도 고려해야 한다는 것이다. 일본의 경우 65세 이상 노동시장 참여율(26%)이 프랑스(4%) 등을 앞서고 있으며, 이는 일본의 1997년 이후 연평균 노동생산성 증가율(1.1%)이 서유럽(0.8%)을 앞설 수 있던 요인이 됐다고 했다. 하지만 맥킨지는 일본 방식도 한계는 있다고 봤다. 일본의 경우 25~64세는 주당 평균 30시간을 일하지만, 65세 이상은 7시간 일하는 것으로 집계돼 결국 고령화에 따른 노동시간 감소는 피할 수 없기 때문이다.
+- **article.published_at**: 2025-04
 - **article.source**: None
 - **article.url**: None
 
@@ -15,53 +13,1853 @@
 
 - **claims[0].claim_id**: clm-0001
 - **claims[0].article_id**: art-0001
-- **claims[0].sentence**: 통계청에 따르면 2024년 합계출산율은 0.72명이다.
+- **claims[0].sentence**: 통계청에 따르면 지난달 한국 근로자의 주당 평균 근로시간은 38.8시간이다.
 - **claims[0].claim_type**: ClaimType.OTHER
-- **claims[0].subject**: 합계출산율
-- **claims[0].value.raw**: 0.72
+- **claims[0].subject**: 주당 평균 근로시간
+- **claims[0].value.raw**: 38.8시간
 - **claims[0].value.llm_value**: 
 - **claims[0].value.is_inferred**: False
-- **claims[0].unit**: 명
+- **claims[0].unit**: 시간
 - **claims[0].aggregation**: 값
-- **claims[0].period_type**: Y
-- **claims[0].period_value.raw**: 2024년
+- **claims[0].period_type**: M
+- **claims[0].period_value.raw**: 지난달
 - **claims[0].period_value.llm_value**: 
 - **claims[0].period_value.is_inferred**: False
 - **claims[0].compare_period_value**: None
 - **claims[0].compare_group**: None
-- **claims[0].population**: 전체 인구
+- **claims[0].population**: 한국 근로자
 - **claims[0].cited_source**: 통계청
+- **claims[1].claim_id**: clm-0002
+- **claims[1].article_id**: art-0001
+- **claims[1].sentence**: 일본의 경우 65세 이상 노동시장 참여율(26%)이 프랑스(4%) 등을 앞서고 있다.
+- **claims[1].claim_type**: ClaimType.OTHER
+- **claims[1].subject**: 노동시장 참여율
+- **claims[1].value.raw**: 26%
+- **claims[1].value.llm_value**: 
+- **claims[1].value.is_inferred**: False
+- **claims[1].unit**: %
+- **claims[1].aggregation**: 값
+- **claims[1].period_type**: D
+- **claims[1].period_value.raw**: 현재 시점
+- **claims[1].period_value.llm_value**: 
+- **claims[1].period_value.is_inferred**: False
+- **claims[1].compare_period_value**: None
+- **claims[1].compare_group**: None
+- **claims[1].population**: 일본의 65세 이상 인구
+- **claims[1].cited_source**: 불명
+- **claims[2].claim_id**: clm-0003
+- **claims[2].article_id**: art-0001
+- **claims[2].sentence**: 이는 일본의 1997년 이후 연평균 노동생산성 증가율(1.1%)이 서유럽(0.8%)을 앞설 수 있던 요인이 됐다.
+- **claims[2].claim_type**: ClaimType.OTHER
+- **claims[2].subject**: 연평균 노동생산성 증가율
+- **claims[2].value.raw**: 1.1%
+- **claims[2].value.llm_value**: 
+- **claims[2].value.is_inferred**: False
+- **claims[2].unit**: %p
+- **claims[2].aggregation**: 값
+- **claims[2].period_type**: Y
+- **claims[2].period_value.raw**: 1997년 이후
+- **claims[2].period_value.llm_value**: 
+- **claims[2].period_value.is_inferred**: False
+- **claims[2].compare_period_value**: None
+- **claims[2].compare_group**: None
+- **claims[2].population**: 일본
+- **claims[2].cited_source**: 맥킨지
+- **claims[3].claim_id**: clm-0004
+- **claims[3].article_id**: art-0001
+- **claims[3].sentence**: 일본의 경우 25~64세는 주당 평균 30시간을 일하지만, 65세 이상은 7시간 일하는 것으로 집계된다.
+- **claims[3].claim_type**: ClaimType.OTHER
+- **claims[3].subject**: 주당 평균 근로시간
+- **claims[3].value.raw**: 30시간
+- **claims[3].value.llm_value**: 
+- **claims[3].value.is_inferred**: False
+- **claims[3].unit**: 시간
+- **claims[3].aggregation**: 값
+- **claims[3].period_type**: D
+- **claims[3].period_value.raw**: 현재 시점
+- **claims[3].period_value.llm_value**: 
+- **claims[3].period_value.is_inferred**: False
+- **claims[3].compare_period_value**: None
+- **claims[3].compare_group**: None
+- **claims[3].population**: 일본의 25~64세
+- **claims[3].cited_source**: 맥킨지
+- **claims[4].claim_id**: clm-0005
+- **claims[4].article_id**: art-0001
+- **claims[4].sentence**: 일본의 경우 25~64세는 주당 평균 30시간을 일하지만, 65세 이상은 7시간 일하는 것으로 집계된다.
+- **claims[4].claim_type**: ClaimType.OTHER
+- **claims[4].subject**: 주당 평균 근로시간
+- **claims[4].value.raw**: 7시간
+- **claims[4].value.llm_value**: 
+- **claims[4].value.is_inferred**: False
+- **claims[4].unit**: 시간
+- **claims[4].aggregation**: 값
+- **claims[4].period_type**: D
+- **claims[4].period_value.raw**: 현재 시점
+- **claims[4].period_value.llm_value**: 
+- **claims[4].period_value.is_inferred**: False
+- **claims[4].compare_period_value**: None
+- **claims[4].compare_group**: None
+- **claims[4].population**: 일본의 65세 이상
+- **claims[4].cited_source**: 맥킨지
 
 ## 3. 한국어 수사 산술로 변환
 
-- **claims[0].value.llm_value**:  → 0.72
-- **claims[0].period_value.llm_value**:  → 2024
+- **claims[0].value.llm_value**:  → 38.8
+- **claims[0].period_value.llm_value**:  → 2025-03
+- **claims[1].value.llm_value**:  → 0.26
+- **claims[1].period_value.llm_value**:  → 현재 시점
+- **claims[2].value.llm_value**:  → 0.011
+- **claims[2].period_value.llm_value**:  → 1997
+- **claims[3].value.llm_value**:  → 30
+- **claims[3].period_value.llm_value**:  → 현재 시점
+- **claims[4].value.llm_value**:  → 7
+- **claims[4].period_value.llm_value**:  → 현재 시점
 
-## 4. KOSIS 통계표 찾기
+## 4. KOSIS 통계표 n개 찾기
 
 - **analysis[0].claim_id**: clm-0001
 - **analysis[0].kosis_search.api**: statisticsSearch.do
-- **analysis[0].kosis_search.query**: 합계출산율
-- **analysis[0].kosis_search.params**: (더미)
-- **analysis[0].kosis_search.hits**: 1
-- **analysis[0].kosis_search.selected_tbl_id**: DT_DUMMY
-- **analysis[0].kosis_search.selected_tbl_name**: (더미) 인구동향조사
+- **analysis[0].kosis_search.query**: 주당평균근로시간
+- **analysis[0].kosis_search.params**: {"method": "getList", "searchNm": "주당평균근로시간", "startCount": "1", "resultCount": "10", "sort": "RANK", "format": "json"}
+- **analysis[0].kosis_search.hits**: 10
+- **analysis[0].kosis_search.selected_tbl_id**: DT_XNS0036
+- **analysis[0].kosis_search.selected_tbl_name**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
 - **analysis[0].kosis_search.success**: 1
 - **analysis[0].kosis_search.error_msg**: None
-- **analysis[0].kosis_search.duration_ms**: 0
+- **analysis[0].kosis_search.duration_ms**: 209
+- **analysis[0].candidates[0].org_id**: 101
+- **analysis[0].candidates[0].tbl_id**: DT_XNS0036
+- **analysis[0].candidates[0].tbl_nm**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[0].candidates[0].org_nm**: 국가데이터처
+- **analysis[0].candidates[0].stat_nm**: 신남방신북방통계
+- **analysis[0].candidates[0].prd_de**: 2008~2024
+- **analysis[0].candidates[1].org_id**: 101
+- **analysis[0].candidates[1].tbl_id**: DT_1DE7097S
+- **analysis[0].candidates[1].tbl_nm**: 성별 시간제근로자 주당 평균취업시간
+- **analysis[0].candidates[1].org_nm**: 국가데이터처
+- **analysis[0].candidates[1].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[1].prd_de**: 2003~2025
+- **analysis[0].candidates[2].org_id**: 101
+- **analysis[0].candidates[2].tbl_id**: DT_1DE7095S
+- **analysis[0].candidates[2].tbl_nm**: 근로형태별/주당평균취업시간 및 증감
+- **analysis[0].candidates[2].org_nm**: 국가데이터처
+- **analysis[0].candidates[2].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[2].prd_de**: 2004~2025
+- **analysis[0].candidates[3].org_id**: 101
+- **analysis[0].candidates[3].tbl_id**: DT_1DE6019S
+- **analysis[0].candidates[3].tbl_nm**: 평소 주당 평균 취업시간
+- **analysis[0].candidates[3].org_nm**: 국가데이터처
+- **analysis[0].candidates[3].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[3].prd_de**: 2007~2025
+- **analysis[0].candidates[4].org_id**: 101
+- **analysis[0].candidates[4].tbl_id**: DT_1DE6052S
+- **analysis[0].candidates[4].tbl_nm**: 평소 주당 평균 취업시간(농림어업제외)
+- **analysis[0].candidates[4].org_nm**: 국가데이터처
+- **analysis[0].candidates[4].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[4].prd_de**: 2009~2025
+- **analysis[0].candidates[5].org_id**: 101
+- **analysis[0].candidates[5].tbl_id**: DT_1DE6075_11
+- **analysis[0].candidates[5].tbl_nm**: 산업별 평소 주당 평균 취업시간(11차)
+- **analysis[0].candidates[5].org_nm**: 국가데이터처
+- **analysis[0].candidates[5].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[5].prd_de**: 2013~2025
+- **analysis[0].candidates[6].org_id**: 101
+- **analysis[0].candidates[6].tbl_id**: DT_1DE6083_11
+- **analysis[0].candidates[6].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+- **analysis[0].candidates[6].org_nm**: 국가데이터처
+- **analysis[0].candidates[6].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[6].prd_de**: 2013~2025
+- **analysis[0].candidates[7].org_id**: 383
+- **analysis[0].candidates[7].tbl_id**: DT_38302_2016_N031
+- **analysis[0].candidates[7].tbl_nm**: 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+- **analysis[0].candidates[7].org_nm**: 한국장애인고용공단
+- **analysis[0].candidates[7].stat_nm**: 기업체장애인고용실태조사
+- **analysis[0].candidates[7].prd_de**: 2015~2024
+- **analysis[0].candidates[8].org_id**: 101
+- **analysis[0].candidates[8].tbl_id**: DT_1DE6075
+- **analysis[0].candidates[8].tbl_nm**: 산업별 평소 주당 평균 취업시간(10차, ~2024)
+- **analysis[0].candidates[8].org_nm**: 국가데이터처
+- **analysis[0].candidates[8].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[8].prd_de**: 2013~2024
+- **analysis[0].candidates[9].org_id**: 101
+- **analysis[0].candidates[9].tbl_id**: DT_1DE6083
+- **analysis[0].candidates[9].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+- **analysis[0].candidates[9].org_nm**: 국가데이터처
+- **analysis[0].candidates[9].stat_nm**: 경제활동인구조사
+- **analysis[0].candidates[9].prd_de**: 2013~2024
 - **analysis[0].kosis_query.api**: statisticsData.do
-- **analysis[0].kosis_query.tbl_id**: DT_DUMMY
+- **analysis[0].kosis_query.tbl_id**: 
 - **analysis[0].kosis_query.params**: 
 - **analysis[0].kosis_query.rows_returned**: 0
 - **analysis[0].kosis_query.success**: 0
 - **analysis[0].kosis_query.error_msg**: None
 - **analysis[0].kosis_query.duration_ms**: 0
+- **analysis[0].evidence**: None
+- **analysis[1].claim_id**: clm-0002
+- **analysis[1].kosis_search.api**: statisticsSearch.do
+- **analysis[1].kosis_search.query**: 노동시장참여율
+- **analysis[1].kosis_search.params**: {"method": "getList", "searchNm": "노동시장참여율", "startCount": "1", "resultCount": "10", "sort": "RANK", "format": "json"}
+- **analysis[1].kosis_search.hits**: 10
+- **analysis[1].kosis_search.selected_tbl_id**: INH_2OEEM3017
+- **analysis[1].kosis_search.selected_tbl_name**: 비경제활동 인구
+- **analysis[1].kosis_search.success**: 1
+- **analysis[1].kosis_search.error_msg**: None
+- **analysis[1].kosis_search.duration_ms**: 143
+- **analysis[1].candidates[0].org_id**: 101
+- **analysis[1].candidates[0].tbl_id**: INH_2OEEM3017
+- **analysis[1].candidates[0].tbl_nm**: 비경제활동 인구
+- **analysis[1].candidates[0].org_nm**: 국가데이터처
+- **analysis[1].candidates[0].stat_nm**: OECD
+- **analysis[1].candidates[0].prd_de**: 1960~2026
+- **analysis[1].candidates[1].org_id**: 101
+- **analysis[1].candidates[1].tbl_id**: INH_2OEEM3017
+- **analysis[1].candidates[1].tbl_nm**: 비경제활동 인구
+- **analysis[1].candidates[1].org_nm**: 국가데이터처
+- **analysis[1].candidates[1].stat_nm**: OECD
+- **analysis[1].candidates[1].prd_de**: 1960~2026
+- **analysis[1].candidates[2].org_id**: 101
+- **analysis[1].candidates[2].tbl_id**: DT_2UNS0304
+- **analysis[1].candidates[2].tbl_nm**: 노동시장 프로그램을 적용 받는 인구 비율
+- **analysis[1].candidates[2].org_nm**: 국가데이터처
+- **analysis[1].candidates[2].stat_nm**: UN
+- **analysis[1].candidates[2].prd_de**: 2002~2023
+- **analysis[1].candidates[3].org_id**: 101
+- **analysis[1].candidates[3].tbl_id**: DT_2OEEM1015
+- **analysis[1].candidates[3].tbl_nm**: 최저소득 급여 수급 중 취업 시 적용되는 실효세율
+- **analysis[1].candidates[3].org_nm**: 국가데이터처
+- **analysis[1].candidates[3].stat_nm**: OECD
+- **analysis[1].candidates[3].prd_de**: 2001~2025
+- **analysis[1].candidates[4].org_id**: 101
+- **analysis[1].candidates[4].tbl_id**: DT_2OEEM1016
+- **analysis[1].candidates[4].tbl_nm**: 실업급여 수급 중 취업 시 적용되는 실효세율_실업기간 2~12개월
+- **analysis[1].candidates[4].org_nm**: 국가데이터처
+- **analysis[1].candidates[4].stat_nm**: OECD
+- **analysis[1].candidates[4].prd_de**: 2001~2025
+- **analysis[1].candidates[5].org_id**: 101
+- **analysis[1].candidates[5].tbl_id**: DT_2OEEM1016_02
+- **analysis[1].candidates[5].tbl_nm**: 실업급여 수급 중 취업 시 적용되는 실효세율_실업기간 18~60개월
+- **analysis[1].candidates[5].org_nm**: 국가데이터처
+- **analysis[1].candidates[5].stat_nm**: OECD
+- **analysis[1].candidates[5].prd_de**: 2001~2025
+- **analysis[1].candidates[6].org_id**: 101
+- **analysis[1].candidates[6].tbl_id**: DT_2OEEM1018
+- **analysis[1].candidates[6].tbl_nm**: 최저소득 급여를 수급하고 보육 서비스를 이용할 때 취업 시 적용되는 실효세율
+- **analysis[1].candidates[6].org_nm**: 국가데이터처
+- **analysis[1].candidates[6].stat_nm**: OECD
+- **analysis[1].candidates[6].prd_de**: 2004~2023
+- **analysis[1].candidates[7].org_id**: 101
+- **analysis[1].candidates[7].tbl_id**: DT_2UNS0306
+- **analysis[1].candidates[7].tbl_nm**: 사회보험 프로그램을 적용 받는 인구 비율
+- **analysis[1].candidates[7].org_nm**: 국가데이터처
+- **analysis[1].candidates[7].stat_nm**: UN
+- **analysis[1].candidates[7].prd_de**: 2000~2023
+- **analysis[1].candidates[8].org_id**: 101
+- **analysis[1].candidates[8].tbl_id**: DT_2UNS0305
+- **analysis[1].candidates[8].tbl_nm**: 사회보장 프로그램을 적용 받는 인구 비율
+- **analysis[1].candidates[8].org_nm**: 국가데이터처
+- **analysis[1].candidates[8].stat_nm**: UN
+- **analysis[1].candidates[8].prd_de**: 2000~2023
+- **analysis[1].candidates[9].org_id**: 101
+- **analysis[1].candidates[9].tbl_id**: DT_2OEEM10171
+- **analysis[1].candidates[9].tbl_nm**: 실업급여를 수급하고 보육 서비스를 이용할 때 취업 시 적용되는 실효세율_1인 가구, 자녀 2명
+- **analysis[1].candidates[9].org_nm**: 국가데이터처
+- **analysis[1].candidates[9].stat_nm**: OECD
+- **analysis[1].candidates[9].prd_de**: 2004~2023
+- **analysis[1].kosis_query.api**: statisticsData.do
+- **analysis[1].kosis_query.tbl_id**: 
+- **analysis[1].kosis_query.params**: 
+- **analysis[1].kosis_query.rows_returned**: 0
+- **analysis[1].kosis_query.success**: 0
+- **analysis[1].kosis_query.error_msg**: None
+- **analysis[1].kosis_query.duration_ms**: 0
+- **analysis[1].evidence**: None
+- **analysis[2].claim_id**: clm-0003
+- **analysis[2].kosis_search.api**: statisticsSearch.do
+- **analysis[2].kosis_search.query**: 연평균노동생산성증가율
+- **analysis[2].kosis_search.params**: {"method": "getList", "searchNm": "연평균노동생산성증가율", "startCount": "1", "resultCount": "10", "sort": "RANK", "format": "json"}
+- **analysis[2].kosis_search.hits**: 5
+- **analysis[2].kosis_search.selected_tbl_id**: DT_13622_2017106
+- **analysis[2].kosis_search.selected_tbl_name**: 국내시장 전망
+- **analysis[2].kosis_search.success**: 1
+- **analysis[2].kosis_search.error_msg**: None
+- **analysis[2].kosis_search.duration_ms**: 151
+- **analysis[2].candidates[0].org_id**: 136
+- **analysis[2].candidates[0].tbl_id**: DT_13622_2017106
+- **analysis[2].candidates[0].tbl_nm**: 국내시장 전망
+- **analysis[2].candidates[0].org_nm**: 산림청
+- **analysis[2].candidates[0].stat_nm**: 임업경영실태조사
+- **analysis[2].candidates[0].prd_de**: 2017~2017
+- **analysis[2].candidates[1].org_id**: 136
+- **analysis[2].candidates[1].tbl_id**: DT_13622_B100
+- **analysis[2].candidates[1].tbl_nm**: 국내시장 전망
+- **analysis[2].candidates[1].org_nm**: 산림청
+- **analysis[2].candidates[1].stat_nm**: 임업경영실태조사
+- **analysis[2].candidates[1].prd_de**: 2013~2013
+- **analysis[2].candidates[2].org_id**: 136
+- **analysis[2].candidates[2].tbl_id**: TX_136_2009_H3074
+- **analysis[2].candidates[2].tbl_nm**: 옻 생산업에 종사하면서 느끼는 애로사항
+- **analysis[2].candidates[2].org_nm**: 산림청
+- **analysis[2].candidates[2].stat_nm**: 임업경영실태조사
+- **analysis[2].candidates[2].prd_de**: 2007~2007
+- **analysis[2].candidates[3].org_id**: 136
+- **analysis[2].candidates[3].tbl_id**: TX_136_2009_H3375
+- **analysis[2].candidates[3].tbl_nm**: 최근 3년간 옻 생산으로 인한 소득 변화 및 이유
+- **analysis[2].candidates[3].org_nm**: 산림청
+- **analysis[2].candidates[3].stat_nm**: 임업경영실태조사
+- **analysis[2].candidates[3].prd_de**: 2007~2007
+- **analysis[2].candidates[4].org_id**: 136
+- **analysis[2].candidates[4].tbl_id**: TX_136_2009_H4204
+- **analysis[2].candidates[4].tbl_nm**: 산채재배 전망 및 계획
+- **analysis[2].candidates[4].org_nm**: 산림청
+- **analysis[2].candidates[4].stat_nm**: 임업경영실태조사
+- **analysis[2].candidates[4].prd_de**: 2006~2006
+- **analysis[2].kosis_query.api**: statisticsData.do
+- **analysis[2].kosis_query.tbl_id**: 
+- **analysis[2].kosis_query.params**: 
+- **analysis[2].kosis_query.rows_returned**: 0
+- **analysis[2].kosis_query.success**: 0
+- **analysis[2].kosis_query.error_msg**: None
+- **analysis[2].kosis_query.duration_ms**: 0
+- **analysis[2].evidence**: None
+- **analysis[3].claim_id**: clm-0004
+- **analysis[3].kosis_search.api**: statisticsSearch.do
+- **analysis[3].kosis_search.query**: 주당평균근로시간
+- **analysis[3].kosis_search.params**: {"method": "getList", "searchNm": "주당평균근로시간", "startCount": "1", "resultCount": "10", "sort": "RANK", "format": "json"}
+- **analysis[3].kosis_search.hits**: 10
+- **analysis[3].kosis_search.selected_tbl_id**: DT_XNS0036
+- **analysis[3].kosis_search.selected_tbl_name**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[3].kosis_search.success**: 1
+- **analysis[3].kosis_search.error_msg**: None
+- **analysis[3].kosis_search.duration_ms**: 147
+- **analysis[3].candidates[0].org_id**: 101
+- **analysis[3].candidates[0].tbl_id**: DT_XNS0036
+- **analysis[3].candidates[0].tbl_nm**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[3].candidates[0].org_nm**: 국가데이터처
+- **analysis[3].candidates[0].stat_nm**: 신남방신북방통계
+- **analysis[3].candidates[0].prd_de**: 2008~2024
+- **analysis[3].candidates[1].org_id**: 101
+- **analysis[3].candidates[1].tbl_id**: DT_1DE7097S
+- **analysis[3].candidates[1].tbl_nm**: 성별 시간제근로자 주당 평균취업시간
+- **analysis[3].candidates[1].org_nm**: 국가데이터처
+- **analysis[3].candidates[1].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[1].prd_de**: 2003~2025
+- **analysis[3].candidates[2].org_id**: 101
+- **analysis[3].candidates[2].tbl_id**: DT_1DE7095S
+- **analysis[3].candidates[2].tbl_nm**: 근로형태별/주당평균취업시간 및 증감
+- **analysis[3].candidates[2].org_nm**: 국가데이터처
+- **analysis[3].candidates[2].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[2].prd_de**: 2004~2025
+- **analysis[3].candidates[3].org_id**: 101
+- **analysis[3].candidates[3].tbl_id**: DT_1DE6019S
+- **analysis[3].candidates[3].tbl_nm**: 평소 주당 평균 취업시간
+- **analysis[3].candidates[3].org_nm**: 국가데이터처
+- **analysis[3].candidates[3].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[3].prd_de**: 2007~2025
+- **analysis[3].candidates[4].org_id**: 101
+- **analysis[3].candidates[4].tbl_id**: DT_1DE6052S
+- **analysis[3].candidates[4].tbl_nm**: 평소 주당 평균 취업시간(농림어업제외)
+- **analysis[3].candidates[4].org_nm**: 국가데이터처
+- **analysis[3].candidates[4].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[4].prd_de**: 2009~2025
+- **analysis[3].candidates[5].org_id**: 101
+- **analysis[3].candidates[5].tbl_id**: DT_1DE6075_11
+- **analysis[3].candidates[5].tbl_nm**: 산업별 평소 주당 평균 취업시간(11차)
+- **analysis[3].candidates[5].org_nm**: 국가데이터처
+- **analysis[3].candidates[5].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[5].prd_de**: 2013~2025
+- **analysis[3].candidates[6].org_id**: 101
+- **analysis[3].candidates[6].tbl_id**: DT_1DE6083_11
+- **analysis[3].candidates[6].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+- **analysis[3].candidates[6].org_nm**: 국가데이터처
+- **analysis[3].candidates[6].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[6].prd_de**: 2013~2025
+- **analysis[3].candidates[7].org_id**: 383
+- **analysis[3].candidates[7].tbl_id**: DT_38302_2016_N031
+- **analysis[3].candidates[7].tbl_nm**: 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+- **analysis[3].candidates[7].org_nm**: 한국장애인고용공단
+- **analysis[3].candidates[7].stat_nm**: 기업체장애인고용실태조사
+- **analysis[3].candidates[7].prd_de**: 2015~2024
+- **analysis[3].candidates[8].org_id**: 101
+- **analysis[3].candidates[8].tbl_id**: DT_1DE6075
+- **analysis[3].candidates[8].tbl_nm**: 산업별 평소 주당 평균 취업시간(10차, ~2024)
+- **analysis[3].candidates[8].org_nm**: 국가데이터처
+- **analysis[3].candidates[8].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[8].prd_de**: 2013~2024
+- **analysis[3].candidates[9].org_id**: 101
+- **analysis[3].candidates[9].tbl_id**: DT_1DE6083
+- **analysis[3].candidates[9].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+- **analysis[3].candidates[9].org_nm**: 국가데이터처
+- **analysis[3].candidates[9].stat_nm**: 경제활동인구조사
+- **analysis[3].candidates[9].prd_de**: 2013~2024
+- **analysis[3].kosis_query.api**: statisticsData.do
+- **analysis[3].kosis_query.tbl_id**: 
+- **analysis[3].kosis_query.params**: 
+- **analysis[3].kosis_query.rows_returned**: 0
+- **analysis[3].kosis_query.success**: 0
+- **analysis[3].kosis_query.error_msg**: None
+- **analysis[3].kosis_query.duration_ms**: 0
+- **analysis[3].evidence**: None
+- **analysis[4].claim_id**: clm-0005
+- **analysis[4].kosis_search.api**: statisticsSearch.do
+- **analysis[4].kosis_search.query**: 주당평균근로시간
+- **analysis[4].kosis_search.params**: {"method": "getList", "searchNm": "주당평균근로시간", "startCount": "1", "resultCount": "10", "sort": "RANK", "format": "json"}
+- **analysis[4].kosis_search.hits**: 10
+- **analysis[4].kosis_search.selected_tbl_id**: DT_XNS0036
+- **analysis[4].kosis_search.selected_tbl_name**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[4].kosis_search.success**: 1
+- **analysis[4].kosis_search.error_msg**: None
+- **analysis[4].kosis_search.duration_ms**: 147
+- **analysis[4].candidates[0].org_id**: 101
+- **analysis[4].candidates[0].tbl_id**: DT_XNS0036
+- **analysis[4].candidates[0].tbl_nm**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[4].candidates[0].org_nm**: 국가데이터처
+- **analysis[4].candidates[0].stat_nm**: 신남방신북방통계
+- **analysis[4].candidates[0].prd_de**: 2008~2024
+- **analysis[4].candidates[1].org_id**: 101
+- **analysis[4].candidates[1].tbl_id**: DT_1DE7097S
+- **analysis[4].candidates[1].tbl_nm**: 성별 시간제근로자 주당 평균취업시간
+- **analysis[4].candidates[1].org_nm**: 국가데이터처
+- **analysis[4].candidates[1].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[1].prd_de**: 2003~2025
+- **analysis[4].candidates[2].org_id**: 101
+- **analysis[4].candidates[2].tbl_id**: DT_1DE7095S
+- **analysis[4].candidates[2].tbl_nm**: 근로형태별/주당평균취업시간 및 증감
+- **analysis[4].candidates[2].org_nm**: 국가데이터처
+- **analysis[4].candidates[2].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[2].prd_de**: 2004~2025
+- **analysis[4].candidates[3].org_id**: 101
+- **analysis[4].candidates[3].tbl_id**: DT_1DE6019S
+- **analysis[4].candidates[3].tbl_nm**: 평소 주당 평균 취업시간
+- **analysis[4].candidates[3].org_nm**: 국가데이터처
+- **analysis[4].candidates[3].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[3].prd_de**: 2007~2025
+- **analysis[4].candidates[4].org_id**: 101
+- **analysis[4].candidates[4].tbl_id**: DT_1DE6052S
+- **analysis[4].candidates[4].tbl_nm**: 평소 주당 평균 취업시간(농림어업제외)
+- **analysis[4].candidates[4].org_nm**: 국가데이터처
+- **analysis[4].candidates[4].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[4].prd_de**: 2009~2025
+- **analysis[4].candidates[5].org_id**: 101
+- **analysis[4].candidates[5].tbl_id**: DT_1DE6075_11
+- **analysis[4].candidates[5].tbl_nm**: 산업별 평소 주당 평균 취업시간(11차)
+- **analysis[4].candidates[5].org_nm**: 국가데이터처
+- **analysis[4].candidates[5].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[5].prd_de**: 2013~2025
+- **analysis[4].candidates[6].org_id**: 101
+- **analysis[4].candidates[6].tbl_id**: DT_1DE6083_11
+- **analysis[4].candidates[6].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+- **analysis[4].candidates[6].org_nm**: 국가데이터처
+- **analysis[4].candidates[6].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[6].prd_de**: 2013~2025
+- **analysis[4].candidates[7].org_id**: 383
+- **analysis[4].candidates[7].tbl_id**: DT_38302_2016_N031
+- **analysis[4].candidates[7].tbl_nm**: 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+- **analysis[4].candidates[7].org_nm**: 한국장애인고용공단
+- **analysis[4].candidates[7].stat_nm**: 기업체장애인고용실태조사
+- **analysis[4].candidates[7].prd_de**: 2015~2024
+- **analysis[4].candidates[8].org_id**: 101
+- **analysis[4].candidates[8].tbl_id**: DT_1DE6075
+- **analysis[4].candidates[8].tbl_nm**: 산업별 평소 주당 평균 취업시간(10차, ~2024)
+- **analysis[4].candidates[8].org_nm**: 국가데이터처
+- **analysis[4].candidates[8].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[8].prd_de**: 2013~2024
+- **analysis[4].candidates[9].org_id**: 101
+- **analysis[4].candidates[9].tbl_id**: DT_1DE6083
+- **analysis[4].candidates[9].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+- **analysis[4].candidates[9].org_nm**: 국가데이터처
+- **analysis[4].candidates[9].stat_nm**: 경제활동인구조사
+- **analysis[4].candidates[9].prd_de**: 2013~2024
+- **analysis[4].kosis_query.api**: statisticsData.do
+- **analysis[4].kosis_query.tbl_id**: 
+- **analysis[4].kosis_query.params**: 
+- **analysis[4].kosis_query.rows_returned**: 0
+- **analysis[4].kosis_query.success**: 0
+- **analysis[4].kosis_query.error_msg**: None
+- **analysis[4].kosis_query.duration_ms**: 0
+- **analysis[4].evidence**: None
 
-## 5. KOSIS 조회
+## 5. KOSIS 셀 값 조회
 
-- **analysis[0].kosis_query.params**:  → (더미)
-- **analysis[0].kosis_query.rows_returned**: 0 → 1
-- **analysis[0].kosis_query.success**: 0 → 1
+- **analysis[0].cell_attempts[0].tbl_id**: DT_XNS0036
+- **analysis[0].cell_attempts[0].tbl_nm**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[0].cell_attempts[0].matched**: False
+- **analysis[0].cell_attempts[0].value**: None
+- **analysis[0].cell_attempts[0].unit**: None
+- **analysis[0].cell_attempts[0].itm_id**: T10
+- **analysis[0].cell_attempts[0].items[0]**: 제조업 주당 평균근로시간
+- **analysis[0].cell_attempts[0].axes.국가별[0]**: 브루나이(a)
+- **analysis[0].cell_attempts[0].axes.국가별[1]**: 캄보디아(a)
+- **analysis[0].cell_attempts[0].axes.국가별[2]**: 인도(a)
+- **analysis[0].cell_attempts[0].axes.국가별[3]**: 인도네시아(a)
+- **analysis[0].cell_attempts[0].axes.국가별[4]**: 라오스(a)
+- **analysis[0].cell_attempts[0].axes.국가별[5]**: 말레이시아(a)
+- **analysis[0].cell_attempts[0].axes.국가별[6]**: 미얀마(a)
+- **analysis[0].cell_attempts[0].axes.국가별[7]**: 필리핀(a)
+- **analysis[0].cell_attempts[0].axes.국가별[8]**: 싱가포르(b)
+- **analysis[0].cell_attempts[0].axes.국가별[9]**: 태국(a)
+- **analysis[0].cell_attempts[0].axes.국가별[10]**: 베트남(a)
+- **analysis[0].cell_attempts[0].error**: 분류축 A 매칭 실패: population='한국근로자'
+- **analysis[0].cell_attempts[1].tbl_id**: DT_1DE7097S
+- **analysis[0].cell_attempts[1].tbl_nm**: 성별 시간제근로자 주당 평균취업시간
+- **analysis[0].cell_attempts[1].matched**: False
+- **analysis[0].cell_attempts[1].value**: None
+- **analysis[0].cell_attempts[1].unit**: None
+- **analysis[0].cell_attempts[1].itm_id**: None
+- **analysis[0].cell_attempts[1].items[0]**: 시간제근로자
+- **analysis[0].cell_attempts[1].axes.성별[0]**: 계
+- **analysis[0].cell_attempts[1].axes.성별[1]**: 남자
+- **analysis[0].cell_attempts[1].axes.성별[2]**: 여자
+- **analysis[0].cell_attempts[1].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[2].tbl_id**: DT_1DE7095S
+- **analysis[0].cell_attempts[2].tbl_nm**: 근로형태별/주당평균취업시간 및 증감
+- **analysis[0].cell_attempts[2].matched**: False
+- **analysis[0].cell_attempts[2].value**: None
+- **analysis[0].cell_attempts[2].unit**: None
+- **analysis[0].cell_attempts[2].itm_id**: None
+- **analysis[0].cell_attempts[2].items[0]**: 평균취업시간
+- **analysis[0].cell_attempts[2].items[1]**: 증감(전년동월)
+- **analysis[0].cell_attempts[2].axes.근로형태별[0]**: 임금근로자
+- **analysis[0].cell_attempts[2].axes.근로형태별[1]**: 정규직
+- **analysis[0].cell_attempts[2].axes.근로형태별[2]**: 비정규직
+- **analysis[0].cell_attempts[2].axes.근로형태별[3]**: 한시적
+- **analysis[0].cell_attempts[2].axes.근로형태별[4]**: 기간제
+- **analysis[0].cell_attempts[2].axes.근로형태별[5]**: 비기간제
+- **analysis[0].cell_attempts[2].axes.근로형태별[6]**: 시간제
+- **analysis[0].cell_attempts[2].axes.근로형태별[7]**: 비전형
+- **analysis[0].cell_attempts[2].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[3].tbl_id**: DT_1DE6019S
+- **analysis[0].cell_attempts[3].tbl_nm**: 평소 주당 평균 취업시간
+- **analysis[0].cell_attempts[3].matched**: False
+- **analysis[0].cell_attempts[3].value**: None
+- **analysis[0].cell_attempts[3].unit**: None
+- **analysis[0].cell_attempts[3].itm_id**: None
+- **analysis[0].cell_attempts[3].items[0]**: 평소 주당 평균취업시간
+- **analysis[0].cell_attempts[3].axes.성별[0]**: 계
+- **analysis[0].cell_attempts[3].axes.성별[1]**: 남자
+- **analysis[0].cell_attempts[3].axes.성별[2]**: 여자
+- **analysis[0].cell_attempts[3].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[0].cell_attempts[3].axes.비임금근로별[1]**: - 자영업자
+- **analysis[0].cell_attempts[3].axes.비임금근로별[2]**: - 고용원이 있는 자영업자
+- **analysis[0].cell_attempts[3].axes.비임금근로별[3]**: - 고용원이 없는 자영업자
+- **analysis[0].cell_attempts[3].axes.비임금근로별[4]**: - 무급가족종사자
+- **analysis[0].cell_attempts[3].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[4].tbl_id**: DT_1DE6052S
+- **analysis[0].cell_attempts[4].tbl_nm**: 평소 주당 평균 취업시간(농림어업제외)
+- **analysis[0].cell_attempts[4].matched**: False
+- **analysis[0].cell_attempts[4].value**: None
+- **analysis[0].cell_attempts[4].unit**: None
+- **analysis[0].cell_attempts[4].itm_id**: None
+- **analysis[0].cell_attempts[4].items[0]**: 평소 주당 평균취업시간
+- **analysis[0].cell_attempts[4].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[0].cell_attempts[4].axes.비임금근로별[1]**: - 자영업자
+- **analysis[0].cell_attempts[4].axes.비임금근로별[2]**: - 고용원이 있는 자영업자
+- **analysis[0].cell_attempts[4].axes.비임금근로별[3]**: - 고용원이 없는 자영업자
+- **analysis[0].cell_attempts[4].axes.비임금근로별[4]**: - 무급가족종사자
+- **analysis[0].cell_attempts[4].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[5].tbl_id**: DT_1DE6075_11
+- **analysis[0].cell_attempts[5].tbl_nm**: 산업별 평소 주당 평균 취업시간(11차)
+- **analysis[0].cell_attempts[5].matched**: False
+- **analysis[0].cell_attempts[5].value**: None
+- **analysis[0].cell_attempts[5].unit**: None
+- **analysis[0].cell_attempts[5].itm_id**: None
+- **analysis[0].cell_attempts[5].items[0]**: 평소 주당 평균취업시간
+- **analysis[0].cell_attempts[5].axes.산업별[0]**: 계
+- **analysis[0].cell_attempts[5].axes.산업별[1]**: A 농업 임업 및 어업
+- **analysis[0].cell_attempts[5].axes.산업별[2]**: - 광·제조업(BC)
+- **analysis[0].cell_attempts[5].axes.산업별[3]**: C 제조업
+- **analysis[0].cell_attempts[5].axes.산업별[4]**: - 사회간접자본 및 기타서비스업(D~U)
+- **analysis[0].cell_attempts[5].axes.산업별[5]**: F 건설업
+- **analysis[0].cell_attempts[5].axes.산업별[6]**: - 도소매·음식숙박업(G I)
+- **analysis[0].cell_attempts[5].axes.산업별[7]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[0].cell_attempts[5].axes.산업별[8]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[0].cell_attempts[5].axes.산업별[9]**: G 도매 및 소매업
+- **analysis[0].cell_attempts[5].axes.산업별[10]**: I 숙박 및 음식점업
+- **analysis[0].cell_attempts[5].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[0].cell_attempts[5].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[6].tbl_id**: DT_1DE6083_11
+- **analysis[0].cell_attempts[6].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+- **analysis[0].cell_attempts[6].matched**: False
+- **analysis[0].cell_attempts[6].value**: None
+- **analysis[0].cell_attempts[6].unit**: None
+- **analysis[0].cell_attempts[6].itm_id**: None
+- **analysis[0].cell_attempts[6].items[0]**: 평소 주당 평균취업시간
+- **analysis[0].cell_attempts[6].axes.산업별[0]**: 계
+- **analysis[0].cell_attempts[6].axes.산업별[1]**: - 광·제조업(BC)
+- **analysis[0].cell_attempts[6].axes.산업별[2]**: C 제조업
+- **analysis[0].cell_attempts[6].axes.산업별[3]**: F 건설업
+- **analysis[0].cell_attempts[6].axes.산업별[4]**: - 도소매·음식숙박업(G I)
+- **analysis[0].cell_attempts[6].axes.산업별[5]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[0].cell_attempts[6].axes.산업별[6]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[0].cell_attempts[6].axes.산업별[7]**: G 도매 및 소매업
+- **analysis[0].cell_attempts[6].axes.산업별[8]**: I 숙박 및 음식점업
+- **analysis[0].cell_attempts[6].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[0].cell_attempts[6].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[7].tbl_id**: DT_38302_2016_N031
+- **analysis[0].cell_attempts[7].tbl_nm**: 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+- **analysis[0].cell_attempts[7].matched**: False
+- **analysis[0].cell_attempts[7].value**: None
+- **analysis[0].cell_attempts[7].unit**: None
+- **analysis[0].cell_attempts[7].itm_id**: None
+- **analysis[0].cell_attempts[7].items[0]**: 추정수
+- **analysis[0].cell_attempts[7].items[1]**: 근로자 주당 소정 근로시간
+- **analysis[0].cell_attempts[7].items[2]**: 근로자 주당 실제 근로시간
+- **analysis[0].cell_attempts[7].axes.기업체별[0]**: 전체
+- **analysis[0].cell_attempts[7].axes.기업체별[1]**: 장애인고용 여부
+- **analysis[0].cell_attempts[7].axes.기업체별[2]**: 고용
+- **analysis[0].cell_attempts[7].axes.기업체별[3]**: 미고용
+- **analysis[0].cell_attempts[7].axes.기업체별[4]**: 고용의무기업체 여부
+- **analysis[0].cell_attempts[7].axes.기업체별[5]**: 비의무
+- **analysis[0].cell_attempts[7].axes.기업체별[6]**: 5~49명
+- **analysis[0].cell_attempts[7].axes.기업체별[7]**: 의무(50명 이상)
+- **analysis[0].cell_attempts[7].axes.기업체별[8]**: 50~299명
+- **analysis[0].cell_attempts[7].axes.기업체별[9]**: 300~999명
+- **analysis[0].cell_attempts[7].axes.기업체별[10]**: 1000명이상
+- **analysis[0].cell_attempts[7].axes.기업체별[11]**: 부담금 납부 대상(100명 이상)
+- **analysis[0].cell_attempts[7].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[8].tbl_id**: DT_1DE6075
+- **analysis[0].cell_attempts[8].tbl_nm**: 산업별 평소 주당 평균 취업시간(10차, ~2024)
+- **analysis[0].cell_attempts[8].matched**: False
+- **analysis[0].cell_attempts[8].value**: None
+- **analysis[0].cell_attempts[8].unit**: None
+- **analysis[0].cell_attempts[8].itm_id**: None
+- **analysis[0].cell_attempts[8].items[0]**: 평소 주당 평균취업시간
+- **analysis[0].cell_attempts[8].axes.산업별[0]**: 계
+- **analysis[0].cell_attempts[8].axes.산업별[1]**: A 농업 임업 및 어업
+- **analysis[0].cell_attempts[8].axes.산업별[2]**: - 광·제조업(BC)
+- **analysis[0].cell_attempts[8].axes.산업별[3]**: C 제조업
+- **analysis[0].cell_attempts[8].axes.산업별[4]**: - 사회간접자본 및 기타서비스업(D~U)
+- **analysis[0].cell_attempts[8].axes.산업별[5]**: F 건설업
+- **analysis[0].cell_attempts[8].axes.산업별[6]**: - 도소매·음식숙박업(G I)
+- **analysis[0].cell_attempts[8].axes.산업별[7]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[0].cell_attempts[8].axes.산업별[8]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[0].cell_attempts[8].axes.산업별[9]**: G 도매 및 소매업
+- **analysis[0].cell_attempts[8].axes.산업별[10]**: I 숙박 및 음식점업
+- **analysis[0].cell_attempts[8].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[0].cell_attempts[8].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].cell_attempts[9].tbl_id**: DT_1DE6083
+- **analysis[0].cell_attempts[9].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+- **analysis[0].cell_attempts[9].matched**: False
+- **analysis[0].cell_attempts[9].value**: None
+- **analysis[0].cell_attempts[9].unit**: None
+- **analysis[0].cell_attempts[9].itm_id**: None
+- **analysis[0].cell_attempts[9].items[0]**: 평소 주당 평균취업시간
+- **analysis[0].cell_attempts[9].axes.산업별[0]**: 계
+- **analysis[0].cell_attempts[9].axes.산업별[1]**: - 광·제조업(BC)
+- **analysis[0].cell_attempts[9].axes.산업별[2]**: C 제조업
+- **analysis[0].cell_attempts[9].axes.산업별[3]**: F 건설업
+- **analysis[0].cell_attempts[9].axes.산업별[4]**: - 도소매·음식숙박업(G I)
+- **analysis[0].cell_attempts[9].axes.산업별[5]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[0].cell_attempts[9].axes.산업별[6]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[0].cell_attempts[9].axes.산업별[7]**: G 도매 및 소매업
+- **analysis[0].cell_attempts[9].axes.산업별[8]**: I 숙박 및 음식점업
+- **analysis[0].cell_attempts[9].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[0].cell_attempts[9].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[0].kosis_query.api**: statisticsData.do → statisticsParameterData.do
+- **analysis[0].kosis_query.error_msg**: None → 후보 10개 모두 매칭 실패 (예: DT_XNS0036: 분류축 A 매칭 실패: population='한국근로자')
+- **analysis[0].kosis_query.duration_ms**: 0 → 1021
+- **analysis[1].cell_attempts[0].tbl_id**: INH_2OEEM3017
+- **analysis[1].cell_attempts[0].tbl_nm**: 비경제활동 인구
+- **analysis[1].cell_attempts[0].matched**: False
+- **analysis[1].cell_attempts[0].value**: None
+- **analysis[1].cell_attempts[0].unit**: None
+- **analysis[1].cell_attempts[0].itm_id**: None
+- **analysis[1].cell_attempts[0].items[0]**: 노동력 외 인구
+- **analysis[1].cell_attempts[0].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[0].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[0].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[0].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[0].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[0].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[0].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[0].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[0].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[0].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[0].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[0].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[0].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[0].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[0].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[0].axes.국가[15]**: …외 60개
+- **analysis[1].cell_attempts[0].axes.조정[0]**: 연간 및 계절조정
+- **analysis[1].cell_attempts[0].axes.조정[1]**: 연간 및 계절조정 하지 않음
+- **analysis[1].cell_attempts[0].axes.성별[0]**: 전체
+- **analysis[1].cell_attempts[0].axes.성별[1]**: 남성
+- **analysis[1].cell_attempts[0].axes.성별[2]**: 여성
+- **analysis[1].cell_attempts[0].axes.연령[0]**: 15세이상
+- **analysis[1].cell_attempts[0].axes.연령[1]**: 15-24세
+- **analysis[1].cell_attempts[0].axes.연령[2]**: 15-64세
+- **analysis[1].cell_attempts[0].axes.연령[3]**: 15-74세
+- **analysis[1].cell_attempts[0].axes.연령[4]**: 25-54세
+- **analysis[1].cell_attempts[0].axes.연령[5]**: 55-64세
+- **analysis[1].cell_attempts[0].axes.경제활동[0]**: 분류 미적용
+- **analysis[1].cell_attempts[0].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[1].tbl_id**: INH_2OEEM3017
+- **analysis[1].cell_attempts[1].tbl_nm**: 비경제활동 인구
+- **analysis[1].cell_attempts[1].matched**: False
+- **analysis[1].cell_attempts[1].value**: None
+- **analysis[1].cell_attempts[1].unit**: None
+- **analysis[1].cell_attempts[1].itm_id**: None
+- **analysis[1].cell_attempts[1].items[0]**: 노동력 외 인구
+- **analysis[1].cell_attempts[1].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[1].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[1].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[1].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[1].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[1].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[1].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[1].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[1].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[1].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[1].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[1].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[1].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[1].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[1].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[1].axes.국가[15]**: …외 60개
+- **analysis[1].cell_attempts[1].axes.조정[0]**: 연간 및 계절조정
+- **analysis[1].cell_attempts[1].axes.조정[1]**: 연간 및 계절조정 하지 않음
+- **analysis[1].cell_attempts[1].axes.성별[0]**: 전체
+- **analysis[1].cell_attempts[1].axes.성별[1]**: 남성
+- **analysis[1].cell_attempts[1].axes.성별[2]**: 여성
+- **analysis[1].cell_attempts[1].axes.연령[0]**: 15세이상
+- **analysis[1].cell_attempts[1].axes.연령[1]**: 15-24세
+- **analysis[1].cell_attempts[1].axes.연령[2]**: 15-64세
+- **analysis[1].cell_attempts[1].axes.연령[3]**: 15-74세
+- **analysis[1].cell_attempts[1].axes.연령[4]**: 25-54세
+- **analysis[1].cell_attempts[1].axes.연령[5]**: 55-64세
+- **analysis[1].cell_attempts[1].axes.경제활동[0]**: 분류 미적용
+- **analysis[1].cell_attempts[1].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[2].tbl_id**: DT_2UNS0304
+- **analysis[1].cell_attempts[2].tbl_nm**: 노동시장 프로그램을 적용 받는 인구 비율
+- **analysis[1].cell_attempts[2].matched**: False
+- **analysis[1].cell_attempts[2].value**: None
+- **analysis[1].cell_attempts[2].unit**: None
+- **analysis[1].cell_attempts[2].itm_id**: None
+- **analysis[1].cell_attempts[2].items[0]**: 전체(전국평균) 또는 비분류
+- **analysis[1].cell_attempts[2].items[1]**: 1분위(최저)
+- **analysis[1].cell_attempts[2].axes.국가[0]**: 아시아
+- **analysis[1].cell_attempts[2].axes.국가[1]**: 대한민국
+- **analysis[1].cell_attempts[2].axes.국가[2]**: 아제르바이잔
+- **analysis[1].cell_attempts[2].axes.국가[3]**: 바레인
+- **analysis[1].cell_attempts[2].axes.국가[4]**: 중국
+- **analysis[1].cell_attempts[2].axes.국가[5]**: 키프로스
+- **analysis[1].cell_attempts[2].axes.국가[6]**: 조지아
+- **analysis[1].cell_attempts[2].axes.국가[7]**: 홍콩
+- **analysis[1].cell_attempts[2].axes.국가[8]**: 인도
+- **analysis[1].cell_attempts[2].axes.국가[9]**: 인도네시아
+- **analysis[1].cell_attempts[2].axes.국가[10]**: 이란
+- **analysis[1].cell_attempts[2].axes.국가[11]**: 이라크
+- **analysis[1].cell_attempts[2].axes.국가[12]**: 이스라엘
+- **analysis[1].cell_attempts[2].axes.국가[13]**: 일본
+- **analysis[1].cell_attempts[2].axes.국가[14]**: 요르단
+- **analysis[1].cell_attempts[2].axes.국가[15]**: …외 125개
+- **analysis[1].cell_attempts[2].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[3].tbl_id**: DT_2OEEM1015
+- **analysis[1].cell_attempts[3].tbl_nm**: 최저소득 급여 수급 중 취업 시 적용되는 실효세율
+- **analysis[1].cell_attempts[3].matched**: False
+- **analysis[1].cell_attempts[3].value**: None
+- **analysis[1].cell_attempts[3].unit**: None
+- **analysis[1].cell_attempts[3].itm_id**: None
+- **analysis[1].cell_attempts[3].items[0]**: 최저소득 수급 가족의 참여 세율(PTR)
+- **analysis[1].cell_attempts[3].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[3].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[3].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[3].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[3].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[3].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[3].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[3].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[3].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[3].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[3].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[3].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[3].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[3].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[3].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[3].axes.국가[15]**: …외 61개
+- **analysis[1].cell_attempts[3].axes.기준 소득자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[3].axes.기준 소득자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[3].axes.기준 소득자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[3].axes.가구 유형[0]**: 1인 가구 자녀 없음
+- **analysis[1].cell_attempts[3].axes.가구 유형[1]**: 1인 가구 자녀 2명
+- **analysis[1].cell_attempts[3].axes.가구 유형[2]**: 부부 자녀 없음
+- **analysis[1].cell_attempts[3].axes.가구 유형[3]**: 부부 자녀 2명
+- **analysis[1].cell_attempts[3].axes.배우자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[3].axes.배우자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[3].axes.배우자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[3].axes.배우자의 소득[3]**: 소득 없음 기여성 급여 없는 실업 상태
+- **analysis[1].cell_attempts[3].axes.배우자의 소득[4]**: 분류 미적용
+- **analysis[1].cell_attempts[3].axes.임대 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[3].axes.임대 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[3].axes.한시적 근로 장려금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[3].axes.한시적 근로 장려금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[3].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[4].tbl_id**: DT_2OEEM1016
+- **analysis[1].cell_attempts[4].tbl_nm**: 실업급여 수급 중 취업 시 적용되는 실효세율_실업기간 2~12개월
+- **analysis[1].cell_attempts[4].matched**: False
+- **analysis[1].cell_attempts[4].value**: None
+- **analysis[1].cell_attempts[4].unit**: None
+- **analysis[1].cell_attempts[4].itm_id**: None
+- **analysis[1].cell_attempts[4].items[0]**: 실업급여 수급 가족의 참여 세율(PTR)
+- **analysis[1].cell_attempts[4].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[4].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[4].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[4].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[4].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[4].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[4].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[4].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[4].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[4].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[4].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[4].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[4].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[4].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[4].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[4].axes.국가[15]**: …외 61개
+- **analysis[1].cell_attempts[4].axes.기준 소득자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[4].axes.기준 소득자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[4].axes.기준 소득자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[4].axes.가구 유형[0]**: 1인 가구 자녀 없음
+- **analysis[1].cell_attempts[4].axes.가구 유형[1]**: 1인 가구 자녀 2명
+- **analysis[1].cell_attempts[4].axes.가구 유형[2]**: 부부 자녀 없음
+- **analysis[1].cell_attempts[4].axes.가구 유형[3]**: 부부 자녀 2명
+- **analysis[1].cell_attempts[4].axes.배우자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[4].axes.배우자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[4].axes.배우자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[4].axes.배우자의 소득[3]**: 소득 없음 기여성 급여 없는 실업 상태
+- **analysis[1].cell_attempts[4].axes.배우자의 소득[4]**: 분류 미적용
+- **analysis[1].cell_attempts[4].axes.실업 기간[0]**: 2개월
+- **analysis[1].cell_attempts[4].axes.실업 기간[1]**: 4개월
+- **analysis[1].cell_attempts[4].axes.실업 기간[2]**: 6개월
+- **analysis[1].cell_attempts[4].axes.실업 기간[3]**: 8개월
+- **analysis[1].cell_attempts[4].axes.실업 기간[4]**: 12개월
+- **analysis[1].cell_attempts[4].axes.사회복지 또는 최저소득 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[4].axes.사회복지 또는 최저소득 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[4].axes.임대 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[4].axes.임대 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[4].axes.한시적 근로 장려금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[4].axes.한시적 근로 장려금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[4].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[5].tbl_id**: DT_2OEEM1016_02
+- **analysis[1].cell_attempts[5].tbl_nm**: 실업급여 수급 중 취업 시 적용되는 실효세율_실업기간 18~60개월
+- **analysis[1].cell_attempts[5].matched**: False
+- **analysis[1].cell_attempts[5].value**: None
+- **analysis[1].cell_attempts[5].unit**: None
+- **analysis[1].cell_attempts[5].itm_id**: None
+- **analysis[1].cell_attempts[5].items[0]**: 실업급여 수급 가족의 참여 세율(PTR)
+- **analysis[1].cell_attempts[5].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[5].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[5].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[5].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[5].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[5].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[5].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[5].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[5].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[5].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[5].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[5].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[5].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[5].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[5].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[5].axes.국가[15]**: …외 61개
+- **analysis[1].cell_attempts[5].axes.기준 소득자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[5].axes.기준 소득자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[5].axes.기준 소득자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[5].axes.가구 유형[0]**: 1인 가구 자녀 없음
+- **analysis[1].cell_attempts[5].axes.가구 유형[1]**: 1인 가구 자녀 2명
+- **analysis[1].cell_attempts[5].axes.가구 유형[2]**: 부부 자녀 없음
+- **analysis[1].cell_attempts[5].axes.가구 유형[3]**: 부부 자녀 2명
+- **analysis[1].cell_attempts[5].axes.배우자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[5].axes.배우자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[5].axes.배우자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[5].axes.배우자의 소득[3]**: 소득 없음 기여성 급여 없는 실업 상태
+- **analysis[1].cell_attempts[5].axes.배우자의 소득[4]**: 분류 미적용
+- **analysis[1].cell_attempts[5].axes.실업 기간[0]**: 18개월
+- **analysis[1].cell_attempts[5].axes.실업 기간[1]**: 24개월
+- **analysis[1].cell_attempts[5].axes.실업 기간[2]**: 36개월
+- **analysis[1].cell_attempts[5].axes.실업 기간[3]**: 60개월
+- **analysis[1].cell_attempts[5].axes.사회복지 또는 최저소득 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[5].axes.사회복지 또는 최저소득 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[5].axes.임대 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[5].axes.임대 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[5].axes.한시적 근로 장려금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[5].axes.한시적 근로 장려금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[5].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[6].tbl_id**: DT_2OEEM1018
+- **analysis[1].cell_attempts[6].tbl_nm**: 최저소득 급여를 수급하고 보육 서비스를 이용할 때 취업 시 적용되는 실효세율
+- **analysis[1].cell_attempts[6].matched**: False
+- **analysis[1].cell_attempts[6].value**: None
+- **analysis[1].cell_attempts[6].unit**: None
+- **analysis[1].cell_attempts[6].itm_id**: None
+- **analysis[1].cell_attempts[6].items[0]**: 최저소득 수급 부모가 보육 서비스를 이용하는 경우의 참여 세율(PTR)
+- **analysis[1].cell_attempts[6].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[6].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[6].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[6].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[6].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[6].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[6].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[6].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[6].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[6].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[6].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[6].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[6].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[6].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[6].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[6].axes.국가[15]**: …외 61개
+- **analysis[1].cell_attempts[6].axes.기준 소득자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[6].axes.기준 소득자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[6].axes.기준 소득자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[6].axes.가구 유형[0]**: 1인 가구 자녀 2명
+- **analysis[1].cell_attempts[6].axes.가구 유형[1]**: 부부 자녀 2명
+- **analysis[1].cell_attempts[6].axes.배우자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[6].axes.배우자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[6].axes.배우자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[6].axes.배우자의 소득[3]**: 분류 미적용
+- **analysis[1].cell_attempts[6].axes.임대 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[6].axes.임대 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[6].axes.한시적 근로 장려금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[6].axes.한시적 근로 장려금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[6].axes.참여 세율 구성[0]**: 전체
+- **analysis[1].cell_attempts[6].axes.참여 세율 구성[1]**: 보육비 분담금
+- **analysis[1].cell_attempts[6].axes.참여 세율 구성[2]**: 보육 수당 분담금
+- **analysis[1].cell_attempts[6].axes.참여 세율 구성[3]**: 세금 분담금
+- **analysis[1].cell_attempts[6].axes.참여 세율 구성[4]**: 기타 수당 분담금
+- **analysis[1].cell_attempts[6].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[7].tbl_id**: DT_2UNS0306
+- **analysis[1].cell_attempts[7].tbl_nm**: 사회보험 프로그램을 적용 받는 인구 비율
+- **analysis[1].cell_attempts[7].matched**: False
+- **analysis[1].cell_attempts[7].value**: None
+- **analysis[1].cell_attempts[7].unit**: None
+- **analysis[1].cell_attempts[7].itm_id**: None
+- **analysis[1].cell_attempts[7].items[0]**: 전체(전국평균) 또는 비분류
+- **analysis[1].cell_attempts[7].items[1]**: 1분위(최저)
+- **analysis[1].cell_attempts[7].axes.국가[0]**: 아시아
+- **analysis[1].cell_attempts[7].axes.국가[1]**: 대한민국
+- **analysis[1].cell_attempts[7].axes.국가[2]**: 아제르바이잔
+- **analysis[1].cell_attempts[7].axes.국가[3]**: 바레인
+- **analysis[1].cell_attempts[7].axes.국가[4]**: 중국
+- **analysis[1].cell_attempts[7].axes.국가[5]**: 키프로스
+- **analysis[1].cell_attempts[7].axes.국가[6]**: 조지아
+- **analysis[1].cell_attempts[7].axes.국가[7]**: 홍콩
+- **analysis[1].cell_attempts[7].axes.국가[8]**: 인도
+- **analysis[1].cell_attempts[7].axes.국가[9]**: 인도네시아
+- **analysis[1].cell_attempts[7].axes.국가[10]**: 이란
+- **analysis[1].cell_attempts[7].axes.국가[11]**: 이라크
+- **analysis[1].cell_attempts[7].axes.국가[12]**: 이스라엘
+- **analysis[1].cell_attempts[7].axes.국가[13]**: 일본
+- **analysis[1].cell_attempts[7].axes.국가[14]**: 요르단
+- **analysis[1].cell_attempts[7].axes.국가[15]**: …외 125개
+- **analysis[1].cell_attempts[7].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[8].tbl_id**: DT_2UNS0305
+- **analysis[1].cell_attempts[8].tbl_nm**: 사회보장 프로그램을 적용 받는 인구 비율
+- **analysis[1].cell_attempts[8].matched**: False
+- **analysis[1].cell_attempts[8].value**: None
+- **analysis[1].cell_attempts[8].unit**: None
+- **analysis[1].cell_attempts[8].itm_id**: None
+- **analysis[1].cell_attempts[8].items[0]**: 전체(전국평균) 또는 비분류
+- **analysis[1].cell_attempts[8].items[1]**: 1분위(최저)
+- **analysis[1].cell_attempts[8].axes.국가[0]**: 아시아
+- **analysis[1].cell_attempts[8].axes.국가[1]**: 대한민국
+- **analysis[1].cell_attempts[8].axes.국가[2]**: 아제르바이잔
+- **analysis[1].cell_attempts[8].axes.국가[3]**: 바레인
+- **analysis[1].cell_attempts[8].axes.국가[4]**: 중국
+- **analysis[1].cell_attempts[8].axes.국가[5]**: 키프로스
+- **analysis[1].cell_attempts[8].axes.국가[6]**: 조지아
+- **analysis[1].cell_attempts[8].axes.국가[7]**: 홍콩
+- **analysis[1].cell_attempts[8].axes.국가[8]**: 인도
+- **analysis[1].cell_attempts[8].axes.국가[9]**: 인도네시아
+- **analysis[1].cell_attempts[8].axes.국가[10]**: 이란
+- **analysis[1].cell_attempts[8].axes.국가[11]**: 이라크
+- **analysis[1].cell_attempts[8].axes.국가[12]**: 이스라엘
+- **analysis[1].cell_attempts[8].axes.국가[13]**: 일본
+- **analysis[1].cell_attempts[8].axes.국가[14]**: 요르단
+- **analysis[1].cell_attempts[8].axes.국가[15]**: …외 125개
+- **analysis[1].cell_attempts[8].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].cell_attempts[9].tbl_id**: DT_2OEEM10171
+- **analysis[1].cell_attempts[9].tbl_nm**: 실업급여를 수급하고 보육 서비스를 이용할 때 취업 시 적용되는 실효세율_1인 가구, 자녀 2명
+- **analysis[1].cell_attempts[9].matched**: False
+- **analysis[1].cell_attempts[9].value**: None
+- **analysis[1].cell_attempts[9].unit**: None
+- **analysis[1].cell_attempts[9].itm_id**: None
+- **analysis[1].cell_attempts[9].items[0]**: 실업급여를 청구하고 보육 서비스를 이용하는 부모의 참여 세율(PTR)_1인 가구 자녀 2명
+- **analysis[1].cell_attempts[9].axes.국가[0]**: 오스트레일리아
+- **analysis[1].cell_attempts[9].axes.국가[1]**: 오스트리아
+- **analysis[1].cell_attempts[9].axes.국가[2]**: 벨기에
+- **analysis[1].cell_attempts[9].axes.국가[3]**: 캐나다
+- **analysis[1].cell_attempts[9].axes.국가[4]**: 칠레
+- **analysis[1].cell_attempts[9].axes.국가[5]**: 콜롬비아
+- **analysis[1].cell_attempts[9].axes.국가[6]**: 코스타리카
+- **analysis[1].cell_attempts[9].axes.국가[7]**: 체코
+- **analysis[1].cell_attempts[9].axes.국가[8]**: 덴마크
+- **analysis[1].cell_attempts[9].axes.국가[9]**: 에스토니아
+- **analysis[1].cell_attempts[9].axes.국가[10]**: 핀란드
+- **analysis[1].cell_attempts[9].axes.국가[11]**: 프랑스
+- **analysis[1].cell_attempts[9].axes.국가[12]**: 독일
+- **analysis[1].cell_attempts[9].axes.국가[13]**: 그리스
+- **analysis[1].cell_attempts[9].axes.국가[14]**: 헝가리
+- **analysis[1].cell_attempts[9].axes.국가[15]**: …외 61개
+- **analysis[1].cell_attempts[9].axes.기준 소득자의 소득[0]**: 평균 임금의 67%
+- **analysis[1].cell_attempts[9].axes.기준 소득자의 소득[1]**: 평균 임금의 100%
+- **analysis[1].cell_attempts[9].axes.기준 소득자의 소득[2]**: 최저임금
+- **analysis[1].cell_attempts[9].axes.배우자의 소득[0]**: 분류 미적용
+- **analysis[1].cell_attempts[9].axes.실업 기간[0]**: 2개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[1]**: 4개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[2]**: 6개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[3]**: 8개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[4]**: 12개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[5]**: 18개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[6]**: 24개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[7]**: 36개월
+- **analysis[1].cell_attempts[9].axes.실업 기간[8]**: 60개월
+- **analysis[1].cell_attempts[9].axes.사회복지 또는 최저소득 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[9].axes.사회복지 또는 최저소득 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[9].axes.임대 보조금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[9].axes.임대 보조금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[9].axes.한시적 근로 장려금 자격 요건[0]**: 적격
+- **analysis[1].cell_attempts[9].axes.한시적 근로 장려금 자격 요건[1]**: 부적격
+- **analysis[1].cell_attempts[9].axes.참여 세율 구성[0]**: 전체
+- **analysis[1].cell_attempts[9].axes.참여 세율 구성[1]**: 보육비 분담금
+- **analysis[1].cell_attempts[9].axes.참여 세율 구성[2]**: 보육 수당 분담금
+- **analysis[1].cell_attempts[9].axes.참여 세율 구성[3]**: 세금 분담금
+- **analysis[1].cell_attempts[9].axes.참여 세율 구성[4]**: 기타 수당 분담금
+- **analysis[1].cell_attempts[9].error**: itmId 매칭 실패: subject='노동시장참여율'
+- **analysis[1].kosis_query.api**: statisticsData.do → statisticsParameterData.do
+- **analysis[1].kosis_query.error_msg**: None → 후보 10개 모두 매칭 실패 (예: INH_2OEEM3017: itmId 매칭 실패: subject='노동시장참여율')
+- **analysis[1].kosis_query.duration_ms**: 0 → 1229
+- **analysis[2].cell_attempts[0].tbl_id**: DT_13622_2017106
+- **analysis[2].cell_attempts[0].tbl_nm**: 국내시장 전망
+- **analysis[2].cell_attempts[0].matched**: False
+- **analysis[2].cell_attempts[0].value**: None
+- **analysis[2].cell_attempts[0].unit**: None
+- **analysis[2].cell_attempts[0].itm_id**: None
+- **analysis[2].cell_attempts[0].items[0]**: 항목
+- **analysis[2].cell_attempts[0].axes.특성별[0]**: 전체
+- **analysis[2].cell_attempts[0].axes.특성별[1]**: 경영인별
+- **analysis[2].cell_attempts[0].axes.특성별[2]**: 독림가
+- **analysis[2].cell_attempts[0].axes.특성별[3]**: 임업후계자
+- **analysis[2].cell_attempts[0].axes.특성별[4]**: 신지식임업인
+- **analysis[2].cell_attempts[0].axes.특성별[5]**: 산림소재지별
+- **analysis[2].cell_attempts[0].axes.특성별[6]**: 수도권
+- **analysis[2].cell_attempts[0].axes.특성별[7]**: 강원권
+- **analysis[2].cell_attempts[0].axes.특성별[8]**: 충청권
+- **analysis[2].cell_attempts[0].axes.특성별[9]**: 전라권
+- **analysis[2].cell_attempts[0].axes.특성별[10]**: 경상권
+- **analysis[2].cell_attempts[0].axes.특성별[11]**: 선정연도별
+- **analysis[2].cell_attempts[0].axes.특성별[12]**: 1970~1979년
+- **analysis[2].cell_attempts[0].axes.특성별[13]**: 1980~1989년
+- **analysis[2].cell_attempts[0].axes.특성별[14]**: 1990~1999년
+- **analysis[2].cell_attempts[0].axes.특성별[15]**: …외 42개
+- **analysis[2].cell_attempts[0].axes.전망및이유별[0]**: 향후 전망
+- **analysis[2].cell_attempts[0].axes.전망및이유별[1]**: 사례수
+- **analysis[2].cell_attempts[0].axes.전망및이유별[2]**: 매우 좋아질것이다
+- **analysis[2].cell_attempts[0].axes.전망및이유별[3]**: 다소 좋아질것이다
+- **analysis[2].cell_attempts[0].axes.전망및이유별[4]**: 현 상태를 유지할 것이다
+- **analysis[2].cell_attempts[0].axes.전망및이유별[5]**: 다소 나빠질것이다
+- **analysis[2].cell_attempts[0].axes.전망및이유별[6]**: 매우 나빠질것이다
+- **analysis[2].cell_attempts[0].axes.전망및이유별[7]**: 평균
+- **analysis[2].cell_attempts[0].axes.전망및이유별[8]**: 표준편차
+- **analysis[2].cell_attempts[0].axes.전망및이유별[9]**: 좋아질 것이라 생각하는 이유
+- **analysis[2].cell_attempts[0].axes.전망및이유별[10]**: 사례수
+- **analysis[2].cell_attempts[0].axes.전망및이유별[11]**: 환경 및 건강에 대한 관심증대
+- **analysis[2].cell_attempts[0].axes.전망및이유별[12]**: 기술개발에 따른 생산량 증가
+- **analysis[2].cell_attempts[0].axes.전망및이유별[13]**: 유통· 판매에 대한 정부 지원 확대
+- **analysis[2].cell_attempts[0].axes.전망및이유별[14]**: 기타
+- **analysis[2].cell_attempts[0].axes.전망및이유별[15]**: …외 9개
+- **analysis[2].cell_attempts[0].error**: itmId 매칭 실패: subject='연평균노동생산성증가율'
+- **analysis[2].cell_attempts[1].tbl_id**: DT_13622_B100
+- **analysis[2].cell_attempts[1].tbl_nm**: 국내시장 전망
+- **analysis[2].cell_attempts[1].matched**: False
+- **analysis[2].cell_attempts[1].value**: None
+- **analysis[2].cell_attempts[1].unit**: None
+- **analysis[2].cell_attempts[1].itm_id**: None
+- **analysis[2].cell_attempts[1].items[0]**: 국내시장 전망
+- **analysis[2].cell_attempts[1].axes.전망및이유별[0]**: 향후 전망
+- **analysis[2].cell_attempts[1].axes.전망및이유별[1]**: 사례수
+- **analysis[2].cell_attempts[1].axes.전망및이유별[2]**: 매우 좋아질 것이다
+- **analysis[2].cell_attempts[1].axes.전망및이유별[3]**: 다소 좋아질 것이다
+- **analysis[2].cell_attempts[1].axes.전망및이유별[4]**: 현 상태를 유지할 것이다
+- **analysis[2].cell_attempts[1].axes.전망및이유별[5]**: 다소 나빠질 것이다
+- **analysis[2].cell_attempts[1].axes.전망및이유별[6]**: 매우 나빠질 것이다
+- **analysis[2].cell_attempts[1].axes.전망및이유별[7]**: 평균
+- **analysis[2].cell_attempts[1].axes.전망및이유별[8]**: 표준편차
+- **analysis[2].cell_attempts[1].axes.전망및이유별[9]**: 호전 예상 이유
+- **analysis[2].cell_attempts[1].axes.전망및이유별[10]**: 사례수
+- **analysis[2].cell_attempts[1].axes.전망및이유별[11]**: 환경 및 건강에 대한 관심 증대
+- **analysis[2].cell_attempts[1].axes.전망및이유별[12]**: 기술개발에 따른 생산량 증가
+- **analysis[2].cell_attempts[1].axes.전망및이유별[13]**: 유통.판매에 대한 정부지원 확대
+- **analysis[2].cell_attempts[1].axes.전망및이유별[14]**: 기타
+- **analysis[2].cell_attempts[1].axes.전망및이유별[15]**: …외 10개
+- **analysis[2].cell_attempts[1].axes.특성별[0]**: 전체
+- **analysis[2].cell_attempts[1].axes.특성별[1]**: 경영인별
+- **analysis[2].cell_attempts[1].axes.특성별[2]**: 독림가
+- **analysis[2].cell_attempts[1].axes.특성별[3]**: 임업후계자
+- **analysis[2].cell_attempts[1].axes.특성별[4]**: 신지식임업인
+- **analysis[2].cell_attempts[1].axes.특성별[5]**: 산림소재지별
+- **analysis[2].cell_attempts[1].axes.특성별[6]**: 수도권
+- **analysis[2].cell_attempts[1].axes.특성별[7]**: 강원권
+- **analysis[2].cell_attempts[1].axes.특성별[8]**: 충청권
+- **analysis[2].cell_attempts[1].axes.특성별[9]**: 전라권
+- **analysis[2].cell_attempts[1].axes.특성별[10]**: 경상권
+- **analysis[2].cell_attempts[1].axes.특성별[11]**: 선정연도별
+- **analysis[2].cell_attempts[1].axes.특성별[12]**: 1970~1989년
+- **analysis[2].cell_attempts[1].axes.특성별[13]**: 1990~1999년
+- **analysis[2].cell_attempts[1].axes.특성별[14]**: 2000~2009년
+- **analysis[2].cell_attempts[1].axes.특성별[15]**: …외 38개
+- **analysis[2].cell_attempts[1].error**: itmId 매칭 실패: subject='연평균노동생산성증가율'
+- **analysis[2].cell_attempts[2].tbl_id**: TX_136_2009_H3074
+- **analysis[2].cell_attempts[2].tbl_nm**: 옻 생산업에 종사하면서 느끼는 애로사항
+- **analysis[2].cell_attempts[2].matched**: False
+- **analysis[2].cell_attempts[2].value**: None
+- **analysis[2].cell_attempts[2].unit**: None
+- **analysis[2].cell_attempts[2].itm_id**: None
+- **analysis[2].cell_attempts[2].items[0]**: 옻 생산업
+- **analysis[2].cell_attempts[2].axes.특성별[0]**: 전체
+- **analysis[2].cell_attempts[2].axes.특성별[1]**: 성별
+- **analysis[2].cell_attempts[2].axes.특성별[2]**: 남자
+- **analysis[2].cell_attempts[2].axes.특성별[3]**: 여자
+- **analysis[2].cell_attempts[2].axes.특성별[4]**: 연령별
+- **analysis[2].cell_attempts[2].axes.특성별[5]**: 49세 이하
+- **analysis[2].cell_attempts[2].axes.특성별[6]**: 50~59세
+- **analysis[2].cell_attempts[2].axes.특성별[7]**: 60~69세
+- **analysis[2].cell_attempts[2].axes.특성별[8]**: 70~79세
+- **analysis[2].cell_attempts[2].axes.특성별[9]**: 80세 이상
+- **analysis[2].cell_attempts[2].axes.특성별[10]**: 지역별
+- **analysis[2].cell_attempts[2].axes.특성별[11]**: 경기도
+- **analysis[2].cell_attempts[2].axes.특성별[12]**: 경상남도
+- **analysis[2].cell_attempts[2].axes.특성별[13]**: 대구/경북
+- **analysis[2].cell_attempts[2].axes.특성별[14]**: 전라북도
+- **analysis[2].cell_attempts[2].axes.특성별[15]**: …외 34개
+- **analysis[2].cell_attempts[2].axes.애로사항별[0]**: 1+2순위
+- **analysis[2].cell_attempts[2].axes.애로사항별[1]**: 사례수
+- **analysis[2].cell_attempts[2].axes.애로사항별[2]**: 안정적인 판로확보 문제
+- **analysis[2].cell_attempts[2].axes.애로사항별[3]**: 노동력 부족
+- **analysis[2].cell_attempts[2].axes.애로사항별[4]**: 채취·재배기술의 부족
+- **analysis[2].cell_attempts[2].axes.애로사항별[5]**: 미약한 정부지원
+- **analysis[2].cell_attempts[2].axes.애로사항별[6]**: 자금 부족
+- **analysis[2].cell_attempts[2].axes.애로사항별[7]**: 옻 재배장소 부족
+- **analysis[2].cell_attempts[2].axes.애로사항별[8]**: 옻 생산물 도난 잦음
+- **analysis[2].cell_attempts[2].axes.애로사항별[9]**: 옻나무가 자꾸 죽어서
+- **analysis[2].cell_attempts[2].axes.애로사항별[10]**: 옻이 오르는 것
+- **analysis[2].cell_attempts[2].axes.애로사항별[11]**: 산짐승에 의한 피해
+- **analysis[2].cell_attempts[2].axes.애로사항별[12]**: 생장기간 길다
+- **analysis[2].cell_attempts[2].axes.애로사항별[13]**: 관리 부족
+- **analysis[2].cell_attempts[2].axes.애로사항별[14]**: 기피 작물에 해당함
+- **analysis[2].cell_attempts[2].axes.애로사항별[15]**: …외 52개
+- **analysis[2].cell_attempts[2].error**: itmId 매칭 실패: subject='연평균노동생산성증가율'
+- **analysis[2].cell_attempts[3].tbl_id**: TX_136_2009_H3375
+- **analysis[2].cell_attempts[3].tbl_nm**: 최근 3년간 옻 생산으로 인한 소득 변화 및 이유
+- **analysis[2].cell_attempts[3].matched**: False
+- **analysis[2].cell_attempts[3].value**: None
+- **analysis[2].cell_attempts[3].unit**: None
+- **analysis[2].cell_attempts[3].itm_id**: None
+- **analysis[2].cell_attempts[3].items[0]**: 옻 생산
+- **analysis[2].cell_attempts[3].axes.특성별[0]**: 평균
+- **analysis[2].cell_attempts[3].axes.특성별[1]**: 성별
+- **analysis[2].cell_attempts[3].axes.특성별[2]**: 남자
+- **analysis[2].cell_attempts[3].axes.특성별[3]**: 여자
+- **analysis[2].cell_attempts[3].axes.특성별[4]**: 연령별
+- **analysis[2].cell_attempts[3].axes.특성별[5]**: 49세 이하
+- **analysis[2].cell_attempts[3].axes.특성별[6]**: 50~59세
+- **analysis[2].cell_attempts[3].axes.특성별[7]**: 60~69세
+- **analysis[2].cell_attempts[3].axes.특성별[8]**: 70~79세
+- **analysis[2].cell_attempts[3].axes.특성별[9]**: 80세 이상
+- **analysis[2].cell_attempts[3].axes.특성별[10]**: 지역별
+- **analysis[2].cell_attempts[3].axes.특성별[11]**: 강원도
+- **analysis[2].cell_attempts[3].axes.특성별[12]**: 경상남도
+- **analysis[2].cell_attempts[3].axes.특성별[13]**: 경기도
+- **analysis[2].cell_attempts[3].axes.특성별[14]**: 대구/경북
+- **analysis[2].cell_attempts[3].axes.특성별[15]**: …외 18개
+- **analysis[2].cell_attempts[3].axes.변화및이유별[0]**: 소득 변화
+- **analysis[2].cell_attempts[3].axes.변화및이유별[1]**: 사례수
+- **analysis[2].cell_attempts[3].axes.변화및이유별[2]**: 생산량과 소득 모두 늘었다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[3]**: 생산량과 소득 변화없다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[4]**: 생산량과 소득 모두 감소하였다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[5]**: 생산량은 증가 소득은 감소하였다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[6]**: 생산량은 같고 소득은 감소하였다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[7]**: 생산량은 감소 소득은 증가했다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[8]**: 생산량은 같고 소득은 증가하였다
+- **analysis[2].cell_attempts[3].axes.변화및이유별[9]**: 소득 감소 이유
+- **analysis[2].cell_attempts[3].axes.변화및이유별[10]**: 사례수
+- **analysis[2].cell_attempts[3].axes.변화및이유별[11]**: 판로를 찾지 못해서
+- **analysis[2].cell_attempts[3].axes.변화및이유별[12]**: 노동력이 부족해서
+- **analysis[2].cell_attempts[3].axes.변화및이유별[13]**: 재배기술이 부족해서
+- **analysis[2].cell_attempts[3].axes.변화및이유별[14]**: 옻나무가 죽어서
+- **analysis[2].cell_attempts[3].axes.변화및이유별[15]**: …외 8개
+- **analysis[2].cell_attempts[3].error**: itmId 매칭 실패: subject='연평균노동생산성증가율'
+- **analysis[2].cell_attempts[4].tbl_id**: TX_136_2009_H4204
+- **analysis[2].cell_attempts[4].tbl_nm**: 산채재배 전망 및 계획
+- **analysis[2].cell_attempts[4].matched**: False
+- **analysis[2].cell_attempts[4].value**: None
+- **analysis[2].cell_attempts[4].unit**: None
+- **analysis[2].cell_attempts[4].itm_id**: None
+- **analysis[2].cell_attempts[4].items[0]**: 산채재배 전망 및 계획
+- **analysis[2].cell_attempts[4].axes.특성별[0]**: 전체
+- **analysis[2].cell_attempts[4].axes.특성별[1]**: 지역별
+- **analysis[2].cell_attempts[4].axes.특성별[2]**: 경기도
+- **analysis[2].cell_attempts[4].axes.특성별[3]**: 강원도
+- **analysis[2].cell_attempts[4].axes.특성별[4]**: 충청북도
+- **analysis[2].cell_attempts[4].axes.특성별[5]**: 충청남도
+- **analysis[2].cell_attempts[4].axes.특성별[6]**: 전라북도
+- **analysis[2].cell_attempts[4].axes.특성별[7]**: 전라남도
+- **analysis[2].cell_attempts[4].axes.특성별[8]**: 경상북도
+- **analysis[2].cell_attempts[4].axes.특성별[9]**: 경상남도
+- **analysis[2].cell_attempts[4].axes.특성별[10]**: 제주특별자치도
+- **analysis[2].cell_attempts[4].axes.특성별[11]**: 재배규모별
+- **analysis[2].cell_attempts[4].axes.특성별[12]**: 0.1㏊ 미만
+- **analysis[2].cell_attempts[4].axes.특성별[13]**: 0.1~0.2㏊ 미만
+- **analysis[2].cell_attempts[4].axes.특성별[14]**: 0.2~0.3㏊ 미만
+- **analysis[2].cell_attempts[4].axes.특성별[15]**: …외 19개
+- **analysis[2].cell_attempts[4].axes.전망및계획별[0]**: 응답자수
+- **analysis[2].cell_attempts[4].axes.전망및계획별[1]**: 산채재배 전망
+- **analysis[2].cell_attempts[4].axes.전망및계획별[2]**: 매우 좋아질 것
+- **analysis[2].cell_attempts[4].axes.전망및계획별[3]**: 다소 나아질 것
+- **analysis[2].cell_attempts[4].axes.전망및계획별[4]**: 현 상태를 유지할 것
+- **analysis[2].cell_attempts[4].axes.전망및계획별[5]**: 다소 나빠질 것
+- **analysis[2].cell_attempts[4].axes.전망및계획별[6]**: 매우 나빠질 것
+- **analysis[2].cell_attempts[4].axes.전망및계획별[7]**: 5점 평균
+- **analysis[2].cell_attempts[4].axes.전망및계획별[8]**: 100점 평균
+- **analysis[2].cell_attempts[4].axes.전망및계획별[9]**: 산채재배 계획
+- **analysis[2].cell_attempts[4].axes.전망및계획별[10]**: 늘릴계획
+- **analysis[2].cell_attempts[4].axes.전망및계획별[11]**: 현 상태 유지 
+- **analysis[2].cell_attempts[4].axes.전망및계획별[12]**: 줄일 계획
+- **analysis[2].cell_attempts[4].axes.전망및계획별[13]**: 중단할 계획
+- **analysis[2].cell_attempts[4].axes.전망및계획별[14]**: 산채재배를 줄이거나 중단할 계획인 이유
+- **analysis[2].cell_attempts[4].axes.전망및계획별[15]**: …외 12개
+- **analysis[2].cell_attempts[4].error**: itmId 매칭 실패: subject='연평균노동생산성증가율'
+- **analysis[2].kosis_query.api**: statisticsData.do → statisticsParameterData.do
+- **analysis[2].kosis_query.error_msg**: None → 후보 5개 모두 매칭 실패 (예: DT_13622_2017106: itmId 매칭 실패: subject='연평균노동생산성증가율')
+- **analysis[2].kosis_query.duration_ms**: 0 → 612
+- **analysis[3].cell_attempts[0].tbl_id**: DT_XNS0036
+- **analysis[3].cell_attempts[0].tbl_nm**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[3].cell_attempts[0].matched**: False
+- **analysis[3].cell_attempts[0].value**: None
+- **analysis[3].cell_attempts[0].unit**: None
+- **analysis[3].cell_attempts[0].itm_id**: T10
+- **analysis[3].cell_attempts[0].items[0]**: 제조업 주당 평균근로시간
+- **analysis[3].cell_attempts[0].axes.국가별[0]**: 브루나이(a)
+- **analysis[3].cell_attempts[0].axes.국가별[1]**: 캄보디아(a)
+- **analysis[3].cell_attempts[0].axes.국가별[2]**: 인도(a)
+- **analysis[3].cell_attempts[0].axes.국가별[3]**: 인도네시아(a)
+- **analysis[3].cell_attempts[0].axes.국가별[4]**: 라오스(a)
+- **analysis[3].cell_attempts[0].axes.국가별[5]**: 말레이시아(a)
+- **analysis[3].cell_attempts[0].axes.국가별[6]**: 미얀마(a)
+- **analysis[3].cell_attempts[0].axes.국가별[7]**: 필리핀(a)
+- **analysis[3].cell_attempts[0].axes.국가별[8]**: 싱가포르(b)
+- **analysis[3].cell_attempts[0].axes.국가별[9]**: 태국(a)
+- **analysis[3].cell_attempts[0].axes.국가별[10]**: 베트남(a)
+- **analysis[3].cell_attempts[0].error**: 분류축 A 매칭 실패: population='일본의25~64세'
+- **analysis[3].cell_attempts[1].tbl_id**: DT_1DE7097S
+- **analysis[3].cell_attempts[1].tbl_nm**: 성별 시간제근로자 주당 평균취업시간
+- **analysis[3].cell_attempts[1].matched**: False
+- **analysis[3].cell_attempts[1].value**: None
+- **analysis[3].cell_attempts[1].unit**: None
+- **analysis[3].cell_attempts[1].itm_id**: None
+- **analysis[3].cell_attempts[1].items[0]**: 시간제근로자
+- **analysis[3].cell_attempts[1].axes.성별[0]**: 계
+- **analysis[3].cell_attempts[1].axes.성별[1]**: 남자
+- **analysis[3].cell_attempts[1].axes.성별[2]**: 여자
+- **analysis[3].cell_attempts[1].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[2].tbl_id**: DT_1DE7095S
+- **analysis[3].cell_attempts[2].tbl_nm**: 근로형태별/주당평균취업시간 및 증감
+- **analysis[3].cell_attempts[2].matched**: False
+- **analysis[3].cell_attempts[2].value**: None
+- **analysis[3].cell_attempts[2].unit**: None
+- **analysis[3].cell_attempts[2].itm_id**: None
+- **analysis[3].cell_attempts[2].items[0]**: 평균취업시간
+- **analysis[3].cell_attempts[2].items[1]**: 증감(전년동월)
+- **analysis[3].cell_attempts[2].axes.근로형태별[0]**: 임금근로자
+- **analysis[3].cell_attempts[2].axes.근로형태별[1]**: 정규직
+- **analysis[3].cell_attempts[2].axes.근로형태별[2]**: 비정규직
+- **analysis[3].cell_attempts[2].axes.근로형태별[3]**: 한시적
+- **analysis[3].cell_attempts[2].axes.근로형태별[4]**: 기간제
+- **analysis[3].cell_attempts[2].axes.근로형태별[5]**: 비기간제
+- **analysis[3].cell_attempts[2].axes.근로형태별[6]**: 시간제
+- **analysis[3].cell_attempts[2].axes.근로형태별[7]**: 비전형
+- **analysis[3].cell_attempts[2].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[3].tbl_id**: DT_1DE6019S
+- **analysis[3].cell_attempts[3].tbl_nm**: 평소 주당 평균 취업시간
+- **analysis[3].cell_attempts[3].matched**: False
+- **analysis[3].cell_attempts[3].value**: None
+- **analysis[3].cell_attempts[3].unit**: None
+- **analysis[3].cell_attempts[3].itm_id**: None
+- **analysis[3].cell_attempts[3].items[0]**: 평소 주당 평균취업시간
+- **analysis[3].cell_attempts[3].axes.성별[0]**: 계
+- **analysis[3].cell_attempts[3].axes.성별[1]**: 남자
+- **analysis[3].cell_attempts[3].axes.성별[2]**: 여자
+- **analysis[3].cell_attempts[3].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[3].cell_attempts[3].axes.비임금근로별[1]**: - 자영업자
+- **analysis[3].cell_attempts[3].axes.비임금근로별[2]**: - 고용원이 있는 자영업자
+- **analysis[3].cell_attempts[3].axes.비임금근로별[3]**: - 고용원이 없는 자영업자
+- **analysis[3].cell_attempts[3].axes.비임금근로별[4]**: - 무급가족종사자
+- **analysis[3].cell_attempts[3].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[4].tbl_id**: DT_1DE6052S
+- **analysis[3].cell_attempts[4].tbl_nm**: 평소 주당 평균 취업시간(농림어업제외)
+- **analysis[3].cell_attempts[4].matched**: False
+- **analysis[3].cell_attempts[4].value**: None
+- **analysis[3].cell_attempts[4].unit**: None
+- **analysis[3].cell_attempts[4].itm_id**: None
+- **analysis[3].cell_attempts[4].items[0]**: 평소 주당 평균취업시간
+- **analysis[3].cell_attempts[4].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[3].cell_attempts[4].axes.비임금근로별[1]**: - 자영업자
+- **analysis[3].cell_attempts[4].axes.비임금근로별[2]**: - 고용원이 있는 자영업자
+- **analysis[3].cell_attempts[4].axes.비임금근로별[3]**: - 고용원이 없는 자영업자
+- **analysis[3].cell_attempts[4].axes.비임금근로별[4]**: - 무급가족종사자
+- **analysis[3].cell_attempts[4].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[5].tbl_id**: DT_1DE6075_11
+- **analysis[3].cell_attempts[5].tbl_nm**: 산업별 평소 주당 평균 취업시간(11차)
+- **analysis[3].cell_attempts[5].matched**: False
+- **analysis[3].cell_attempts[5].value**: None
+- **analysis[3].cell_attempts[5].unit**: None
+- **analysis[3].cell_attempts[5].itm_id**: None
+- **analysis[3].cell_attempts[5].items[0]**: 평소 주당 평균취업시간
+- **analysis[3].cell_attempts[5].axes.산업별[0]**: 계
+- **analysis[3].cell_attempts[5].axes.산업별[1]**: A 농업 임업 및 어업
+- **analysis[3].cell_attempts[5].axes.산업별[2]**: - 광·제조업(BC)
+- **analysis[3].cell_attempts[5].axes.산업별[3]**: C 제조업
+- **analysis[3].cell_attempts[5].axes.산업별[4]**: - 사회간접자본 및 기타서비스업(D~U)
+- **analysis[3].cell_attempts[5].axes.산업별[5]**: F 건설업
+- **analysis[3].cell_attempts[5].axes.산업별[6]**: - 도소매·음식숙박업(G I)
+- **analysis[3].cell_attempts[5].axes.산업별[7]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[3].cell_attempts[5].axes.산업별[8]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[3].cell_attempts[5].axes.산업별[9]**: G 도매 및 소매업
+- **analysis[3].cell_attempts[5].axes.산업별[10]**: I 숙박 및 음식점업
+- **analysis[3].cell_attempts[5].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[3].cell_attempts[5].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[6].tbl_id**: DT_1DE6083_11
+- **analysis[3].cell_attempts[6].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+- **analysis[3].cell_attempts[6].matched**: False
+- **analysis[3].cell_attempts[6].value**: None
+- **analysis[3].cell_attempts[6].unit**: None
+- **analysis[3].cell_attempts[6].itm_id**: None
+- **analysis[3].cell_attempts[6].items[0]**: 평소 주당 평균취업시간
+- **analysis[3].cell_attempts[6].axes.산업별[0]**: 계
+- **analysis[3].cell_attempts[6].axes.산업별[1]**: - 광·제조업(BC)
+- **analysis[3].cell_attempts[6].axes.산업별[2]**: C 제조업
+- **analysis[3].cell_attempts[6].axes.산업별[3]**: F 건설업
+- **analysis[3].cell_attempts[6].axes.산업별[4]**: - 도소매·음식숙박업(G I)
+- **analysis[3].cell_attempts[6].axes.산업별[5]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[3].cell_attempts[6].axes.산업별[6]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[3].cell_attempts[6].axes.산업별[7]**: G 도매 및 소매업
+- **analysis[3].cell_attempts[6].axes.산업별[8]**: I 숙박 및 음식점업
+- **analysis[3].cell_attempts[6].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[3].cell_attempts[6].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[7].tbl_id**: DT_38302_2016_N031
+- **analysis[3].cell_attempts[7].tbl_nm**: 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+- **analysis[3].cell_attempts[7].matched**: False
+- **analysis[3].cell_attempts[7].value**: None
+- **analysis[3].cell_attempts[7].unit**: None
+- **analysis[3].cell_attempts[7].itm_id**: None
+- **analysis[3].cell_attempts[7].items[0]**: 추정수
+- **analysis[3].cell_attempts[7].items[1]**: 근로자 주당 소정 근로시간
+- **analysis[3].cell_attempts[7].items[2]**: 근로자 주당 실제 근로시간
+- **analysis[3].cell_attempts[7].axes.기업체별[0]**: 전체
+- **analysis[3].cell_attempts[7].axes.기업체별[1]**: 장애인고용 여부
+- **analysis[3].cell_attempts[7].axes.기업체별[2]**: 고용
+- **analysis[3].cell_attempts[7].axes.기업체별[3]**: 미고용
+- **analysis[3].cell_attempts[7].axes.기업체별[4]**: 고용의무기업체 여부
+- **analysis[3].cell_attempts[7].axes.기업체별[5]**: 비의무
+- **analysis[3].cell_attempts[7].axes.기업체별[6]**: 5~49명
+- **analysis[3].cell_attempts[7].axes.기업체별[7]**: 의무(50명 이상)
+- **analysis[3].cell_attempts[7].axes.기업체별[8]**: 50~299명
+- **analysis[3].cell_attempts[7].axes.기업체별[9]**: 300~999명
+- **analysis[3].cell_attempts[7].axes.기업체별[10]**: 1000명이상
+- **analysis[3].cell_attempts[7].axes.기업체별[11]**: 부담금 납부 대상(100명 이상)
+- **analysis[3].cell_attempts[7].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[8].tbl_id**: DT_1DE6075
+- **analysis[3].cell_attempts[8].tbl_nm**: 산업별 평소 주당 평균 취업시간(10차, ~2024)
+- **analysis[3].cell_attempts[8].matched**: False
+- **analysis[3].cell_attempts[8].value**: None
+- **analysis[3].cell_attempts[8].unit**: None
+- **analysis[3].cell_attempts[8].itm_id**: None
+- **analysis[3].cell_attempts[8].items[0]**: 평소 주당 평균취업시간
+- **analysis[3].cell_attempts[8].axes.산업별[0]**: 계
+- **analysis[3].cell_attempts[8].axes.산업별[1]**: A 농업 임업 및 어업
+- **analysis[3].cell_attempts[8].axes.산업별[2]**: - 광·제조업(BC)
+- **analysis[3].cell_attempts[8].axes.산업별[3]**: C 제조업
+- **analysis[3].cell_attempts[8].axes.산업별[4]**: - 사회간접자본 및 기타서비스업(D~U)
+- **analysis[3].cell_attempts[8].axes.산업별[5]**: F 건설업
+- **analysis[3].cell_attempts[8].axes.산업별[6]**: - 도소매·음식숙박업(G I)
+- **analysis[3].cell_attempts[8].axes.산업별[7]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[3].cell_attempts[8].axes.산업별[8]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[3].cell_attempts[8].axes.산업별[9]**: G 도매 및 소매업
+- **analysis[3].cell_attempts[8].axes.산업별[10]**: I 숙박 및 음식점업
+- **analysis[3].cell_attempts[8].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[3].cell_attempts[8].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].cell_attempts[9].tbl_id**: DT_1DE6083
+- **analysis[3].cell_attempts[9].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+- **analysis[3].cell_attempts[9].matched**: False
+- **analysis[3].cell_attempts[9].value**: None
+- **analysis[3].cell_attempts[9].unit**: None
+- **analysis[3].cell_attempts[9].itm_id**: None
+- **analysis[3].cell_attempts[9].items[0]**: 평소 주당 평균취업시간
+- **analysis[3].cell_attempts[9].axes.산업별[0]**: 계
+- **analysis[3].cell_attempts[9].axes.산업별[1]**: - 광·제조업(BC)
+- **analysis[3].cell_attempts[9].axes.산업별[2]**: C 제조업
+- **analysis[3].cell_attempts[9].axes.산업별[3]**: F 건설업
+- **analysis[3].cell_attempts[9].axes.산업별[4]**: - 도소매·음식숙박업(G I)
+- **analysis[3].cell_attempts[9].axes.산업별[5]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[3].cell_attempts[9].axes.산업별[6]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[3].cell_attempts[9].axes.산업별[7]**: G 도매 및 소매업
+- **analysis[3].cell_attempts[9].axes.산업별[8]**: I 숙박 및 음식점업
+- **analysis[3].cell_attempts[9].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[3].cell_attempts[9].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[3].kosis_query.api**: statisticsData.do → statisticsParameterData.do
+- **analysis[3].kosis_query.error_msg**: None → 후보 10개 모두 매칭 실패 (예: DT_XNS0036: 분류축 A 매칭 실패: population='일본의25~64세')
+- **analysis[3].kosis_query.duration_ms**: 0 → 1272
+- **analysis[4].cell_attempts[0].tbl_id**: DT_XNS0036
+- **analysis[4].cell_attempts[0].tbl_nm**: 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+- **analysis[4].cell_attempts[0].matched**: False
+- **analysis[4].cell_attempts[0].value**: None
+- **analysis[4].cell_attempts[0].unit**: None
+- **analysis[4].cell_attempts[0].itm_id**: T10
+- **analysis[4].cell_attempts[0].items[0]**: 제조업 주당 평균근로시간
+- **analysis[4].cell_attempts[0].axes.국가별[0]**: 브루나이(a)
+- **analysis[4].cell_attempts[0].axes.국가별[1]**: 캄보디아(a)
+- **analysis[4].cell_attempts[0].axes.국가별[2]**: 인도(a)
+- **analysis[4].cell_attempts[0].axes.국가별[3]**: 인도네시아(a)
+- **analysis[4].cell_attempts[0].axes.국가별[4]**: 라오스(a)
+- **analysis[4].cell_attempts[0].axes.국가별[5]**: 말레이시아(a)
+- **analysis[4].cell_attempts[0].axes.국가별[6]**: 미얀마(a)
+- **analysis[4].cell_attempts[0].axes.국가별[7]**: 필리핀(a)
+- **analysis[4].cell_attempts[0].axes.국가별[8]**: 싱가포르(b)
+- **analysis[4].cell_attempts[0].axes.국가별[9]**: 태국(a)
+- **analysis[4].cell_attempts[0].axes.국가별[10]**: 베트남(a)
+- **analysis[4].cell_attempts[0].error**: 분류축 A 매칭 실패: population='일본의65세이상'
+- **analysis[4].cell_attempts[1].tbl_id**: DT_1DE7097S
+- **analysis[4].cell_attempts[1].tbl_nm**: 성별 시간제근로자 주당 평균취업시간
+- **analysis[4].cell_attempts[1].matched**: False
+- **analysis[4].cell_attempts[1].value**: None
+- **analysis[4].cell_attempts[1].unit**: None
+- **analysis[4].cell_attempts[1].itm_id**: None
+- **analysis[4].cell_attempts[1].items[0]**: 시간제근로자
+- **analysis[4].cell_attempts[1].axes.성별[0]**: 계
+- **analysis[4].cell_attempts[1].axes.성별[1]**: 남자
+- **analysis[4].cell_attempts[1].axes.성별[2]**: 여자
+- **analysis[4].cell_attempts[1].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[2].tbl_id**: DT_1DE7095S
+- **analysis[4].cell_attempts[2].tbl_nm**: 근로형태별/주당평균취업시간 및 증감
+- **analysis[4].cell_attempts[2].matched**: False
+- **analysis[4].cell_attempts[2].value**: None
+- **analysis[4].cell_attempts[2].unit**: None
+- **analysis[4].cell_attempts[2].itm_id**: None
+- **analysis[4].cell_attempts[2].items[0]**: 평균취업시간
+- **analysis[4].cell_attempts[2].items[1]**: 증감(전년동월)
+- **analysis[4].cell_attempts[2].axes.근로형태별[0]**: 임금근로자
+- **analysis[4].cell_attempts[2].axes.근로형태별[1]**: 정규직
+- **analysis[4].cell_attempts[2].axes.근로형태별[2]**: 비정규직
+- **analysis[4].cell_attempts[2].axes.근로형태별[3]**: 한시적
+- **analysis[4].cell_attempts[2].axes.근로형태별[4]**: 기간제
+- **analysis[4].cell_attempts[2].axes.근로형태별[5]**: 비기간제
+- **analysis[4].cell_attempts[2].axes.근로형태별[6]**: 시간제
+- **analysis[4].cell_attempts[2].axes.근로형태별[7]**: 비전형
+- **analysis[4].cell_attempts[2].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[3].tbl_id**: DT_1DE6019S
+- **analysis[4].cell_attempts[3].tbl_nm**: 평소 주당 평균 취업시간
+- **analysis[4].cell_attempts[3].matched**: False
+- **analysis[4].cell_attempts[3].value**: None
+- **analysis[4].cell_attempts[3].unit**: None
+- **analysis[4].cell_attempts[3].itm_id**: None
+- **analysis[4].cell_attempts[3].items[0]**: 평소 주당 평균취업시간
+- **analysis[4].cell_attempts[3].axes.성별[0]**: 계
+- **analysis[4].cell_attempts[3].axes.성별[1]**: 남자
+- **analysis[4].cell_attempts[3].axes.성별[2]**: 여자
+- **analysis[4].cell_attempts[3].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[4].cell_attempts[3].axes.비임금근로별[1]**: - 자영업자
+- **analysis[4].cell_attempts[3].axes.비임금근로별[2]**: - 고용원이 있는 자영업자
+- **analysis[4].cell_attempts[3].axes.비임금근로별[3]**: - 고용원이 없는 자영업자
+- **analysis[4].cell_attempts[3].axes.비임금근로별[4]**: - 무급가족종사자
+- **analysis[4].cell_attempts[3].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[4].tbl_id**: DT_1DE6052S
+- **analysis[4].cell_attempts[4].tbl_nm**: 평소 주당 평균 취업시간(농림어업제외)
+- **analysis[4].cell_attempts[4].matched**: False
+- **analysis[4].cell_attempts[4].value**: None
+- **analysis[4].cell_attempts[4].unit**: None
+- **analysis[4].cell_attempts[4].itm_id**: None
+- **analysis[4].cell_attempts[4].items[0]**: 평소 주당 평균취업시간
+- **analysis[4].cell_attempts[4].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[4].cell_attempts[4].axes.비임금근로별[1]**: - 자영업자
+- **analysis[4].cell_attempts[4].axes.비임금근로별[2]**: - 고용원이 있는 자영업자
+- **analysis[4].cell_attempts[4].axes.비임금근로별[3]**: - 고용원이 없는 자영업자
+- **analysis[4].cell_attempts[4].axes.비임금근로별[4]**: - 무급가족종사자
+- **analysis[4].cell_attempts[4].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[5].tbl_id**: DT_1DE6075_11
+- **analysis[4].cell_attempts[5].tbl_nm**: 산업별 평소 주당 평균 취업시간(11차)
+- **analysis[4].cell_attempts[5].matched**: False
+- **analysis[4].cell_attempts[5].value**: None
+- **analysis[4].cell_attempts[5].unit**: None
+- **analysis[4].cell_attempts[5].itm_id**: None
+- **analysis[4].cell_attempts[5].items[0]**: 평소 주당 평균취업시간
+- **analysis[4].cell_attempts[5].axes.산업별[0]**: 계
+- **analysis[4].cell_attempts[5].axes.산업별[1]**: A 농업 임업 및 어업
+- **analysis[4].cell_attempts[5].axes.산업별[2]**: - 광·제조업(BC)
+- **analysis[4].cell_attempts[5].axes.산업별[3]**: C 제조업
+- **analysis[4].cell_attempts[5].axes.산업별[4]**: - 사회간접자본 및 기타서비스업(D~U)
+- **analysis[4].cell_attempts[5].axes.산업별[5]**: F 건설업
+- **analysis[4].cell_attempts[5].axes.산업별[6]**: - 도소매·음식숙박업(G I)
+- **analysis[4].cell_attempts[5].axes.산업별[7]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[4].cell_attempts[5].axes.산업별[8]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[4].cell_attempts[5].axes.산업별[9]**: G 도매 및 소매업
+- **analysis[4].cell_attempts[5].axes.산업별[10]**: I 숙박 및 음식점업
+- **analysis[4].cell_attempts[5].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[4].cell_attempts[5].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[6].tbl_id**: DT_1DE6083_11
+- **analysis[4].cell_attempts[6].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+- **analysis[4].cell_attempts[6].matched**: False
+- **analysis[4].cell_attempts[6].value**: None
+- **analysis[4].cell_attempts[6].unit**: None
+- **analysis[4].cell_attempts[6].itm_id**: None
+- **analysis[4].cell_attempts[6].items[0]**: 평소 주당 평균취업시간
+- **analysis[4].cell_attempts[6].axes.산업별[0]**: 계
+- **analysis[4].cell_attempts[6].axes.산업별[1]**: - 광·제조업(BC)
+- **analysis[4].cell_attempts[6].axes.산업별[2]**: C 제조업
+- **analysis[4].cell_attempts[6].axes.산업별[3]**: F 건설업
+- **analysis[4].cell_attempts[6].axes.산업별[4]**: - 도소매·음식숙박업(G I)
+- **analysis[4].cell_attempts[6].axes.산업별[5]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[4].cell_attempts[6].axes.산업별[6]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[4].cell_attempts[6].axes.산업별[7]**: G 도매 및 소매업
+- **analysis[4].cell_attempts[6].axes.산업별[8]**: I 숙박 및 음식점업
+- **analysis[4].cell_attempts[6].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[4].cell_attempts[6].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[7].tbl_id**: DT_38302_2016_N031
+- **analysis[4].cell_attempts[7].tbl_nm**: 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+- **analysis[4].cell_attempts[7].matched**: False
+- **analysis[4].cell_attempts[7].value**: None
+- **analysis[4].cell_attempts[7].unit**: None
+- **analysis[4].cell_attempts[7].itm_id**: None
+- **analysis[4].cell_attempts[7].items[0]**: 추정수
+- **analysis[4].cell_attempts[7].items[1]**: 근로자 주당 소정 근로시간
+- **analysis[4].cell_attempts[7].items[2]**: 근로자 주당 실제 근로시간
+- **analysis[4].cell_attempts[7].axes.기업체별[0]**: 전체
+- **analysis[4].cell_attempts[7].axes.기업체별[1]**: 장애인고용 여부
+- **analysis[4].cell_attempts[7].axes.기업체별[2]**: 고용
+- **analysis[4].cell_attempts[7].axes.기업체별[3]**: 미고용
+- **analysis[4].cell_attempts[7].axes.기업체별[4]**: 고용의무기업체 여부
+- **analysis[4].cell_attempts[7].axes.기업체별[5]**: 비의무
+- **analysis[4].cell_attempts[7].axes.기업체별[6]**: 5~49명
+- **analysis[4].cell_attempts[7].axes.기업체별[7]**: 의무(50명 이상)
+- **analysis[4].cell_attempts[7].axes.기업체별[8]**: 50~299명
+- **analysis[4].cell_attempts[7].axes.기업체별[9]**: 300~999명
+- **analysis[4].cell_attempts[7].axes.기업체별[10]**: 1000명이상
+- **analysis[4].cell_attempts[7].axes.기업체별[11]**: 부담금 납부 대상(100명 이상)
+- **analysis[4].cell_attempts[7].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[8].tbl_id**: DT_1DE6075
+- **analysis[4].cell_attempts[8].tbl_nm**: 산업별 평소 주당 평균 취업시간(10차, ~2024)
+- **analysis[4].cell_attempts[8].matched**: False
+- **analysis[4].cell_attempts[8].value**: None
+- **analysis[4].cell_attempts[8].unit**: None
+- **analysis[4].cell_attempts[8].itm_id**: None
+- **analysis[4].cell_attempts[8].items[0]**: 평소 주당 평균취업시간
+- **analysis[4].cell_attempts[8].axes.산업별[0]**: 계
+- **analysis[4].cell_attempts[8].axes.산업별[1]**: A 농업 임업 및 어업
+- **analysis[4].cell_attempts[8].axes.산업별[2]**: - 광·제조업(BC)
+- **analysis[4].cell_attempts[8].axes.산업별[3]**: C 제조업
+- **analysis[4].cell_attempts[8].axes.산업별[4]**: - 사회간접자본 및 기타서비스업(D~U)
+- **analysis[4].cell_attempts[8].axes.산업별[5]**: F 건설업
+- **analysis[4].cell_attempts[8].axes.산업별[6]**: - 도소매·음식숙박업(G I)
+- **analysis[4].cell_attempts[8].axes.산업별[7]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[4].cell_attempts[8].axes.산업별[8]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[4].cell_attempts[8].axes.산업별[9]**: G 도매 및 소매업
+- **analysis[4].cell_attempts[8].axes.산업별[10]**: I 숙박 및 음식점업
+- **analysis[4].cell_attempts[8].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[4].cell_attempts[8].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].cell_attempts[9].tbl_id**: DT_1DE6083
+- **analysis[4].cell_attempts[9].tbl_nm**: 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+- **analysis[4].cell_attempts[9].matched**: False
+- **analysis[4].cell_attempts[9].value**: None
+- **analysis[4].cell_attempts[9].unit**: None
+- **analysis[4].cell_attempts[9].itm_id**: None
+- **analysis[4].cell_attempts[9].items[0]**: 평소 주당 평균취업시간
+- **analysis[4].cell_attempts[9].axes.산업별[0]**: 계
+- **analysis[4].cell_attempts[9].axes.산업별[1]**: - 광·제조업(BC)
+- **analysis[4].cell_attempts[9].axes.산업별[2]**: C 제조업
+- **analysis[4].cell_attempts[9].axes.산업별[3]**: F 건설업
+- **analysis[4].cell_attempts[9].axes.산업별[4]**: - 도소매·음식숙박업(G I)
+- **analysis[4].cell_attempts[9].axes.산업별[5]**: - 사업·개인·공공서비스 및 기타(E L~U)
+- **analysis[4].cell_attempts[9].axes.산업별[6]**: - 전기·운수·통신·금융(D H J K)
+- **analysis[4].cell_attempts[9].axes.산업별[7]**: G 도매 및 소매업
+- **analysis[4].cell_attempts[9].axes.산업별[8]**: I 숙박 및 음식점업
+- **analysis[4].cell_attempts[9].axes.비임금근로별[0]**: 비임금근로자
+- **analysis[4].cell_attempts[9].error**: itmId 매칭 실패: subject='주당평균근로시간'
+- **analysis[4].kosis_query.api**: statisticsData.do → statisticsParameterData.do
+- **analysis[4].kosis_query.error_msg**: None → 후보 10개 모두 매칭 실패 (예: DT_XNS0036: 분류축 A 매칭 실패: population='일본의65세이상')
+- **analysis[4].kosis_query.duration_ms**: 0 → 1182
+
+### 📊 5단계 상세 — claim 추출값 · 검색값 · 후보 표 디버깅
+
+**[clm-0001] 주당 평균 근로시간**
+- 📌 claim 추출값: 값 `38.8`(원문 `38.8시간`) | 시점 `2025-03`(원문 `지난달`) | 모집단 `한국 근로자` | 단위 `시간` | subject `주당 평균 근로시간`
+- 🔍 KOSIS 에 넣은 값: subject `주당평균근로시간`(공백 제거) | population `한국 근로자` | period `2025-03`
+- 📑 후보 표별 조회 시도 10개:
+    - `DT_XNS0036` 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+        - 항목: 제조업 주당 평균근로시간
+        - 분류축 [국가별]: 브루나이(a), 캄보디아(a), 인도(a), 인도네시아(a), 라오스(a), 말레이시아(a), 미얀마(a), 필리핀(a), 싱가포르(b), 태국(a), 베트남(a)
+        - 결과: ❌ 분류축 A 매칭 실패: population='한국근로자'
+    - `DT_1DE7097S` 성별 시간제근로자 주당 평균취업시간
+        - 항목: 시간제근로자
+        - 분류축 [성별]: 계, 남자, 여자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE7095S` 근로형태별/주당평균취업시간 및 증감
+        - 항목: 평균취업시간, 증감(전년동월)
+        - 분류축 [근로형태별]: 임금근로자, 정규직, 비정규직, 한시적, 기간제, 비기간제, 시간제, 비전형
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6019S` 평소 주당 평균 취업시간
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [성별]: 계, 남자, 여자
+        - 분류축 [비임금근로별]: 비임금근로자, - 자영업자, - 고용원이 있는 자영업자, - 고용원이 없는 자영업자, - 무급가족종사자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6052S` 평소 주당 평균 취업시간(농림어업제외)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [비임금근로별]: 비임금근로자, - 자영업자, - 고용원이 있는 자영업자, - 고용원이 없는 자영업자, - 무급가족종사자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6075_11` 산업별 평소 주당 평균 취업시간(11차)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, A 농업 임업 및 어업, - 광·제조업(BC), C 제조업, - 사회간접자본 및 기타서비스업(D~U), F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6083_11` 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, - 광·제조업(BC), C 제조업, F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_38302_2016_N031` 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+        - 항목: 추정수, 근로자 주당 소정 근로시간, 근로자 주당 실제 근로시간
+        - 분류축 [기업체별]: 전체, 장애인고용 여부, 고용, 미고용, 고용의무기업체 여부, 비의무, 5~49명, 의무(50명 이상), 50~299명, 300~999명, 1000명이상, 부담금 납부 대상(100명 이상)
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6075` 산업별 평소 주당 평균 취업시간(10차, ~2024)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, A 농업 임업 및 어업, - 광·제조업(BC), C 제조업, - 사회간접자본 및 기타서비스업(D~U), F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6083` 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, - 광·제조업(BC), C 제조업, F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+- 🎯 얻어낸 cell 값: ❌ 없음 — 후보 10개 모두 매칭 실패 (예: DT_XNS0036: 분류축 A 매칭 실패: population='한국근로자')
+
+**[clm-0002] 노동시장 참여율**
+- 📌 claim 추출값: 값 `0.26`(원문 `26%`) | 시점 `현재 시점`(원문 `현재 시점`) | 모집단 `일본의 65세 이상 인구` | 단위 `%` | subject `노동시장 참여율`
+- 🔍 KOSIS 에 넣은 값: subject `노동시장참여율`(공백 제거) | population `일본의 65세 이상 인구` | period `현재 시점`
+- 📑 후보 표별 조회 시도 10개:
+    - `INH_2OEEM3017` 비경제활동 인구
+        - 항목: 노동력 외 인구
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 60개
+        - 분류축 [조정]: 연간 및 계절조정, 연간 및 계절조정 하지 않음
+        - 분류축 [성별]: 전체, 남성, 여성
+        - 분류축 [연령]: 15세이상, 15-24세, 15-64세, 15-74세, 25-54세, 55-64세
+        - 분류축 [경제활동]: 분류 미적용
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `INH_2OEEM3017` 비경제활동 인구
+        - 항목: 노동력 외 인구
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 60개
+        - 분류축 [조정]: 연간 및 계절조정, 연간 및 계절조정 하지 않음
+        - 분류축 [성별]: 전체, 남성, 여성
+        - 분류축 [연령]: 15세이상, 15-24세, 15-64세, 15-74세, 25-54세, 55-64세
+        - 분류축 [경제활동]: 분류 미적용
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2UNS0304` 노동시장 프로그램을 적용 받는 인구 비율
+        - 항목: 전체(전국평균) 또는 비분류, 1분위(최저)
+        - 분류축 [국가]: 아시아, 대한민국, 아제르바이잔, 바레인, 중국, 키프로스, 조지아, 홍콩, 인도, 인도네시아, 이란, 이라크, 이스라엘, 일본, 요르단, …외 125개
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2OEEM1015` 최저소득 급여 수급 중 취업 시 적용되는 실효세율
+        - 항목: 최저소득 수급 가족의 참여 세율(PTR)
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 61개
+        - 분류축 [기준 소득자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금
+        - 분류축 [가구 유형]: 1인 가구 자녀 없음, 1인 가구 자녀 2명, 부부 자녀 없음, 부부 자녀 2명
+        - 분류축 [배우자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금, 소득 없음 기여성 급여 없는 실업 상태, 분류 미적용
+        - 분류축 [임대 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [한시적 근로 장려금 자격 요건]: 적격, 부적격
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2OEEM1016` 실업급여 수급 중 취업 시 적용되는 실효세율_실업기간 2~12개월
+        - 항목: 실업급여 수급 가족의 참여 세율(PTR)
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 61개
+        - 분류축 [기준 소득자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금
+        - 분류축 [가구 유형]: 1인 가구 자녀 없음, 1인 가구 자녀 2명, 부부 자녀 없음, 부부 자녀 2명
+        - 분류축 [배우자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금, 소득 없음 기여성 급여 없는 실업 상태, 분류 미적용
+        - 분류축 [실업 기간]: 2개월, 4개월, 6개월, 8개월, 12개월
+        - 분류축 [사회복지 또는 최저소득 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [임대 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [한시적 근로 장려금 자격 요건]: 적격, 부적격
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2OEEM1016_02` 실업급여 수급 중 취업 시 적용되는 실효세율_실업기간 18~60개월
+        - 항목: 실업급여 수급 가족의 참여 세율(PTR)
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 61개
+        - 분류축 [기준 소득자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금
+        - 분류축 [가구 유형]: 1인 가구 자녀 없음, 1인 가구 자녀 2명, 부부 자녀 없음, 부부 자녀 2명
+        - 분류축 [배우자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금, 소득 없음 기여성 급여 없는 실업 상태, 분류 미적용
+        - 분류축 [실업 기간]: 18개월, 24개월, 36개월, 60개월
+        - 분류축 [사회복지 또는 최저소득 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [임대 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [한시적 근로 장려금 자격 요건]: 적격, 부적격
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2OEEM1018` 최저소득 급여를 수급하고 보육 서비스를 이용할 때 취업 시 적용되는 실효세율
+        - 항목: 최저소득 수급 부모가 보육 서비스를 이용하는 경우의 참여 세율(PTR)
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 61개
+        - 분류축 [기준 소득자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금
+        - 분류축 [가구 유형]: 1인 가구 자녀 2명, 부부 자녀 2명
+        - 분류축 [배우자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금, 분류 미적용
+        - 분류축 [임대 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [한시적 근로 장려금 자격 요건]: 적격, 부적격
+        - 분류축 [참여 세율 구성]: 전체, 보육비 분담금, 보육 수당 분담금, 세금 분담금, 기타 수당 분담금
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2UNS0306` 사회보험 프로그램을 적용 받는 인구 비율
+        - 항목: 전체(전국평균) 또는 비분류, 1분위(최저)
+        - 분류축 [국가]: 아시아, 대한민국, 아제르바이잔, 바레인, 중국, 키프로스, 조지아, 홍콩, 인도, 인도네시아, 이란, 이라크, 이스라엘, 일본, 요르단, …외 125개
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2UNS0305` 사회보장 프로그램을 적용 받는 인구 비율
+        - 항목: 전체(전국평균) 또는 비분류, 1분위(최저)
+        - 분류축 [국가]: 아시아, 대한민국, 아제르바이잔, 바레인, 중국, 키프로스, 조지아, 홍콩, 인도, 인도네시아, 이란, 이라크, 이스라엘, 일본, 요르단, …외 125개
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+    - `DT_2OEEM10171` 실업급여를 수급하고 보육 서비스를 이용할 때 취업 시 적용되는 실효세율_1인 가구, 자녀 2명
+        - 항목: 실업급여를 청구하고 보육 서비스를 이용하는 부모의 참여 세율(PTR)_1인 가구 자녀 2명
+        - 분류축 [국가]: 오스트레일리아, 오스트리아, 벨기에, 캐나다, 칠레, 콜롬비아, 코스타리카, 체코, 덴마크, 에스토니아, 핀란드, 프랑스, 독일, 그리스, 헝가리, …외 61개
+        - 분류축 [기준 소득자의 소득]: 평균 임금의 67%, 평균 임금의 100%, 최저임금
+        - 분류축 [배우자의 소득]: 분류 미적용
+        - 분류축 [실업 기간]: 2개월, 4개월, 6개월, 8개월, 12개월, 18개월, 24개월, 36개월, 60개월
+        - 분류축 [사회복지 또는 최저소득 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [임대 보조금 자격 요건]: 적격, 부적격
+        - 분류축 [한시적 근로 장려금 자격 요건]: 적격, 부적격
+        - 분류축 [참여 세율 구성]: 전체, 보육비 분담금, 보육 수당 분담금, 세금 분담금, 기타 수당 분담금
+        - 결과: ❌ itmId 매칭 실패: subject='노동시장참여율'
+- 🎯 얻어낸 cell 값: ❌ 없음 — 후보 10개 모두 매칭 실패 (예: INH_2OEEM3017: itmId 매칭 실패: subject='노동시장참여율')
+
+**[clm-0003] 연평균 노동생산성 증가율**
+- 📌 claim 추출값: 값 `0.011`(원문 `1.1%`) | 시점 `1997`(원문 `1997년 이후`) | 모집단 `일본` | 단위 `%p` | subject `연평균 노동생산성 증가율`
+- 🔍 KOSIS 에 넣은 값: subject `연평균노동생산성증가율`(공백 제거) | population `일본` | period `1997`
+- 📑 후보 표별 조회 시도 5개:
+    - `DT_13622_2017106` 국내시장 전망
+        - 항목: 항목
+        - 분류축 [특성별]: 전체, 경영인별, 독림가, 임업후계자, 신지식임업인, 산림소재지별, 수도권, 강원권, 충청권, 전라권, 경상권, 선정연도별, 1970~1979년, 1980~1989년, 1990~1999년, …외 42개
+        - 분류축 [전망및이유별]: 향후 전망, 사례수, 매우 좋아질것이다, 다소 좋아질것이다, 현 상태를 유지할 것이다, 다소 나빠질것이다, 매우 나빠질것이다, 평균, 표준편차, 좋아질 것이라 생각하는 이유, 사례수, 환경 및 건강에 대한 관심증대, 기술개발에 따른 생산량 증가, 유통· 판매에 대한 정부 지원 확대, 기타, …외 9개
+        - 결과: ❌ itmId 매칭 실패: subject='연평균노동생산성증가율'
+    - `DT_13622_B100` 국내시장 전망
+        - 항목: 국내시장 전망
+        - 분류축 [전망및이유별]: 향후 전망, 사례수, 매우 좋아질 것이다, 다소 좋아질 것이다, 현 상태를 유지할 것이다, 다소 나빠질 것이다, 매우 나빠질 것이다, 평균, 표준편차, 호전 예상 이유, 사례수, 환경 및 건강에 대한 관심 증대, 기술개발에 따른 생산량 증가, 유통.판매에 대한 정부지원 확대, 기타, …외 10개
+        - 분류축 [특성별]: 전체, 경영인별, 독림가, 임업후계자, 신지식임업인, 산림소재지별, 수도권, 강원권, 충청권, 전라권, 경상권, 선정연도별, 1970~1989년, 1990~1999년, 2000~2009년, …외 38개
+        - 결과: ❌ itmId 매칭 실패: subject='연평균노동생산성증가율'
+    - `TX_136_2009_H3074` 옻 생산업에 종사하면서 느끼는 애로사항
+        - 항목: 옻 생산업
+        - 분류축 [특성별]: 전체, 성별, 남자, 여자, 연령별, 49세 이하, 50~59세, 60~69세, 70~79세, 80세 이상, 지역별, 경기도, 경상남도, 대구/경북, 전라북도, …외 34개
+        - 분류축 [애로사항별]: 1+2순위, 사례수, 안정적인 판로확보 문제, 노동력 부족, 채취·재배기술의 부족, 미약한 정부지원, 자금 부족, 옻 재배장소 부족, 옻 생산물 도난 잦음, 옻나무가 자꾸 죽어서, 옻이 오르는 것, 산짐승에 의한 피해, 생장기간 길다, 관리 부족, 기피 작물에 해당함, …외 52개
+        - 결과: ❌ itmId 매칭 실패: subject='연평균노동생산성증가율'
+    - `TX_136_2009_H3375` 최근 3년간 옻 생산으로 인한 소득 변화 및 이유
+        - 항목: 옻 생산
+        - 분류축 [특성별]: 평균, 성별, 남자, 여자, 연령별, 49세 이하, 50~59세, 60~69세, 70~79세, 80세 이상, 지역별, 강원도, 경상남도, 경기도, 대구/경북, …외 18개
+        - 분류축 [변화및이유별]: 소득 변화, 사례수, 생산량과 소득 모두 늘었다, 생산량과 소득 변화없다, 생산량과 소득 모두 감소하였다, 생산량은 증가 소득은 감소하였다, 생산량은 같고 소득은 감소하였다, 생산량은 감소 소득은 증가했다, 생산량은 같고 소득은 증가하였다, 소득 감소 이유, 사례수, 판로를 찾지 못해서, 노동력이 부족해서, 재배기술이 부족해서, 옻나무가 죽어서, …외 8개
+        - 결과: ❌ itmId 매칭 실패: subject='연평균노동생산성증가율'
+    - `TX_136_2009_H4204` 산채재배 전망 및 계획
+        - 항목: 산채재배 전망 및 계획
+        - 분류축 [특성별]: 전체, 지역별, 경기도, 강원도, 충청북도, 충청남도, 전라북도, 전라남도, 경상북도, 경상남도, 제주특별자치도, 재배규모별, 0.1㏊ 미만, 0.1~0.2㏊ 미만, 0.2~0.3㏊ 미만, …외 19개
+        - 분류축 [전망및계획별]: 응답자수, 산채재배 전망, 매우 좋아질 것, 다소 나아질 것, 현 상태를 유지할 것, 다소 나빠질 것, 매우 나빠질 것, 5점 평균, 100점 평균, 산채재배 계획, 늘릴계획, 현 상태 유지 , 줄일 계획, 중단할 계획, 산채재배를 줄이거나 중단할 계획인 이유, …외 12개
+        - 결과: ❌ itmId 매칭 실패: subject='연평균노동생산성증가율'
+- 🎯 얻어낸 cell 값: ❌ 없음 — 후보 5개 모두 매칭 실패 (예: DT_13622_2017106: itmId 매칭 실패: subject='연평균노동생산성증가율')
+
+**[clm-0004] 주당 평균 근로시간**
+- 📌 claim 추출값: 값 `30`(원문 `30시간`) | 시점 `현재 시점`(원문 `현재 시점`) | 모집단 `일본의 25~64세` | 단위 `시간` | subject `주당 평균 근로시간`
+- 🔍 KOSIS 에 넣은 값: subject `주당평균근로시간`(공백 제거) | population `일본의 25~64세` | period `현재 시점`
+- 📑 후보 표별 조회 시도 10개:
+    - `DT_XNS0036` 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+        - 항목: 제조업 주당 평균근로시간
+        - 분류축 [국가별]: 브루나이(a), 캄보디아(a), 인도(a), 인도네시아(a), 라오스(a), 말레이시아(a), 미얀마(a), 필리핀(a), 싱가포르(b), 태국(a), 베트남(a)
+        - 결과: ❌ 분류축 A 매칭 실패: population='일본의25~64세'
+    - `DT_1DE7097S` 성별 시간제근로자 주당 평균취업시간
+        - 항목: 시간제근로자
+        - 분류축 [성별]: 계, 남자, 여자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE7095S` 근로형태별/주당평균취업시간 및 증감
+        - 항목: 평균취업시간, 증감(전년동월)
+        - 분류축 [근로형태별]: 임금근로자, 정규직, 비정규직, 한시적, 기간제, 비기간제, 시간제, 비전형
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6019S` 평소 주당 평균 취업시간
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [성별]: 계, 남자, 여자
+        - 분류축 [비임금근로별]: 비임금근로자, - 자영업자, - 고용원이 있는 자영업자, - 고용원이 없는 자영업자, - 무급가족종사자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6052S` 평소 주당 평균 취업시간(농림어업제외)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [비임금근로별]: 비임금근로자, - 자영업자, - 고용원이 있는 자영업자, - 고용원이 없는 자영업자, - 무급가족종사자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6075_11` 산업별 평소 주당 평균 취업시간(11차)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, A 농업 임업 및 어업, - 광·제조업(BC), C 제조업, - 사회간접자본 및 기타서비스업(D~U), F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6083_11` 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, - 광·제조업(BC), C 제조업, F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_38302_2016_N031` 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+        - 항목: 추정수, 근로자 주당 소정 근로시간, 근로자 주당 실제 근로시간
+        - 분류축 [기업체별]: 전체, 장애인고용 여부, 고용, 미고용, 고용의무기업체 여부, 비의무, 5~49명, 의무(50명 이상), 50~299명, 300~999명, 1000명이상, 부담금 납부 대상(100명 이상)
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6075` 산업별 평소 주당 평균 취업시간(10차, ~2024)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, A 농업 임업 및 어업, - 광·제조업(BC), C 제조업, - 사회간접자본 및 기타서비스업(D~U), F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6083` 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, - 광·제조업(BC), C 제조업, F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+- 🎯 얻어낸 cell 값: ❌ 없음 — 후보 10개 모두 매칭 실패 (예: DT_XNS0036: 분류축 A 매칭 실패: population='일본의25~64세')
+
+**[clm-0005] 주당 평균 근로시간**
+- 📌 claim 추출값: 값 `7`(원문 `7시간`) | 시점 `현재 시점`(원문 `현재 시점`) | 모집단 `일본의 65세 이상` | 단위 `시간` | subject `주당 평균 근로시간`
+- 🔍 KOSIS 에 넣은 값: subject `주당평균근로시간`(공백 제거) | population `일본의 65세 이상` | period `현재 시점`
+- 📑 후보 표별 조회 시도 10개:
+    - `DT_XNS0036` 제조업 근로자의 주당 평균 실근로시간 - 남부·동남아시아
+        - 항목: 제조업 주당 평균근로시간
+        - 분류축 [국가별]: 브루나이(a), 캄보디아(a), 인도(a), 인도네시아(a), 라오스(a), 말레이시아(a), 미얀마(a), 필리핀(a), 싱가포르(b), 태국(a), 베트남(a)
+        - 결과: ❌ 분류축 A 매칭 실패: population='일본의65세이상'
+    - `DT_1DE7097S` 성별 시간제근로자 주당 평균취업시간
+        - 항목: 시간제근로자
+        - 분류축 [성별]: 계, 남자, 여자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE7095S` 근로형태별/주당평균취업시간 및 증감
+        - 항목: 평균취업시간, 증감(전년동월)
+        - 분류축 [근로형태별]: 임금근로자, 정규직, 비정규직, 한시적, 기간제, 비기간제, 시간제, 비전형
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6019S` 평소 주당 평균 취업시간
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [성별]: 계, 남자, 여자
+        - 분류축 [비임금근로별]: 비임금근로자, - 자영업자, - 고용원이 있는 자영업자, - 고용원이 없는 자영업자, - 무급가족종사자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6052S` 평소 주당 평균 취업시간(농림어업제외)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [비임금근로별]: 비임금근로자, - 자영업자, - 고용원이 있는 자영업자, - 고용원이 없는 자영업자, - 무급가족종사자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6075_11` 산업별 평소 주당 평균 취업시간(11차)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, A 농업 임업 및 어업, - 광·제조업(BC), C 제조업, - 사회간접자본 및 기타서비스업(D~U), F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6083_11` 산업별 평소 주당 평균 취업시간(농림어업제외)(11차)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, - 광·제조업(BC), C 제조업, F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_38302_2016_N031` 주당 평균 근로시간 및 실제 근로시간 - 전체 기업체
+        - 항목: 추정수, 근로자 주당 소정 근로시간, 근로자 주당 실제 근로시간
+        - 분류축 [기업체별]: 전체, 장애인고용 여부, 고용, 미고용, 고용의무기업체 여부, 비의무, 5~49명, 의무(50명 이상), 50~299명, 300~999명, 1000명이상, 부담금 납부 대상(100명 이상)
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6075` 산업별 평소 주당 평균 취업시간(10차, ~2024)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, A 농업 임업 및 어업, - 광·제조업(BC), C 제조업, - 사회간접자본 및 기타서비스업(D~U), F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+    - `DT_1DE6083` 산업별 평소 주당 평균 취업시간(농림어업제외)(10차, ~2024)
+        - 항목: 평소 주당 평균취업시간
+        - 분류축 [산업별]: 계, - 광·제조업(BC), C 제조업, F 건설업, - 도소매·음식숙박업(G I), - 사업·개인·공공서비스 및 기타(E L~U), - 전기·운수·통신·금융(D H J K), G 도매 및 소매업, I 숙박 및 음식점업
+        - 분류축 [비임금근로별]: 비임금근로자
+        - 결과: ❌ itmId 매칭 실패: subject='주당평균근로시간'
+- 🎯 얻어낸 cell 값: ❌ 없음 — 후보 10개 모두 매칭 실패 (예: DT_XNS0036: 분류축 A 매칭 실패: population='일본의65세이상')
+
 
 ## 6. 통계 수치 비교 판단
 
@@ -73,7 +1871,7 @@ _(변경 없음)_
 
 ## 8. 종합 분석·검증 결과 생성
 
-- **verifications.summary.total_claims**: 1
+- **verifications.summary.total_claims**: 5
 - **verifications.summary.overall_verdict**: UNVERIFIED
 - **verifications.summary.average_confidence**: 0.0
 - **verifications.claim_results[0].claim_id**: clm-0001
@@ -81,18 +1879,18 @@ _(변경 없음)_
 - **verifications.claim_results[0].verdict_human**: None
 - **verifications.claim_results[0].verdict_human_note**: None
 - **verifications.claim_results[0].mismatch_type**: None
-- **verifications.claim_results[0].claim_value**: 0.72
+- **verifications.claim_results[0].claim_value**: 38.8
 - **verifications.claim_results[0].kosis_value**: 0.72
 - **verifications.claim_results[0].explanation**: 
 - **verifications.claim_results[0].confidence**: 0.0
 - **verifications.claim_results[0].llm_model**: (더미)
 - **verifications.claim_results[0].evidence[0].claim_id**: clm-0001
 - **verifications.claim_results[0].evidence[0].source**: KOSIS
-- **verifications.claim_results[0].evidence[0].subject**: 합계출산율
-- **verifications.claim_results[0].evidence[0].unit**: 명
-- **verifications.claim_results[0].evidence[0].period_type**: Y
-- **verifications.claim_results[0].evidence[0].period**: 2024
-- **verifications.claim_results[0].evidence[0].population**: 전체 인구
+- **verifications.claim_results[0].evidence[0].subject**: 주당 평균 근로시간
+- **verifications.claim_results[0].evidence[0].unit**: 시간
+- **verifications.claim_results[0].evidence[0].period_type**: M
+- **verifications.claim_results[0].evidence[0].period**: 2025-03
+- **verifications.claim_results[0].evidence[0].population**: 한국 근로자
 - **verifications.claim_results[0].evidence[0].evidence_id**: None
 - **verifications.claim_results[0].evidence[0].value**: None
 - **verifications.claim_results[0].evidence[0].kosis_org_id**: None
@@ -102,7 +1900,115 @@ _(변경 없음)_
 - **verifications.claim_results[0].evidence[0].url**: None
 - **verifications.claim_results[0].evidence[0].last_updated**: None
 - **verifications.claim_results[0].evidence[0].retrieved_at**: None
+- **verifications.claim_results[1].claim_id**: clm-0002
+- **verifications.claim_results[1].verdict**: UNVERIFIED
+- **verifications.claim_results[1].verdict_human**: None
+- **verifications.claim_results[1].verdict_human_note**: None
+- **verifications.claim_results[1].mismatch_type**: None
+- **verifications.claim_results[1].claim_value**: 0.26
+- **verifications.claim_results[1].kosis_value**: 0.72
+- **verifications.claim_results[1].explanation**: 
+- **verifications.claim_results[1].confidence**: 0.0
+- **verifications.claim_results[1].llm_model**: (더미)
+- **verifications.claim_results[1].evidence[0].claim_id**: clm-0002
+- **verifications.claim_results[1].evidence[0].source**: KOSIS
+- **verifications.claim_results[1].evidence[0].subject**: 노동시장 참여율
+- **verifications.claim_results[1].evidence[0].unit**: %
+- **verifications.claim_results[1].evidence[0].period_type**: D
+- **verifications.claim_results[1].evidence[0].period**: 현재 시점
+- **verifications.claim_results[1].evidence[0].population**: 일본의 65세 이상 인구
+- **verifications.claim_results[1].evidence[0].evidence_id**: None
+- **verifications.claim_results[1].evidence[0].value**: None
+- **verifications.claim_results[1].evidence[0].kosis_org_id**: None
+- **verifications.claim_results[1].evidence[0].kosis_tbl_id**: None
+- **verifications.claim_results[1].evidence[0].table_name**: None
+- **verifications.claim_results[1].evidence[0].kosis_item_id**: None
+- **verifications.claim_results[1].evidence[0].url**: None
+- **verifications.claim_results[1].evidence[0].last_updated**: None
+- **verifications.claim_results[1].evidence[0].retrieved_at**: None
+- **verifications.claim_results[2].claim_id**: clm-0003
+- **verifications.claim_results[2].verdict**: UNVERIFIED
+- **verifications.claim_results[2].verdict_human**: None
+- **verifications.claim_results[2].verdict_human_note**: None
+- **verifications.claim_results[2].mismatch_type**: None
+- **verifications.claim_results[2].claim_value**: 0.011
+- **verifications.claim_results[2].kosis_value**: 0.72
+- **verifications.claim_results[2].explanation**: 
+- **verifications.claim_results[2].confidence**: 0.0
+- **verifications.claim_results[2].llm_model**: (더미)
+- **verifications.claim_results[2].evidence[0].claim_id**: clm-0003
+- **verifications.claim_results[2].evidence[0].source**: KOSIS
+- **verifications.claim_results[2].evidence[0].subject**: 연평균 노동생산성 증가율
+- **verifications.claim_results[2].evidence[0].unit**: %p
+- **verifications.claim_results[2].evidence[0].period_type**: Y
+- **verifications.claim_results[2].evidence[0].period**: 1997
+- **verifications.claim_results[2].evidence[0].population**: 일본
+- **verifications.claim_results[2].evidence[0].evidence_id**: None
+- **verifications.claim_results[2].evidence[0].value**: None
+- **verifications.claim_results[2].evidence[0].kosis_org_id**: None
+- **verifications.claim_results[2].evidence[0].kosis_tbl_id**: None
+- **verifications.claim_results[2].evidence[0].table_name**: None
+- **verifications.claim_results[2].evidence[0].kosis_item_id**: None
+- **verifications.claim_results[2].evidence[0].url**: None
+- **verifications.claim_results[2].evidence[0].last_updated**: None
+- **verifications.claim_results[2].evidence[0].retrieved_at**: None
+- **verifications.claim_results[3].claim_id**: clm-0004
+- **verifications.claim_results[3].verdict**: UNVERIFIED
+- **verifications.claim_results[3].verdict_human**: None
+- **verifications.claim_results[3].verdict_human_note**: None
+- **verifications.claim_results[3].mismatch_type**: None
+- **verifications.claim_results[3].claim_value**: 30
+- **verifications.claim_results[3].kosis_value**: 0.72
+- **verifications.claim_results[3].explanation**: 
+- **verifications.claim_results[3].confidence**: 0.0
+- **verifications.claim_results[3].llm_model**: (더미)
+- **verifications.claim_results[3].evidence[0].claim_id**: clm-0004
+- **verifications.claim_results[3].evidence[0].source**: KOSIS
+- **verifications.claim_results[3].evidence[0].subject**: 주당 평균 근로시간
+- **verifications.claim_results[3].evidence[0].unit**: 시간
+- **verifications.claim_results[3].evidence[0].period_type**: D
+- **verifications.claim_results[3].evidence[0].period**: 현재 시점
+- **verifications.claim_results[3].evidence[0].population**: 일본의 25~64세
+- **verifications.claim_results[3].evidence[0].evidence_id**: None
+- **verifications.claim_results[3].evidence[0].value**: None
+- **verifications.claim_results[3].evidence[0].kosis_org_id**: None
+- **verifications.claim_results[3].evidence[0].kosis_tbl_id**: None
+- **verifications.claim_results[3].evidence[0].table_name**: None
+- **verifications.claim_results[3].evidence[0].kosis_item_id**: None
+- **verifications.claim_results[3].evidence[0].url**: None
+- **verifications.claim_results[3].evidence[0].last_updated**: None
+- **verifications.claim_results[3].evidence[0].retrieved_at**: None
+- **verifications.claim_results[4].claim_id**: clm-0005
+- **verifications.claim_results[4].verdict**: UNVERIFIED
+- **verifications.claim_results[4].verdict_human**: None
+- **verifications.claim_results[4].verdict_human_note**: None
+- **verifications.claim_results[4].mismatch_type**: None
+- **verifications.claim_results[4].claim_value**: 7
+- **verifications.claim_results[4].kosis_value**: 0.72
+- **verifications.claim_results[4].explanation**: 
+- **verifications.claim_results[4].confidence**: 0.0
+- **verifications.claim_results[4].llm_model**: (더미)
+- **verifications.claim_results[4].evidence[0].claim_id**: clm-0005
+- **verifications.claim_results[4].evidence[0].source**: KOSIS
+- **verifications.claim_results[4].evidence[0].subject**: 주당 평균 근로시간
+- **verifications.claim_results[4].evidence[0].unit**: 시간
+- **verifications.claim_results[4].evidence[0].period_type**: D
+- **verifications.claim_results[4].evidence[0].period**: 현재 시점
+- **verifications.claim_results[4].evidence[0].population**: 일본의 65세 이상
+- **verifications.claim_results[4].evidence[0].evidence_id**: None
+- **verifications.claim_results[4].evidence[0].value**: None
+- **verifications.claim_results[4].evidence[0].kosis_org_id**: None
+- **verifications.claim_results[4].evidence[0].kosis_tbl_id**: None
+- **verifications.claim_results[4].evidence[0].table_name**: None
+- **verifications.claim_results[4].evidence[0].kosis_item_id**: None
+- **verifications.claim_results[4].evidence[0].url**: None
+- **verifications.claim_results[4].evidence[0].last_updated**: None
+- **verifications.claim_results[4].evidence[0].retrieved_at**: None
 
 ## 9. 설명 생성
 
-- **verifications.claim_results[0].explanation**:  → 2024년 합계출산율에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다.
+- **verifications.claim_results[0].explanation**:  → 주당 평균 근로시간에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다.
+- **verifications.claim_results[1].explanation**:  → 노동시장 참여율에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다.
+- **verifications.claim_results[2].explanation**:  → 1997년 연평균 노동생산성 증가율에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다.
+- **verifications.claim_results[3].explanation**:  → 주당 평균 근로시간에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다.
+- **verifications.claim_results[4].explanation**:  → 주당 평균 근로시간에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다.

@@ -333,7 +333,10 @@ async def normalize_claim(master_schema: MasterSchema) -> None:
     한국어 수사·시점을 산술값으로 정규화한다.
     """
     article = getattr(master_schema, "article", None)
-    base = article.published_at if article else ""  # 상대시점 해석 기준(기사 발행일)
+    # 상대시점 해석 기준(기사 발행일). published_at 은 str|bool|None 이므로
+    # 문자열일 때만 base 로 쓰고, 아니면 "" (상대표현은 원문 그대로 유지).
+    published = article.published_at if article else None
+    base = published if isinstance(published, str) else ""
     for claim in master_schema.claims:
         claim.value.llm_value = _parse_value(claim.value.raw)
         claim.period_value.llm_value = _normalize_period(claim.period_value.raw, base)

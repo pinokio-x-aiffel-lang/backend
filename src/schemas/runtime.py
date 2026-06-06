@@ -114,6 +114,23 @@ class KosisSearch(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
+class KosisCandidate(BaseModel):
+    """KOSIS 통합검색 후보 통계표 한 건 (selected 이전의 상위 N개 풀).
+
+    src.kosis.search.SearchHit 의 핵심 필드만 추린 직렬화 표현(raw 제외).
+    selected_tbl_id 선정은 이후 단계의 몫이고, 이 목록은 그 선정 풀이다.
+    """
+
+    org_id: str
+    tbl_id: str
+    tbl_nm: str
+    org_nm: str = ""
+    stat_nm: str = ""           # 통계(조사)명
+    prd_de: str = ""            # 수록 기간 (STRT_PRD_DE~END_PRD_DE)
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
 class KosisQuery(BaseModel):
     """KOSIS 통계자료(statisticsData.do) 호출 로그."""
 
@@ -128,24 +145,12 @@ class KosisQuery(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-class ClaimAnalysis(BaseModel):
-    """주장 1건에 대한 KOSIS 검색·조회 분석 결과."""
-
-    claim_id: str
-    kosis_search: KosisSearch
-    kosis_query: KosisQuery
-
-    model_config = ConfigDict(populate_by_name=True)
-
-
-# --------------------------------------------------------------------------- #
-# verifications
-# --------------------------------------------------------------------------- #
 class Evidence(BaseModel):
     """검증 근거 — KOSIS 공식 수치 및 출처 메타데이터.
 
     KOSIS 조회([4]~[7])로 채워지는 필드는 조회 전이면 값이 없으므로 None 허용
-    (더미값을 내보내지 않는다).
+    (더미값을 내보내지 않는다). [5] fetch_kosis_data 가 ClaimAnalysis.evidence 에
+    선정 셀을 담고, 이후 단계가 verifications 로 옮긴다.
     """
 
     claim_id: str
@@ -166,6 +171,39 @@ class Evidence(BaseModel):
     classification: dict[str, str] = Field(default_factory=dict)
     last_updated: str | None = None
     retrieved_at: str | None = None
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class CellAttempt(BaseModel):
+    """[5] 후보 표 1개에 대한 셀 조회 시도 결과 (디버깅·표시용).
+
+    표가 가진 항목(items)·분류축(axes)과 subject/population 매칭 결과를 담는다.
+    매칭 실패 사유(error)로 '왜 못 찾았는지'를 파악한다.
+    """
+
+    tbl_id: str
+    tbl_nm: str
+    matched: bool = False
+    value: float | None = None
+    unit: str | None = None
+    itm_id: str | None = None
+    items: list[str] = Field(default_factory=list)            # 표 항목명(ITM_NM) 샘플
+    axes: dict[str, list[str]] = Field(default_factory=dict)  # 분류축명 → 값명 샘플
+    error: str | None = None
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class ClaimAnalysis(BaseModel):
+    """주장 1건에 대한 KOSIS 검색·조회 분석 결과."""
+
+    claim_id: str
+    kosis_search: KosisSearch
+    candidates: list[KosisCandidate] = Field(default_factory=list)  # [4] 상위 N개 후보 풀
+    cell_attempts: list[CellAttempt] = Field(default_factory=list)  # [5] 후보 표별 조회 시도(디버깅)
+    kosis_query: KosisQuery
+    evidence: Evidence | None = None  # [5] 선정 셀(공식 수치). 미조회/실패 시 None
 
     model_config = ConfigDict(populate_by_name=True)
 

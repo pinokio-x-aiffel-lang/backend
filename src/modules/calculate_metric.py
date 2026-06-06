@@ -23,6 +23,5 @@ async def calculate_metric(master_schema: MasterSchema) -> None:
         일치/불일치와 mismatch_type 초기 판정을 계산한다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
-    # TODO: 실제 구현 — 주장 vs 증거 수치 비교.
-    #       판정 조립은 [8] decide_verdict 에서. happy-path 에선 no-op.
-    pass
+    # TODO: 실제 구현 — 주장 vs 증거 수치 비교. 판정 조립은 [8] decide_verdict.
+    print("[6] calculate_metric — KOSIS 값:", [(a.claim_id, a.evidence.value if a.evidence else None) for a in master_schema.analysis])
