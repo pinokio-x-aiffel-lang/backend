@@ -7,6 +7,7 @@ import re
 from langfuse import get_client
 
 from src.llm.client import LlmError
+from src.llm.model_presets import PREPROCESS
 from src.observability.tracing import traced_chat
 from src.schemas.runtime import MasterSchema
 
@@ -86,10 +87,10 @@ async def _atomize_batch(sentences: list[str]) -> list[str]:
     try:
         response = await asyncio.to_thread(
             traced_chat,
-            model_alias="hyperclova",
-            model_name="HCX-005",
+            model_alias=PREPROCESS.model_alias,
+            model_name=PREPROCESS.model_name,
             messages=messages,
-            max_tokens=1024,
+            max_tokens=PREPROCESS.max_tokens,
             trace_name="preprocess:atomize",
         )
         text = response.text.strip()

@@ -17,19 +17,43 @@ from __future__ import annotations
 
 import json
 import logging
+import os
+import threading
 import time
+from collections import deque
 from typing import Any, Optional
 
 import requests
+from dotenv import load_dotenv
 
 logger = logging.getLogger("kosis")
 
 DATA_URL = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
 SEARCH_URL = "https://kosis.kr/openapi/statisticsSearch.do"
+META_URL = "https://kosis.kr/openapi/statisticsData.do"  # getMeta(통계표 구조 메타)
 
 
 class KosisError(Exception):
     """KOSIS 호출 실패 또는 응답 비정상."""
+
+
+def resolve_api_key(api_key: Optional[str] = None) -> str:
+    """KOSIS 인증키 확보. 인자가 있으면 그대로, 없으면 .env 의 KOSIS_API_KEY.
+
+    검색(search)·메타(meta) 등 호출부가 공유하는 단일 키 해석 경로.
+
+    Raises:
+        ValueError: 인자에도 .env 에도 키가 없을 때.
+    """
+    if api_key:
+        return api_key
+    load_dotenv()
+    key = os.getenv("KOSIS_API_KEY")
+    if not key:
+        raise ValueError(
+            "API 키가 없습니다. .env 파일에 KOSIS_API_KEY=... 를 지정하세요."
+        )
+    return key
 
 
 class _HttpClient:
@@ -41,24 +65,40 @@ class _HttpClient:
         timeout: float = 30.0,
         retries: int = 3,
         retry_delay: float = 0.5,
-        rate_limit_delay: float = 1.0,
+        max_per_minute: int = 900,
     ) -> None:
         self.timeout = timeout
         self.retries = retries
         self.retry_delay = retry_delay  # 지수 백오프 기준값(초)
-        self.rate_limit_delay = rate_limit_delay  # 요청 간 최소 간격(초). 0이면 비활성
+        # KOSIS 한도는 1분 1000콜. 여유를 둬 기본 900/min. 0이면 비활성.
+        self.max_per_minute = max_per_minute
         self._session = requests.Session()
-        self._last_request_time: float = 0.0
+        self._rate_lock = threading.Lock()
+        self._call_times: deque[float] = deque()  # 최근 60초 호출 시각(슬라이딩 윈도우)
 
     def _apply_rate_limit(self) -> None:
-        """마지막 요청 이후 rate_limit_delay 초가 안 지났으면 남은 만큼 대기."""
-        if self.rate_limit_delay <= 0:
+        """최근 60초 호출이 max_per_minute 미만일 때만 즉시 통과.
+
+        동시 호출(to_thread 워커들)에서 안전하도록 lock 으로 게이트한다.
+        한도 미만이면 윈도우에 시각만 기록하고 바로 반환(동시성 유지);
+        한도에 닿으면 가장 오래된 호출이 윈도우를 벗어날 때까지만 대기한다.
+        그래서 시작 간격을 인위적으로 띄우지 않고 I/O 는 겹쳐 돌아간다.
+        """
+        if self.max_per_minute <= 0:
             return
-        elapsed = time.time() - self._last_request_time
-        if elapsed < self.rate_limit_delay:
-            wait = self.rate_limit_delay - elapsed
-            logger.debug("rate limit: %.2fs 대기", wait)
-            time.sleep(wait)
+        with self._rate_lock:
+            while True:
+                now = time.monotonic()
+                while self._call_times and now - self._call_times[0] >= 60.0:
+                    self._call_times.popleft()
+                if len(self._call_times) < self.max_per_minute:
+                    self._call_times.append(now)
+                    return
+                wait = 60.0 - (now - self._call_times[0])
+                logger.debug(
+                    "rate limit: %.2fs 대기 (분당 %d 도달)", wait, self.max_per_minute
+                )
+                time.sleep(max(wait, 0.001))
 
     def get(
         self,
@@ -78,7 +118,6 @@ class _HttpClient:
                 resp = self._session.get(
                     url, params=params, timeout=timeout or self.timeout
                 )
-                self._last_request_time = time.time()
                 resp.raise_for_status()
                 data = resp.json()
                 logger.debug(
@@ -129,7 +168,10 @@ def kosis_get(
 
 
 def call_kosis(params: dict, timeout: float = 30.0) -> list[dict]:
-    """KOSIS 데이터(statisticsParameterData.do) 호출 → list[dict].
+    """
+    값 조회(statisticsParameterData.do              itm/obj/prd
+
+    KOSIS 데이터(statisticsParameterData.do) 호출 → list[dict].
 
     데이터 조회는 항상 list 응답이어야 하므로 require_list=True.
 

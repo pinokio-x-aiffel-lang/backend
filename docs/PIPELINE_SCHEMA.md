@@ -127,6 +127,7 @@ Claim 1개당 분석 1세트. 상위는 `analysis[]` 배열.
 analysis[]:
   claim_id     : string        FK → Claim.claim_id
   kosis_search : object        §3.1
+  candidates   : object[]      §3.1a   상위 N개 후보 통계표 풀
   kosis_query  : object        §3.2
   evidence     : object[]      §3.3
   verification : object        §3.4
@@ -139,11 +140,23 @@ analysis[]:
 | `query` | string | ❌ | 검색어 |
 | `params` | string | ❌ | 호출 파라미터 (JSON 직렬화 문자열) |
 | `hits` | int | ❌ | 검색 결과 건수 |
-| `selected_tbl_id` | string | ✅ | 선택된 표 ID |
+| `selected_tbl_id` | string | ✅ | 선택된 표 ID. `[4]`는 RANK 1위를 임시로 둠 (본 선정은 이후 단계) |
 | `selected_tbl_name` | string | ✅ | 선택된 표명 |
 | `success` | bool | ❌ | |
 | `error_msg` | string | ✅ | 실패 시 메시지 |
 | `duration_ms` | int | ❌ | 소요 시간 (밀리초) |
+
+### 3.1a `candidates[]` — 후보 통계표 풀 (claim당 0~N개)
+`[4] retrieve_kosis_candidates` 가 통합검색(`statisticsSearch.do`)으로 모은 상위 N개(현재 `TOP_N=10`) 후보. 선정은 이후 단계가 이 풀에서 한다.
+
+| 필드 | 타입 | nullable | 설명 |
+|------|------|:---:|------|
+| `org_id` | string | ❌ | 기관 ID |
+| `tbl_id` | string | ❌ | 통계표 ID |
+| `tbl_nm` | string | ❌ | 통계표명 |
+| `org_nm` | string | ❌ | 기관명 |
+| `stat_nm` | string | ❌ | 통계(조사)명 |
+| `prd_de` | string | ❌ | 수록 기간 (`STRT_PRD_DE~END_PRD_DE`) |
 
 ### 3.2 `kosis_query`
 | 필드 | 타입 | nullable | 설명 |
@@ -206,6 +219,17 @@ analysis[]:
         "error_msg": null,
         "duration_ms": 245
       },
+
+      "candidates": [
+        {
+          "org_id": "101",
+          "tbl_id": "DT_1B8000F",
+          "tbl_nm": "출생아수, 합계출산율, 자연증가 등",
+          "org_nm": "통계청",
+          "stat_nm": "인구동향조사",
+          "prd_de": "1970~2024"
+        }
+      ],
 
       "kosis_query": {
         "api": "statisticsData.do",

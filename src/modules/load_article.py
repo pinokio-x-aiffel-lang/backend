@@ -52,7 +52,8 @@ def _load_from_text(content: str) -> Article:
         article_id="art-0001",
         title=None,
         content=content,
-        published_at=None,  # "2024-01-01"
+        # DUMMY(상대시점 계산 테스트용, =2025년 4월). 형식 YYYY-MM. 실데이터 연결 시 None/추출값으로.
+        published_at="2025-04",
         source=None,
     )
 

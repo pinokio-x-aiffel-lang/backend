@@ -1,35 +1,26 @@
-"""
-KOSIS 단일 통계표 메타데이터 조회 (CLI)
-=======================================
+"""KOSIS 단일 통계표 메타데이터 조회 (CLI)
 
-테이블ID(tblId)를 입력받아 해당 통계표의 메타데이터를 조회/출력한다.
+테이블ID(tblId)를 입력받아 통계표 구조 메타데이터(getMeta)를 type별로 조회/출력한다.
+조회 로직은 `src/kosis/meta.py`(fetch_table_meta)를 사용한다.
 
 사용 예:
-    uv run python kosis_single_metadata_search.py "DT_1B42" --top 50
+    uv run python kosis/kosis_single_metadata_search.py "DT_1B42" --org 101
 
-주의:
-    - KOSIS getMeta API는 orgId도 필요하다. 기본값은 101(통계청)이며,
-      다른 기관 통계표는 --org 로 지정한다.
-    - --top 인자는 (키워드 검색용 호환을 위해) 받기만 하고 무시한다.
-
-수집 항목 (getMeta의 type):
-    - TBL    : 통계표명칭
-    - ORG    : 기관명칭
-    - PRD    : 수록정보 (수록기간 등)
-    - ITM    : 분류/항목 정보
-    - CMMT   : 주석
-    - UNIT   : 단위
-    - SOURCE : 출처
-    - WGT    : 가중치
-
-API 키는 프로젝트 루트의 .env 파일에서 읽는다.
+API 키는 프로젝트 루트의 .env 에서 읽는다.
     KOSIS_API_KEY=발급받은_인증키
 """
+from __future__ import annotations
 
 import argparse
 import json
+import sys
+from pathlib import Path
 
-from kosis_metadata_crolling import KosisMetadataCollector
+# src/ import 위해 프로젝트 루트를 sys.path 에 추가
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+
+from src.kosis import fetch_table_meta  # noqa: E402  (sys.path 조작 후 import)
 
 
 def main() -> None:
@@ -40,17 +31,10 @@ def main() -> None:
     parser.add_argument(
         "--org", default="101", help="기관코드 (orgId), 기본값 101(통계청)"
     )
-    parser.add_argument(
-        "--top",
-        type=int,
-        default=None,
-        help="(무시됨) 키워드 검색용 인자 호환을 위해 받기만 한다",
-    )
     args = parser.parse_args()
 
-    collector = KosisMetadataCollector()
-    result = collector.fetch_table(args.org, args.tbl_id)
-    print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
+    meta = fetch_table_meta(args.org, args.tbl_id)
+    print(json.dumps(meta.to_dict(), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

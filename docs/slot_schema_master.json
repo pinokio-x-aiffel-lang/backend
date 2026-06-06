@@ -78,6 +78,16 @@
         "error_msg": null,
         "duration_ms": 245
       },
+      "candidates": [
+        {
+          "org_id": "101",
+          "tbl_id": "DT_1B8000F",
+          "tbl_nm": "출생아수, 합계출산율, 자연증가 등",
+          "org_nm": "통계청",
+          "stat_nm": "인구동향조사",
+          "prd_de": "1970~2024"
+        }
+      ],
       "kosis_query": {
         "api": "statisticsData.do",
         "tbl_id": "DT_1B8000F",
