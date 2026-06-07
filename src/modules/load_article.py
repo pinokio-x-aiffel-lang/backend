@@ -135,8 +135,8 @@ async def load_article(master_schema: MasterSchema) -> None:
         content(URL 또는 본문)를 Article 로 변환해 master_schema.article 에 저장한다.
         - 본문 텍스트 입력: 메타데이터 없이 content 만 담는다(나머지 None).
         - URL 입력: 해당 URL 을 방문해 title·published_at·source·본문을 추출한다.
-          네이버·조선일보는 사이트 전용 추출(src/article), 그 외엔 일반
-          JSON-LD/OG 경로(src/article/generic)를 쓴다.
+          네이버·조선·뉴스타파·오마이뉴스는 사이트 전용 추출(src/article), 그 외엔
+          일반 JSON-LD/OG 경로(src/article/generic)를 쓴다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
 
     NOTE: 내부 처리(fetch·파싱)는 전부 동기다. runner 가 `await fn(...)` 으로
