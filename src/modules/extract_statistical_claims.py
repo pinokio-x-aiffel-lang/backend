@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import uuid
 
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller
@@ -99,6 +100,12 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
         if period_type not in _VALID_PERIOD_TYPES:
             period_type = "Y"
 
+        cv_raw = _to_str(item.get("compared_value_raw"), "")
+        compared_value = (
+            ValueSlot(raw=cv_raw, llm_value="", is_inferred=False) if cv_raw else None
+        )
+        group_id = str(uuid.uuid4()) if compared_value else None
+
         claims.append(
             Claim(
                 claim_id=f"clm-{idx:04d}",
@@ -112,6 +119,8 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
                 period_type=period_type,
                 period_value=ValueSlot(raw=_to_str(item.get("period_raw")), llm_value="", is_inferred=False),
                 compare_period_value=None,
+                compared_value=compared_value,
+                group_id=group_id,
                 population=_to_str(item.get("population")),
                 cited_source=_to_str(item.get("cited_source")),
             )

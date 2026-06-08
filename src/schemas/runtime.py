@@ -83,6 +83,8 @@ class Claim(BaseModel):
     period_type: PeriodType
     period_value: ValueSlot
     compare_period_value: ValueSlot | None = None
+    compared_value: ValueSlot | None = None  # 비교 기준값 (예: "1.9%에서 1.5%로"의 1.9%)
+    group_id: str | None = None              # compared_value 존재 시 생성되는 UUID — 두 KOSIS 조회를 묶는 키
     compare_group: CompareGroup | None = None
     population: str
     cited_source: str
