@@ -1,4 +1,9 @@
-"""function_calling 플래그 검증 + 지원 3개 모델 tool calling 테스트."""
+"""function_calling 플래그 검증 + 지원 3개 모델 tool calling 테스트.
+
+대상 모듈: src.llm.llm_caller (function_calling 게이트)
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-05-26
+"""
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller
 from src.llm.provider import HCX_MODEL_INFO

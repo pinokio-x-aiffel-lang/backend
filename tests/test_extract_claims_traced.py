@@ -4,6 +4,10 @@
     infisical run --env dev --path /LangFuse -- uv run python tests/test_extract_claims_traced.py
 
 Langfuse 대시보드에서 'test-extract-statistical-claims' trace 확인.
+
+대상 모듈: extract_statistical_claims (+ Langfuse 트레이싱)
+작성자: innnn <innnn712@gmail.com>
+작성일: 2026-06-04
 """
 from __future__ import annotations
 

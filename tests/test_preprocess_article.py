@@ -5,6 +5,10 @@
 
 실행:
     infisical run --env dev --path /LangFuse -- uv run python tests/test_preprocess_article.py
+
+대상 모듈: src.modules.preprocess_article
+작성자: innnn <innnn712@gmail.com>
+작성일: 2026-06-04
 """
 from __future__ import annotations
 

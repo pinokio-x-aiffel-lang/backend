@@ -217,7 +217,7 @@ class ClaimResult(BaseModel):
     verdict_human_note: str | None = None
     mismatch_type: str | None = None
     claim_value: str
-    kosis_value: str
+    kosis_value: str | None = None  # KOSIS 조회 실패/미조회 시 None (더미값 금지)
     explanation: str
     confidence: float
     llm_model: str
