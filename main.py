@@ -5,11 +5,17 @@ import logging
 import uuid
 import os
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from sse_starlette.sse import EventSourceResponse
 
-from src.api.result_view import RESULT_PATH, ResultResponse, parse_result_md
+from src.api.result_view import (
+    RESULT_PATH,
+    ResultResponse,
+    parse_result_md,
+    render_result_html,
+)
 from src.api.verify import VerifyRequest
 from src.security import RateLimited, rate_limit, ratelimited_handler
 from src.services.verify_service import run_pipeline_with_queue
@@ -105,14 +111,20 @@ async def verify(request: VerifyRequest):
     response_model=ResultResponse,
     dependencies=[Depends(rate_limit)],
 )
-async def result():
-    """가장 최근 검증(POST /verify)이 남긴 tests/result.md 를 JSON 으로 반환."""
+async def result(request: Request):
+    """가장 최근 검증(POST /verify)이 남긴 tests/result.md.
+
+    브라우저(Accept: text/html)면 보기 좋은 HTML, 그 외(API/curl)면 JSON 으로 응답.
+    """
     if not RESULT_PATH.exists():
         raise HTTPException(
             status_code=404,
             detail="result.md 가 아직 없습니다. 먼저 POST /verify 로 검증을 실행하세요.",
         )
-    return parse_result_md(RESULT_PATH.read_text(encoding="utf-8"))
+    text = RESULT_PATH.read_text(encoding="utf-8")
+    if "text/html" in request.headers.get("accept", ""):
+        return HTMLResponse(render_result_html(text))
+    return parse_result_md(text)
 
 
 @app.get("/verify/stream")

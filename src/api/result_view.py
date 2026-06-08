@@ -9,6 +9,7 @@ result.md 형식(src/pipeline/result_md.py 가 기록):
 """
 from __future__ import annotations
 
+import json
 import re
 
 from pydantic import BaseModel
@@ -73,3 +74,53 @@ def parse_result_md(text: str) -> dict:
 
     flush()
     return {"title": title, "steps": steps}
+
+
+# ── 사람용 HTML 뷰 ───────────────────────────────────────────────────────────
+# result.md(마크다운)를 브라우저에서 서식대로 렌더한다. 서버에 마크다운 라이브러리가
+# 없으므로 marked.js(CDN)로 클라이언트 렌더. 마크다운 원문은 페이지에 그대로 임베드.
+
+_VIEW_HEAD = """<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>검증 결과 — result.md</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body { max-width: 920px; margin: 2rem auto; padding: 0 1.2rem;
+         font-family: -apple-system, "Apple SD Gothic Neo", "Segoe UI", system-ui, sans-serif;
+         line-height: 1.65; color: #1f2328; }
+  h1 { font-size: 1.7rem; border-bottom: 2px solid #d0d7de; padding-bottom: .3rem; }
+  h2 { font-size: 1.3rem; margin-top: 2rem; border-bottom: 1px solid #d0d7de; padding-bottom: .25rem; }
+  h3 { font-size: 1.1rem; margin-top: 1.4rem; }
+  ul { padding-left: 1.4rem; }
+  li { margin: .15rem 0; }
+  code { background: #f0f2f4; padding: .12em .35em; border-radius: 5px;
+         font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+  pre { background: #f6f8fa; padding: 1rem; border-radius: 8px; overflow: auto; }
+  pre code { background: none; padding: 0; }
+  strong { color: #0b3d91; }
+  table { border-collapse: collapse; } th, td { border: 1px solid #d0d7de; padding: .4rem .6rem; }
+</style>
+</head>
+<body>
+<article id="content"></article>
+<script>
+const md = """
+
+_VIEW_TAIL = """;
+document.getElementById("content").innerHTML = marked.parse(md);
+</script>
+</body>
+</html>"""
+
+
+def render_result_html(md_text: str) -> str:
+    """result.md 마크다운 → marked.js 로 렌더하는 자체 완결 HTML 페이지.
+
+    md_text 를 JS 문자열 리터럴로 안전 임베드(JSON 인코딩 + '<'→'\\u003c' 로
+    '</script>' 조기 종료 방지)한 뒤, 브라우저에서 marked.parse 로 서식 렌더한다.
+    """
+    md_js = json.dumps(md_text).replace("<", "\\u003c")
+    return _VIEW_HEAD + md_js + _VIEW_TAIL
