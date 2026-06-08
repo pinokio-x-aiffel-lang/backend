@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "kosis": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "D:\\Cursor\\Project\\AIFFEL thon\\kosis-mcp",
+        "--env-file",
+        "D:\\Cursor\\Project\\AIFFEL thon\\kosis-mcp\\.env",
+        "korean-stat-mcp"
+      ]
+    }
+  }
+}

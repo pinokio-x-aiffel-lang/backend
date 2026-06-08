@@ -340,3 +340,5 @@ async def normalize_claim(master_schema: MasterSchema) -> None:
     for claim in master_schema.claims:
         claim.value.llm_value = _parse_value(claim.value.raw)
         claim.period_value.llm_value = _normalize_period(claim.period_value.raw, base)
+        if claim.compared_value:
+            claim.compared_value.llm_value = _parse_value(claim.compared_value.raw)

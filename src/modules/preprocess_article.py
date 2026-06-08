@@ -9,6 +9,7 @@ from langfuse import get_client
 from src.llm.client import LlmError
 from src.llm.model_presets import PREPROCESS
 from src.observability.tracing import traced_chat
+from src.prompts.prompts import PREPROCESS_ARTICLE_SYSTEM, PREPROCESS_ARTICLE_USER
 from src.schemas.runtime import MasterSchema
 
 
@@ -55,32 +56,14 @@ def _split_sentences(text: str) -> list[str]:
 
 # ── [3] 원자 문장화 (HCX-005) ─────────────────────────────────────────────────
 
-_ATOMIZE_SYSTEM = (
-    "당신은 복합 문장을 검증 가능한 단위 문장으로 분해하는 전문가입니다.\n"
-    "규칙:\n"
-    "1. 하나의 문장에 여러 수치·사실이 있으면 각각 독립 문장으로 분리한다.\n"
-    "2. 단일 사실만 담긴 문장은 그대로 반환한다.\n"
-    "3. 분리된 문장은 문맥 없이도 이해되도록 주어를 명시한다.\n"
-    "4. 수치·단위·출처 표기((자료: ...), (단위: ...))는 절대 삭제하지 않는다.\n"
-    "5. 마크다운 없이 순수 JSON만 출력한다.\n"
-    '출력 형식: {"sentences": ["문장1", "문장2", ...]}'
-)
-
-_ATOMIZE_USER = """\
-아래 문장들을 각각 검증 가능한 단위 문장으로 분해하세요.
-복합 문장은 여러 원자 문장으로 나누고, 단순 문장은 그대로 유지하세요.
-
-{numbered_sentences}"""
-
-
 def _fmt_numbered(sentences: list[str]) -> str:
     return "\n".join(f"{i + 1}. {s}" for i, s in enumerate(sentences))
 
 
 async def _atomize_batch(sentences: list[str]) -> list[str]:
     messages = [
-        {"role": "system", "content": _ATOMIZE_SYSTEM},
-        {"role": "user", "content": _ATOMIZE_USER.format(
+        {"role": "system", "content": PREPROCESS_ARTICLE_SYSTEM},
+        {"role": "user", "content": PREPROCESS_ARTICLE_USER.format(
             numbered_sentences=_fmt_numbered(sentences)
         )},
     ]

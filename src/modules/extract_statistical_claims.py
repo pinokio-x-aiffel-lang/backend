@@ -2,15 +2,21 @@ from __future__ import annotations
 
 import asyncio
 import json
+import uuid
 
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller
 from src.llm.model_presets import EXTRACT_CLAIMS
+from src.prompts.prompts import EXTRACT_CLAIMS_SYSTEM, EXTRACT_CLAIMS_USER
 from src.schemas.runtime import Claim, ClaimType, MasterSchema, ValueSlot
 
 _llm = LlmCaller()
 
 _VALID_PERIOD_TYPES: frozenset[str] = frozenset({"Y", "M", "Q", "D"})
+
+_VALID_CLAIM_TYPES: frozenset[str] = frozenset(
+    ct.value for ct in ClaimType if ct is not ClaimType.NONE
+)
 
 
 def _to_str(val: object, fallback: str = "불명") -> str:
@@ -19,38 +25,15 @@ def _to_str(val: object, fallback: str = "불명") -> str:
         return ", ".join(str(v) for v in val) if val else fallback
     return str(val) if val else fallback
 
-_SYSTEM = (
-    "뉴스 기사에서 수치 기반 통계 주장을 추출합니다.\n"
-    "추출 대상: 통계청·연구기관·기업 실적 등 외부 출처에서 나온 수치, 시점이 명시된 경제·사회 지표.\n"
-    "추출 제외: 제품 구성·사양, 단순 열거(~종, ~개 포함), 순위, 비율 없는 개수 나열.\n"
-    "통계 주장이 없으면 {\"claims\": []} 를 반환하세요.\n"
-    "마크다운 없이 순수 JSON만 출력하세요."
-)
 
-_USER_TMPL = """\
-아래 기사에서 숫자가 포함된 문장을 찾아 검증 가능한 통계 주장을 최대 5개 추출하세요.
-
-출력 형식 (JSON):
-{{"claims":[
-  {{
-    "sentence": "원문 문장",
-    "subject": "통계 주제",
-    "value_raw": "수치 원문 (증가/감소 등 방향어 있으면 포함)",
-    "unit": "측정 단위만 (%, %p, 명, 원, 억원 등). 퍼센트포인트는 '%p' 로 %와 반드시 구분",
-    "period_raw": "시점 원문",
-    "period_type": "Y 또는 M 또는 Q 또는 D",
-    "population": "대상 집단",
-    "cited_source": "출처 (없으면 불명)"
-  }}
-]}}
-
-기사:
-{content}"""
+def _parse_claim_type(raw: object) -> ClaimType:
+    """LLM 응답 claim_type 문자열 → ClaimType enum. 유효하지 않으면 NONE 반환."""
+    val = str(raw).strip().lower() if raw else ""
+    if val in _VALID_CLAIM_TYPES:
+        return ClaimType(val)
+    return ClaimType.NONE
 
 
-# json_structure 가 None 만 아니면 HCX-007 은 thinking 을 끄고(effort:none) JSON 을
-# 강제한다. 필드 상세는 프롬프트(_USER_TMPL)가 지정하고 파싱도 .get() 으로 방어하므로,
-# 스키마는 최상위 형태(claims 배열)만 잡으면 충분하다.
 CLAIMS_SCHEMA = {
     "type": "object",
     "properties": {"claims": {"type": "array", "items": {"type": "object"}}},
@@ -64,25 +47,27 @@ class ExtractStatisticalClaimsError(Exception):
 
 async def extract_statistical_claims(master_schema: MasterSchema) -> None:
     """
-    [2] Extract Statistical Claims
+    [3] Extract Statistical Claims
 
     Input:
         master_schema.article        # [1]에서 적재된 기사
 
     Output:
-        master_schema.claims         # list[Claim] (각 claim_id 부여)
+        master_schema.claims         # list[Claim] (claim_type == NONE 포함)
 
     Responsibility:
-        LLM으로 기사 본문에서 수치 기반 통계 주장을 추출
-        master_schema.claims 에 채움
+        LLM으로 기사 본문에서 수치 기반 통계 주장을 추출하고 claim_type 분류.
+        claim_type == NONE 인 항목도 claims에 포함 — 필터링은 분기 모듈 담당.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     if not master_schema.article:
         raise ExtractStatisticalClaimsError("master_schema.article 이 없습니다.")
 
     messages = [
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": _USER_TMPL.format(content=master_schema.article.content)},
+        {"role": "system", "content": EXTRACT_CLAIMS_SYSTEM},
+        {"role": "user", "content": EXTRACT_CLAIMS_USER.format(
+            content=master_schema.article.content
+        )},
     ]
 
     try:
@@ -92,7 +77,7 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
             EXTRACT_CLAIMS.model_name,
             messages,
             max_tokens=EXTRACT_CLAIMS.max_tokens,
-            json_structure=CLAIMS_SCHEMA,  # HCX-007: JSON 강제 → thinking 자동 off
+            json_structure=CLAIMS_SCHEMA,
         )
     except LlmError as e:
         raise ExtractStatisticalClaimsError(f"LLM 호출 실패: {e}") from e
@@ -114,12 +99,19 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
             period_type = period_type[0] if period_type else "Y"
         if period_type not in _VALID_PERIOD_TYPES:
             period_type = "Y"
+
+        cv_raw = _to_str(item.get("compared_value_raw"), "")
+        compared_value = (
+            ValueSlot(raw=cv_raw, llm_value="", is_inferred=False) if cv_raw else None
+        )
+        group_id = str(uuid.uuid4()) if compared_value else None
+
         claims.append(
             Claim(
                 claim_id=f"clm-{idx:04d}",
                 article_id=master_schema.article.article_id,
                 sentence=_to_str(item.get("sentence"), ""),
-                claim_type=ClaimType.OTHER,  # TODO: 연산 유형 분류 미구현 — 기본 예외값
+                claim_type=_parse_claim_type(item.get("claim_type")),
                 subject=_to_str(item.get("subject")),
                 value=ValueSlot(raw=_to_str(item.get("value_raw")), llm_value="", is_inferred=False),
                 unit=_to_str(item.get("unit")),
@@ -127,6 +119,8 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
                 period_type=period_type,
                 period_value=ValueSlot(raw=_to_str(item.get("period_raw")), llm_value="", is_inferred=False),
                 compare_period_value=None,
+                compared_value=compared_value,
+                group_id=group_id,
                 population=_to_str(item.get("population")),
                 cited_source=_to_str(item.get("cited_source")),
             )
