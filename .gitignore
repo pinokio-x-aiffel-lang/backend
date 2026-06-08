@@ -58,3 +58,6 @@ data/processed/*.parquet
 ~$*.xlsx
 ~$*.xls
 ~$*.xlsm
+
+# === pipeline run artifact (regenerated each /verify or CLI run) ===
+tests/result.md
