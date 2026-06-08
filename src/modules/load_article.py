@@ -5,7 +5,7 @@ from typing import Optional
 import requests
 from selectolax.lexbor import LexborHTMLParser
 
-from src.article import chosun, generic, naver, newstapa, ohmynews
+from src.article import asiae, chosun, generic, naver, newstapa, ohmynews
 from src.schemas.runtime import Article, MasterSchema
 
 # 일부 언론사가 기본 UA 를 차단하므로 브라우저류 UA 로 요청한다.
@@ -65,7 +65,7 @@ def _load_from_url(url: str) -> Article:
 
     네이버는 표준 메타에 게시일·원매체가 없어 사이트 전용 추출(+셀렉터 자가복구).
     그 외엔 일반(JSON-LD/OG) 경로로 뽑은 뒤, 사이트 전용 추출기로 비표준 마크업·JS
-    렌더 본문 등을 보정한다(조선·뉴스타파·오마이뉴스).
+    렌더 본문 등을 보정한다(조선·아시아경제·뉴스타파·오마이뉴스).
     """
     page_html = _fetch_html(url)
     tree = LexborHTMLParser(page_html)
@@ -101,6 +101,9 @@ def _refine_by_site(
     if chosun.is_chosun(url):
         # 본문이 JS 렌더라 일반 추출로는 0자 — window.Fusion 으로 복구.
         article.content = chosun.extract_content(page_html) or article.content
+    elif asiae.is_asiae(url):
+        # JSON-LD articleBody 가 95자 티저뿐 — #txt_area 본문 문단으로 복구.
+        article.content = asiae.extract_content(tree) or article.content
     elif newstapa.is_newstapa(url):
         # Editor.js 본문 + 표준 메타에 없는 게시일·매체명 보강.
         article.content = newstapa.extract_content(tree) or article.content
@@ -135,8 +138,8 @@ async def load_article(master_schema: MasterSchema) -> None:
         content(URL 또는 본문)를 Article 로 변환해 master_schema.article 에 저장한다.
         - 본문 텍스트 입력: 메타데이터 없이 content 만 담는다(나머지 None).
         - URL 입력: 해당 URL 을 방문해 title·published_at·source·본문을 추출한다.
-          네이버·조선·뉴스타파·오마이뉴스는 사이트 전용 추출(src/article), 그 외엔
-          일반 JSON-LD/OG 경로(src/article/generic)를 쓴다.
+          네이버·조선·아시아경제·뉴스타파·오마이뉴스는 사이트 전용 추출(src/article),
+          그 외엔 일반 JSON-LD/OG 경로(src/article/generic)를 쓴다.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
 
     NOTE: 내부 처리(fetch·파싱)는 전부 동기다. runner 가 `await fn(...)` 으로
