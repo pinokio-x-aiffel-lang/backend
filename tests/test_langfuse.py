@@ -2,6 +2,10 @@
 
 실행:
     uv run x test_langfuse_aain.py
+
+대상 모듈: src.observability.traced_chat
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-05-27
 """
 
 from src.observability import traced_chat

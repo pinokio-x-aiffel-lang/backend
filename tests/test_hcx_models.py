@@ -4,6 +4,10 @@
 2. structured outputs + function calling 동시 → 동시 사용 차단 기대
 3. structured outputs만 켜고 구조화 응답  → HCX-007만 통과, 나머지 HCX는 호출 전 차단 기대
 4. function calling만 켜고 tool call 응답 → native 3종(005/007/DASH-002) 통과, 003/DASH-001 차단 기대
+
+대상 모듈: src.llm.llm_caller (HCX 모델 × 시나리오)
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-05-20
 """
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller

@@ -8,6 +8,10 @@
 
 주의: json_structure는 HCX-005/DASH-002에서 별도 structured 가드가 먼저 막으므로,
 상호배제(EXCL) 검증에는 json_mode/thinking/function_calling 조합만 사용한다.
+
+대상 모듈: src.llm.llm_caller (기능 상호배제 가드)
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-05-26
 """
 from src.llm.client import LlmError
 from src.llm.llm_caller import LlmCaller

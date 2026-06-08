@@ -5,10 +5,11 @@ import logging
 import uuid
 import os
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
+from src.api.result_view import RESULT_PATH, ResultResponse, parse_result_md
 from src.api.verify import VerifyRequest
 from src.security import RateLimited, rate_limit, ratelimited_handler
 from src.services.verify_service import run_pipeline_with_queue
@@ -97,6 +98,21 @@ async def verify(request: VerifyRequest):
     task = asyncio.create_task(run_pipeline_with_queue(q, request.content))
     jobs[job_id] = (q, task)
     return {"job_id": job_id}
+
+
+@app.get(
+    "/result",
+    response_model=ResultResponse,
+    dependencies=[Depends(rate_limit)],
+)
+async def result():
+    """가장 최근 검증(POST /verify)이 남긴 tests/result.md 를 JSON 으로 반환."""
+    if not RESULT_PATH.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="result.md 가 아직 없습니다. 먼저 POST /verify 로 검증을 실행하세요.",
+        )
+    return parse_result_md(RESULT_PATH.read_text(encoding="utf-8"))
 
 
 @app.get("/verify/stream")

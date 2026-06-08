@@ -1,3 +1,9 @@
+"""KOSIS statisticsParameterData.do jsonVD 동작 확인 (수동 스크립트).
+
+대상 모듈: KOSIS Open API (statisticsParameterData.do — format=json vs jsonVD)
+작성자: innnn <innnn712@gmail.com>
+작성일: 2026-06-03
+"""
 import sys, urllib.request, json, re
 sys.path.insert(0, r"C:\Users\innnn\AppData\Local\uv\cache\archive-v0\FNlgdzvxzNzdvOr_\Lib\site-packages")
 import json5

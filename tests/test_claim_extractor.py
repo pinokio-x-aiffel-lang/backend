@@ -1,4 +1,9 @@
-"""extract_statistical_claims + normalize_claim 모듈 단위 테스트."""
+"""extract_statistical_claims + normalize_claim 모듈 단위 테스트.
+
+대상 모듈: extract_statistical_claims, normalize_claim
+작성자: innnn <innnn712@gmail.com>
+작성일: 2026-06-03
+"""
 import pytest
 
 from src.modules.extract_statistical_claims import extract_statistical_claims
