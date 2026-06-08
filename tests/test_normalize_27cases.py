@@ -5,6 +5,10 @@
   TEST_LLM=1 uv run pytest tests/test_normalize_27cases.py -s   # 전체 비교
 
 세션 끝에 구현별 PASS/FAIL + 응답시간 요약 테이블 출력 (-s 필수).
+
+대상 모듈: src.modules.normalize_claim (_parse_value)
+작성자: innnn <innnn712@gmail.com>
+작성일: 2026-06-03
 """
 from __future__ import annotations
 

@@ -1,4 +1,9 @@
-"""generate_explanation 모듈 단위 테스트."""
+"""generate_explanation 모듈 단위 테스트.
+
+대상 모듈: generate_explanation
+작성자: innnn <innnn712@gmail.com>
+작성일: 2026-06-03
+"""
 import pytest
 
 from src.modules.generate_explanation import generate_explanation

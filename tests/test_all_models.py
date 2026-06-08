@@ -1,3 +1,9 @@
+"""전 모델(HCX/GPT/Claude/Gemini) 호출·구조화 응답 테스트.
+
+대상 모듈: src.llm.llm_caller, src.llm.provider
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-05-21
+"""
 from src.llm.llm_caller import LlmCaller
 from src.llm.provider import (
     CLAUDE_MODELS,

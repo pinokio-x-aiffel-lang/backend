@@ -10,6 +10,10 @@
     uv run pytest tests/test_kosis_module.py -v     # 테스트로
     uv run python tests/test_kosis_module.py        # 스크립트로(상세 출력)
     uv run python tests/test_kosis_module.py 101 DT_1B8000F   # 다른 표로
+
+대상 모듈: src.kosis (fetch_table_meta / fetch_meta_item)
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-06-06
 """
 from __future__ import annotations
 

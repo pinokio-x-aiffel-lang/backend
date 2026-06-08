@@ -1,3 +1,9 @@
+"""단일 구조화(JSON schema) 호출 테스트.
+
+대상 모듈: src.llm.llm_caller
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-05-21
+"""
 from src.llm.llm_caller import LlmCaller
 
 llm_caller = LlmCaller()

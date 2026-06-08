@@ -2,6 +2,10 @@
 
 parse_won, parse_income_statement_amount 의 순수 로직만 검증한다.
 fixture 는 '로쏘' 감사보고서(rcept_no=20240408002669) 손익계산서 표의 축약본.
+
+대상 모듈: src.dart.financials, src.dart.accounts
+작성자: leeaain2027 <leeaain2027@gmail.com>
+작성일: 2026-06-02
 """
 from __future__ import annotations
 
