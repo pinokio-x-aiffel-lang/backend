@@ -10,9 +10,10 @@ substring 함정을 피한다(메모리 kosis-api-response-shape).
 """
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass, field
 
-from src.kosis.client import call_kosis
+from src.kosis.client import KosisError, call_kosis
 
 
 @dataclass(frozen=True)
@@ -32,7 +33,9 @@ class KosisQuery:
     period_se: str
     match_filters: dict[str, str] = field(default_factory=dict)
     obj_l1: str = "ALL"
-    obj_l2: str = "ALL"
+    obj_l2: str = ""
+    obj_l3: str = ""
+    obj_l4: str = ""
 
 
 @dataclass(frozen=True)
@@ -52,15 +55,15 @@ def build_params(query: KosisQuery, api_key: str) -> dict:
 
     시점은 startPrdDe=endPrdDe=period 로 명시적. newEstPrdCnt 는 과거 검증
     부적합 (메모리 kosis-api-response-shape).
+    빈 문자열 objL 파라미터는 전송하지 않는다 — 빈값을 보내면 다축 분류표에서
+    error 21(잘못된 요청 변수)이 발생한다. (MCP 참고: objL1=ALL만 보내도 성공)
     """
-    return {
+    params: dict = {
         "method": "getList",
         "apiKey": api_key,
         "itmId": query.itm_id,
         "objL1": query.obj_l1,
-        "objL2": query.obj_l2,
-        "objL3": "", "objL4": "", "objL5": "",
-        "objL6": "", "objL7": "", "objL8": "",
+        "objL": query.obj_l1,  # 구 API 호환성 — 일부 테이블(분기 등)에서 필수
         "format": "json",
         "jsonVD": "Y",
         "prdSe": query.period_se,
@@ -69,6 +72,15 @@ def build_params(query: KosisQuery, api_key: str) -> dict:
         "orgId": query.org_id,
         "tblId": query.tbl_id,
     }
+    # 빈 문자열이 아닌 경우만 포함 (빈값 전송 시 KOSIS error 21 유발)
+    for key, val in (
+        ("objL2", query.obj_l2),
+        ("objL3", query.obj_l3),
+        ("objL4", query.obj_l4),
+    ):
+        if val:
+            params[key] = val
+    return params
 
 
 def find_cell_row(
@@ -116,3 +128,46 @@ def fetch_cell(query: KosisQuery, api_key: str) -> KosisCell | None:
     rows = call_kosis(params)
     row = find_cell_row(rows, query.period, query.match_filters)
     return to_cell(row) if row else None
+
+
+def _is_obj_error(msg: str) -> bool:
+    """error 20(필수변수 누락) 또는 21(잘못된 요청 변수) — objL 관련 오류 여부."""
+    return msg.startswith("20:") or msg.startswith("21:")
+
+
+def fetch_cell_with_retry(query: KosisQuery, api_key: str) -> KosisCell | None:
+    """KOSIS 한 셀 조회 with progressive objL retry.
+
+    다축 분류표(error 20/21)에 대해 MCP _execute_with_obj_retry 전략을 적용한다:
+      Stage 0 : 원래 query 그대로 시도
+      Stage 1 : objL1="ALL"
+      Stage 2 : objL1="ALL", objL2="ALL"
+      Stage 3 : objL1~objL3="ALL"
+      Stage 4 : objL1~objL4="ALL"
+    각 단계에서 error 20/21 이 아닌 오류는 그대로 re-raise.
+    모든 단계 실패 후에도 매칭 0건이면 None 반환.
+    """
+    try:
+        return fetch_cell(query, api_key)
+    except KosisError as e:
+        if not _is_obj_error(str(e)):
+            raise
+
+    _ALL_SEQS = [
+        ("ALL", query.obj_l2, query.obj_l3, query.obj_l4),
+        ("ALL", "ALL",        query.obj_l3, query.obj_l4),
+        ("ALL", "ALL",        "ALL",        query.obj_l4),
+        ("ALL", "ALL",        "ALL",        "ALL"),
+    ]
+    for l1, l2, l3, l4 in _ALL_SEQS:
+        retry = dataclasses.replace(query, obj_l1=l1, obj_l2=l2, obj_l3=l3, obj_l4=l4)
+        try:
+            params = build_params(retry, api_key)
+            rows = call_kosis(params)
+            row = find_cell_row(rows, query.period, query.match_filters)
+            return to_cell(row) if row else None
+        except KosisError as e:
+            if not _is_obj_error(str(e)):
+                raise
+
+    return None

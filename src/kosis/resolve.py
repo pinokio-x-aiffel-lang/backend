@@ -113,19 +113,25 @@ def resolve_cell_query_traced(
     trace["itm_id"] = itm_id
 
     axis_ids = sorted(axes)  # 'A','B',… → objL1, objL2 순서
-    if len(axis_ids) > 2:
-        trace["error"] = f"분류축 {len(axis_ids)}개(>2) 미지원: {axis_ids}"
+    if len(axis_ids) > 4:
+        trace["error"] = f"분류축 {len(axis_ids)}개(>4) 미지원: {axis_ids}"
         return None, trace
 
     codes: list[str] = []
-    for oid in axis_ids:
+    for i, oid in enumerate(axis_ids):
         rows = axes[oid]
         code = _match_code(rows, population) or _total_code(rows)
         if code is None:
-            trace["error"] = f"분류축 {oid} 매칭 실패: population={_norm(population)!r}"
-            return None, trace
+            if i < 2:  # 첫 두 축은 매칭 필수 — 반환 실패
+                trace["error"] = f"분류축 {oid} 매칭 실패: population={_norm(population)!r}"
+                return None, trace
+            else:  # 3번째 이상 축은 "" 폴백 (fetch_cell_with_retry 가 "ALL" 확장 처리)
+                code = ""
         codes.append(code)
     trace["obj_codes"] = codes
+
+    # match_filters: "" 또는 "ALL" 인 축은 제외 (특정 코드가 없는 축은 필터링 불필요)
+    filter_codes = [(i, c) for i, c in enumerate(codes) if c and c != "ALL"]
 
     query = KosisQuery(
         org_id=org_id,
@@ -136,8 +142,10 @@ def resolve_cell_query_traced(
         # 코드를 직접 박는 B 방식. 분류 없는 축은 "" (ALL 기본값 덮어씀).
         obj_l1=codes[0] if len(codes) >= 1 else "",
         obj_l2=codes[1] if len(codes) >= 2 else "",
+        obj_l3=codes[2] if len(codes) >= 3 else "",
+        obj_l4=codes[3] if len(codes) >= 4 else "",
         # 서버가 여러 행을 줘도 한 셀로 좁히도록 코드 매칭도 건다.
-        match_filters={f"C{i + 1}": c for i, c in enumerate(codes)},
+        match_filters={f"C{i + 1}": c for i, c in filter_codes},
     )
     return query, trace
 

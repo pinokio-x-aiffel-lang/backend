@@ -1,4 +1,6 @@
-from __future__ import annotations
+﻿from __future__ import annotations
+
+import re
 
 from src.schemas.runtime import Claim, ClaimResult, MasterSchema
 
@@ -21,16 +23,37 @@ def _eun_neun(text: str) -> str:
 
 
 def _format_period(period_type: str, period: str) -> str:
-    """KOSIS 기간 코드 → 한국어 기간 문자열. 형식 불명확이면 빈 문자열 반환."""
+    """기간 코드 → 한국어 기간 문자열. 정규화 형식(YYYY-MM 등)과 KOSIS PRD_DE 형식(YYYYMM 등) 모두 처리."""
     p = period.strip()
-    if period_type == "Y" and len(p) == 4 and p.isdigit():
-        return f"{p}년 "
-    if period_type == "M" and len(p) == 6 and p.isdigit():
-        return f"{p[:4]}년 {int(p[4:])}월 "
-    if period_type == "Q" and len(p) == 6 and p.isdigit():
-        return f"{p[:4]}년 {int(p[4:])}분기 "
-    if period_type == "D" and len(p) == 8 and p.isdigit():
-        return f"{p[:4]}년 {int(p[4:6])}월 {int(p[6:])}일 "
+    if period_type == "Y":
+        y = p[:4] if len(p) >= 4 and p[:4].isdigit() else p
+        return f"{y}년 "
+    if period_type == "M":
+        m = re.match(r"(\d{4})-(\d{2})", p)
+        if m:
+            return f"{m.group(1)}년 {int(m.group(2))}월 "
+        if len(p) == 6 and p.isdigit():
+            return f"{p[:4]}년 {int(p[4:])}월 "
+    if period_type == "Q":
+        m = re.match(r"(\d{4})-Q([1-4])", p)
+        if m:
+            return f"{m.group(1)}년 {m.group(2)}분기 "
+        if len(p) == 6 and p.isdigit():
+            return f"{p[:4]}년 {int(p[4:])}분기 "
+    if period_type == "S":
+        m = re.match(r"(\d{4})-H([12])", p)
+        if m:
+            half = "상" if m.group(2) == "1" else "하"
+            return f"{m.group(1)}년 {half}반기 "
+        if len(p) == 6 and p.isdigit():
+            half = "상" if int(p[4:]) == 1 else "하"
+            return f"{p[:4]}년 {half}반기 "
+    if period_type == "D":
+        m = re.match(r"(\d{4})-(\d{2})-(\d{2})", p)
+        if m:
+            return f"{m.group(1)}년 {int(m.group(2))}월 {int(m.group(3))}일 "
+        if len(p) == 8 and p.isdigit():
+            return f"{p[:4]}년 {int(p[4:6])}월 {int(p[6:])}일 "
     return ""
 
 

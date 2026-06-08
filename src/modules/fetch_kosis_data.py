@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 from src.kosis import (
     KosisError,
-    fetch_cell,
+    fetch_cell_with_retry,
     resolve_api_key,
     resolve_cell_query_traced,
 )
@@ -147,7 +147,7 @@ def _resolve_and_fetch_best(candidates, claim, period, api_key):
             attempts.append(att)
             continue
         try:
-            cell = fetch_cell(query, api_key)
+            cell = fetch_cell_with_retry(query, api_key)
         except (KosisError, ValueError) as exc:
             att.error = f"셀 조회 실패: {exc}"
             attempts.append(att)
@@ -165,12 +165,25 @@ def _resolve_and_fetch_best(candidates, claim, period, api_key):
 
 
 def _to_kosis_period(period_type: str, raw: str) -> str:
-    """claim 시점값 → KOSIS PRD_DE 형식(숫자만). 연도는 4자리.
+    """claim 시점값 → KOSIS PRD_DE 형식.
 
-    분기/반기 등 상세 정규화는 normalize_claim 책임이라 여기선 숫자 추출만 한다.
+    Y: "2024"    → "2024"   (4자리)
+    M: "2024-01" → "202401" (YYYYMM, 6자리)
+    Q: "2024-Q1" → "202401" (YYYYQQ, 01~04, 6자리)
+    S: "2024-H1" → "202401" (YYYYHH, 01~02, 6자리)
     """
-    digits = re.sub(r"\D", "", str(raw or ""))
-    return digits[:4] if period_type == "Y" else digits
+    s = str(raw or "")
+    if period_type == "Y":
+        return re.sub(r"\D", "", s)[:4]
+    if period_type == "Q":
+        m = re.match(r"(\d{4})-Q([1-4])", s)
+        if m:
+            return f"{m.group(1)}{int(m.group(2)):02d}"
+    if period_type == "S":
+        m = re.match(r"(\d{4})-H([12])", s)
+        if m:
+            return f"{m.group(1)}{int(m.group(2)):02d}"
+    return re.sub(r"\D", "", s)
 
 
 def _log(tbl_id, *, success, rows_returned=0, params="", error_msg=None, duration_ms=0):
@@ -186,7 +199,9 @@ def _params_log(query) -> str:
     return json.dumps(
         {
             "method": "getList", "orgId": query.org_id, "tblId": query.tbl_id,
-            "itmId": query.itm_id, "objL1": query.obj_l1, "objL2": query.obj_l2,
+            "itmId": query.itm_id,
+            "objL1": query.obj_l1, "objL2": query.obj_l2,
+            "objL3": query.obj_l3, "objL4": query.obj_l4,
             "prdSe": query.period_se, "startPrdDe": query.period,
             "endPrdDe": query.period, "match_filters": query.match_filters,
         },

@@ -18,6 +18,9 @@ TOP_N = 10  # claim별 후보 통계표 상위 N개
 _SEARCH_API = "statisticsSearch.do"
 _DATA_API = "statisticsData.do"
 
+# subject 앞에 붙는 국가 한정어는 KOSIS 키워드 오염 원인 → 제거
+_SUBJECT_DROP_PREFIXES = ("한국 ", "한국의 ", "우리나라 ", "우리나라의 ")
+
 
 """
 표 찾기(statisticsSearch.do, 키워드)
@@ -58,15 +61,36 @@ async def retrieve_kosis_candidates(master_schema: MasterSchema) -> None:
     ]
 
 
+def _preprocess_subject(subject: str) -> str:
+    """KOSIS 검색어 전처리: 국가 한정 접두어 제거 + 공백 제거."""
+    s = subject.strip()
+    for prefix in _SUBJECT_DROP_PREFIXES:
+        if s.startswith(prefix):
+            s = s[len(prefix):]
+            break
+    return "".join(s.split())
+
+
+def _rerank_hits(hits: list[SearchHit]) -> list[SearchHit]:
+    """시군구통계·국제통계(DT_2*)를 후순위로 밀고 원래 RANK 순서 유지(stable sort)."""
+    def _score(h: SearchHit) -> int:
+        if h.stat_nm == "시군구통계":
+            return 2
+        if h.tbl_id.startswith("DT_2"):
+            return 1
+        return 0
+    return sorted(hits, key=_score)
+
+
 async def _search_one_claim(claim: Claim) -> ClaimAnalysis:
     """claim 1건 → 통합검색 → ClaimAnalysis (후보 풀 포함)."""
-    # KOSIS 검색어는 띄어쓰기를 제거한다(내부 공백 포함). step5 resolve 도 공백 무시 매칭.
-    keyword = "".join((claim.subject or "").split())
+    keyword = _preprocess_subject(claim.subject or "")
     t0 = time.perf_counter()
     try:
         hits: list[SearchHit] = await asyncio.to_thread(
             search_tables, keyword, top_n=TOP_N
         )
+        hits = _rerank_hits(hits)
     except (KosisError, ValueError) as exc:
         return _analysis(
             claim.claim_id,

@@ -17,6 +17,7 @@ from src.kosis.cell import (
     KosisQuery,
     build_params,
     fetch_cell,
+    fetch_cell_with_retry,
     find_cell_row,
     to_cell,
 )
@@ -50,6 +51,7 @@ __all__ = [
     "resolve_cell_query_traced",
     "ResolveError",
     "fetch_cell",
+    "fetch_cell_with_retry",
     "kosis_get",
     "call_kosis",
     "resolve_api_key",

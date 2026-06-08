@@ -11,7 +11,7 @@ from src.schemas.runtime import Claim, ClaimType, MasterSchema, ValueSlot
 
 _llm = LlmCaller()
 
-_VALID_PERIOD_TYPES: frozenset[str] = frozenset({"Y", "M", "Q", "D"})
+_VALID_PERIOD_TYPES: frozenset[str] = frozenset({"Y", "M", "Q", "S", "D"})
 
 _VALID_CLAIM_TYPES: frozenset[str] = frozenset(
     ct.value for ct in ClaimType if ct is not ClaimType.NONE
