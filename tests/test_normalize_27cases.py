@@ -33,7 +33,7 @@ CASES = [
     # ① 수 읽기 체계
     ("①-1",  "한자어 수사",       "삼십이",            "32",             "eq"),
     ("①-2",  "고유어 수사",       "스물셋",            "23",             "eq"),
-    ("①-3",  "계열 혼용",         "세시 십오분",       "10",             "contains"),  # 시간계열 혼용 — regex는 십=10 추출, LLM 비교용
+    ("①-3",  "계열 혼용",         "세시 십오분",       "10",             "contains"),  # 시간계열 혼용 — LLM 전용, regex는 None 반환
     ("①-4",  "서수",              "제3",               "3",              "eq"),
     # ② 큰 수 단위
     ("②-5",  "만/억/조",          "23만",              "230000",         "eq"),
@@ -107,8 +107,8 @@ _bench: dict[tuple[str, str], dict] = {}
 
 # ── 구현 함수 ─────────────────────────────────────────────────────────────────
 
-def _regex_normalize(raw: str) -> str:
-    return _parse_value(raw)
+async def _regex_normalize(raw: str) -> str:
+    return await _parse_value(raw)
 
 
 async def _hcx_normalize(model_name: str, raw: str) -> str:
@@ -130,7 +130,7 @@ async def _hcx_normalize(model_name: str, raw: str) -> str:
 
 async def _run(impl: str, raw: str) -> str:
     if impl == "regex":
-        return _regex_normalize(raw)
+        return await _regex_normalize(raw)
     return await _hcx_normalize(impl.upper(), raw)
 
 # ── fixture ───────────────────────────────────────────────────────────────────
@@ -183,7 +183,8 @@ def _show_summary() -> None:
             if key in _bench:
                 b = _bench[key]
                 mark = "O" if b["pass"] else "X"
-                cell = f"{mark} {b['ms']:>5.0f}ms  {b['got'][:8]:<8}"
+                got_str = (b["got"] or "None")[:8]
+                cell = f"{mark} {b['ms']:>5.0f}ms  {got_str:<8}"
                 row += f"  {cell:<{col}}"
                 if b["pass"]:
                     pass_counts[i] += 1
@@ -211,18 +212,27 @@ def _summary_at_end():
 
 # ── 테스트 ────────────────────────────────────────────────────────────────────
 
+_LLM_ONLY = {"①-3"}
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("case_id,category,raw,expected,match", CASES, ids=[c[0] for c in CASES])
 async def test_normalize(impl, case_id, category, raw, expected, match):
+    if impl == "regex" and case_id in _LLM_ONLY:
+        pytest.skip("LLM 전용 케이스 — regex 미지원")
+
     t0 = time.perf_counter()
     result = await _run(impl, raw)
     ms = (time.perf_counter() - t0) * 1000
 
-    passed = (
-        result == expected if match == "eq"
-        else expected in result if match == "contains"
-        else result.startswith(expected)
-    )
+    if result is None:
+        passed = False
+    else:
+        passed = (
+            result == expected if match == "eq"
+            else expected in result if match == "contains"
+            else result.startswith(expected)
+        )
     _bench[(impl, case_id)] = {"pass": passed, "ms": ms, "got": result}
 
     assert passed, (

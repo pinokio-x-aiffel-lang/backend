@@ -52,3 +52,27 @@ NAVER_SELECTOR_REPAIR = ModelPreset(
     max_tokens=1024,
     temperature=0.1,
 )
+
+# 수치 정규화 LLM 폴백 (normalize_claim)
+NORMALIZE_VALUE = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-005",
+    max_tokens=64,
+    temperature=0.0,
+)
+
+# 시점 정규화 LLM 폴백 (normalize_claim)
+NORMALIZE_PERIOD = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-005",
+    max_tokens=32,
+    temperature=0.0,
+)
+
+# 한국어 숫자 파싱 LLM 폴백 (parse_korean_number)
+PARSE_NUMBER = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-005",
+    max_tokens=32,
+    temperature=0.0,
+)
