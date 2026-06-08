@@ -22,6 +22,18 @@ class Settings(BaseSettings):
     offense_decay_seconds: int = 86400   # 마지막 적발 후 이 시간 무사고면 누적 0으로 리셋
     ratelimit_sweep_seconds: int = 600   # 만료 IP 항목 정리 주기(메모리 누수 방지)
 
+    # ── POST /verify 전용 한도 (위 글로벌과 별개, IP별 1시간 슬라이딩) ──────────
+    # 비로그인: verify_rate_max_hits 회까지 허용, 초과 시 위 에스컬레이션 차단 적용.
+    # (admin 로그인은 아래 admin_rate_* 완화 한도를 대신 받는다.)
+    verify_rate_window_seconds: int = 3600  # 비로그인 verify 윈도우(1시간)
+    verify_rate_max_hits: int = 20          # 비로그인 verify 윈도우당 허용 횟수
+
+    # admin(로그인) 전용 완화 한도: 위 IP 차단/에스컬레이션 대신 적용.
+    # 1시간 슬라이딩 윈도우에서 admin_rate_max_hits 회까지 허용, 초과 시 윈도우가
+    # 빌 때까지만 429(장기 차단 없음). admin 식별 = JWT sub == admin_id.
+    admin_rate_window_seconds: int = 3600  # admin 완화 윈도우(1시간)
+    admin_rate_max_hits: int = 200         # admin 윈도우당 허용 횟수
+
     # ── DB ──────────────────────────────────────────────────────────────────
     database_url: str = "postgresql://fnd:fnd@db:5432/fnd"
 

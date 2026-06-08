@@ -17,11 +17,10 @@ from src.api.result_view import (
     render_result_html,
 )
 from src.api.verify import VerifyRequest
-from src.security import RateLimited, rate_limit, ratelimited_handler
+from src.security import RateLimited, rate_limit, ratelimited_handler, verify_rate_limit
 from src.services.verify_service import run_pipeline_with_queue
 from src.auth.database import init_db
 from src.auth.router import router as auth_router
-from src.auth.deps import get_current_user
 
 jobs: dict[str, tuple[asyncio.Queue, asyncio.Task]] = {}
 
@@ -82,7 +81,7 @@ async def root():
         "message": "환영합니다 — 가짜뉴스 검증 API 입니다.",
         "endpoints": {
             "health": "GET /health",
-            "verify": "POST /verify  (로그인 필요)",
+            "verify": "POST /verify  (비로그인 20건/시간 · admin 200건/시간)",
             "stream": "GET /verify/stream?job_id=...",
             "register": "POST /auth/register",
             "login": "POST /auth/login",
@@ -97,7 +96,7 @@ async def health_check():
     return {"status": "ok"}
 
 
-@app.post("/verify", dependencies=[Depends(rate_limit), Depends(get_current_user)])
+@app.post("/verify", dependencies=[Depends(verify_rate_limit)])
 async def verify(request: VerifyRequest):
     job_id = str(uuid.uuid4())
     q: asyncio.Queue = asyncio.Queue()

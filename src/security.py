@@ -1,16 +1,20 @@
-"""레이트리밋 + IP 차단(블랙리스트) — `POST /verify` 보호.
+"""레이트리밋 + IP 차단(블랙리스트).
 
-규칙(값은 src/config.py, 환경변수로 override):
-- 60초 슬라이딩 윈도우에서 `rate_max_hits`(기본 6)를 초과하면(=7번째) '적발'.
-- 1·2차 적발 = `block_first_seconds`(1시간), 3차+ = `block_repeat_seconds`(24시간) 차단.
-- 마지막 적발 후 `offense_decay_seconds`(24시간) 무사고면 누적 적발 카운트를 0으로
-  리셋한다(영구 누적 방지 → 최대 벌칙은 24시간).
-- 상태는 in-memory(단일 워커 전제). 재시작/재배포 시 초기화되고, 다중 인스턴스에는
-  공유되지 않는다(그 경우 Redis 등 외부 저장소 필요).
-- IP는 Cloudflare/프록시 뒤이므로 CF-Connecting-IP → X-Forwarded-For → 소켓 순으로 식별.
+두 의존성을 제공한다(둘 다 IP 기준, 값은 src/config.py·환경변수 override):
+- `rate_limit` — 글로벌(예: GET /result). `rate_window_seconds`(60초) 윈도우에서
+  `rate_max_hits`(6)를 초과하면 적발 → `block_first_seconds`(1시간), 누적
+  `repeat_threshold`(3)회+면 `block_repeat_seconds`(24시간) 차단. 마지막 적발 후
+  `offense_decay_seconds`(24시간) 무사고면 누적 0으로 리셋(최대 벌칙 24시간).
+- `verify_rate_limit` — POST /verify 전용 티어:
+  · 비로그인: `verify_rate_window_seconds`(1시간) 윈도우 `verify_rate_max_hits`(20)회,
+    초과 시 위와 같은 에스컬레이션 차단.
+  · admin(JWT `sub == admin_id`): `admin_rate_window_seconds`(1시간)
+    `admin_rate_max_hits`(200)회까지 허용. 초과 시 가장 오래된 요청이 윈도우 밖으로
+    빠질 때까지만 429 — 장기 차단/에스컬레이션 없음.
 
-동시성: 의존성 `rate_limit`은 async 라 이벤트 루프에서 실행되고, `check()`는 await 없이
-동기적으로 끝나므로 단일 워커에서는 상태 dict 접근이 원자적이다(스레드풀 미사용).
+상태는 in-memory(단일 워커 전제). 재시작/재배포 시 초기화, 다중 인스턴스엔 비공유
+(그 경우 Redis 등 필요). IP는 프록시 뒤이므로 CF-Connecting-IP → X-Forwarded-For → 소켓.
+동시성: 의존성은 async, `check()`는 await 없이 동기 종료 → 단일 워커에서 상태 접근 원자적.
 """
 from __future__ import annotations
 
@@ -18,9 +22,10 @@ import time
 from collections import deque
 from dataclasses import dataclass, field
 
-from fastapi import Request
+from fastapi import Depends, Request
 from fastapi.responses import JSONResponse
 
+from src.auth.deps import get_current_user_optional
 from src.config import Settings, load_settings
 
 
@@ -115,13 +120,88 @@ class RateLimiter:
             del self._states[ip]
 
 
-# 단일 인스턴스(모듈 로드 시 1회 생성). 설정은 환경변수에서.
-limiter = RateLimiter(load_settings())
+class SlidingWindowLimiter:
+    """단순 키별 슬라이딩 윈도우 — 에스컬레이션/장기차단 없음.
+
+    윈도우 내 max_hits 회까지 허용, 도달 시 가장 오래된 요청이 윈도우 밖으로 빠질
+    때까지만 429(그만큼만 retry_after). admin 완화 한도에 쓴다.
+    """
+
+    def __init__(self, window_seconds: int, max_hits: int, sweep_seconds: int) -> None:
+        self._window = window_seconds
+        self._max = max_hits
+        self._sweep_every = sweep_seconds
+        self._hits: dict[str, deque[float]] = {}
+        self._last_sweep = 0.0
+
+    def check(self, key: str, now: float | None = None) -> None:
+        """허용이면 그냥 반환, 한도 도달이면 RateLimited 발생."""
+        now = time.monotonic() if now is None else now
+        dq = self._hits.get(key)
+        if dq is None:
+            dq = self._hits[key] = deque()
+        cutoff = now - self._window
+        while dq and dq[0] <= cutoff:
+            dq.popleft()
+        if len(dq) >= self._max:
+            # 가장 오래된 요청이 윈도우를 벗어나면 한 칸 빈다 → 그때까지만 대기.
+            raise RateLimited(dq[0] + self._window - now)
+        dq.append(now)
+        self._maybe_sweep(now)
+
+    def _maybe_sweep(self, now: float) -> None:
+        if now - self._last_sweep < self._sweep_every:
+            return
+        self._last_sweep = now
+        cutoff = now - self._window
+        dead = [k for k, dq in self._hits.items() if not dq or dq[-1] <= cutoff]
+        for k in dead:
+            del self._hits[k]
+
+
+# ── 리미터 인스턴스(모듈 로드 시 1회). 설정은 환경변수에서. ────────────────────
+_settings = load_settings()
+
+# 글로벌(예: GET /result) — rate_window_seconds/rate_max_hits + 에스컬레이션.
+limiter = RateLimiter(_settings)
+
+# POST /verify 비로그인 — IP별 1시간 윈도우 10회 + 에스컬레이션.
+_anon_verify_limiter = RateLimiter(
+    _settings.model_copy(
+        update={
+            "rate_window_seconds": _settings.verify_rate_window_seconds,
+            "rate_max_hits": _settings.verify_rate_max_hits,
+        }
+    )
+)
+
+# POST /verify admin 완화 — IP별 1시간 윈도우 200회, 장기차단 없음.
+_admin_verify_limiter = SlidingWindowLimiter(
+    _settings.admin_rate_window_seconds,
+    _settings.admin_rate_max_hits,
+    _settings.ratelimit_sweep_seconds,
+)
 
 
 async def rate_limit(request: Request) -> None:
-    """`POST /verify` 의존성. 차단 시 RateLimited 발생."""
+    """글로벌 레이트리밋 의존성(예: GET /result). 차단 시 RateLimited 발생."""
     limiter.check(client_ip(request))
+
+
+async def verify_rate_limit(
+    request: Request,
+    user: dict | None = Depends(get_current_user_optional),
+) -> None:
+    """POST /verify 전용 티어 레이트리밋(IP 기준). 차단 시 RateLimited 발생.
+
+    admin(JWT sub == admin_id) → admin 완화 한도(장기차단 없음),
+    그 외(비로그인 등) → verify 한도 + 에스컬레이션 차단.
+    """
+    ip = client_ip(request)
+    if user and user.get("sub") == _settings.admin_id:
+        _admin_verify_limiter.check(ip)
+    else:
+        _anon_verify_limiter.check(ip)
 
 
 def _fmt_duration(secs: int) -> str:

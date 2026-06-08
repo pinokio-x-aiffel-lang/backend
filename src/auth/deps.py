@@ -41,3 +41,20 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     return payload
+
+
+async def get_current_user_optional(
+    credentials: HTTPAuthorizationCredentials | None = Depends(_bearer),
+) -> dict | None:
+    """get_current_user 의 비강제 버전 — 토큰이 유효하면 payload, 없거나 무효면 None.
+
+    인증을 강제하지 않고 '로그인 여부'만 알아야 하는 곳(예: 티어 레이트리밋)에서 쓴다.
+    """
+    if not credentials:
+        return None
+    payload = decode_access_token(credentials.credentials)
+    if not payload or "sub" not in payload:
+        return None
+    if is_revoked(payload.get("jti", "")):
+        return None
+    return payload
