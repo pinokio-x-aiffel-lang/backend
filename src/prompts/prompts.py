@@ -65,6 +65,7 @@ EXTRACT_CLAIMS_USER = """\
     "claim_type": "absolute | change_rate | ratio | distribution | comparison | metaphoric | verifiable | none",
     "subject": "통계 주제",
     "value_raw": "수치 원문 (증가/감소 등 방향어 있으면 포함)",
+    "compared_value_raw": "비교 기준값 원문 (예: '1.9%에서 1.5%로'의 '1.9%'). 없으면 null",
     "unit": "측정 단위만 (%, %p, 명, 원, 억원 등). 퍼센트포인트는 '%p' 로 %와 반드시 구분",
     "period_raw": "시점 원문",
     "period_type": "Y 또는 M 또는 Q 또는 D",

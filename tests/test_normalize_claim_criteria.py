@@ -32,7 +32,7 @@ def _make(value_raw: str, period_raw: str = "2024년", unit: str = "명") -> Mas
         claim_id="c-0001",
         article_id="art-0001",
         sentence=f"테스트: {value_raw}",
-        claim_type=ClaimType.OTHER,
+        claim_type=ClaimType.NONE,
         subject="테스트",
         value=_vs(value_raw),
         unit=unit,
