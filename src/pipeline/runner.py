@@ -26,6 +26,7 @@ from src.modules.fetch_kosis_data import fetch_kosis_data
 from src.modules.generate_explanation import generate_explanation
 from src.modules.load_article import load_article
 from src.modules.normalize_claim import normalize_claim
+from src.modules.rank_evidence import rank_evidence
 from src.modules.retrieve_kosis_candidates import retrieve_kosis_candidates
 from src.pipeline.events import PipelineEvent, ResultEvent, StepEvent
 from src.schemas.runtime import MasterSchema
@@ -42,10 +43,11 @@ class Pipeline:
         async for ev in self._step(3, "한국어 수사 산술로 변환", normalize_claim, master_schema, on_step): yield ev
         async for ev in self._step(4, "KOSIS 통계표 n개 찾기", retrieve_kosis_candidates, master_schema, on_step): yield ev
         async for ev in self._step(5, "KOSIS 셀 값 조회", fetch_kosis_data, master_schema, on_step): yield ev
-        async for ev in self._step(6, "통계 수치 비교 판단", calculate_metric, master_schema, on_step): yield ev
-        async for ev in self._step(7, "통계수치와 문장의 정합성 판단", check_alignment, master_schema, on_step): yield ev
-        async for ev in self._step(8, "종합 분석·검증 결과 생성", decide_verdict, master_schema, on_step): yield ev
-        async for ev in self._step(9, "설명 생성", generate_explanation, master_schema, on_step): yield ev
+        async for ev in self._step(6, "증거 랭킹", rank_evidence, master_schema, on_step): yield ev
+        async for ev in self._step(7, "통계 수치 비교 판단", calculate_metric, master_schema, on_step): yield ev
+        async for ev in self._step(8, "통계수치와 문장의 정합성 판단", check_alignment, master_schema, on_step): yield ev
+        async for ev in self._step(9, "종합 분석·검증 결과 생성", decide_verdict, master_schema, on_step): yield ev
+        async for ev in self._step(10, "설명 생성", generate_explanation, master_schema, on_step): yield ev
 
         yield ResultEvent(master_schema=master_schema)
 
