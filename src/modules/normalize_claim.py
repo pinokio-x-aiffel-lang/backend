@@ -32,7 +32,7 @@ class NormalizeClaimError(Exception):
 # ── 수치 정규화 ────────────────────────────────────────────────────────────────
 
 _INCREASE = re.compile(r"증가|상승|늘어|올라|증대|올랐|늘었")
-_DECREASE = re.compile(r"감소|하락|줄어|내려|하강|감축|내렸|줄었")
+_DECREASE = re.compile(r"감소|하락|줄어|내려|하강|감축|내렸|줄었|낮췄|낮아졌")
 
 
 def _fmt_decimal(x: float) -> str:
@@ -178,6 +178,14 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
         return None
 
     # 이전 계열
+    m = re.search(r"(?:작년|전년|지난\s*해)\s*(\d{1,2})월", s)
+    if m:
+        return f"{by - 1}-{int(m.group(1)):02d}"
+
+    m = re.search(r"지난\s*(\d{1,2})월", s)
+    if m:
+        return f"{by}-{int(m.group(1)):02d}"
+
     if re.search(r"전년|작년|지난\s*해|전년도|전해", s):
         return str(by - 1)
 
