@@ -55,6 +55,8 @@ class ClaimType(str, Enum):
     """주장의 검증 연산 형태 분류. 값은 WEB_API_CONTRACT §2.3 enum 코드.
 
     한글 라벨은 프론트(web/src/lib/format.ts CLAIM_TYPE_LABELS)에서 매핑한다.
+    우선순위: ABSOLUTE > CHANGE_RATE > RATIO > DISTRIBUTION > COMPARISON > METAPHORIC > VERIFIABLE
+    NONE은 7가지 유형 어디에도 해당하지 않는 경우 — 분기 모듈에서 검증대상 없음으로 처리.
     """
 
     ABSOLUTE = "absolute"          # 절대값 — 단일 시점 값 직접 비교
@@ -62,8 +64,9 @@ class ClaimType(str, Enum):
     RATIO = "ratio"                # 비율 — A/B
     DISTRIBUTION = "distribution"  # 분포 — 구성비/점유율
     COMPARISON = "comparison"      # 비교 — 그룹 간 부등식
-    METAPHORIC = "metaphoric"      # 정성/추상 — 수치 검증 불가
-    OTHER = "other"                # 예외 — 6개 연산 유형에 안 맞는 분류 fallback
+    METAPHORIC = "metaphoric"      # 비유비교 — 수치로 표현되나 KOSIS 검증 불가
+    VERIFIABLE = "verifiable"      # 검증가능 — KOSIS 검증 가능하나 위 6가지에 미해당 (최후순위)
+    NONE = "none"                  # 분류 불가 — 7가지 유형 모두 미해당, 분기에서 제외
 
 
 class Claim(BaseModel):
