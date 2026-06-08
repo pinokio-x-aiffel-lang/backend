@@ -11,7 +11,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-PeriodType = Literal["Y", "M", "Q", "D"]
+PeriodType = Literal["Y", "M", "Q", "S", "D"]
 
 
 # --------------------------------------------------------------------------- #
@@ -43,10 +43,18 @@ class ValueSlot(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-class CompareGroup(BaseModel):
-    """동일 비교 대상을 묶는 그룹 식별자. 같은 compare_id끼리 비교군이다."""
+class ComparisonSpec(BaseModel):
+    """원자 분리된 Claim을 묶고 그룹 수준의 검증 조건을 보관한다.
 
-    compare_id: int
+    같은 compare_id를 가진 Claim들은 동일 원문에서 분리된 비교 대상이다.
+    각 Claim의 KOSIS 조회 결과를 모은 뒤 conclusion_type 연산으로
+    conclusion_value(conclusion_unit)를 검증한다.
+    """
+
+    compare_id: str              # 같은 원문에서 분리된 Claim들의 공유 식별자 (UUID)
+    conclusion_type: str         # 검증 연산 (예: "change_rate", "ratio", "comparison")
+    conclusion_value: float      # 검증 대상 수치 (예: 15.0)
+    conclusion_unit: str         # 단위 (예: "%", "%p", "배")
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -83,9 +91,7 @@ class Claim(BaseModel):
     period_type: PeriodType
     period_value: ValueSlot
     compare_period_value: ValueSlot | None = None
-    compared_value: ValueSlot | None = None  # 비교 기준값 (예: "1.9%에서 1.5%로"의 1.9%)
-    group_id: str | None = None              # compared_value 존재 시 생성되는 UUID — 두 KOSIS 조회를 묶는 키
-    compare_group: CompareGroup | None = None
+    compare_conquer: ComparisonSpec | None = None
     population: str
     cited_source: str
 
