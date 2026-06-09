@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import time
 
 from dotenv import load_dotenv
 
@@ -31,9 +32,11 @@ def _get_required_env(name: str) -> str:
 class LlmCaller:
     """model_alias를 받아 적절한 provider/model로 LLM을 호출."""
 
-    def __init__(self) -> None:
+    def __init__(self, max_retries: int = 3, retry_delay_s: float = 15.0) -> None:
         load_dotenv()
         self._clients: dict[str, ChatClient] = {}
+        self._max_retries = max_retries
+        self._retry_delay_s = retry_delay_s
 
     def _get_client(self, model_alias: str, provider: ProviderConfig) -> ChatClient:
         if model_alias not in self._clients:
@@ -135,7 +138,8 @@ class LlmCaller:
             if provider.native_url is None:
                 raise LlmError("native_url이 설정되지 않았습니다.")
             api_key = _get_required_env(provider.api_key_env)
-            return fetch_hcx_native(
+            return self._with_retry(
+                fetch_hcx_native,
                 api_key=api_key,
                 url=f"{provider.native_url}/{model_name}",
                 messages=messages,
@@ -153,7 +157,8 @@ class LlmCaller:
 
         if model_alias == "openai":
             if model_name in GPT_RESPONSES_MODELS:
-                return client.fetch_responses(
+                return self._with_retry(
+                    client.fetch_responses,
                     messages=messages,
                     model_name=model_name,
                     max_tokens=max_tokens,
@@ -161,7 +166,8 @@ class LlmCaller:
                     tool_choice=tool_choice,
                     timeout=timeout,
                 )
-            return client.fetch_chat(
+            return self._with_retry(
+                client.fetch_chat,
                 messages=messages,
                 model_name=model_name,
                 temperature=temperature,
@@ -174,7 +180,8 @@ class LlmCaller:
                 timeout=timeout,
             )
 
-        return client.fetch_chat(
+        return self._with_retry(
+            client.fetch_chat,
             messages=messages,
             model_name=model_name,
             temperature=temperature,
@@ -185,3 +192,14 @@ class LlmCaller:
             tool_choice=tool_choice,
             timeout=timeout,
         )
+
+    def _with_retry(self, fn, *args, **kwargs) -> ChatResponse:
+        for attempt in range(self._max_retries):
+            try:
+                return fn(*args, **kwargs)
+            except LlmError as e:
+                if attempt < self._max_retries - 1:
+                    print(f"[재시도 {attempt + 1}/{self._max_retries}] {e}")
+                    time.sleep(self._retry_delay_s)
+                else:
+                    raise
