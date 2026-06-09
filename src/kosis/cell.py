@@ -50,6 +50,11 @@ class KosisCell:
     raw: dict
 
 
+# KOSIS 공식 문서 기준 prdSe 코드. 내부 period_type → API 전송값.
+# 반기: 공식 코드 'H' (실제 API는 값을 무시하지만 문서 준수)
+_PRDSE_API: dict[str, str] = {"S": "H"}
+
+
 def build_params(query: KosisQuery, api_key: str) -> dict:
     """KosisQuery → statisticsParameterData.do(method=getList) params dict.
 
@@ -66,7 +71,7 @@ def build_params(query: KosisQuery, api_key: str) -> dict:
         "objL": query.obj_l1,  # 구 API 호환성 — 일부 테이블(분기 등)에서 필수
         "format": "json",
         "jsonVD": "Y",
-        "prdSe": query.period_se,
+        "prdSe": _PRDSE_API.get(query.period_se, query.period_se),
         "startPrdDe": query.period,
         "endPrdDe": query.period,
         "orgId": query.org_id,
