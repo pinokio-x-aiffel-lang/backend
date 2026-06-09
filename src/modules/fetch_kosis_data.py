@@ -33,8 +33,8 @@ async def fetch_kosis_data(master_schema: MasterSchema) -> None:
 
     analysis[*] 의 kosis_query(조회 로그)와 evidence(선정 셀, 실패 시 None)를 채운다.
     한 claim 실패(KosisError/ResolveError/ValueError)는 success=0 으로 기록하고 계속,
-    그 외 예외만 raise → runner. claim 들은 to_thread + asyncio.gather 로 동시 조회
-    (rate limit 은 공유 client 가 1000/min 이하로 강제).
+    그 외 예외만 raise → runner. claim 간(asyncio.gather)·한 claim 의 후보 표 간
+    (to_thread + gather) 모두 동시 조회한다(rate limit 은 공유 client 가 1000/min 이하로 강제).
     """
     api_key = resolve_api_key()  # 키 1회 확보(없으면 ValueError → runner 가 처리)
     claims = {c.claim_id: c for c in master_schema.claims}
@@ -54,7 +54,7 @@ _AXIS_VALS_CAP = 15
 async def _fetch_one(
     analysis: ClaimAnalysis, claim: Claim | None, api_key: str
 ) -> None:
-    """analysis 1건 → 후보 표들을 RANK 순으로 조회, 첫 매칭 셀을 evidence 로 채운다.
+    """analysis 1건 → 후보 표들을 동시 조회, 매칭된 표 중 RANK 우선으로 evidence 를 채운다.
 
     표별 시도 결과(항목·분류축·매칭 사유)를 cell_attempts 에 모아 '왜 못 찾았는지'
     디버깅을 돕는다. 매칭된 표 기준으로 kosis_query·evidence 를 제자리 변경한다.
@@ -67,10 +67,17 @@ async def _fetch_one(
         return
 
     period = _to_kosis_period(claim.period_type, claim.period_value.llm_value)
-    matched, attempts = await asyncio.to_thread(
-        _resolve_and_fetch_best, analysis.candidates, claim, period, api_key
+    # 후보 표 전체를 동시 조회(표별 독립 to_thread). early-stop 없이 모두 시도하고,
+    # 매칭된 것 중 RANK 가장 높은(인덱스 작은) 표를 선택한다.
+    results = await asyncio.gather(
+        *(
+            asyncio.to_thread(_resolve_and_fetch_one, cand, claim, period, api_key)
+            for cand in analysis.candidates
+        )
     )
+    attempts = [att for att, _ in results]  # 후보 순서(=RANK 순) 유지
     analysis.cell_attempts = attempts  # 표별 조회 시도 기록(디버깅)
+    matched = next((m for _, m in results if m is not None), None)
 
     if matched is None:
         reasons = [
@@ -104,64 +111,48 @@ def _cap(names: list, n: int) -> list[str]:
     return out
 
 
-def _resolve_and_fetch_best(candidates, claim, period, api_key):
-    """후보 표들을 RANK 순으로 좌표 해소(getMeta)+셀 조회. 첫 매칭에서 멈춘다.
-
-    표마다 CellAttempt(항목·분류축·매칭 결과/사유)를 남긴다. 매칭 후 남은 후보는
-    조회하지 않고 '스킵'으로만 기록한다(early-stop). to_thread 로 호출된다.
+def _resolve_and_fetch_one(cand, claim, period, api_key):
+    """후보 표 1건을 좌표 해소(getMeta)+셀 조회. to_thread 로 동시 호출된다.
 
     Returns:
-        (matched | None, attempts) — matched = (cand, query, cell).
+        (CellAttempt, matched | None) — matched = (cand, query, cell).
+        매칭 실패 사유는 CellAttempt.error 에, 항목·분류축은 디버깅용으로 남긴다.
     """
-    attempts: list[CellAttempt] = []
-    matched = None
-    for cand in candidates:
-        if matched is not None:  # early-stop: 더 조회하지 않음
-            attempts.append(CellAttempt(
-                tbl_id=cand.tbl_id, tbl_nm=cand.tbl_nm, error="스킵(앞에서 매칭됨)",
-            ))
-            continue
-        try:
-            query, trace = resolve_cell_query_traced(
-                cand.org_id, cand.tbl_id,
-                subject=claim.subject, population=claim.population,
-                period=period, period_se=claim.period_type, api_key=api_key,
-            )
-        except (KosisError, ValueError) as exc:
-            attempts.append(CellAttempt(
-                tbl_id=cand.tbl_id, tbl_nm=cand.tbl_nm, error=f"메타 조회 실패: {exc}",
-            ))
-            continue
-
-        att = CellAttempt(
-            tbl_id=cand.tbl_id, tbl_nm=cand.tbl_nm,
-            itm_id=trace.get("itm_id"),
-            items=_cap([nm for _id, nm in trace["items"]], _ITEMS_CAP),
-            axes={
-                ax: _cap([nm for _id, nm in vals], _AXIS_VALS_CAP)
-                for ax, vals in trace["axes"].items()
-            },
+    try:
+        query, trace = resolve_cell_query_traced(
+            cand.org_id, cand.tbl_id,
+            subject=claim.subject, population=claim.population,
+            period=period, period_se=claim.period_type, api_key=api_key,
         )
-        if query is None:  # 좌표 해소 실패(항목/분류 매칭 실패)
-            att.error = trace.get("error")
-            attempts.append(att)
-            continue
-        try:
-            cell = fetch_cell_with_retry(query, api_key)
-        except (KosisError, ValueError) as exc:
-            att.error = f"셀 조회 실패: {exc}"
-            attempts.append(att)
-            continue
-        if cell is None:
-            att.error = "셀 매칭 0건(시점/분류 불일치)"
-            attempts.append(att)
-            continue
-        att.matched = True
-        att.value = cell.value
-        att.unit = cell.unit
-        attempts.append(att)
-        matched = (cand, query, cell)
-    return matched, attempts
+    except (KosisError, ValueError) as exc:
+        return CellAttempt(
+            tbl_id=cand.tbl_id, tbl_nm=cand.tbl_nm, error=f"메타 조회 실패: {exc}",
+        ), None
+
+    att = CellAttempt(
+        tbl_id=cand.tbl_id, tbl_nm=cand.tbl_nm,
+        itm_id=trace.get("itm_id"),
+        items=_cap([nm for _id, nm in trace["items"]], _ITEMS_CAP),
+        axes={
+            ax: _cap([nm for _id, nm in vals], _AXIS_VALS_CAP)
+            for ax, vals in trace["axes"].items()
+        },
+    )
+    if query is None:  # 좌표 해소 실패(항목/분류 매칭 실패)
+        att.error = trace.get("error")
+        return att, None
+    try:
+        cell = fetch_cell_with_retry(query, api_key)
+    except (KosisError, ValueError) as exc:
+        att.error = f"셀 조회 실패: {exc}"
+        return att, None
+    if cell is None:
+        att.error = "셀 매칭 0건(시점/분류 불일치)"
+        return att, None
+    att.matched = True
+    att.value = cell.value
+    att.unit = cell.unit
+    return att, (cand, query, cell)
 
 
 def _to_kosis_period(period_type: str, raw: str) -> str:

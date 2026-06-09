@@ -72,7 +72,11 @@ def _preprocess_subject(subject: str) -> str:
 
 
 def _rerank_hits(hits: list[SearchHit]) -> list[SearchHit]:
-    """시군구통계·국제통계(DT_2*)를 후순위로 밀고 원래 RANK 순서 유지(stable sort)."""
+    """시군구통계·국제통계(DT_2*)를 후순위로 밀고 원래 RANK 순서 유지(stable sort).
+
+    [현재 미사용] 후보 10개에 동시 요청해 매칭되는 표를 고르는 방식이라
+    순위 조정이 불필요. 보존만 해 둔다(필요 시 _search_one_claim 에서 재연결).
+    """
     def _score(h: SearchHit) -> int:
         if h.stat_nm == "시군구통계":
             return 2
@@ -90,7 +94,6 @@ async def _search_one_claim(claim: Claim) -> ClaimAnalysis:
         hits: list[SearchHit] = await asyncio.to_thread(
             search_tables, keyword, top_n=TOP_N
         )
-        hits = _rerank_hits(hits)
     except (KosisError, ValueError) as exc:
         return _analysis(
             claim.claim_id,

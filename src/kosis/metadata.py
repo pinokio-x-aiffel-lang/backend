@@ -10,6 +10,7 @@ type별로 조회한다. 셀 조회(cell.fetch_cell)에 필요한 itmId/objL/prd
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
 from dataclasses import dataclass, field
@@ -107,3 +108,193 @@ def fetch_table_meta(
         org_id, tbl_id, len(result.items), len(types), time.perf_counter() - t0,
     )
     return result
+
+
+# ── ITM+PRD 통합 파싱(TableSchema) ────────────────────────────────────────────
+# 값 조회에 필요한 두 메타(ITM=항목·분류축, PRD=수록주기)를 함께 받아 한 구조체로
+# 파싱한다. 원시 getMeta 응답(평평한 dict 리스트)의 KOSIS 잡스러움(항목·축 혼재,
+# 알파벳 OBJ_ID 비순차, 라벨↔코드 불일치)을 흡수해 downstream(resolve/fetch)이
+# 표별 가정 없이 schema.items / schema.axes / schema.periods 로 읽게 한다.
+
+# PRD_SE 라벨(메타) → 요청 prdSe 코드. (메모리 kosis-prdse-three-representations)
+_PRD_SE_CODE: dict[str, str] = {
+    "년": "Y", "분기": "Q", "반기": "H", "월": "M", "일": "D",
+}
+# prdSe 코드 → 요청 시점 형식 힌트. Y/M/Q 는 이 세션에서 실측 확인,
+# H(반기 01~02)·D(YYYYMMDD)는 KOSIS 표준(미실측).
+_PRD_FMT: dict[str, str] = {
+    "Y": "YYYY", "H": "YYYYHH", "Q": "YYYYQQ", "M": "YYYYMM", "D": "YYYYMMDD",
+}
+
+
+@dataclass(frozen=True)
+class Item:
+    """통계표 항목(getMeta ITM 의 OBJ_ID='ITEM'). 값 조회 itmId 의 출처."""
+
+    itm_id: str
+    itm_nm: str
+    unit: str = ""
+
+
+@dataclass(frozen=True)
+class Axis:
+    """분류축(getMeta ITM 의 OBJ_ID != 'ITEM'). objL 코드의 출처.
+
+    values: [(코드, 이름)]. 정렬·매칭 키는 코드(ITM_ID)다.
+    """
+
+    obj_id: str                       # 'A','B','G'... (알파벳이 순차가 아닐 수 있음)
+    sn: int                           # OBJ_ID_SN — 진짜 축 순서(=C1,C2… 대응). 정렬 키.
+    name: str                         # OBJ_NM, 예 '시도별'
+    values: list[tuple[str, str]] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class Period:
+    """수록 주기 1종(PRD 응답 1행). 한 표가 여러 주기를 가질 수 있다(예: 분기+년)."""
+
+    se_label: str                     # PRD_SE, 예 '년','월','분기'
+    se_code: Optional[str]            # 요청 prdSe 코드 Y/M/Q/H/D (미지원 라벨이면 None)
+    start: str                        # STRT_PRD_DE (원본 표기)
+    end: str                          # END_PRD_DE (원본 표기)
+    fmt: Optional[str]                # 요청 시점 형식 힌트(YYYY, YYYYMM…), 미지원이면 None
+
+
+@dataclass
+class TableSchema:
+    """ITM+PRD 를 통합 파싱한 통계표 구조 기술자.
+
+    items   : 항목 목록(ITM, OBJ_ID='ITEM')
+    axes    : 분류축 목록(ITM, 그 외 OBJ_ID) — OBJ_ID_SN 오름차순
+    periods : 수록 주기 목록(PRD) — 표가 분기+년 등 다중 주기를 줄 수 있어 리스트
+    """
+
+    org_id: str
+    tbl_id: str
+    tbl_nm: str
+    items: list[Item] = field(default_factory=list)
+    axes: list[Axis] = field(default_factory=list)
+    periods: list[Period] = field(default_factory=list)
+
+    @property
+    def axis_count(self) -> int:
+        return len(self.axes)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "orgId": self.org_id,
+            "tblId": self.tbl_id,
+            "tblNm": self.tbl_nm,
+            "items": [vars(i) for i in self.items],
+            "axes": [vars(a) for a in self.axes],
+            "periods": [vars(p) for p in self.periods],
+        }
+
+
+def _parse_items(itm_rows: list) -> list[Item]:
+    return [
+        Item(
+            itm_id=str(r.get("ITM_ID", "")),
+            itm_nm=str(r.get("ITM_NM", "")),
+            unit=str(r.get("UNIT_NM", "")),
+        )
+        for r in itm_rows
+        if isinstance(r, dict) and r.get("OBJ_ID") == "ITEM"
+    ]
+
+
+def _parse_axes(itm_rows: list) -> list[Axis]:
+    groups: dict[str, list[dict]] = {}
+    for r in itm_rows:
+        if not isinstance(r, dict):
+            continue
+        oid = r.get("OBJ_ID")
+        if oid and oid != "ITEM":
+            groups.setdefault(oid, []).append(r)
+
+    axes: list[Axis] = []
+    for oid, rows in groups.items():
+        try:
+            sn = int(rows[0].get("OBJ_ID_SN"))
+        except (TypeError, ValueError):
+            sn = 0  # SN 없으면 0 → 아래 정렬에서 obj_id 알파벳으로 깨짐 방지
+        axes.append(Axis(
+            obj_id=str(oid),
+            sn=sn,
+            name=str(rows[0].get("OBJ_NM") or oid),
+            values=[(str(r.get("ITM_ID", "")), str(r.get("ITM_NM", ""))) for r in rows],
+        ))
+    # OBJ_ID_SN 우선(알파벳 OBJ_ID 가 순차 아닐 수 있음 — 예 A,G), 동률은 obj_id.
+    axes.sort(key=lambda a: (a.sn, a.obj_id))
+    return axes
+
+
+def _parse_periods(prd_rows: list) -> list[Period]:
+    periods: list[Period] = []
+    for r in prd_rows:
+        if not isinstance(r, dict):
+            continue
+        label = str(r.get("PRD_SE", ""))
+        code = _PRD_SE_CODE.get(label)
+        periods.append(Period(
+            se_label=label,
+            se_code=code,
+            start=str(r.get("STRT_PRD_DE", "")),
+            end=str(r.get("END_PRD_DE", "")),
+            fmt=_PRD_FMT.get(code) if code else None,
+        ))
+    return periods
+
+
+async def fetch_table_schema(
+    org_id: str,
+    tbl_id: str,
+    api_key: Optional[str] = None,
+) -> TableSchema:
+    """통계표 1건의 ITM+PRD 를 동시(병렬) 조회·통합 파싱해 TableSchema 로 반환한다.
+
+    getMeta(ITM) → 항목(items)·분류축(axes, OBJ_ID_SN 순),
+    getMeta(PRD) → 수록주기(periods, 다중 주기 가능)를 한 구조체로 합친다.
+    어떤 표든(0~N축, 단일·다중 주기) 동일하게 처리한다.
+
+    ITM·PRD 두 getMeta 호출을 to_thread + gather 로 병렬 실행한다(동기 requests
+    기반이라 스레드 위임). rate limit·Session 은 공유 client 가 보장.
+
+    Raises:
+        KosisError: getMeta(ITM) 호출 실패 또는 ITM 응답이 list 가 아님(인증 실패 등).
+        ValueError: API 키가 없는 경우.
+    """
+    key = resolve_api_key(api_key)  # 키 1회 검증/확보(스레드 진입 전)
+    itm, prd = await asyncio.gather(
+        asyncio.to_thread(fetch_meta_item, org_id, tbl_id, "ITM", key),
+        asyncio.to_thread(fetch_meta_item, org_id, tbl_id, "PRD", key),
+        return_exceptions=True,
+    )
+    # ITM 실패는 치명적 — 항목/분류축 없이는 schema 불가.
+    if isinstance(itm, BaseException):
+        raise itm
+    if not isinstance(itm, list):
+        raise KosisError(f"ITM 메타 형식 비정상(인증 실패?): {type(itm).__name__}")
+    # PRD 실패는 주기 없이 진행(periods=[]); KosisError 만 흡수, 그 외 예외는 전파.
+    if isinstance(prd, KosisError):
+        logger.warning("KOSIS PRD 메타 실패 tbl=%s: %s", tbl_id, prd)
+        prd_rows: list = []
+    elif isinstance(prd, BaseException):
+        raise prd
+    else:
+        prd_rows = prd if isinstance(prd, list) else []
+
+    # tbl_nm 은 ITM/PRD 응답에 없다 → 빈값. 표명이 필요하면 호출부가 search 결과로 채운다.
+    schema = TableSchema(
+        org_id=org_id,
+        tbl_id=tbl_id,
+        tbl_nm="",
+        items=_parse_items(itm),
+        axes=_parse_axes(itm),
+        periods=_parse_periods(prd_rows),
+    )
+    logger.info(
+        "KOSIS schema tbl=%s: 항목 %d · 분류축 %d · 주기 %d",
+        tbl_id, len(schema.items), schema.axis_count, len(schema.periods),
+    )
+    return schema

@@ -22,7 +22,17 @@ from src.kosis.cell import (
     to_cell,
 )
 from src.kosis.client import KosisError, call_kosis, kosis_get, resolve_api_key
-from src.kosis.metadata import META_ITEMS, TableMeta, fetch_meta_item, fetch_table_meta
+from src.kosis.metadata import (
+    META_ITEMS,
+    Axis,
+    Item,
+    Period,
+    TableMeta,
+    TableSchema,
+    fetch_meta_item,
+    fetch_table_meta,
+    fetch_table_schema,
+)
 from src.kosis.resolve import (
     ResolveError,
     resolve_cell_query,
@@ -41,10 +51,15 @@ __all__ = [
     "KosisCell",
     "SearchHit",
     "TableMeta",
+    "TableSchema",
+    "Item",
+    "Axis",
+    "Period",
     "KosisError",
     "search_tables",
     "search_tables_many",
     "fetch_table_meta",
+    "fetch_table_schema",
     "fetch_meta_item",
     "META_ITEMS",
     "resolve_cell_query",
