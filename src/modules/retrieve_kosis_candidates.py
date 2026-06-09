@@ -54,11 +54,15 @@ async def retrieve_kosis_candidates(master_schema: MasterSchema) -> None:
         기록하고 계속 진행한다(한 건이 전체 파이프라인을 막지 않게). 그 외
         예기치 못한 예외만 raise → runner 가 StepEvent(error) 로 처리.
     """
-    # search_tables 는 동기 requests 기반(공유 Session + rate limit)이라
-    # 이벤트 루프를 막지 않게 to_thread 로 위임하고, rate limit 충돌을 피해 순차 호출한다.
-    master_schema.analysis = [
-        await _search_one_claim(claim) for claim in master_schema.claims
-    ]
+    # search_tables 는 동기 requests 기반이라 이벤트 루프를 막지 않게 to_thread 로
+    # 위임한다(_search_one_claim 내부). claim 간 검색은 gather 로 동시 호출 —
+    # rate limit 은 공유 client 가 sliding-window lock 으로 1000/min 이하 강제(동시 안전).
+    # gather 는 입력 순서를 보존하므로 analysis 순서 == claims 순서.
+    master_schema.analysis = list(
+        await asyncio.gather(
+            *(_search_one_claim(claim) for claim in master_schema.claims)
+        )
+    )
 
 
 def _preprocess_subject(subject: str) -> str:

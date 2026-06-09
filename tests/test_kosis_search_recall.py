@@ -1,8 +1,8 @@
 """KOSIS 키워드 검색 recall 탐색 스크립트 — 1단계(탐색).
 
-대표 claim subject로 statisticsSearch.do를 호출해 top 10 결과를 출력한다.
-눈으로 정답 표를 확인한 뒤, 확인된 tbl_id를 GROUND_TRUTH에 채워
-2단계 자동 recall 테스트(test_kosis_recall_auto.py)를 작성하는 게 목적이다.
+대표 subject 로 검색해 top 10 을 출력한다.
+정답 표를 눈으로 고른다.
+그 tbl_id 로 2단계 recall 테스트를 만드는 게 목적이다.
 
 네트워크 + KOSIS_API_KEY(.env) 필요. 키가 없으면 skip.
 

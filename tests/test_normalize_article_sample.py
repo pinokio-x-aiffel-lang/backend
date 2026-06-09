@@ -1,7 +1,7 @@
 """기사 본문 샘플로 normalize_claim 수동 검증.
 
-아래 기사에서 LLM이 추출할 법한 value_raw / period_raw 를 직접 구성하여
-normalize_claim 의 실제 출력을 확인한다.
+아래 기사에서 LLM 이 추출할 법한 value_raw / period_raw 를 직접 구성한다.
+그 입력으로 normalize_claim 의 실제 출력을 확인한다.
 
 테스트 기사:
   통계청에 따르면 지난달 한국 근로자의 주당 평균 근로시간은 38.8시간이다.

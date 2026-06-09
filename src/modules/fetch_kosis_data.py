@@ -13,6 +13,13 @@ from src.kosis import (
     resolve_api_key,
     resolve_cell_query_traced,
 )
+from src.llm.client import LlmError
+from src.observability.tracing import traced_chat
+from src.llm.model_presets import RESOLVE_AXIS_MATCH
+from src.prompts.prompts import (
+    RESOLVE_AXIS_MATCH_SYSTEM,
+    RESOLVE_AXIS_MATCH_USER,
+)
 from src.schemas.runtime import (
     CellAttempt,
     Claim,
@@ -25,6 +32,19 @@ from src.schemas.runtime import (
 _DATA_API = "statisticsParameterData.do"
 
 logger = logging.getLogger("kosis")
+
+# LLM 분류축 매칭 응답 구조(structured outputs). 보기 코드 중 하나 또는 기권(null).
+# obj_code 도 required — 안 그러면 모델이 {"matched":true}만 주고 코드를 누락한다(실측).
+_AXIS_MATCH_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "obj_code": {"type": ["string", "null"]},
+        "matched": {"type": "boolean"},
+    },
+    "required": ["matched", "obj_code"],
+}
+# LLM 에 보여줄 분류축 값 보기 상한(축이 수백 값이면 토큰 폭증 방지).
+_AXIS_OPTIONS_CAP = 60
 
 
 class FetchKosisDataError(Exception):
@@ -54,6 +74,16 @@ _ITEMS_CAP = 25
 _AXIS_VALS_CAP = 15
 
 
+def _select_match(results: list[tuple]) -> tuple | None:
+    """매칭된 표 중 선정: 모집단을 '실제로' 맞춘 표(비폴백) 우선, 없으면 합계 폴백 표.
+    각 그룹 내에선 RANK(인덱스 작은) 순 — results 가 후보 RANK 순이라 그대로 first."""
+    pairs = [(att, m) for att, m in results if m is not None]
+    return next(
+        (p for p in pairs if not p[0].population_fallback),
+        pairs[0] if pairs else None,
+    )
+
+
 async def _fetch_one(
     analysis: ClaimAnalysis, claim: Claim | None, api_key: str
 ) -> None:
@@ -61,7 +91,10 @@ async def _fetch_one(
 
     표별 시도 결과(항목·분류축·매칭 사유)를 cell_attempts 에 모아 '왜 못 찾았는지'
     디버깅을 돕는다. 매칭된 표 기준으로 kosis_query·evidence 를 제자리 변경한다.
-    """
+
+    2-pass: [1] 결정적(규칙+동의어)으로 후보 전체 동시 조회 → 모집단 특정값 얻으면 끝.
+    [2] 못 얻었고(폴백/실패) population 이 있으면 RANK 순 LLM 폴백 재조회(첫 성공에서 중단).
+    LLM 호출 여부는 후보 전체를 본 이 상위 함수가 결정한다(비용 게이팅)."""
     t0 = time.perf_counter()
     if claim is None or not analysis.candidates:
         analysis.kosis_query = _log(
@@ -70,23 +103,38 @@ async def _fetch_one(
         return
 
     period = _to_kosis_period(claim.period_type, claim.period_value.llm_value)
-    # 후보 표 전체를 동시 조회(표별 독립 to_thread). early-stop 없이 모두 시도하고,
-    # 매칭된 것 중 RANK 가장 높은(인덱스 작은) 표를 선택한다.
-    results = await asyncio.gather(
+    # [Pass 1] 후보 표 전체 동시 조회(결정적, LLM 미사용). early-stop 없이 모두 시도.
+    results = list(await asyncio.gather(
         *(
             asyncio.to_thread(_resolve_and_fetch_one, cand, claim, period, api_key)
             for cand in analysis.candidates
         )
-    )
+    ))
+    chosen = _select_match(results)
+
+    # [Pass 2] 모집단 특정값을 못 얻었고(폴백/실패) population 이 있으면 LLM 폴백 재조회.
+    # RANK 순 순차, 모집단 매칭 첫 성공에서 중단 → claim 당 LLM 호출 최소화.
+    if (claim.population or "").strip() and (chosen is None or chosen[0].population_fallback):
+        for i, cand in enumerate(analysis.candidates):
+            base = results[i][0]
+            if base.itm_id is None:                 # subject 미매칭 → LLM 으로도 못 구함
+                continue
+            if results[i][1] is not None and not base.population_fallback:
+                continue                            # 이미 모집단 매칭(스킵)
+            att2, m2 = await asyncio.to_thread(
+                _resolve_and_fetch_one, cand, claim, period, api_key, _llm_axis_matcher,
+            )
+            results[i] = (att2, m2)                 # 기록 갱신(LLM 결과 반영)
+            if m2 is not None and not att2.population_fallback:
+                logger.info(
+                    "KOSIS 모집단 LLM 매칭 성공: claim=%s population=%r tbl=%s",
+                    claim.claim_id, claim.population, cand.tbl_id,
+                )
+                break                               # 모집단 특정값 확보 → 중단
+        chosen = _select_match(results)
+
     attempts = [att for att, _ in results]  # 후보 순서(=RANK 순) 유지
     analysis.cell_attempts = attempts  # 표별 조회 시도 기록(디버깅)
-    # 매칭된 표 중 선정: 모집단을 '실제로' 맞춘 표 우선, 그게 없을 때만 합계 폴백 표.
-    # 각 그룹 내에선 RANK(인덱스 작은) 순. → 청년 고용률이 전체값(폴백)으로 새지 않게.
-    matched_pairs = [(att, m) for att, m in results if m is not None]
-    chosen = next(
-        (p for p in matched_pairs if not p[0].population_fallback),
-        matched_pairs[0] if matched_pairs else None,
-    )
 
     if chosen is None:
         reasons = [
@@ -115,6 +163,7 @@ async def _fetch_one(
     analysis.evidence = _to_evidence(
         claim, cand.org_id, cand.tbl_id, query, cell, cand.tbl_nm,
         population_fallback=chosen_att.population_fallback,
+        match_source=chosen_att.match_source,
     )
 
 
@@ -126,8 +175,49 @@ def _cap(names: list, n: int) -> list[str]:
     return out
 
 
-def _resolve_and_fetch_one(cand, claim, period, api_key):
+def _llm_axis_matcher(rows: list[dict], population: str, axis_name: str) -> str | None:
+    """규칙+동의어 실패 축의 LLM 폴백: 보기(ITM_ID:ITM_NM) 중 population 에 맞는 코드.
+
+    resolve 에 주입되는 AxisMatcher. 닫힌 보기 중 선택(+기권)이라 환각 위험이 낮고,
+    반환 코드의 rows 대조 검증은 resolve 가 한 번 더 한다. 호출 실패/기권은 None.
+    HCX-007 structured outputs 로 형식을 강제한다. (LlmCaller 경유 = traced_chat)
+    """
+    options = "\n".join(
+        f"  {r.get('ITM_ID')}: {r.get('ITM_NM')}" for r in rows[:_AXIS_OPTIONS_CAP]
+    )
+    messages = [
+        {"role": "system", "content": RESOLVE_AXIS_MATCH_SYSTEM},
+        {"role": "user", "content": RESOLVE_AXIS_MATCH_USER.format(
+            target=population, axis_name=axis_name, options=options,
+        )},
+    ]
+    try:
+        resp = traced_chat(
+            model_alias=RESOLVE_AXIS_MATCH.model_alias,
+            model_name=RESOLVE_AXIS_MATCH.model_name,
+            messages=messages,
+            max_tokens=RESOLVE_AXIS_MATCH.max_tokens,
+            temperature=RESOLVE_AXIS_MATCH.temperature,
+            json_structure=_AXIS_MATCH_SCHEMA,
+            trace_name="fetch_kosis_data:axis_match",
+        )
+    except (LlmError, AttributeError) as exc:
+        logger.warning("KOSIS 분류축 LLM 매칭 실패(%s): %s", axis_name, exc)
+        return None
+    try:
+        data = json.loads(resp.text.strip())
+    except (json.JSONDecodeError, AttributeError):
+        return None
+    if not data.get("matched"):
+        return None
+    code = data.get("obj_code")
+    return str(code) if code is not None else None
+
+
+def _resolve_and_fetch_one(cand, claim, period, api_key, axis_matcher=None):
     """후보 표 1건을 좌표 해소(getMeta)+셀 조회. to_thread 로 동시 호출된다.
+
+    axis_matcher: 규칙+동의어 실패 축의 폴백(보통 None=결정적; Pass2 에서만 LLM 주입).
 
     Returns:
         (CellAttempt, matched | None) — matched = (cand, query, cell).
@@ -138,6 +228,7 @@ def _resolve_and_fetch_one(cand, claim, period, api_key):
             cand.org_id, cand.tbl_id,
             subject=claim.subject, population=claim.population,
             period=period, period_se=claim.period_type, api_key=api_key,
+            axis_matcher=axis_matcher,
         )
     except (KosisError, ValueError) as exc:
         return CellAttempt(
@@ -153,6 +244,7 @@ def _resolve_and_fetch_one(cand, claim, period, api_key):
             for ax, vals in trace["axes"].items()
         },
         population_fallback=bool(trace.get("population_fallback")),
+        match_source=str(trace.get("match_source") or "rule"),
     )
     if query is None:  # 좌표 해소 실패(항목/분류 매칭 실패)
         att.error = trace.get("error")
@@ -217,11 +309,13 @@ def _params_log(query) -> str:
 
 
 def _to_evidence(
-    claim, org_id, tbl_id, query, cell, table_name, population_fallback=False
+    claim, org_id, tbl_id, query, cell, table_name,
+    population_fallback=False, match_source="rule",
 ) -> Evidence:
     """KosisCell → Evidence. unit/period 는 KOSIS 응답값을 그대로 싣는다.
 
     population_fallback=True 면 요청 모집단을 못 맞춰 전체값으로 대체됐다는 표시.
+    match_source 는 모집단 매칭 출처("rule"|"llm").
     """
     return Evidence(
         claim_id=claim.claim_id, source="KOSIS",
@@ -233,6 +327,7 @@ def _to_evidence(
         last_updated=cell.lst_chn_de,
         retrieved_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
         population_fallback=population_fallback,
+        match_source=match_source,
     )
 
 

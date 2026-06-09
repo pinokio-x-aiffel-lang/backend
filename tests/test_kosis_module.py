@@ -1,8 +1,8 @@
 """KOSIS metadata 모듈 라이브 테스트 — statisticsData.do?method=getMeta 실행.
 
-완성된 src/kosis 모듈(fetch_table_meta / fetch_meta_item)로 실제 KOSIS getMeta 를
-호출해 통계표 구조 메타(TBL/ITM/PRD...)를 받아오는지 검증한다. ITM 메타는 셀 조회에
-필요한 itmId/objL 코드의 출처다.
+src/kosis 모듈(fetch_table_meta / fetch_meta_item)로 실제 KOSIS getMeta 를 호출한다.
+통계표 구조 메타(TBL/ITM/PRD...)를 제대로 받아오는지 검증한다.
+ITM 메타는 셀 조회에 필요한 itmId/objL 코드의 출처다.
 
 네트워크 + KOSIS_API_KEY(.env) 필요. 키가 없으면 전체 skip.
 

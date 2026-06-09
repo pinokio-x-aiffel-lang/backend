@@ -1,5 +1,7 @@
-"""메타데이터 테스트셋 수집: 다양한 도메인 키워드로 search_tables 를 돌려
-중복 제거한 (org_id, tbl_id, tbl_nm) 30개를 뽑아 파이썬 리스트로 출력.
+"""메타데이터 테스트셋 수집 스크립트.
+
+여러 도메인 키워드로 search_tables 를 돌린다.
+중복을 제거한 (org_id, tbl_id, tbl_nm) 30개를 파이썬 리스트로 출력한다.
 
 `uv run x python tests/collect_meta_testset.py`
 """

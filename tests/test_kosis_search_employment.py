@@ -1,9 +1,8 @@
 """KOSIS search 모듈 라이브 테스트 — '고용동향' 검색 시 「경제활동인구조사」 확인.
 
-src/kosis/search.py 의 search_tables 로 KOSIS 통합검색(statisticsSearch.do)을
-실제 호출한다. "고용동향"은 통계표명이 아니라 통계청 보도자료명이므로, 검색
-결과의 STAT_NM(통계조사명)이 「경제활동인구조사」로 떨어지는지(=원천 통계로
-연결되는지)를 검증한다.
+search_tables 로 KOSIS 통합검색을 실제 호출한다.
+"고용동향"은 통계표명이 아니라 통계청 보도자료명이다.
+그래서 결과의 통계조사명(STAT_NM)이 「경제활동인구조사」인지 검증한다.
 
 네트워크 + KOSIS_API_KEY(.env) 필요. 키가 없으면 skip.
 

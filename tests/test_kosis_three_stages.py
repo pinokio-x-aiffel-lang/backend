@@ -1,7 +1,7 @@
 """KOSIS 3단계만 테스트 — 통계표 조회 → 메타 조회 → 값 조회.
 
-runner.py 의 [4] retrieve_kosis_candidates(통계표 조회)와 [5] fetch_kosis_data
-(메타 조회 + 값 조회)만 떼어, claim 하나로 실제 배선대로 돌려 본다.
+runner.py 의 [4] retrieve_kosis_candidates(통계표 조회)와 [5] fetch_kosis_data(메타+값 조회)만 떼어 낸다.
+claim 하나로 실제 배선대로 돌려 본다.
 
   [4] retrieve_kosis_candidates : search_tables        → analysis[].candidates
   [5] fetch_kosis_data          : resolve(getMeta)     → analysis[].cell_attempts (메타 trace)
@@ -10,8 +10,9 @@ runner.py 의 [4] retrieve_kosis_candidates(통계표 조회)와 [5] fetch_kosis
 예시 claim: '2023년 청년 고용률'
   subject='고용률'(→ itmId), population='청년'(→ 분류축 값), period=2023(Y)
 
-이 claim 은 '청년'이 표의 연령축 값('15~29세' 등)과 이름매칭 안 돼(resolve.py 의
-결정적 매칭 한계, case C) 좌표 해소가 실패할 수 있다 — 그 과정을 그대로 관찰한다.
+이 claim 은 '청년'이 표의 연령축 값('15~29세' 등)과 이름매칭이 안 된다.
+(resolve.py 의 결정적 매칭 한계, case C)
+그래서 좌표 해소가 실패할 수 있다. 그 과정을 그대로 관찰한다.
 
     uv run x python tests/test_kosis_three_stages.py
     uv run x pytest tests/test_kosis_three_stages.py -v

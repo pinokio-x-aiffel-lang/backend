@@ -1,8 +1,9 @@
 """메타 테스트셋 30표에 fetch_table_schema 를 돌려 결과를 JSON 으로 저장.
 
-수집 스크립트(collect_meta_testset.py)로 뽑은 (org_id, tbl_id) 30개를 대상으로
-ITM+PRD 통합 메타(TableSchema)를 동시 조회(asyncio.gather)하고, 표별 성공/실패를
-tests/meta_testset_results.json 에 저장한다. rate limit 은 공유 client(1000/min)가 보장.
+collect_meta_testset.py 로 뽑은 (org_id, tbl_id) 30개가 대상이다.
+ITM+PRD 통합 메타(TableSchema)를 asyncio.gather 로 동시 조회한다.
+표별 성공/실패를 tests/meta_testset_results.json 에 저장한다.
+rate limit 은 공유 client(1000/min)가 보장한다.
 
     uv run x python tests/fetch_meta_testset.py
 """

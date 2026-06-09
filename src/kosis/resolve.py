@@ -11,32 +11,27 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 from src.kosis.cell import KosisQuery
 from src.kosis.metadata import fetch_meta_item
+from src.kosis.synonyms import SYNONYMS as _SYNONYMS
 
 logger = logging.getLogger("kosis")
 
+# 분류축 값 매칭 폴백 콜백: (분류축 rows, population, 축이름) -> 선택한 ITM_ID | None.
+# 규칙+동의어가 실패한 축에만 호출된다. 구현(예: LLM)은 상위 층(fetch_kosis_data)에
+# 두고 주입한다 — resolve 자체는 외부 의존(LLM) 없이 결정적으로 유지.
+AxisMatcher = Callable[[list[dict], str, str], Optional[str]]
+
 # 분류축에서 '대상 미지정 시' 잡을 합계/전체 카테고리 이름 후보.
 _TOTAL_NAMES = {"계", "전체", "합계", "전국", "소계", "총계"}
+# 접미사 매칭용(예: '15세 이상 전체'). 짧고 모호한 '계'는 제외 — '통계/관계/시계'
+# 같은 오탐 방지(그 짧은 토큰은 정확매칭 _TOTAL_NAMES 로만 잡는다).
+_TOTAL_SUFFIXES = ("전체", "합계", "총계", "소계", "전국")
 
-# claim 의 모집단 표현 → KOSIS 축값 표기 후보. claim 은 '청년'처럼 말하지만 표는
-# '15~29세'로 적어 직접 매칭이 안 되는 갭(case C)을 메운다. 키/값 모두 _norm 으로
-# 정규화해 비교하므로 대시·물결·공백 표기차(15-29세 / 15~29세)는 자동 흡수된다.
-_SYNONYMS: dict[str, list[str]] = {
-    "청년": ["15~29세", "청년층"],
-    "청년층": ["15~29세", "청년"],
-    "고령": ["65세이상", "고령층", "노인"],
-    "고령자": ["65세이상", "고령층"],
-    "고령인구": ["65세이상", "고령층"],
-    "노인": ["65세이상", "고령층"],
-    "남성": ["남자"],
-    "여성": ["여자"],
-    "유소년": ["0~14세", "14세이하"],
-    "생산가능인구": ["15~64세"],
-    "근로연령인구": ["15~64세"],
-}
+# 모집단 동의어(_SYNONYMS): claim '청년' → 축값 '15~29세' 갭을 메운다(case C).
+# 도메인 데이터라 src/kosis/synonyms.py 로 분리. 표기차(15-29세/15~29세)는 _norm 흡수.
 
 # 공백 + 하이픈/대시류(- ‐-―) + 물결(~)을 제거 — '15 - 29세'·'15~29세' 동일화.
 _STRIP = re.compile(r"[\s\-‐-―~]")
@@ -89,10 +84,20 @@ def _match_code(rows: list[dict], target: str) -> Optional[str]:
 
 
 def _total_code(rows: list[dict]) -> Optional[str]:
-    """분류축 rows 에서 합계/전체 카테고리 코드. 없으면 None."""
-    for r in rows:
+    """분류축 rows 에서 합계/전체 카테고리 코드. 없으면 None.
+
+    1) 정확매칭(_TOTAL_NAMES) 우선.
+    2) 접미사 매칭(_TOTAL_SUFFIXES): '15세 이상 전체'처럼 총계가 장황하게 적힌 축을
+       잡는다. 짧고 모호한 '계'는 1)에서만 처리(통계/관계 등 오탐 방지). 동률은 더
+       짧은 이름(=총계스러움) 우선.
+    """
+    for r in rows:  # 1) 정확매칭
         if _norm(r.get("ITM_NM")) in _TOTAL_NAMES:
             return r.get("ITM_ID")
+    suffixed = [r for r in rows if _norm(r.get("ITM_NM")).endswith(_TOTAL_SUFFIXES)]
+    if suffixed:  # 2) 접미사 매칭(예: '15세이상전체' → 끝이 '전체')
+        suffixed.sort(key=lambda r: len(_norm(r.get("ITM_NM"))))
+        return suffixed[0].get("ITM_ID")
     return None
 
 
@@ -105,6 +110,7 @@ def resolve_cell_query_traced(
     period: str,
     period_se: str,
     api_key: Optional[str] = None,
+    axis_matcher: Optional[AxisMatcher] = None,
 ) -> tuple[Optional[KosisQuery], dict]:
     """resolve_cell_query 와 동일 로직이되 실패해도 raise 하지 않고 (query|None, trace) 반환.
 
@@ -113,8 +119,15 @@ def resolve_cell_query_traced(
       - axes:  {분류축명: [(코드, 값명)]}     표의 분류축별 값 목록
       - itm_id, obj_codes                    매칭된 코드(성공 시)
       - error: str | None                    매칭 실패 사유(없으면 None)
+      - match_source: "rule" | "llm"         population 을 무엇으로 매칭했나
     이름비교는 _norm(공백 제거) 기준이라 error 에도 공백 제거된 값을 싣는다.
     KosisError(getMeta 호출 실패)는 그대로 전파.
+
+    axis_matcher: 규칙+동의어(_match_code)가 실패한 축에 대해 호출되는 선택적 폴백.
+      (rows, population, axis_name) -> ITM_ID | None. 기본 None 이면 이 함수는
+      LLM 등 외부 의존 없이 '결정적'으로 동작한다(설계 원칙). 반환 코드는 rows 의
+      실제 ITM_ID 와 대조 검증해 환각을 차단한다. 호출 여부(=비용)는 상위(fetch_kosis_data)
+      가 후보 전체를 보고 결정한다 — policy/mechanism 분리.
     """
     itm = fetch_meta_item(org_id, tbl_id, "ITM", api_key)
     if not isinstance(itm, list):
@@ -144,6 +157,7 @@ def resolve_cell_query_traced(
         # population 을 실제 축값에 매칭했는지. 어느 축에도 못 박고 합계로 대체하면
         # 그 셀은 '요청 집단'이 아니라 '전체'값 → population_fallback=True 로 표시.
         "population_matched": True, "population_fallback": False, "fallback_axes": [],
+        "match_source": "rule",  # population 을 LLM 폴백으로 맞추면 "llm" 으로 바뀜
     }
 
     itm_id = _match_code(items, subject)
@@ -159,11 +173,19 @@ def resolve_cell_query_traced(
 
     pop_provided = bool(_norm(population))
     pop_match_count = 0          # population 을 '실제로' 매칭한 축 수(합계 폴백 제외)
+    llm_used = False
     fallback_axes: list[str] = []
     codes: list[str] = []
+    valid_codes = lambda rows: {str(r.get("ITM_ID")) for r in rows}  # noqa: E731
     for i, oid in enumerate(axis_ids):
         rows = axes[oid]
         matched = _match_code(rows, population)
+        # 규칙+동의어 실패 시에만 LLM 폴백(있으면). 반환 코드는 rows 와 대조 검증.
+        if matched is None and axis_matcher is not None and pop_provided:
+            cand = axis_matcher(rows, population, str(rows[0].get("OBJ_NM") or oid))
+            if cand is not None and str(cand) in valid_codes(rows):
+                matched = str(cand)
+                llm_used = True
         if matched is not None:
             code = matched
             pop_match_count += 1
@@ -183,6 +205,8 @@ def resolve_cell_query_traced(
     trace["population_matched"] = pop_match_count > 0
     trace["population_fallback"] = pop_provided and pop_match_count == 0
     trace["fallback_axes"] = fallback_axes
+    if llm_used:
+        trace["match_source"] = "llm"
 
     # match_filters: "" 또는 "ALL" 인 축은 제외 (특정 코드가 없는 축은 필터링 불필요)
     filter_codes = [(i, c) for i, c in enumerate(codes) if c and c != "ALL"]
@@ -213,12 +237,14 @@ def resolve_cell_query(
     period: str,
     period_se: str,
     api_key: Optional[str] = None,
+    axis_matcher: Optional[AxisMatcher] = None,
 ) -> KosisQuery:
     """선정표(org_id/tbl_id) + claim 좌표 → fetch_cell 입력 KosisQuery.
 
     - itmId: ITEM 행에서 subject 이름매칭 (실패 시 ResolveError).
     - objL1/objL2: 분류축(A,B…)에서 population 이름매칭, 없으면 합계 코드 폴백.
     - 분류축이 0개면 objL="" (분류 없는 표), 3개 이상은 미지원(ResolveError).
+    - axis_matcher: 규칙+동의어 실패 축의 선택적 폴백(resolve_cell_query_traced 참조).
 
     Raises:
         KosisError: getMeta(ITM) 호출 실패/빈 응답.
@@ -227,6 +253,7 @@ def resolve_cell_query(
     query, trace = resolve_cell_query_traced(
         org_id, tbl_id, subject=subject, population=population,
         period=period, period_se=period_se, api_key=api_key,
+        axis_matcher=axis_matcher,
     )
     if query is None:
         raise ResolveError(trace["error"] or "셀 좌표 해소 실패")

@@ -185,6 +185,8 @@ class Evidence(BaseModel):
     # 요청 모집단(population)을 축값에 못 맞춰 '전체(합계)'로 대체했으면 True.
     # → 이 값은 요청 집단이 아닌 전체값이므로 검증 단계가 신뢰도를 낮춰야 한다.
     population_fallback: bool = False
+    # population 을 무엇으로 매칭했나: "rule"(규칙+동의어) | "llm"(LLM 폴백).
+    match_source: str = "rule"
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -205,7 +207,34 @@ class CellAttempt(BaseModel):
     items: list[str] = Field(default_factory=list)            # 표 항목명(ITM_NM) 샘플
     axes: dict[str, list[str]] = Field(default_factory=dict)  # 분류축명 → 값명 샘플
     population_fallback: bool = False  # 모집단 매칭 실패 → 합계 대체 여부
+    match_source: str = "rule"         # population 매칭 출처: "rule" | "llm"
     error: str | None = None
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class MetricResult(BaseModel):
+    """[7] calculate_metric — 주장 수치 ↔ KOSIS 공식 수치 비교 결과.
+
+    ClaimAnalysis.metric 에 claim 1건 단위로 담긴다(키는 부모 ClaimAnalysis.claim_id).
+    ABSOLUTE 는 claim_value 와 kosis_value(=evidence.value)를 직접 비교한다.
+    change_rate/ratio 등 그룹 연산은 같은 compare_id 의 evidence 들을 묶어
+    computed_value 를 산출(대표 claim 의 analysis 에 보관) — 현재 미배선(TODO).
+    decide_verdict([9]) 가 verdict/confidence 를, generate_explanation([10]) 이
+    설명을 이 결과로 조립한다.
+    """
+
+    operation: str                        # 사용 연산 (claim_type; 그룹이면 conclusion_type)
+    claim_value: float | None = None      # 주장이 말한 수치
+    kosis_value: float | None = None      # 비교 기준 공식 수치 (ABSOLUTE = evidence.value)
+    rel_diff: float | None = None         # |주장−기준| / |기준| → decide_verdict 가 confidence 로 매핑
+    within_tolerance: bool | None = None  # 허용오차 내 일치 여부
+    verdict: str | None = None            # 초기 판정 T/F/M/N (8·9단계가 보정)
+    mismatch_type: str | None = None      # verdict=F 일 때만 (magnitude/direction/unit/period/rounding…)
+    note: str | None = None               # 비교 불가 사유 (metaphoric/none, evidence 0건, 파싱 실패)
+    # ── 그룹 비교용(현재 미배선) ──
+    compare_id: str | None = None         # 같은 원문에서 분리된 비교 그룹; ABSOLUTE 단건이면 None
+    computed_value: float | None = None   # 그룹 연산 산출값(change_rate 등); ABSOLUTE 면 None
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -219,6 +248,7 @@ class ClaimAnalysis(BaseModel):
     cell_attempts: list[CellAttempt] = Field(default_factory=list)  # [5] 후보 표별 조회 시도(디버깅)
     kosis_query: KosisQuery
     evidence: Evidence | None = None  # [5] 선정 셀(공식 수치). 미조회/실패 시 None
+    metric: MetricResult | None = None  # [7] 주장값↔evidence 비교 결과. 미계산 시 None
 
     model_config = ConfigDict(populate_by_name=True)
 

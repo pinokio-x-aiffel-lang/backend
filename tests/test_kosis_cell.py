@@ -1,14 +1,14 @@
 """KOSIS cell 모듈 라이브 테스트 — statisticsParameterData.do 단일 셀 조회.
 
-src/kosis/cell.py 의 fetch_cell 로 실제 KOSIS 에서 **특정 한 셀**의 값을
-조회해온다(좌표: orgId/tblId/itmId + objL 분류축 + 시점). itmId/objL 코드는
-metadata(getMeta)에서 온다 — 여기서는 미리 확인한 코드를 상수로 고정한다.
+fetch_cell 로 실제 KOSIS 에서 특정 한 셀의 값을 조회한다.
+셀 좌표는 orgId/tblId/itmId + objL 분류축 + 시점이다.
+itmId/objL 코드는 metadata(getMeta)에서 온다. 여기서는 미리 확인한 코드를 상수로 고정한다.
 
 네트워크 + KOSIS_API_KEY(.env) 필요. 키가 없으면 라이브 테스트는 skip.
 오프라인 테스트(find_cell_row/to_cell)는 키 없이도 항상 실행된다.
 
-주의: 검증용 표 DT_1B040A3 은 분류축이 1개(행정구역)뿐이라 obj_l2 는 빈
-문자열("")이어야 한다. 기본값 obj_l2="ALL" 로는 err:21(잘못된 요청)로 실패한다.
+주의: 검증용 표 DT_1B040A3 은 분류축이 1개(행정구역)뿐이다.
+그래서 obj_l2 는 빈 문자열("")이어야 한다. 기본값 obj_l2="ALL" 로는 err:21(잘못된 요청)로 실패한다.
 
 실행:
     uv run pytest tests/test_kosis_cell.py -v
@@ -86,9 +86,9 @@ def test_fetch_specific_cell():
 def test_fetch_cell_no_match_returns_none():
     """행은 받았지만 match_filters 가 어떤 행과도 안 맞으면 None (예외 아님).
 
-    유효한 시점(2023)·전국 조회라 KOSIS 는 행을 돌려주지만, 존재하지 않는
-    분류 코드(C1=99)로 거르면 find_cell_row 가 None → fetch_cell None.
-    (존재하지 않는 시점은 KOSIS 가 err:30 으로 막아 None 경로가 아님.)
+    유효한 시점(2023)·전국 조회라 KOSIS 는 행을 돌려준다.
+    하지만 존재하지 않는 분류 코드(C1=99)로 거르면 find_cell_row 가 None → fetch_cell None.
+    (존재하지 않는 시점은 KOSIS 가 err:30 으로 막아 None 경로가 아니다.)
     """
     q = KosisQuery(
         org_id=ORG_ID, tbl_id=TBL_ID, itm_id=ITM_ID,

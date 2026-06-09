@@ -10,8 +10,8 @@ claim 가정: 키워드="청년 실업률", 분류값(OBJ)="전국", 시점(PRD)
   5. PRD 메타에서 STRT_PRD_DE <= 2023 <= END_PRD_DE 검증, PRD_SE → prdSe
   6. statisticsParameterData.do 최종 요청 구성 + 조회 → DT 값
 
-prdSe 는 예시 curl 의 'Y' 하드코딩 대신 PRD 메타의 PRD_SE 에서 가져온다(데이터
-응답이 'A' 였던 A/Y 불확실성을 런타임에 해소).
+prdSe 는 예시 curl 의 'Y' 하드코딩 대신 PRD 메타의 PRD_SE 에서 가져온다.
+(데이터 응답이 'A' 였던 A/Y 불확실성을 런타임에 해소한다.)
 
 네트워크 + KOSIS_API_KEY(.env) 필요. 키 없으면 live skip. apiKey 는 출력 시 마스킹.
 
@@ -112,8 +112,8 @@ def _split_itm(itm_meta):
 def _pick_prd_row(prd_meta, period):
     """PRD 메타에서 period 가 STRT_PRD_DE~END_PRD_DE 범위에 드는 행. 없으면 None.
 
-    자릿수가 같은(주기 일치, 예: 연도 4자리) 행만 사전식 비교한다 — 다주기 표에서
-    월간(6자리) 행을 연도(4자리)와 헷갈리지 않도록.
+    자릿수가 같은(주기 일치, 예: 연도 4자리) 행만 사전식 비교한다.
+    다주기 표에서 월간(6자리) 행을 연도(4자리)와 헷갈리지 않으려는 것이다.
     """
     rows = prd_meta if isinstance(prd_meta, list) else [prd_meta]
     for r in rows:

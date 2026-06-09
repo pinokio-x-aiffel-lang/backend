@@ -1,13 +1,15 @@
-"""HCX native 모델(HCX-005/007/DASH-002): Function Calling/Structured Outputs/Thinking
-중 2개 이상 동시 지정 시 호출 전에 LlmError로 차단되는지 확인.
+"""HCX native 모델(HCX-005/007/DASH-002) 기능 상호배제 가드 확인.
 
-가드는 provider 조회보다 먼저 실행되므로, 잘못된 model_alias를 넘기면
-- 기능 충돌 시: 충돌 메시지로 LlmError (네트워크 호출 없음)
-- 충돌 없을 시: provider 조회 단계의 "등록되지 않은 provider" LlmError
-로 갈린다 → API 키/호출 불필요.
+Function Calling / Structured Outputs / Thinking 중 2개 이상을 동시에 지정하면,
+호출 전에 LlmError 로 차단되는지 본다.
 
-주의: json_structure는 HCX-005/DASH-002에서 별도 structured 가드가 먼저 막으므로,
-상호배제(EXCL) 검증에는 json_mode/thinking/function_calling 조합만 사용한다.
+가드는 provider 조회보다 먼저 실행된다. 그래서 잘못된 model_alias 를 넘기면:
+- 기능 충돌 시 : 충돌 메시지로 LlmError (네트워크 호출 없음)
+- 충돌 없을 시 : provider 조회 단계의 "등록되지 않은 provider" LlmError
+→ API 키도 호출도 필요 없다.
+
+주의: json_structure 는 HCX-005/DASH-002 에서 별도 structured 가드가 먼저 막는다.
+그래서 상호배제(EXCL) 검증에는 json_mode/thinking/function_calling 조합만 쓴다.
 
 대상 모듈: src.llm.llm_caller (기능 상호배제 가드)
 작성자: leeaain2027 <leeaain2027@gmail.com>

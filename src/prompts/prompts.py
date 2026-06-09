@@ -140,3 +140,23 @@ PARSE_NUMBER_SYSTEM = (
 )
 
 PARSE_NUMBER_USER = "숫자 표현: {raw}"
+
+
+# ── resolve 분류축 값 매칭 (fetch_kosis_data LLM 폴백) ─────────────────────────
+
+RESOLVE_AXIS_MATCH_SYSTEM = (
+    "너는 통계표의 분류 항목 매칭기다.\n"
+    "주어진 '대상'이 가리키는 집단을 보기 목록에서 의미가 일치하는 항목 하나로 고른다.\n"
+    "규칙:\n"
+    "1. 반드시 보기에 존재하는 code 값 중 하나만 반환한다(code 를 지어내지 않는다).\n"
+    "2. 의미가 일치하는 항목이 없으면 matched=false, obj_code=null 로 기권한다.\n"
+    "   예: 대상이 '청년'이고 보기에 연령대가 있으면 '15~29세'에 해당하는 code 를 고른다.\n"
+    "   예: 대상이 '청년'인데 보기가 성별(남자/여자)뿐이면 기권한다.\n"
+    "3. 억지로 맞추지 말고, 확실할 때만 고른다."
+)
+
+RESOLVE_AXIS_MATCH_USER = (
+    "대상: {target}\n"
+    "분류축: {axis_name}\n"
+    "보기(code: name):\n{options}"
+)
