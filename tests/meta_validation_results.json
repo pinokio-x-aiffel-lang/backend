@@ -1,0 +1,1050 @@
+{
+  "summary": {
+    "total": 30,
+    "PASS": 23,
+    "WARN": 0,
+    "FAIL": 7
+  },
+  "results": [
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1DA7104S",
+      "name": "행정구역(시도)/성별 실업률",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 22,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 21,
+        "parsed_items": 1,
+        "parsed_axis_vals": 21,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202604",
+        "prd_se_used": "M",
+        "itm_id": "T80",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2"
+        ],
+        "axis_count_meta": 2,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 2,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1DA7107S",
+      "name": "행정구역(시도)/연령별 실업률",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 23,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 22,
+        "parsed_items": 1,
+        "parsed_axis_vals": 22,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202601",
+        "prd_se_used": "Q",
+        "itm_id": "T80",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2"
+        ],
+        "axis_count_meta": 2,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 2,
+      "period_count": 2
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1DA7102S",
+      "name": "성/연령별 실업률",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 24,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 23,
+        "parsed_items": 1,
+        "parsed_axis_vals": 23,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202604",
+        "prd_se_used": "M",
+        "itm_id": "T80",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2"
+        ],
+        "axis_count_meta": 2,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 2,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1DA7001S",
+      "name": "성별 경제활동인구 총괄",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 17,
+        "raw_item_rows": 8,
+        "raw_axis_rows": 9,
+        "parsed_items": 8,
+        "parsed_axis_vals": 9,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202604",
+        "prd_se_used": "M",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 8,
+      "axis_count": 1,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1DA7004S",
+      "name": "행정구역(시도)별 경제활동인구",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 27,
+        "raw_item_rows": 9,
+        "raw_axis_rows": 18,
+        "parsed_items": 9,
+        "parsed_axis_vals": 18,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202604",
+        "prd_se_used": "M",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 9,
+      "axis_count": 1,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1DA7002S",
+      "name": "연령별 경제활동인구 총괄",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 33,
+        "raw_item_rows": 8,
+        "raw_axis_rows": 25,
+        "parsed_items": 8,
+        "parsed_axis_vals": 25,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202604",
+        "prd_se_used": "M",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 8,
+      "axis_count": 1,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_XNN0004",
+      "name": "합계출산율 - 동북·중앙아시아",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 15,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 14,
+        "parsed_items": 1,
+        "parsed_axis_vals": 14,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2100",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_2KAA207",
+      "name": "합계출산율",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 243,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 242,
+        "parsed_items": 1,
+        "parsed_axis_vals": 242,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2100",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_XNS0004",
+      "name": "합계출산율 - 남부·동남아시아",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 12,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 11,
+        "parsed_items": 1,
+        "parsed_axis_vals": 11,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2100",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B83A11",
+      "name": "시도/부부의 혼인종류별 혼인",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 32,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 31,
+        "parsed_items": 1,
+        "parsed_axis_vals": 31,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T3",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "axis_count_meta": 3,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 3,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B8000H",
+      "name": "시도/인구동태건수 및 동태율",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 30,
+        "raw_item_rows": 11,
+        "raw_axis_rows": 19,
+        "parsed_items": 11,
+        "parsed_axis_vals": 19,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 11,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B83A24",
+      "name": "시도/시군구별 외국인과의 혼인",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 389,
+        "raw_item_rows": 4,
+        "raw_axis_rows": 385,
+        "parsed_items": 4,
+        "parsed_axis_vals": 385,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T01",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 4,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B85030",
+      "name": "이혼종류별 외국인과의 이혼",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 7,
+        "raw_item_rows": 2,
+        "raw_axis_rows": 5,
+        "parsed_items": 2,
+        "parsed_axis_vals": 5,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2"
+        ],
+        "axis_count_meta": 2,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 2,
+      "axis_count": 2,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B85026",
+      "name": "미성년자녀수/외국인 남편의 국적별 이혼",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 17,
+        "raw_item_rows": 6,
+        "raw_axis_rows": 11,
+        "parsed_items": 6,
+        "parsed_axis_vals": 11,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T01",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 6,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B85019",
+      "name": "연령(5세)/이혼종류별 이혼",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 23,
+        "raw_item_rows": 4,
+        "raw_axis_rows": 19,
+        "parsed_items": 4,
+        "parsed_axis_vals": 19,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T01"
+      },
+      "item_count": 4,
+      "axis_count": 2,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_2IFS002",
+      "name": "소비자물가지수",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 258,
+        "raw_item_rows": 13,
+        "raw_axis_rows": 245,
+        "parsed_items": 13,
+        "parsed_axis_vals": 245,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "202604",
+        "prd_se_used": "M",
+        "itm_id": "T001"
+      },
+      "item_count": 13,
+      "axis_count": 1,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_2OEEO0121",
+      "name": "소비자물가지수",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 57,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 56,
+        "parsed_items": 1,
+        "parsed_axis_vals": 56,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "202704",
+        "prd_se_used": "Q",
+        "itm_id": "T1"
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 2
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1J22003",
+      "name": "소비자물가지수(2020=100)",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 19,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 18,
+        "parsed_items": 1,
+        "parsed_axis_vals": 18,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202605",
+        "prd_se_used": "M",
+        "itm_id": "T",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 3
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_2KAA202",
+      "name": "부양비 및 노령화지수",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 250,
+        "raw_item_rows": 8,
+        "raw_axis_rows": 242,
+        "parsed_items": 8,
+        "parsed_axis_vals": 242,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "2100",
+        "prd_se_used": "Y",
+        "itm_id": "T10"
+      },
+      "item_count": 8,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_XNS0011",
+      "name": "부양인구비 및 노령화지수 - 남부·동남아시아",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 19,
+        "raw_item_rows": 8,
+        "raw_axis_rows": 11,
+        "parsed_items": 8,
+        "parsed_axis_vals": 11,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2100",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 8,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_XNN0011",
+      "name": "부양인구비 및 노령화지수 - 동북·중앙아시아",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 22,
+        "raw_item_rows": 8,
+        "raw_axis_rows": 14,
+        "parsed_items": 8,
+        "parsed_axis_vals": 14,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2100",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 8,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B34E07",
+      "name": "사망원인/성/연령별 사망자수, 사망률",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 269,
+        "raw_item_rows": 2,
+        "raw_axis_rows": 267,
+        "parsed_items": 2,
+        "parsed_axis_vals": 267,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2024",
+        "prd_se_used": "Y",
+        "itm_id": "T1",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "axis_count_meta": 3,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 2,
+      "axis_count": 3,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B34E18",
+      "name": "특정 사망원인(고의적 자해)(분기별)",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 13,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 12,
+        "parsed_items": 1,
+        "parsed_axis_vals": 12,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202601",
+        "prd_se_used": "Q",
+        "itm_id": "T001",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1",
+          "C2"
+        ],
+        "axis_count_meta": 2,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 2,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B34E19",
+      "name": "시도별 특정 사망원인(고의적 자해)(분기별)",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 19,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 18,
+        "parsed_items": 1,
+        "parsed_axis_vals": 18,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "202601",
+        "prd_se_used": "Q",
+        "itm_id": "T001",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1B8000I",
+      "name": "시군구/인구동태건수 및 동태율",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 395,
+        "raw_item_rows": 10,
+        "raw_axis_rows": 385,
+        "parsed_items": 10,
+        "parsed_axis_vals": 385,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "2025",
+        "prd_se_used": "Y",
+        "itm_id": "T10"
+      },
+      "item_count": 10,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_2UNS0237",
+      "name": "5세 미만 출생 등록 비율",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 147,
+        "raw_item_rows": 7,
+        "raw_axis_rows": 140,
+        "parsed_items": 7,
+        "parsed_axis_vals": 140,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "2024",
+        "prd_se_used": "Y",
+        "itm_id": "T001"
+      },
+      "item_count": 7,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_XNS0110",
+      "name": "경제성장률(불변가격) - 남부·동남아시아",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 12,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 11,
+        "parsed_items": 1,
+        "parsed_axis_vals": 11,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2024",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "388",
+      "tbl_id": "TX_38803_A026",
+      "name": "연도별 전력수급 실적",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 28,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 27,
+        "parsed_items": 1,
+        "parsed_axis_vals": 27,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2024",
+        "prd_se_used": "Y",
+        "itm_id": "16388AAY5",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "101",
+      "tbl_id": "DT_1YL20571",
+      "name": "경제성장률(시도)",
+      "verdict": "PASS",
+      "notes": [],
+      "parse": {
+        "raw_dict_rows": 19,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 18,
+        "parsed_items": 1,
+        "parsed_axis_vals": 18,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": true,
+        "error": null,
+        "skipped": null,
+        "period_used": "2024",
+        "prd_se_used": "Y",
+        "itm_id": "T10",
+        "rows_returned": 1,
+        "axis_cols": [
+          "C1"
+        ],
+        "axis_count_meta": 1,
+        "axis_count_match": true,
+        "cell_found": true,
+        "label_mismatch": [],
+        "label_ok": true
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    },
+    {
+      "org_id": "360",
+      "tbl_id": "DT_36005_A003",
+      "name": "항목별 EBSI",
+      "verdict": "FAIL",
+      "notes": [
+        "데이터 호출 실패: KosisError: 30: 데이터가 존재하지 않습니다."
+      ],
+      "parse": {
+        "raw_dict_rows": 13,
+        "raw_item_rows": 1,
+        "raw_axis_rows": 12,
+        "parsed_items": 1,
+        "parsed_axis_vals": 12,
+        "dropped_rows": 0,
+        "ok": true
+      },
+      "data": {
+        "ok": false,
+        "error": "KosisError: 30: 데이터가 존재하지 않습니다.",
+        "skipped": null,
+        "period_used": "202602",
+        "prd_se_used": "Q",
+        "itm_id": "16360AAA0"
+      },
+      "item_count": 1,
+      "axis_count": 1,
+      "period_count": 1
+    }
+  ]
+}
