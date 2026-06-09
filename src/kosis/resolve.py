@@ -10,6 +10,7 @@ itmId/objL 코드의 출처가 ITM 메타라는 점은 metadata.py 참조. 분�
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any, Optional
 
 from src.kosis.cell import KosisQuery
@@ -20,34 +21,70 @@ logger = logging.getLogger("kosis")
 # 분류축에서 '대상 미지정 시' 잡을 합계/전체 카테고리 이름 후보.
 _TOTAL_NAMES = {"계", "전체", "합계", "전국", "소계", "총계"}
 
+# claim 의 모집단 표현 → KOSIS 축값 표기 후보. claim 은 '청년'처럼 말하지만 표는
+# '15~29세'로 적어 직접 매칭이 안 되는 갭(case C)을 메운다. 키/값 모두 _norm 으로
+# 정규화해 비교하므로 대시·물결·공백 표기차(15-29세 / 15~29세)는 자동 흡수된다.
+_SYNONYMS: dict[str, list[str]] = {
+    "청년": ["15~29세", "청년층"],
+    "청년층": ["15~29세", "청년"],
+    "고령": ["65세이상", "고령층", "노인"],
+    "고령자": ["65세이상", "고령층"],
+    "고령인구": ["65세이상", "고령층"],
+    "노인": ["65세이상", "고령층"],
+    "남성": ["남자"],
+    "여성": ["여자"],
+    "유소년": ["0~14세", "14세이하"],
+    "생산가능인구": ["15~64세"],
+    "근로연령인구": ["15~64세"],
+}
+
+# 공백 + 하이픈/대시류(- ‐-―) + 물결(~)을 제거 — '15 - 29세'·'15~29세' 동일화.
+_STRIP = re.compile(r"[\s\-‐-―~]")
+
 
 class ResolveError(Exception):
     """셀 좌표 해소 실패(항목/분류 매칭 0건, 미지원 축 구성 등)."""
 
 
 def _norm(s: Any) -> str:
-    """공백 제거 정규화. 이름 비교용."""
-    return "".join(str(s or "").split())
+    """공백·대시·물결 제거 정규화. 이름 비교용(연령대 표기차 흡수)."""
+    return _STRIP.sub("", str(s or ""))
+
+
+def _expand(target: str) -> list[str]:
+    """target(정규화) + 동의어(정규화) 후보 목록. 빈 target 은 []."""
+    t = _norm(target)
+    if not t:
+        return []
+    out = [t]
+    for alt in _SYNONYMS.get(t, []):
+        n = _norm(alt)
+        if n and n not in out:
+            out.append(n)
+    return out
 
 
 def _match_code(rows: list[dict], target: str) -> Optional[str]:
-    """rows 중 ITM_NM 이 target 과 일치(정확>부분)하는 행의 ITM_ID. 없으면 None.
+    """rows 중 ITM_NM 이 target(또는 동의어)과 일치(정확>부분)하는 행의 ITM_ID.
 
-    부분 일치는 가장 짧은 이름을 골라(더 구체적) substring 함정을 줄인다.
+    target 을 동의어로 확장(_expand)해 '청년'→'15~29세' 같은 갭을 메운다.
+    부분 일치는 가장 짧은 이름을 골라(더 구체적) substring 함정을 줄인다. 없으면 None.
     """
-    t = _norm(target)
-    if not t:
+    cands = _expand(target)
+    if not cands:
         return None
-    for r in rows:  # 정확 일치 우선
-        if _norm(r.get("ITM_NM")) == t:
-            return r.get("ITM_ID")
-    cands = [
-        r for r in rows
-        if t in _norm(r.get("ITM_NM")) or _norm(r.get("ITM_NM")) in t
-    ]
-    if cands:
-        cands.sort(key=lambda r: len(_norm(r.get("ITM_NM"))))
-        return cands[0].get("ITM_ID")
+    for c in cands:  # 정확 일치 우선(후보 순서 = 원어 > 동의어)
+        for r in rows:
+            if _norm(r.get("ITM_NM")) == c:
+                return r.get("ITM_ID")
+    partial = []  # 부분 일치(양방향)
+    for r in rows:
+        rn = _norm(r.get("ITM_NM"))
+        if any(c and (c in rn or rn in c) for c in cands):
+            partial.append(r)
+    if partial:
+        partial.sort(key=lambda r: len(_norm(r.get("ITM_NM"))))
+        return partial[0].get("ITM_ID")
     return None
 
 
@@ -104,6 +141,9 @@ def resolve_cell_query_traced(
             for oid, rows in axes.items()
         },
         "itm_id": None, "obj_codes": [], "error": None,
+        # population 을 실제 축값에 매칭했는지. 어느 축에도 못 박고 합계로 대체하면
+        # 그 셀은 '요청 집단'이 아니라 '전체'값 → population_fallback=True 로 표시.
+        "population_matched": True, "population_fallback": False, "fallback_axes": [],
     }
 
     itm_id = _match_code(items, subject)
@@ -117,18 +157,32 @@ def resolve_cell_query_traced(
         trace["error"] = f"분류축 {len(axis_ids)}개(>4) 미지원: {axis_ids}"
         return None, trace
 
+    pop_provided = bool(_norm(population))
+    pop_match_count = 0          # population 을 '실제로' 매칭한 축 수(합계 폴백 제외)
+    fallback_axes: list[str] = []
     codes: list[str] = []
     for i, oid in enumerate(axis_ids):
         rows = axes[oid]
-        code = _match_code(rows, population) or _total_code(rows)
-        if code is None:
-            if i < 2:  # 첫 두 축은 매칭 필수 — 반환 실패
+        matched = _match_code(rows, population)
+        if matched is not None:
+            code = matched
+            pop_match_count += 1
+        else:
+            code = _total_code(rows)         # population 못 맞춘 축 → 합계로 대체
+            if code is not None:
+                if pop_provided:             # 요청 집단이 있었는데 합계로 떨어진 축 기록
+                    fallback_axes.append(str(rows[0].get("OBJ_NM") or oid))
+            elif i < 2:                      # 첫 두 축은 합계도 없으면 실패
                 trace["error"] = f"분류축 {oid} 매칭 실패: population={_norm(population)!r}"
                 return None, trace
-            else:  # 3번째 이상 축은 "" 폴백 (fetch_cell_with_retry 가 "ALL" 확장 처리)
+            else:                            # 3번째+ 축은 "" (retry 가 "ALL" 확장)
                 code = ""
         codes.append(code)
     trace["obj_codes"] = codes
+    # 요청 집단(population)을 '어느 축에도' 못 박았으면 = 사실상 전체값 → 폴백 표시.
+    trace["population_matched"] = pop_match_count > 0
+    trace["population_fallback"] = pop_provided and pop_match_count == 0
+    trace["fallback_axes"] = fallback_axes
 
     # match_filters: "" 또는 "ALL" 인 축은 제외 (특정 코드가 없는 축은 필터링 불필요)
     filter_codes = [(i, c) for i, c in enumerate(codes) if c and c != "ALL"]

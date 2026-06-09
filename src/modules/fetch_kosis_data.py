@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import re
 import time
 from datetime import datetime, timezone
@@ -22,6 +23,8 @@ from src.schemas.runtime import (
 )
 
 _DATA_API = "statisticsParameterData.do"
+
+logger = logging.getLogger("kosis")
 
 
 class FetchKosisDataError(Exception):
@@ -77,9 +80,15 @@ async def _fetch_one(
     )
     attempts = [att for att, _ in results]  # 후보 순서(=RANK 순) 유지
     analysis.cell_attempts = attempts  # 표별 조회 시도 기록(디버깅)
-    matched = next((m for _, m in results if m is not None), None)
+    # 매칭된 표 중 선정: 모집단을 '실제로' 맞춘 표 우선, 그게 없을 때만 합계 폴백 표.
+    # 각 그룹 내에선 RANK(인덱스 작은) 순. → 청년 고용률이 전체값(폴백)으로 새지 않게.
+    matched_pairs = [(att, m) for att, m in results if m is not None]
+    chosen = next(
+        (p for p in matched_pairs if not p[0].population_fallback),
+        matched_pairs[0] if matched_pairs else None,
+    )
 
-    if matched is None:
+    if chosen is None:
         reasons = [
             f"{a.tbl_id}: {a.error}"
             for a in attempts
@@ -93,13 +102,19 @@ async def _fetch_one(
         )
         return
 
-    cand, query, cell = matched
+    chosen_att, (cand, query, cell) = chosen
+    if chosen_att.population_fallback:
+        logger.warning(
+            "KOSIS 모집단 폴백: claim=%s population=%r 미매칭 → 전체값으로 대체 (tbl=%s)",
+            claim.claim_id, claim.population, cand.tbl_id,
+        )
     analysis.kosis_query = _log(
         cand.tbl_id, success=1, rows_returned=1,
         params=_params_log(query), duration_ms=_ms(t0),
     )
     analysis.evidence = _to_evidence(
         claim, cand.org_id, cand.tbl_id, query, cell, cand.tbl_nm,
+        population_fallback=chosen_att.population_fallback,
     )
 
 
@@ -137,6 +152,7 @@ def _resolve_and_fetch_one(cand, claim, period, api_key):
             ax: _cap([nm for _id, nm in vals], _AXIS_VALS_CAP)
             for ax, vals in trace["axes"].items()
         },
+        population_fallback=bool(trace.get("population_fallback")),
     )
     if query is None:  # 좌표 해소 실패(항목/분류 매칭 실패)
         att.error = trace.get("error")
@@ -200,8 +216,13 @@ def _params_log(query) -> str:
     )
 
 
-def _to_evidence(claim, org_id, tbl_id, query, cell, table_name) -> Evidence:
-    """KosisCell → Evidence. unit/period 는 KOSIS 응답값을 그대로 싣는다."""
+def _to_evidence(
+    claim, org_id, tbl_id, query, cell, table_name, population_fallback=False
+) -> Evidence:
+    """KosisCell → Evidence. unit/period 는 KOSIS 응답값을 그대로 싣는다.
+
+    population_fallback=True 면 요청 모집단을 못 맞춰 전체값으로 대체됐다는 표시.
+    """
     return Evidence(
         claim_id=claim.claim_id, source="KOSIS",
         subject=claim.subject, unit=cell.unit,
@@ -211,6 +232,7 @@ def _to_evidence(claim, org_id, tbl_id, query, cell, table_name) -> Evidence:
         kosis_item_id=query.itm_id, classification=dict(query.match_filters),
         last_updated=cell.lst_chn_de,
         retrieved_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        population_fallback=population_fallback,
     )
 
 

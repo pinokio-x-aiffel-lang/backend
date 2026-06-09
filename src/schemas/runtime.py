@@ -182,6 +182,9 @@ class Evidence(BaseModel):
     classification: dict[str, str] = Field(default_factory=dict)
     last_updated: str | None = None
     retrieved_at: str | None = None
+    # 요청 모집단(population)을 축값에 못 맞춰 '전체(합계)'로 대체했으면 True.
+    # → 이 값은 요청 집단이 아닌 전체값이므로 검증 단계가 신뢰도를 낮춰야 한다.
+    population_fallback: bool = False
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -201,6 +204,7 @@ class CellAttempt(BaseModel):
     itm_id: str | None = None
     items: list[str] = Field(default_factory=list)            # 표 항목명(ITM_NM) 샘플
     axes: dict[str, list[str]] = Field(default_factory=dict)  # 분류축명 → 값명 샘플
+    population_fallback: bool = False  # 모집단 매칭 실패 → 합계 대체 여부
     error: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)
