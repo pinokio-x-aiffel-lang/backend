@@ -75,7 +75,7 @@ async def main() -> None:
 
     rows = []
     for claim, a in zip(ms.claims, ms.analysis):
-        ev = a.evidence
+        ev = a.evidences[0] if a.evidences else None
         rows.append({
             "claim_id": claim.claim_id, "subject": claim.subject,
             "population": claim.population, "period": claim.period_value.llm_value,

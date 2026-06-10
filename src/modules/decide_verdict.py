@@ -65,7 +65,10 @@ def _overall_verdict(claim_results: list[ClaimResult]) -> str:
 
 def _build_skeleton(master_schema: MasterSchema) -> Verifications:
     """[7] 미실행 시 claims 로 빈 claim_results 골격 생성(레거시 폴백)."""
-    evidence_by_claim = {a.claim_id: a.evidence for a in master_schema.analysis}
+    evidence_by_claim = {
+        a.claim_id: (a.evidences[0] if a.evidences else None)
+        for a in master_schema.analysis
+    }
     claim_results = []
     for claim in master_schema.claims:
         evidence = evidence_by_claim.get(claim.claim_id)

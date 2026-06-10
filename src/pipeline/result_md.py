@@ -55,7 +55,7 @@ def _format_step5_detail(ms: MasterSchema) -> str:
         c = claims.get(a.claim_id)
         if c is None:
             continue
-        ev = a.evidence
+        ev = a.evidences[0] if a.evidences else None  # 1위 적합 표([6] 정렬)
         matched = ev is not None and ev.value is not None
 
         out.append(f"**[{a.claim_id}] {c.subject}**")

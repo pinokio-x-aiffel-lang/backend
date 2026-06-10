@@ -159,20 +159,17 @@ async def _fetch_one(
         )
         return
 
-    chosen_att, (cand, query, cell) = chosen
+    # 매칭된 모든 셀은 위에서 analysis.evidences 에 담았다. 여기선 로그/경고만.
+    # (표 선정은 [6] rank_evidence, 비교는 [7] 가 evidences[0]부터 수행)
+    chosen_att, (cand, query, _cell) = chosen
     if chosen_att.population_fallback:
         logger.warning(
             "KOSIS 모집단 폴백: claim=%s population=%r 미매칭 → 전체값으로 대체 (tbl=%s)",
             claim.claim_id, claim.population, cand.tbl_id,
         )
     analysis.kosis_query = _log(
-        cand.tbl_id, success=1, rows_returned=1,
+        cand.tbl_id, success=1, rows_returned=len(analysis.evidences),
         params=_params_log(query), duration_ms=_ms(t0),
-    )
-    analysis.evidence = _to_evidence(
-        claim, cand.org_id, cand.tbl_id, query, cell, cand.tbl_nm,
-        population_fallback=chosen_att.population_fallback,
-        match_source=chosen_att.match_source,
     )
 
 

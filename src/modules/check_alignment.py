@@ -76,7 +76,11 @@ async def check_alignment(master_schema: MasterSchema) -> None:
         return
 
     claims = {c.claim_id: c for c in master_schema.claims}
-    evidence_by_claim = {a.claim_id: a.evidence for a in master_schema.analysis}
+    # [6]이 정렬한 1위 적합 표(evidences[0])로 정합성 판정 — [7]이 비교한 표와 동일하게.
+    evidence_by_claim = {
+        a.claim_id: (a.evidences[0] if a.evidences else None)
+        for a in master_schema.analysis
+    }
 
     targets = [
         cr

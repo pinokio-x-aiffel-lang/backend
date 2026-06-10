@@ -44,11 +44,8 @@ async def calculate_metric(master_schema: MasterSchema) -> None:
         모호(M)로 둔다. 모호 케이스 보정은 [8] check_alignment, 최종 판정은 [9].
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
-    # [5]가 내보낸 매칭 후보 전체(evidences). 없으면 단수 evidence 로 폴백(하위호환).
-    evidences_by_claim = {
-        a.claim_id: (a.evidences or ([a.evidence] if a.evidence else []))
-        for a in master_schema.analysis
-    }
+    # [5]가 내보낸 매칭 후보 전체(evidences). [6]이 1위를 evidences[0]으로 정렬해 둔다.
+    evidences_by_claim = {a.claim_id: a.evidences for a in master_schema.analysis}
 
     claim_results = [
         _build_claim_result(claim, evidences_by_claim.get(claim.claim_id, []))
@@ -66,42 +63,58 @@ async def calculate_metric(master_schema: MasterSchema) -> None:
 
 
 def _build_claim_result(claim: Claim, evidences: list[Evidence]) -> ClaimResult:
-    metric, chosen = _select_metric(claim, evidences)
-    # 채택된 evidence 를 맨 앞으로 — [10] generate_explanation 이 evidence[0]을 출처로
-    # 인용하므로, 값(metric)과 출처 표기가 일치하도록 정렬한다.
-    ordered = ([chosen] + [e for e in evidences if e is not chosen]) if chosen else list(evidences)
+    """[6]이 정렬한 evidences[0](=1위 적합 표) 기준으로 판정한다.
+
+    1위 표 비교가 T → T(다음 [8]로). T 아니면(F) 나머지 표에 근사값(T 가능)이 있으면
+    NEI + needs_hitl(라벨러 판단), 없으면 F. 무증거/비절대형은 NEI.
+    evidences[0] 을 항상 대표 출처로 둬 값·출처 표기를 일치시킨다([10] evidence[0] 인용).
+    """
+    metric, needs_hitl, hitl_reason = _decide_metric(claim, evidences)
     return ClaimResult(
         claim_id=claim.claim_id,
-        # 초기 판정/표시 시드 — [8]·[9]가 보정·확정한다.
+        # 초기 판정/표시 시드 — [8]·[9]가 보정·확정한다(verdict 은 metric.verdict 로 전파).
         verdict=metric.verdict.value if metric.verdict else "UNVERIFIED",
         mismatch_type=metric.mismatch_type.value if metric.mismatch_type else None,
         claim_value=claim.value.llm_value,
         kosis_value=str(metric.kosis_value) if metric.kosis_value is not None else None,
         metric=metric,
-        evidence=ordered,  # 채택 후보가 맨 앞, 그 뒤로 나머지(n)
+        evidence=list(evidences),  # [6] 정렬: [0]=1위 표
+        needs_hitl=needs_hitl,
+        hitl_reason=hitl_reason,
     )
 
 
-def _select_metric(
+def _decide_metric(
     claim: Claim, evidences: list[Evidence]
-) -> tuple[MetricResult, Evidence | None]:
-    """후보 n개를 각각 origin 과 비교(n:1)하고 (대표 MetricResult, 채택 evidence)를 고른다.
-
-    우선순위 T > F > NEI, 동급은 상대오차(rel_diff) 작은 것 — 즉 '허용오차 내 일치하는
-    후보가 하나라도 있으면 일치(T)로 보고 가장 잘 맞는 표를 채택'한다. skip 유형/무증거는
-    바로 NEI(채택 evidence None). 비교(claim_value vs evidence.value)는 _compute_metric 재사용.
-    """
+) -> tuple[MetricResult, bool, str | None]:
+    """(대표 metric, needs_hitl, hitl_reason). 표 선정은 [6]이 끝냄 — 여기선 1위부터 비교."""
+    # 비절대형(그룹연산)·검증대상 아님·무증거 → NEI (표 선정과 무관).
     if claim.claim_type in _SKIP_TYPES or not evidences:
-        return _compute_metric(claim, None), None  # NEI(검증대상 아님 / 무증거)
-    pairs = [(_compute_metric(claim, ev), ev) for ev in evidences]
-    metric, chosen = min(pairs, key=lambda p: _metric_rank(p[0]))
-    return metric, chosen
+        return _compute_metric(claim, None), False, None
+    if claim.claim_type not in _ABSOLUTE_TYPES:
+        return _compute_metric(claim, evidences[0]), False, None  # 그룹연산 → NEI
 
+    top = evidences[0]                       # [6]이 고른 1위 적합 표
+    top_metric = _compute_metric(claim, top)
+    if top_metric.verdict == Verdict.TRUE:   # 1위 표와 일치 → 확정(→[8] 정합성)
+        return top_metric, False, None
 
-def _metric_rank(m: MetricResult) -> tuple[int, float]:
-    order = {Verdict.TRUE: 0, Verdict.FALSE: 1}.get(m.verdict, 2)  # T < F < NEI
-    rd = m.rel_diff if m.rel_diff is not None else float("inf")
-    return (order, rd)
+    # 1위 표 불일치 → 나머지 표에 근사값(허용오차 내 = T 가능)이 있나?
+    has_other_T = any(
+        _compute_metric(claim, ev).verdict == Verdict.TRUE for ev in evidences[1:]
+    )
+    if has_other_T:
+        # 적합 표는 불일치인데 다른 표는 맞음 → 애매 → NEI + HITL(라벨러 판단).
+        m = top_metric.model_copy(update={
+            "verdict": Verdict.NOT_ENOUGH_INFO,
+            "mismatch_type": None,
+            "note": (top_metric.note + " | " if top_metric.note else "")
+            + "1위 적합 표와는 불일치하나 타 표에 근사값 존재 → 라벨러 검토",
+        })
+        return m, True, "1위 적합 표와 불일치하나 다른 표에 근사값이 있어 사람 판단 필요"
+
+    # 어느 표에도 근사값 없음 → 1위 표 기준 거짓(F).
+    return top_metric, False, None
 
 
 def _compute_metric(claim: Claim, evidence: Evidence | None) -> MetricResult:

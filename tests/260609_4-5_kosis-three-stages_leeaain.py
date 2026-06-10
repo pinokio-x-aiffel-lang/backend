@@ -86,7 +86,7 @@ def _print_report(ms: MasterSchema) -> None:
             print(f"        → {a.error}")
 
     print("\n=== 최종 evidence ===")
-    ev = an.evidence
+    ev = an.evidences[0] if an.evidences else None
     if ev is None:
         print("  evidence=None (좌표 해소/조회 실패 — 위 사유 참조)")
     else:

@@ -61,7 +61,7 @@ async def main() -> None:
 
     rows = []
     for (subj, pop), an in zip(pairs, ms.analysis):
-        ev = an.evidence
+        ev = an.evidences[0] if an.evidences else None
         rows.append({
             "subject": subj, "population": pop,
             "hits": an.kosis_search.hits,

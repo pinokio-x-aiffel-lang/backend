@@ -87,6 +87,16 @@ RESOLVE_AXIS_MATCH = ModelPreset(
     temperature=0.0,
 )
 
+# 증거 표 리랭킹 ([6] rank_evidence)
+# 후보 표들(표명·항목·분류축; 값 제외) 중 주장에 가장 적합한 표 1위를 고른다.
+# 닫힌 선택(보기 중 하나)이라 저토큰·저온도. structured outputs 필요 → HCX-007.
+RANK_EVIDENCE = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
+
 # 정합성 재판정 ([8] check_alignment)
 # 주장 vs KOSIS 증거가 '같은 대상·방식 측정'인지 판정(structured outputs). 모호(M)
 # 케이스에만 호출하는 닫힌 판정이라 저토큰·저온도. structured 필요 → HCX-007.

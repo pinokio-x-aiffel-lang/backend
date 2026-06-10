@@ -276,10 +276,9 @@ class ClaimAnalysis(BaseModel):
     candidates: list[KosisCandidate] = Field(default_factory=list)  # [4] 상위 N개 후보 풀
     cell_attempts: list[CellAttempt] = Field(default_factory=list)  # [5] 후보 표별 조회 시도(디버깅)
     kosis_query: KosisQuery
-    # [5] 매칭된 모든 후보 셀(값 비교용 n). [7] calculate_metric 이 각각 origin 과 비교(n:1).
+    # [5] 매칭된 모든 후보 셀(RANK 순). [6]이 1위 적합 표를 evidences[0]으로 정렬,
+    # [7] calculate_metric 이 evidences[0]부터 origin 과 비교한다.
     evidences: list[Evidence] = Field(default_factory=list)
-    # [5] 그중 RANK-best 1개(하위호환). 미조회/실패 시 None. (n:1 전환 후엔 evidences 사용)
-    evidence: Evidence | None = None
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -304,6 +303,9 @@ class ClaimResult(BaseModel):
     llm_model: str = ""
     evidence: list[Evidence] = Field(default_factory=list)
     metric: MetricResult | None = None  # [7] 비교 결과([8]이 보정). 미계산 시 None
+    # [7] HITL 라우팅: 1위 표는 불일치하나 다른 표에 근사값이 있어 사람 판단이 필요한 경우.
+    needs_hitl: bool = False
+    hitl_reason: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)
 
