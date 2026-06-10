@@ -213,6 +213,32 @@ class CellAttempt(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
+class Verdict(str, Enum):
+    """검증 판정 코드 (WEB_API_CONTRACT §2.6). MetricResult/ClaimResult 공용."""
+
+    TRUE = "T"               # 일치 — 수치 + 기사 해석 모두 정확
+    FALSE = "F"              # 불일치 — 수치 자체를 잘못 인용(확정 가짜); [8] 통과
+    NEEDS_REVIEW = "M"       # 기사의 수치 오도/왜곡 — [8] check_alignment 만 생성
+    NOT_ENOUGH_INFO = "N"    # NEI: 무증거·비교불가·검증대상 아님·정합성 판정 실패 (코드 N 유지)
+
+
+class MismatchType(str, Enum):
+    """verdict=F/M 사유 분류 (MetricResult.mismatch_type).
+
+    magnitude/rounding/direction 은 수치 비교([7]), unit/period/population/
+    subject/aggregation 은 정합성([8]) 영역.
+    """
+
+    MAGNITUDE = "magnitude"      # 값 크기 차이(허용오차 크게 초과)
+    ROUNDING = "rounding"        # 허용오차 소폭 초과(반올림 경계)
+    DIRECTION = "direction"      # 증감 방향 차이(부호/그룹)
+    UNIT = "unit"                # 단위 불일치·비교불가
+    PERIOD = "period"            # 기간 불일치
+    POPULATION = "population"    # 모집단 불일치(예: 전체↔청년)
+    SUBJECT = "subject"          # 측정 주제 불일치
+    AGGREGATION = "aggregation"  # 집계 방식 불일치(평균↔합계 등)
+
+
 class MetricResult(BaseModel):
     """[7] calculate_metric — 주장 수치 ↔ KOSIS 공식 수치 비교 결과.
 
@@ -229,9 +255,12 @@ class MetricResult(BaseModel):
     kosis_value: float | None = None      # 비교 기준 공식 수치 (ABSOLUTE = evidence.value)
     rel_diff: float | None = None         # |주장−기준| / |기준| → decide_verdict 가 confidence 로 매핑
     within_tolerance: bool | None = None  # 허용오차 내 일치 여부
-    verdict: str | None = None            # 초기 판정 T/F/M/N (8·9단계가 보정)
-    mismatch_type: str | None = None      # verdict=F 일 때만 (magnitude/direction/unit/period/rounding…)
-    note: str | None = None               # 비교 불가 사유 (metaphoric/none, evidence 0건, 파싱 실패)
+    verdict: Verdict | None = None        # [7] T/F/NEI 초기, [8] T→T/M/NEI 보정
+    mismatch_type: MismatchType | None = None  # verdict=F/M 사유
+    note: str | None = None               # [7] 계산 비고 (단위환산·폴백·비교불가 사유)
+    # ── [8] check_alignment 판정 근거 ──
+    align_reason: str | None = None       # 정합성 판정 사유 (LLM reason / 실패 사유)
+    align_source: str | None = None       # 판정 출처: "llm" | "llm_failed"
     # ── 그룹 비교용(현재 미배선) ──
     compare_id: str | None = None         # 같은 원문에서 분리된 비교 그룹; ABSOLUTE 단건이면 None
     computed_value: float | None = None   # 그룹 연산 산출값(change_rate 등); ABSOLUTE 면 None
@@ -247,26 +276,34 @@ class ClaimAnalysis(BaseModel):
     candidates: list[KosisCandidate] = Field(default_factory=list)  # [4] 상위 N개 후보 풀
     cell_attempts: list[CellAttempt] = Field(default_factory=list)  # [5] 후보 표별 조회 시도(디버깅)
     kosis_query: KosisQuery
-    evidence: Evidence | None = None  # [5] 선정 셀(공식 수치). 미조회/실패 시 None
-    metric: MetricResult | None = None  # [7] 주장값↔evidence 비교 결과. 미계산 시 None
+    # [5] 매칭된 모든 후보 셀(값 비교용 n). [7] calculate_metric 이 각각 origin 과 비교(n:1).
+    evidences: list[Evidence] = Field(default_factory=list)
+    # [5] 그중 RANK-best 1개(하위호환). 미조회/실패 시 None. (n:1 전환 후엔 evidences 사용)
+    evidence: Evidence | None = None
 
     model_config = ConfigDict(populate_by_name=True)
 
 
 class ClaimResult(BaseModel):
-    """주장 1건의 검증 판정 결과."""
+    """주장 1건의 검증 판정 결과.
+
+    [7] calculate_metric 이 생성하고 metric/표시필드를 시드 → [8] check_alignment 가
+    metric 보정 → [9] decide_verdict 가 verdict/confidence/요약 확정 → [10]이 explanation.
+    진행 중 미완성 허용을 위해 상위 필드는 기본값을 둔다(단계별 점진 채움).
+    """
 
     claim_id: str
-    verdict: str
+    verdict: str = "UNVERIFIED"
     verdict_human: str | None = None
     verdict_human_note: str | None = None
     mismatch_type: str | None = None
-    claim_value: str
+    claim_value: str = ""
     kosis_value: str | None = None  # KOSIS 조회 실패/미조회 시 None (더미값 금지)
-    explanation: str
-    confidence: float
-    llm_model: str
+    explanation: str = ""
+    confidence: float = 0.0
+    llm_model: str = ""
     evidence: list[Evidence] = Field(default_factory=list)
+    metric: MetricResult | None = None  # [7] 비교 결과([8]이 보정). 미계산 시 None
 
     model_config = ConfigDict(populate_by_name=True)
 

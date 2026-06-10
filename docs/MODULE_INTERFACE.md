@@ -22,7 +22,7 @@ async def <stage>(master_schema: MasterSchema) -> None:
 | 입출력 | `MasterSchema` 하나를 받아 **제자리 변경(in-place)**, 반환값 없음(`None`) |
 | 실패 | 예외를 **raise** → `runner` 가 `StepEvent(error)` 로 변환하고 파이프라인 중단 |
 | 단계 간 결합 | 단계끼리 직접 import 금지. 데이터는 `MasterSchema` 필드로만 주고받음 |
-| 조립 | `src/pipeline/runner.py` 가 각 단계를 import 해 9단계로 순서 실행 (`_step` 이 `await fn(master_schema)` 호출) |
+| 조립 | `src/pipeline/runner.py` 가 각 단계를 import 해 10단계로 순서 실행 (`_step` 이 `await fn(master_schema)` 호출) |
 | 비동기 | `async def`. 동기 블로킹 작업(requests 등)은 `asyncio.to_thread` 로 위임 |
 
 코드로 강제하려면 (선택) 다음 타입으로 명문화할 수 있다(현재 미적용):
@@ -51,10 +51,11 @@ StageFn = Callable[[MasterSchema], Awaitable[None]]
 | 3 | `normalize_claim` | `claims[*].value.raw`, `claims[*].period_value.raw`, `article.published_at` | `claims[*].value.llm_value`, `claims[*].period_value.llm_value` | ✅ |
 | 4 | `retrieve_kosis_candidates` | `claims[*].subject` | `analysis[]` = `kosis_search`(검색 로그·선정 tbl) + `candidates`(상위 N) + `kosis_query`(placeholder) | ✅ |
 | 5 | `fetch_kosis_data` | `analysis[*].candidates`, `claims[*].(subject/population/period_value)` | `analysis[*].kosis_query`(조회 로그) + `analysis[*].evidence`(선정 셀) + `analysis[*].cell_attempts`(시도 로그) | ✅ |
-| 6 | `calculate_metric` | `claims[*].value.llm_value`, `analysis[*].evidence` | 초기 verdict / mismatch_type | ⚠️ 더미(no-op) |
-| 7 | `check_alignment` | `claims[]` + [6] 결과 | 모호 케이스 재판정 보정 | ⚠️ 더미(no-op) |
-| 8 | `decide_verdict` | `claims[]` + [6][7] 결과 | `verifications` = `summary` + `claim_results[]`(각 `evidence[]` 포함) | ⚠️ 더미(UNVERIFIED 고정) |
-| 9 | `generate_explanation` | `verifications`, `claims[]` | `verifications.claim_results[*].explanation` | ✅ |
+| 6 | `rank_evidence` | `analysis[*]`(수집된 Evidence 후보) | claim별 대표 Evidence 선정 결과 | ⚠️ 더미(no-op) |
+| 7 | `calculate_metric` | `claims[*].value.llm_value`, `analysis[*].evidence` | `analysis[*].metric`(초기 verdict / mismatch_type) | ⚠️ 더미(no-op) |
+| 8 | `check_alignment` | `claims[]` + [7] 결과(`analysis[*].metric`) | 모호 케이스 재판정 보정 | ⚠️ 더미(no-op) |
+| 9 | `decide_verdict` | `claims[]` + [7][8] 결과 | `verifications` = `summary` + `claim_results[]`(각 `evidence[]` 포함) | ⚠️ 더미(UNVERIFIED 고정) |
+| 10 | `generate_explanation` | `verifications`, `claims[]` | `verifications.claim_results[*].explanation` | ✅ |
 
 > ⚠️ 상태 = 인터페이스(계약)는 정해졌으나 본문이 아직 더미. 계약을 깨지 않고 내부만 구현하면 됨.
 
@@ -67,7 +68,7 @@ StageFn = Callable[[MasterSchema], Awaitable[None]]
 ```
 content ──[1]──▶ article ──[2]──▶ claims[] ──[3]─▶ (claims 값 정규화)
         ──[4]──▶ analysis[](검색·후보) ──[5]─▶ analysis[*].evidence(공식 수치)
-        ──[6][7][8]──▶ verifications(판정) ──[9]─▶ claim_results[*].explanation
+        ──[6]─▶ (대표 Evidence 선정) ──[7][8][9]──▶ verifications(판정) ──[10]─▶ claim_results[*].explanation
 ```
 
 `MasterSchema` 구조: `content`(입력) · `article` · `claims[]` · `analysis[]` · `verifications`.
@@ -88,8 +89,8 @@ content ──[1]──▶ article ──[2]──▶ claims[] ──[3]─▶ (
 
 | 모듈 | 비고 |
 |---|---|
-| `create_hitl_task`, `save_hitl_feedback` | HITL — 선형 파이프라인 **밖**(runner 9단계에 없음). 시그니처는 동일 계약 준수 |
-| `preprocess_article`, `rank_evidence` | 현재 runner 체인에 **미연결**. `rank_evidence` 는 인자명이 `record` 로 관례(`master_schema`)와 불일치 → 통일 필요 |
+| `create_hitl_task`, `save_hitl_feedback` | HITL — 선형 파이프라인 **밖**(runner 10단계에 없음). 시그니처는 동일 계약 준수 |
+| `preprocess_article` | 현재 runner 체인에 **미연결**(load_article 이 적재만 담당). 연결 시 [1] 이후 전처리 단계로 편입 검토 |
 
 ---
 

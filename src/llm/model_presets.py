@@ -86,3 +86,13 @@ RESOLVE_AXIS_MATCH = ModelPreset(
     max_tokens=128,
     temperature=0.0,
 )
+
+# 정합성 재판정 ([8] check_alignment)
+# 주장 vs KOSIS 증거가 '같은 대상·방식 측정'인지 판정(structured outputs). 모호(M)
+# 케이스에만 호출하는 닫힌 판정이라 저토큰·저온도. structured 필요 → HCX-007.
+CHECK_ALIGNMENT = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=256,
+    temperature=0.0,
+)

@@ -104,9 +104,11 @@ def _try_ratio(s: str) -> str | None:
     approx = {"절반": "0.5", "반": "0.5", "과반": "0.5"}
     if s in approx:
         return approx[s]
+    # % 값은 KOSIS(% 스케일: 3.1) 와 맞춰야 하므로 소수변환(÷100) 하지 않는다.
+    # "3%"→"3", "3.1%"→"3.1" (단위 % 는 claim.unit 에 별도 보존).
     m = re.fullmatch(r"(\d+(?:\.\d+)?)\s*(?:%|퍼센트)", s)
     if m:
-        return _fmt_decimal(float(m.group(1)) / 100)
+        return _fmt_decimal(float(m.group(1)))
     return None
 
 

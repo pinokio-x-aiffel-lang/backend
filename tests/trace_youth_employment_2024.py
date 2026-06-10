@@ -47,7 +47,7 @@ from src.kosis.client import (
     kosis_get,
     resolve_api_key,
 )
-from src.kosis.resolve import resolve_cell_query_traced
+from src.kosis.map_claim_to_cell import map_claim_to_cell_query_traced
 
 KEY = resolve_api_key()
 SUBJECT = "청년고용률"
@@ -88,7 +88,7 @@ itm = kosis_get(META_URL, meta_params)
 _show("[2] 메타 조회  statisticsData.do  getMeta type=ITM", META_URL, meta_params, itm)
 
 # ── 좌표 해소: subject/population 이름매칭 → itmId/objL ────────────────────────
-query, trace = resolve_cell_query_traced(
+query, trace = map_claim_to_cell_query_traced(
     ORG_ID, TBL_ID, subject=SUBJECT, population=POPULATION,
     period=PERIOD, period_se=PERIOD_SE, api_key=KEY,
 )

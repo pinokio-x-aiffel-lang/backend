@@ -46,7 +46,7 @@ class ExtractStatisticalClaimsError(Exception):
 
 async def extract_statistical_claims(master_schema: MasterSchema) -> None:
     """
-    [3] Extract Statistical Claims
+    [2] Extract Statistical Claims
 
     Input:
         master_schema.article        # [1]에서 적재된 기사

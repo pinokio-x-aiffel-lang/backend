@@ -10,8 +10,8 @@ from datetime import datetime, timezone
 from src.kosis import (
     KosisError,
     fetch_cell_with_retry,
+    map_claim_to_cell_query_traced,
     resolve_api_key,
-    resolve_cell_query_traced,
 )
 from src.llm.client import LlmError
 from src.observability.tracing import traced_chat
@@ -52,10 +52,10 @@ class FetchKosisDataError(Exception):
 
 
 async def fetch_kosis_data(master_schema: MasterSchema) -> None:
-    """[5] KOSIS에서 검색해 온 상위 n개의 표에서 claim 좌표를 해소(resolve_cell_query)해 한 셀을 조회한다.
+    """[5] KOSIS에서 검색해 온 상위 n개의 표에서 claim 좌표를 매핑(map_claim_to_cell_query)해 한 셀을 조회한다.
 
     analysis[*] 의 kosis_query(조회 로그)와 evidence(선정 셀, 실패 시 None)를 채운다.
-    한 claim 실패(KosisError/ResolveError/ValueError)는 success=0 으로 기록하고 계속,
+    한 claim 실패(KosisError/ClaimMappingError/ValueError)는 success=0 으로 기록하고 계속,
     그 외 예외만 raise → runner. claim 간(asyncio.gather)·한 claim 의 후보 표 간
     (to_thread + gather) 모두 동시 조회한다(rate limit 은 공유 client 가 1000/min 이하로 강제).
     """
@@ -136,6 +136,15 @@ async def _fetch_one(
     attempts = [att for att, _ in results]  # 후보 순서(=RANK 순) 유지
     analysis.cell_attempts = attempts  # 표별 조회 시도 기록(디버깅)
 
+    # [5] 고르지 않고, 매칭된 모든 후보 셀을 evidences 로 내보낸다(RANK 순) — [7]이 n:1 비교.
+    analysis.evidences = [
+        _to_evidence(
+            claim, m[0].org_id, m[0].tbl_id, m[1], m[2], m[0].tbl_nm,
+            population_fallback=att.population_fallback, match_source=att.match_source,
+        )
+        for att, m in results if m is not None  # m = (cand, query, cell)
+    ]
+
     if chosen is None:
         reasons = [
             f"{a.tbl_id}: {a.error}"
@@ -175,15 +184,17 @@ def _cap(names: list, n: int) -> list[str]:
     return out
 
 
-def _llm_axis_matcher(rows: list[dict], population: str, axis_name: str) -> str | None:
-    """규칙+동의어 실패 축의 LLM 폴백: 보기(ITM_ID:ITM_NM) 중 population 에 맞는 코드.
+def _llm_axis_matcher(
+    values: list[tuple[str, str]], population: str, axis_name: str
+) -> str | None:
+    """규칙+동의어 실패 축의 LLM 폴백: 보기(코드:이름) 중 population 에 맞는 코드.
 
-    resolve 에 주입되는 AxisMatcher. 닫힌 보기 중 선택(+기권)이라 환각 위험이 낮고,
-    반환 코드의 rows 대조 검증은 resolve 가 한 번 더 한다. 호출 실패/기권은 None.
+    map_claim_to_cell 에 주입되는 AxisMatcher. 닫힌 보기 중 선택(+기권)이라 환각 위험이
+    낮고, 반환 코드의 대조 검증은 map_claim_to_cell 이 한 번 더 한다. 호출 실패/기권은 None.
     HCX-007 structured outputs 로 형식을 강제한다. (LlmCaller 경유 = traced_chat)
     """
     options = "\n".join(
-        f"  {r.get('ITM_ID')}: {r.get('ITM_NM')}" for r in rows[:_AXIS_OPTIONS_CAP]
+        f"  {code}: {name}" for code, name in values[:_AXIS_OPTIONS_CAP]
     )
     messages = [
         {"role": "system", "content": RESOLVE_AXIS_MATCH_SYSTEM},
@@ -224,7 +235,7 @@ def _resolve_and_fetch_one(cand, claim, period, api_key, axis_matcher=None):
         매칭 실패 사유는 CellAttempt.error 에, 항목·분류축은 디버깅용으로 남긴다.
     """
     try:
-        query, trace = resolve_cell_query_traced(
+        query, trace = map_claim_to_cell_query_traced(
             cand.org_id, cand.tbl_id,
             subject=claim.subject, population=claim.population,
             period=period, period_se=claim.period_type, api_key=api_key,

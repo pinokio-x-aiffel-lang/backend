@@ -160,3 +160,40 @@ RESOLVE_AXIS_MATCH_USER = (
     "분류축: {axis_name}\n"
     "보기(code: name):\n{options}"
 )
+
+
+# ── [8] Check Alignment (정합성 재판정) ────────────────────────────────────────
+
+CHECK_ALIGNMENT_SYSTEM = (
+    "너는 통계 인용 검증기다.\n"
+    "기사의 수치는 KOSIS 공식 수치와 '값'은 이미 일치한다. 네 임무는 기사가 그 수치를\n"
+    "오도(misleading)하거나 강하게 왜곡하지 않고, 수치가 실제로 나타내는 바를 정확히\n"
+    "전달했는지 판정하는 것이다.\n"
+    "점검 차원: subject(측정 주제) · population(모집단) · unit(단위) ·\n"
+    "aggregation(집계 방식) · period(기간).\n"
+    "규칙:\n"
+    "1. 기사 주장이 수치가 나타내는 바와 일치하면 aligned=true, dimension=null.\n"
+    "2. 수치가 나타내는 것과 다른 대상/방식을 말하거나(오도) 의미를 강하게 왜곡하면\n"
+    "   aligned=false, dimension 에 핵심 차원 하나(subject|population|unit|aggregation|period).\n"
+    "   예: 수치는 '전체'인데 기사는 '청년'이라 단정 → population.\n"
+    "3. reason 에 판정 근거를 한 문장으로 적는다.\n"
+    "4. 애매하면 보수적으로 aligned=false."
+)
+
+CHECK_ALIGNMENT_USER = (
+    "[기사 주장]\n"
+    "문장: {sentence}\n"
+    "주제: {claim_subject}\n"
+    "모집단: {claim_population}\n"
+    "단위: {claim_unit}\n"
+    "집계방식: {claim_aggregation}\n"
+    "시점: {claim_period}\n"
+    "\n"
+    "[KOSIS 공식 통계]\n"
+    "표명: {ev_table_name}\n"
+    "주제: {ev_subject}\n"
+    "모집단: {ev_population}\n"
+    "단위: {ev_unit}\n"
+    "기간: {ev_period}\n"
+    "전체(합계)로 대체됨: {ev_population_fallback}"
+)

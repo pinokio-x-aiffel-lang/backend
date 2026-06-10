@@ -1,0 +1,102 @@
+{
+  "report": "260610_7-8_check-alignment_leeaain",
+  "date": "2026-06-10",
+  "author": "leeaain",
+  "pipeline_steps": "7-8",
+  "target": "numeric layer(7) + check_alignment(8) — verdict 정책: 7=T/F/NEI, 8=T만 재판정",
+  "framework": "pytest",
+  "command": "uv run pytest tests/test_numeric_value.py tests/260610_7_compare_leeaain.py tests/test_calculate_metric.py tests/test_check_alignment_apply.py tests/test_pipeline_7_to_10_flow.py -v",
+  "secrets_required": false,
+  "summary": {
+    "total": 25,
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 1.39
+  },
+  "files": [
+    {
+      "file": "tests/test_numeric_value.py",
+      "target": "src/numeric/value.py::parse_claim_value",
+      "passed": 7,
+      "failed": 0,
+      "tests": [
+        "test_scalar",
+        "test_signed_positive_and_negative",
+        "test_range_forms",
+        "test_ratio",
+        "test_bare_sign",
+        "test_comma_scalar",
+        "test_unparsable"
+      ]
+    },
+    {
+      "file": "tests/260610_7_compare_leeaain.py",
+      "target": "src/numeric/compare.py::compute_absolute",
+      "passed": 10,
+      "failed": 0,
+      "tests": [
+        "test_tolerance_abs",
+        "test_within_tolerance_true",
+        "test_magnitude_mismatch",
+        "test_rounding_mismatch",
+        "test_period_mismatch",
+        "test_unit_incompatible_to_NEI",
+        "test_percent_point_to_NEI",
+        "test_population_fallback_stays_numeric",
+        "test_non_scalar_to_NEI",
+        "test_unit_conversion_ok"
+      ]
+    },
+    {
+      "file": "tests/test_calculate_metric.py",
+      "target": "src/modules/calculate_metric.py::calculate_metric",
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        "test_creates_claim_results_with_metric",
+        "test_no_evidence_gives_NEI",
+        "test_metaphoric_to_NEI"
+      ]
+    },
+    {
+      "file": "tests/test_check_alignment_apply.py",
+      "target": "src/modules/check_alignment.py::apply_alignment",
+      "passed": 4,
+      "failed": 0,
+      "tests": [
+        "test_aligned_keeps_T",
+        "test_misleading_to_M_with_dimension",
+        "test_llm_failure_to_NEI_with_reason",
+        "test_unknown_dimension_still_M"
+      ]
+    },
+    {
+      "file": "tests/test_pipeline_7_to_10_flow.py",
+      "target": "7->8->9->10 flow (integration, _judge mocked)",
+      "passed": 1,
+      "failed": 0,
+      "tests": [
+        "test_flow_7_to_10_uses_real_values_no_dummy"
+      ]
+    }
+  ],
+  "scope": {
+    "under_test": [
+      "src/numeric/value.py (parse_claim_value)",
+      "src/numeric/units.py (align_value)",
+      "src/numeric/compare.py (compute_absolute, tolerance_abs)",
+      "src/modules/calculate_metric.py (calculate_metric)",
+      "src/modules/check_alignment.py (apply_alignment - 순수 보정부)"
+    ],
+    "tools_only": [
+      "src/schemas/runtime.py (Claim/Evidence/MetricResult 등 입력 구성)",
+      "src/kosis/units.py (compare 의 단위환산 재사용)",
+      "src/modules/decide_verdict.py, src/modules/generate_explanation.py (흐름 통과 확인용; 검증 대상 아님)"
+    ],
+    "out_of_scope": [
+      "check_alignment LLM 경로(_judge) 라이브 - 흐름 테스트는 _judge 를 mock 으로 대체(비밀키 미사용)",
+      "1~6단계(load~fetch) - 합성 입력으로 우회"
+    ]
+  }
+}

@@ -6,7 +6,9 @@
 >
 > **목적**: 프론트(`web/`)가 화면에 표시하기 위해 필요로 하는 데이터의 형식·의미·필수여부를 백엔드 구현 기준으로 명세한다.
 > **단일 진실 원천(SSOT)**: `web/src/lib/api/schema.ts` (zod 스키마). 본 문서와 코드 스키마가 불일치할 경우 코드 스키마가 우선하며, 본 문서는 즉시 갱신한다.
-> **버전**: v1 (POC) · 마지막 갱신: 2026-05-14
+> **버전**: v1 (POC) · 마지막 갱신: 2026-06-10
+>
+> ⚠️ **`pipeline[]` 정합(2026-06-10)**: 단계 수·이름을 실제 실행 기준인 `src/pipeline/runner.py`(**10단계**)에 맞췄다. 기존 9단계 mock 명세(`재순위화`/`RAG 추론` 등)는 폐기. 프론트(`web/src/lib/api/schema.ts` zod `length(9)`, `web/src/lib/api/mock.ts` `STEP_NAMES`)는 아직 9단계라 **갱신 필요** — 갱신 전까지 zod strict 검증이 깨진다.
 
 ---
 
@@ -15,7 +17,7 @@
 - 프론트는 단일 엔드포인트 `POST /verify` 만 호출한다.
 - 응답에는 **결과 화면에 필요한 모든 정보가 한 번에** 포함된다 (스트리밍/SSE/폴링 없음).
 - 응답은 클라이언트에서 **zod로 strict 검증**되며, 필드 누락·타입 불일치 시 사용자에게 "응답 형식이 예상과 다릅니다" 에러로 즉시 실패한다.
-- 로딩 중 9단계 progress bar는 클라이언트 측 시간 기반 시뮬레이션이며, 응답이 도착하면 `pipeline[]` 으로 최종 상태가 덮어쓰여진다 → 백엔드는 **각 단계의 실제 결과 상태**를 정확히 채워줘야 한다.
+- 로딩 중 10단계 progress bar는 클라이언트 측 시간 기반 시뮬레이션이며, 응답이 도착하면 `pipeline[]` 으로 최종 상태가 덮어쓰여진다 → 백엔드는 **각 단계의 실제 결과 상태**를 정확히 채워줘야 한다.
 - **백엔드 책임 범위**: `result` 화면용 데이터만 책임진다. `idle`(랜딩) / `loading` / `error` 화면의 모든 텍스트·배지·예시(헤로 헤드라인, 4가지 판정 예시, 작동 방식 카드 등)는 프론트 하드코딩이며 서버 데이터를 일절 사용하지 않는다.
 - 백엔드는 내부 모델(`docs/PIPELINE_SCHEMA.md`)을 **§3 변환 규칙**대로 평탄화해서 응답한다.
 
@@ -59,7 +61,7 @@ Content-Type: application/json
 | 7 | `evidence` | object \| null | ✅ | `KosisTableCard` (null이면 "매칭 없음" 안내) | §2.4 |
 | 8 | `comparison` | object \| null | ✅ | `NumericComparison` 섹션 (null이면 섹션 미렌더) | §2.5 |
 | 9 | `explanation` | string | ❌ | `ExplanationPanel` 자연어 분석 설명 | 슬롯-필 결과를 한 문단으로 |
-| 10 | `pipeline` | object[] | ❌ (정확히 9개) | `PipelineProgress` 단계별 노드 | §2.7 |
+| 10 | `pipeline` | object[] | ❌ (정확히 10개) | `PipelineProgress` 단계별 노드 | §2.7 |
 
 ### 2.2 `article` — 기사 메타
 | 필드 | 타입 | nullable | UI 표시 |
@@ -146,32 +148,33 @@ Content-Type: application/json
 - **표시**: `Math.round(confidence * 100)` → "92%"
 - 0인 경우(`N` 판정 등)도 0%로 정상 표시됨
 
-### 2.7 `pipeline[]` — 9단계 실행 내역
+### 2.7 `pipeline[]` — 10단계 실행 내역
 사용처:
 - 로딩 화면: 클라이언트가 자체 타이머로 진행 표시 (응답 대기 중)
 - 결과 화면: `ResultLayout` 하단 "파이프라인 실행 내역"에서 **응답값으로 최종 상태 렌더**
 
-**고정 길이 9개**. 각 원소 스키마:
+**고정 길이 10개**. 각 원소 스키마:
 
 | 필드 | 타입 | nullable | 설명 |
 |------|------|:---:|------|
-| `step` | int (1~9) | ❌ | 단계 번호 (배열 순서대로 1→9) |
+| `step` | int (1~10) | ❌ | 단계 번호 (배열 순서대로 1→10) |
 | `name` | string | ❌ | 단계명. 프론트는 자체 `STEP_NAMES` 상수를 사용하므로 **현재 화면에 표시되지는 않지만**, 로그·디버그용으로 정확히 채울 것 |
 | `status` | enum | ❌ | `'pending' \| 'running' \| 'done' \| 'skipped' \| 'error'` |
 | `duration_ms` | int \| null | ✅ | 단계 소요 시간(ms). `skipped`/실행 안 함이면 null. **현재 UI에 미렌더이나 향후 확장용** |
 
-#### 9단계 표준 명세 (`name` 권장값 — `web/src/lib/api/mock.ts` 기준)
-| step | name |
-|:---:|------|
-| 1 | 기사 내용 추출 |
-| 2 | 주장 탐지 |
-| 3 | 주장 분류 |
-| 4 | 주장 구조화 (8-슬롯) |
-| 5 | KOSIS 카탈로그 필터링 |
-| 6 | 임베딩 검색 (Top-50) |
-| 7 | 재순위화 (Top-5) |
-| 8 | RAG 추론 (Top-1) |
-| 9 | KOSIS API + 수치 비교 |
+#### 10단계 표준 명세 (`name` — `src/pipeline/runner.py` 의 실제 단계명 기준)
+| step | name | 함수 |
+|:---:|------|------|
+| 1 | 기사 내용 확인 | `load_article` |
+| 2 | 클레임 추출 | `extract_statistical_claims` |
+| 3 | 한국어 수사 산술로 변환 | `normalize_claim` |
+| 4 | KOSIS 통계표 n개 찾기 | `retrieve_kosis_candidates` |
+| 5 | KOSIS 셀 값 조회 | `fetch_kosis_data` |
+| 6 | 증거 랭킹 | `rank_evidence` |
+| 7 | 통계 수치 비교 판단 | `calculate_metric` |
+| 8 | 통계수치와 문장의 정합성 판단 | `check_alignment` |
+| 9 | 종합 분석·검증 결과 생성 | `decide_verdict` |
+| 10 | 설명 생성 | `generate_explanation` |
 
 #### `status` 사용 규칙
 - 정상 완료된 단계: `done`
@@ -275,20 +278,23 @@ evidence가 0건이면 `evidence: null`.
 
 `verdict ∈ {판단불가, 모호}` 또는 evidence 0건 → `comparison: null`.
 
-### 3.7 `pipeline[]` 9단계 구성
-외부 표시용 고정 구조. 런타임 메타에서 다음과 같이 집계:
+### 3.7 `pipeline[]` 10단계 구성
+외부 표시용 고정 구조. `src/pipeline/runner.py` 의 단계와 1:1 대응하며, 런타임 메타(`StepEvent`)에서 다음과 같이 집계:
 
-| step | name | status 출처 | duration_ms 출처 |
-|:---:|------|-------------|----------------|
-| 1 | 기사 내용 추출 | TBD | TBD |
-| 2 | 주장 탐지 | TBD | TBD |
-| 3 | 주장 분류 | TBD | TBD |
-| 4 | 주장 구조화 (8-슬롯) | TBD | TBD |
-| 5 | KOSIS 카탈로그 필터링 | TBD | TBD |
-| 6 | 임베딩 검색 (Top-50) | TBD | TBD |
-| 7 | 재순위화 (Top-5) | TBD | TBD |
-| 8 | RAG 추론 (Top-1) | TBD | TBD |
-| 9 | KOSIS API + 수치 비교 | `analysis.kosis_query.success` | `analysis.kosis_query.duration_ms` |
+| step | name | 함수 | status 출처 | duration_ms 출처 |
+|:---:|------|------|-------------|----------------|
+| 1 | 기사 내용 확인 | `load_article` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 2 | 클레임 추출 | `extract_statistical_claims` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 3 | 한국어 수사 산술로 변환 | `normalize_claim` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 4 | KOSIS 통계표 n개 찾기 | `retrieve_kosis_candidates` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 5 | KOSIS 셀 값 조회 | `fetch_kosis_data` | `analysis.kosis_query.success` | `analysis.kosis_query.duration_ms` |
+| 6 | 증거 랭킹 | `rank_evidence` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 7 | 통계 수치 비교 판단 | `calculate_metric` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 8 | 통계수치와 문장의 정합성 판단 | `check_alignment` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 9 | 종합 분석·검증 결과 생성 | `decide_verdict` | `StepEvent.status` | `StepEvent.duration_ms` |
+| 10 | 설명 생성 | `generate_explanation` | `StepEvent.status` | `StepEvent.duration_ms` |
+
+> 집계는 runner 가 단계별로 내보내는 `StepEvent`(status/duration_ms)를 그대로 모으면 된다. step 5 만 KOSIS 외부호출 메타(`kosis_query`)로 보강 가능.
 
 상태 enum (`done`/`skipped`/`error`)과 중단 시 패턴은 §2.7 참조.
 

@@ -13,29 +13,62 @@ class DecideVerdictError(Exception):
     """검증 결과 판정/조립 실패."""
 
 
+# overall_verdict 심각도 우선순위 (높을수록 우선). TODO(full [9])에서 정밀화.
+_SEVERITY = {"F": 3, "M": 2, "N": 1, "T": 0}
+
+
 async def decide_verdict(master_schema: MasterSchema) -> None:
     """
-    [8] Decide Verdict (옛 _synthesize + _verdict 통합)
+    [9] Decide Verdict (옛 _synthesize + _verdict 통합)
 
     Input:
-        master_schema.claims + 비교·정합성 결과([6]~[7])
+        master_schema.verifications.claim_results[*].metric  # [7]~[8] 비교·정합성 결과
 
     Output:
-        master_schema.verifications   # summary(overall_verdict, average_confidence) + claim_results
+        master_schema.verifications   # summary(overall_verdict, average_confidence) 확정
 
     Responsibility:
-        claim별 판정을 종합해 overall_verdict / average_confidence 를 산출하고,
-        결과를 Verifications 스키마로 조립해 master_schema.verifications 에 채운다.
+        [7] 이 생성하고 [8] 이 보정한 claim_results 를 종합해 overall_verdict 를 산출한다.
+        현재는 전이 구현 — metric.verdict 를 claim_result.verdict 로 확정하고 요약만
+        채운다. confidence(rel_diff→[0,1]) · verdict_human 정밀 산출은 TODO.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
-    # TODO: 실제 구현 — [6]~[7] 결과로 판정. 현재는 happy-path 더미(UNVERIFIED).
-    # claim_id → KOSIS 조회 근거(Evidence). 미조회/실패 시 None.
-    evidence_by_claim = {a.claim_id: a.evidence for a in master_schema.analysis}
+    verifications = master_schema.verifications
+    if verifications is None:
+        # [7] 미실행 등 예외 경로 — claims 로 최소 골격 생성(레거시 폴백).
+        verifications = _build_skeleton(master_schema)
+        master_schema.verifications = verifications
 
+    for cr in verifications.claim_results:
+        metric = cr.metric
+        if metric is not None and metric.verdict is not None:
+            cr.verdict = metric.verdict.value
+            cr.mismatch_type = (
+                metric.mismatch_type.value if metric.mismatch_type else cr.mismatch_type
+            )
+        # TODO(full [9]): confidence(rel_diff→[0,1]) · verdict_human · llm_model.
+
+    verifications.summary = VerificationSummary(
+        total_claims=len(verifications.claim_results),
+        overall_verdict=_overall_verdict(verifications.claim_results),
+        average_confidence=0.0,
+    )
+
+
+def _overall_verdict(claim_results: list[ClaimResult]) -> str:
+    """claim별 verdict 중 가장 심각한 것. 비어 있으면 UNVERIFIED."""
+    verdicts = [cr.verdict for cr in claim_results if cr.verdict in _SEVERITY]
+    if not verdicts:
+        return "UNVERIFIED"
+    return max(verdicts, key=lambda v: _SEVERITY[v])
+
+
+def _build_skeleton(master_schema: MasterSchema) -> Verifications:
+    """[7] 미실행 시 claims 로 빈 claim_results 골격 생성(레거시 폴백)."""
+    evidence_by_claim = {a.claim_id: a.evidence for a in master_schema.analysis}
     claim_results = []
     for claim in master_schema.claims:
         evidence = evidence_by_claim.get(claim.claim_id)
-        # KOSIS 공식 수치 — 조회된 evidence 가 있을 때만. 없으면 None(더미값 금지).
         kosis_value = (
             str(evidence.value)
             if evidence is not None and evidence.value is not None
@@ -44,12 +77,8 @@ async def decide_verdict(master_schema: MasterSchema) -> None:
         claim_results.append(
             ClaimResult(
                 claim_id=claim.claim_id,
-                verdict="UNVERIFIED",
                 claim_value=claim.value.llm_value,
                 kosis_value=kosis_value,
-                explanation="",  # [9] generate_explanation 에서 채움
-                confidence=0.0,
-                llm_model="(더미)",
                 evidence=[evidence] if evidence is not None else [
                     Evidence(
                         claim_id=claim.claim_id,
@@ -59,12 +88,11 @@ async def decide_verdict(master_schema: MasterSchema) -> None:
                         period_type=claim.period_type,
                         period=claim.period_value.llm_value,
                         population=claim.population,
-                        # KOSIS 조회 실패 — value·kosis_*·table_name·url·날짜는 None(기본값)
                     )
                 ],
             )
         )
-    master_schema.verifications = Verifications(
+    return Verifications(
         summary=VerificationSummary(
             total_claims=len(claim_results),
             overall_verdict="UNVERIFIED",
