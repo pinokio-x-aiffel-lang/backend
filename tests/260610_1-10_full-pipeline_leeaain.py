@@ -27,7 +27,7 @@ load_dotenv()
 OUT_MD = Path(__file__).parent / "results" / "260610_1-10_full-pipeline_leeaain.md"
 OUT_JSON = OUT_MD.with_suffix(".json")
 # DEFAULT_SENTENCE = "지난달인 2025년 3월의 전체 연령대 실업률은 3%대였다."
-DEFAULT_SENTENCE = "지난해(2023년) 한국의 경제성장률은 1.5%에 그쳤다."
+DEFAULT_SENTENCE = "지난해(2023년) 한국의 경제성장률은 1.4%에 그쳤다."
 
 
 async def run(sentence: str):

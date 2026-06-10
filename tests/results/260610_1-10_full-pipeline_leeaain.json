@@ -1,13 +1,13 @@
 {
-  "sentence": "지난해(2023년) 한국의 경제성장률은 1.5%에 그쳤다.",
+  "sentence": "지난해(2023년) 한국의 경제성장률은 1.4%에 그쳤다.",
   "overall_verdict": "F",
   "claims": [
     {
       "claim_type": "absolute",
       "subject": "한국의 경제성장률",
-      "population": "한국 전체",
-      "value_raw": "1.5%",
-      "value_llm": "1.5",
+      "population": "불명",
+      "value_raw": "1.4%",
+      "value_llm": "1.4",
       "period": "Y:2023",
       "unit": "%"
     }
@@ -16,10 +16,10 @@
     {
       "claim_id": "clm-0001",
       "verdict": "F",
-      "claim_value": "1.5",
+      "claim_value": "1.4",
       "kosis_value": "1.6",
       "table": "경제성장률(시도)",
-      "explanation": "기사의 2023년 한국의 경제성장률 1.5%는 KOSIS 공식 수치(1.6%)와 다릅니다. 불일치 유형: magnitude. (출처: 경제성장률(시도))"
+      "explanation": "기사의 2023년 한국의 경제성장률 1.4%는 KOSIS 공식 수치(1.6%)와 다릅니다. 불일치 유형: magnitude. (출처: 경제성장률(시도))"
     }
   ],
   "steps": [
@@ -35,79 +35,79 @@
       "name": "기사 내용 확인",
       "status": "done",
       "error": null,
+      "duration_ms": 10
+    },
+    {
+      "step": 2,
+      "name": "클레임 추출",
+      "status": "running",
+      "error": null,
+      "duration_ms": null
+    },
+    {
+      "step": 2,
+      "name": "클레임 추출",
+      "status": "done",
+      "error": null,
+      "duration_ms": 1881
+    },
+    {
+      "step": 3,
+      "name": "한국어 수사 산술로 변환",
+      "status": "running",
+      "error": null,
+      "duration_ms": null
+    },
+    {
+      "step": 3,
+      "name": "한국어 수사 산술로 변환",
+      "status": "done",
+      "error": null,
+      "duration_ms": 18
+    },
+    {
+      "step": 4,
+      "name": "KOSIS 통계표 n개 찾기",
+      "status": "running",
+      "error": null,
+      "duration_ms": null
+    },
+    {
+      "step": 4,
+      "name": "KOSIS 통계표 n개 찾기",
+      "status": "done",
+      "error": null,
+      "duration_ms": 1766
+    },
+    {
+      "step": 5,
+      "name": "KOSIS 셀 값 조회",
+      "status": "running",
+      "error": null,
+      "duration_ms": null
+    },
+    {
+      "step": 5,
+      "name": "KOSIS 셀 값 조회",
+      "status": "done",
+      "error": null,
+      "duration_ms": 3801
+    },
+    {
+      "step": 6,
+      "name": "증거 랭킹",
+      "status": "running",
+      "error": null,
+      "duration_ms": null
+    },
+    {
+      "step": 6,
+      "name": "증거 랭킹",
+      "status": "done",
+      "error": null,
       "duration_ms": 11
     },
     {
-      "step": 2,
-      "name": "클레임 추출",
-      "status": "running",
-      "error": null,
-      "duration_ms": null
-    },
-    {
-      "step": 2,
-      "name": "클레임 추출",
-      "status": "done",
-      "error": null,
-      "duration_ms": 2146
-    },
-    {
-      "step": 3,
-      "name": "한국어 수사 산술로 변환",
-      "status": "running",
-      "error": null,
-      "duration_ms": null
-    },
-    {
-      "step": 3,
-      "name": "한국어 수사 산술로 변환",
-      "status": "done",
-      "error": null,
-      "duration_ms": 16
-    },
-    {
-      "step": 4,
-      "name": "KOSIS 통계표 n개 찾기",
-      "status": "running",
-      "error": null,
-      "duration_ms": null
-    },
-    {
-      "step": 4,
-      "name": "KOSIS 통계표 n개 찾기",
-      "status": "done",
-      "error": null,
-      "duration_ms": 230
-    },
-    {
-      "step": 5,
-      "name": "KOSIS 셀 값 조회",
-      "status": "running",
-      "error": null,
-      "duration_ms": null
-    },
-    {
-      "step": 5,
-      "name": "KOSIS 셀 값 조회",
-      "status": "done",
-      "error": null,
-      "duration_ms": 1470
-    },
-    {
-      "step": 6,
-      "name": "증거 랭킹",
-      "status": "running",
-      "error": null,
-      "duration_ms": null
-    },
-    {
-      "step": 6,
-      "name": "증거 랭킹",
-      "status": "done",
-      "error": null,
-      "duration_ms": 13
-    },
-    {
       "step": 7,
       "name": "통계 수치 비교 판단",
       "status": "running",
@@ -119,7 +119,7 @@
       "name": "통계 수치 비교 판단",
       "status": "done",
       "error": null,
-      "duration_ms": 22
+      "duration_ms": 11
     },
     {
       "step": 8,
@@ -133,7 +133,7 @@
       "name": "통계수치와 문장의 정합성 판단",
       "status": "done",
       "error": null,
-      "duration_ms": 12
+      "duration_ms": 11
     },
     {
       "step": 9,
@@ -147,7 +147,7 @@
       "name": "종합 분석·검증 결과 생성",
       "status": "done",
       "error": null,
-      "duration_ms": 17
+      "duration_ms": 11
     },
     {
       "step": 10,
@@ -161,7 +161,7 @@
       "name": "설명 생성",
       "status": "done",
       "error": null,
-      "duration_ms": 14
+      "duration_ms": 11
     }
   ]
 }

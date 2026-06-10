@@ -71,6 +71,13 @@ EXTRACT_CLAIMS_SYSTEM = """\
 | 7 | verifiable | KOSIS 검증 가능하나 위 6가지 미해당 | 통계표로 확인 가능한 기타 수치 |
 | — | none | 7가지 유형 모두 미해당 | 검증 불가 주관적 표현 등 |
 
+## subject·population 분리 규칙
+- subject 에는 **측정 주제만** 적는다. 국가·지역 한정어("한국의/우리나라/대한민국의/전국")는
+  subject 에서 빼고 population 으로 보낸다.
+  예: "한국의 경제성장률" → subject="경제성장률", population="대한민국"
+- population 은 대상 집단을 표준형으로: 국가(한국) 단위면 "대한민국", 그 외엔 연령·성별·지역 등
+  구체값. "한국 전체/전국" 같은 표현 대신 "대한민국" 으로 적는다.
+
 통계 주장이 없으면 {"claims": []} 를 반환하세요.
 마크다운 없이 순수 JSON만 출력하세요.\
 """
@@ -83,12 +90,12 @@ EXTRACT_CLAIMS_USER = """\
   {{
     "sentence": "원문 문장",
     "claim_type": "absolute | change_rate | ratio | distribution | comparison | metaphoric | verifiable | none",
-    "subject": "통계 주제",
+    "subject": "통계 주제 (국가/지역 한정어 제외, 예: '한국의 경제성장률'→'경제성장률')",
     "value_raw": "수치 원문 (증가/감소 등 방향어 있으면 포함)",
     "unit": "측정 단위만 (%, %p, 명, 원, 억원 등). 퍼센트포인트는 '%p' 로 %와 반드시 구분",
     "period_raw": "시점 원문",
     "period_type": "Y 또는 M 또는 Q 또는 S 또는 D",
-    "population": "대상 집단",
+    "population": "대상 집단 (국가/지역/연령/성별 등; 한국 전체면 '대한민국')",
     "cited_source": "출처 (없으면 불명)"
   }}
 ]}}
