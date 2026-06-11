@@ -21,11 +21,13 @@ from dotenv import load_dotenv
 
 from src.pipeline.runner import Pipeline
 from src.pipeline.events import ResultEvent, StepEvent
+from src.pipeline.result_md import make_result_recorder
 
 load_dotenv()
 
 OUT_MD = Path(__file__).parent / "results" / "260610_1-10_full-pipeline_leeaain.md"
 OUT_JSON = OUT_MD.with_suffix(".json")
+STEP_TMP = OUT_MD.parent / "_step-bindings_tmp.md"  # 단계별 스키마 바인딩 임시 기록
 # DEFAULT_SENTENCE = "지난달인 2025년 3월의 전체 연령대 실업률은 3%대였다."
 DEFAULT_SENTENCE = "지난해(2023년) 한국의 경제성장률은 1.4%에 그쳤다."
 
@@ -33,7 +35,9 @@ DEFAULT_SENTENCE = "지난해(2023년) 한국의 경제성장률은 1.4%에 그�
 async def run(sentence: str):
     """Pipeline().run() 전 과정을 돌리고 (단계로그, master_schema) 반환."""
     steps, ms = [], None
-    async for ev in Pipeline().run(sentence):
+    # 단계별 스키마 바인딩 델타를 임시 md 에 기록(result.md 와 동일 포맷·모듈 재사용).
+    record_step = make_result_recorder(sentence, result_path=STEP_TMP)
+    async for ev in Pipeline().run(sentence, on_step=record_step):
         if isinstance(ev, StepEvent):
             steps.append({"step": ev.step, "name": ev.name, "status": ev.status,
                           "error": ev.error, "duration_ms": ev.duration_ms})
@@ -104,6 +108,11 @@ def main() -> None:
     print(f"입력 문장: {sentence}\n")
     steps, ms = asyncio.run(run(sentence))
     _save(sentence, steps, ms)
+    # 전 과정 스키마 바인딩 기록(result.md 포맷)을 md 가장 하단에 덧붙인다.
+    if STEP_TMP.exists():
+        with OUT_MD.open("a", encoding="utf-8") as f:
+            f.write("\n\n---\n\n" + STEP_TMP.read_text(encoding="utf-8"))
+        STEP_TMP.unlink()
     v = ms.verifications
     print(f"\noverall_verdict = {v.summary.overall_verdict if v else None}")
     if v:

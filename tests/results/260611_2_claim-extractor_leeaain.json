@@ -1,0 +1,2828 @@
+{
+  "module": "extract_statistical_claims",
+  "input": "benchmark/data/2_single_sentence_for_claim_extractor.jsonl",
+  "model": "HCX-007(hyperclova) temperature=0.0 max_tokens=2048 (EXTRACT_CLAIMS preset)",
+  "note": "detection P/R/F1 (non-NONE claim>=1 => positive). load_article 미사용.",
+  "n": 100,
+  "n_runs": 3,
+  "duration_s": 167.8,
+  "pred_flips_across_runs": [
+    44,
+    77
+  ],
+  "summary": {
+    "precision": {
+      "full": {
+        "mean": 0.8371,
+        "min": 0.8305,
+        "max": 0.8475
+      },
+      "strict": {
+        "mean": 0.9141,
+        "min": 0.9074,
+        "max": 0.9259
+      }
+    },
+    "recall": {
+      "full": {
+        "mean": 0.9933,
+        "min": 0.98,
+        "max": 1.0
+      },
+      "strict": {
+        "mean": 0.9933,
+        "min": 0.98,
+        "max": 1.0
+      }
+    },
+    "f1": {
+      "full": {
+        "mean": 0.9085,
+        "min": 0.8991,
+        "max": 0.9174
+      },
+      "strict": {
+        "mean": 0.9521,
+        "min": 0.9423,
+        "max": 0.9615
+      }
+    }
+  },
+  "runs": [
+    {
+      "run": 1,
+      "n_ok": 100,
+      "n_error": 0,
+      "full": {
+        "TP": 49,
+        "FP": 10,
+        "FN": 1,
+        "TN": 40,
+        "precision": 0.8305,
+        "recall": 0.98,
+        "f1": 0.8991
+      },
+      "strict": {
+        "TP": 49,
+        "FP": 5,
+        "FN": 1,
+        "TN": 31,
+        "precision": 0.9074,
+        "recall": 0.98,
+        "f1": 0.9423
+      },
+      "results": [
+        {
+          "id": 1,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 2,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 3,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 4,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 5,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 6,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 7,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 8,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 9,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 10,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 11,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 12,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 13,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 14,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 15,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 16,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 17,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 18,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 19,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 20,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 21,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 22,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 23,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 24,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 25,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 26,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 27,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 28,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 29,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 30,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 31,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 32,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 33,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 34,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 35,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 36,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 37,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 38,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 39,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 40,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 41,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 42,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 43,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 4,
+          "n_nonnone": 4,
+          "pred": "positive"
+        },
+        {
+          "id": 44,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 45,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 46,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 47,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 48,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 49,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 50,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 51,
+          "label": "negative",
+          "note": "발표 일정(월 나열)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 52,
+          "label": "negative",
+          "note": "정성 추세(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 53,
+          "label": "negative",
+          "note": "연도·사건 나열",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 54,
+          "label": "negative",
+          "note": "지표 정의(노년부양비)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 55,
+          "label": "negative",
+          "note": "법정 근로시간 기준",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 56,
+          "label": "negative",
+          "note": "물가 목표치(2%)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 57,
+          "label": "negative",
+          "note": "설문 표본 수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 58,
+          "label": "negative",
+          "note": "전문가 전망 인원수",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 59,
+          "label": "negative",
+          "note": "조사 방법 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 60,
+          "label": "negative",
+          "note": "조사 주간 날짜",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 61,
+          "label": "negative",
+          "note": "일정 앞당김(일수)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 62,
+          "label": "negative",
+          "note": "지원 자격 연령",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 63,
+          "label": "negative",
+          "note": "세대 라벨+정성",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 64,
+          "label": "negative",
+          "note": "물가 목표치(2%)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 65,
+          "label": "negative",
+          "note": "개인 발언(나이)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 66,
+          "label": "negative",
+          "note": "수치 포함범위 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 67,
+          "label": "negative",
+          "note": "수치 정의(합산 대상)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 68,
+          "label": "negative",
+          "note": "연령대 언급(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 69,
+          "label": "negative",
+          "note": "세대 라벨(출생연도)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 70,
+          "label": "negative",
+          "note": "표결 인원수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 71,
+          "label": "negative",
+          "note": "용어 정의(잠재성장률)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 72,
+          "label": "negative",
+          "note": "월 제외·비교(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 73,
+          "label": "negative",
+          "note": "통계 산정 기준 연령",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 74,
+          "label": "negative",
+          "note": "추세 주도층(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 75,
+          "label": "negative",
+          "note": "연령대 언급(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 76,
+          "label": "negative",
+          "note": "지표 정의(합계출산율)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 77,
+          "label": "negative",
+          "note": "취업자 수 순위(1위)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 78,
+          "label": "negative",
+          "note": "연령대 순위 변동",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 79,
+          "label": "negative",
+          "note": "연령대 순위 나열",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 80,
+          "label": "negative",
+          "note": "순위 변천",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 81,
+          "label": "negative",
+          "note": "세대/연령 라벨",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 82,
+          "label": "negative",
+          "note": "세대 라벨(출생연도)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 83,
+          "label": "negative",
+          "note": "지수 해석 기준(100)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 84,
+          "label": "negative",
+          "note": "근로자 용어 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 85,
+          "label": "negative",
+          "note": "전망 기관 수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 86,
+          "label": "negative",
+          "note": "향후 일정 예고",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 87,
+          "label": "negative",
+          "note": "경계: 전망·추정 비교",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 88,
+          "label": "negative",
+          "note": "경계: 전망 가정(1%대)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 89,
+          "label": "negative",
+          "note": "경계: 총재 견해 발언",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 90,
+          "label": "negative",
+          "note": "경계: 최상급·기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 91,
+          "label": "negative",
+          "note": "경계: 최상급·기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 92,
+          "label": "negative",
+          "note": "경계: IB 성장률 전망",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 93,
+          "label": "negative",
+          "note": "경계: IB 성장률 전망치",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 94,
+          "label": "negative",
+          "note": "경계: 최장 기록(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 95,
+          "label": "negative",
+          "note": "경계: 기록 기간(값 없음)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 96,
+          "label": "negative",
+          "note": "경계: 최대 기록 기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 97,
+          "label": "negative",
+          "note": "경계: 최장 기간(날짜)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 98,
+          "label": "negative",
+          "note": "경계: 연속·기간 비교",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 99,
+          "label": "negative",
+          "note": "경계: 연속·기록 기간",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 100,
+          "label": "negative",
+          "note": "경계: 동반 상승 최초",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "n_ok": 100,
+      "n_error": 0,
+      "full": {
+        "TP": 50,
+        "FP": 9,
+        "FN": 0,
+        "TN": 41,
+        "precision": 0.8475,
+        "recall": 1.0,
+        "f1": 0.9174
+      },
+      "strict": {
+        "TP": 50,
+        "FP": 4,
+        "FN": 0,
+        "TN": 32,
+        "precision": 0.9259,
+        "recall": 1.0,
+        "f1": 0.9615
+      },
+      "results": [
+        {
+          "id": 1,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 2,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 3,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 4,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 5,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 6,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 7,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 8,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 9,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 10,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 11,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 12,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 13,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 14,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 15,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 16,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 17,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 18,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 19,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 20,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 21,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 22,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 23,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 24,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 25,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 26,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 27,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 28,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 29,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 30,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 31,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 32,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 33,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 34,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 35,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 36,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 37,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 38,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 39,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 40,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 41,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 42,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 43,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 4,
+          "n_nonnone": 4,
+          "pred": "positive"
+        },
+        {
+          "id": 44,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 45,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 46,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 47,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 48,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 49,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 50,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 51,
+          "label": "negative",
+          "note": "발표 일정(월 나열)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 52,
+          "label": "negative",
+          "note": "정성 추세(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 53,
+          "label": "negative",
+          "note": "연도·사건 나열",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 54,
+          "label": "negative",
+          "note": "지표 정의(노년부양비)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 55,
+          "label": "negative",
+          "note": "법정 근로시간 기준",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 56,
+          "label": "negative",
+          "note": "물가 목표치(2%)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 57,
+          "label": "negative",
+          "note": "설문 표본 수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 58,
+          "label": "negative",
+          "note": "전문가 전망 인원수",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 59,
+          "label": "negative",
+          "note": "조사 방법 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 60,
+          "label": "negative",
+          "note": "조사 주간 날짜",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 61,
+          "label": "negative",
+          "note": "일정 앞당김(일수)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 62,
+          "label": "negative",
+          "note": "지원 자격 연령",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 63,
+          "label": "negative",
+          "note": "세대 라벨+정성",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 64,
+          "label": "negative",
+          "note": "물가 목표치(2%)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 65,
+          "label": "negative",
+          "note": "개인 발언(나이)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 66,
+          "label": "negative",
+          "note": "수치 포함범위 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 67,
+          "label": "negative",
+          "note": "수치 정의(합산 대상)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 68,
+          "label": "negative",
+          "note": "연령대 언급(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 69,
+          "label": "negative",
+          "note": "세대 라벨(출생연도)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 70,
+          "label": "negative",
+          "note": "표결 인원수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 71,
+          "label": "negative",
+          "note": "용어 정의(잠재성장률)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 72,
+          "label": "negative",
+          "note": "월 제외·비교(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 73,
+          "label": "negative",
+          "note": "통계 산정 기준 연령",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 74,
+          "label": "negative",
+          "note": "추세 주도층(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 75,
+          "label": "negative",
+          "note": "연령대 언급(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 76,
+          "label": "negative",
+          "note": "지표 정의(합계출산율)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 77,
+          "label": "negative",
+          "note": "취업자 수 순위(1위)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 78,
+          "label": "negative",
+          "note": "연령대 순위 변동",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 79,
+          "label": "negative",
+          "note": "연령대 순위 나열",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 80,
+          "label": "negative",
+          "note": "순위 변천",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 81,
+          "label": "negative",
+          "note": "세대/연령 라벨",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 82,
+          "label": "negative",
+          "note": "세대 라벨(출생연도)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 83,
+          "label": "negative",
+          "note": "지수 해석 기준(100)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 84,
+          "label": "negative",
+          "note": "근로자 용어 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 85,
+          "label": "negative",
+          "note": "전망 기관 수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 86,
+          "label": "negative",
+          "note": "향후 일정 예고",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 87,
+          "label": "negative",
+          "note": "경계: 전망·추정 비교",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 88,
+          "label": "negative",
+          "note": "경계: 전망 가정(1%대)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 89,
+          "label": "negative",
+          "note": "경계: 총재 견해 발언",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 90,
+          "label": "negative",
+          "note": "경계: 최상급·기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 91,
+          "label": "negative",
+          "note": "경계: 최상급·기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 92,
+          "label": "negative",
+          "note": "경계: IB 성장률 전망",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 93,
+          "label": "negative",
+          "note": "경계: IB 성장률 전망치",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 94,
+          "label": "negative",
+          "note": "경계: 최장 기록(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 95,
+          "label": "negative",
+          "note": "경계: 기록 기간(값 없음)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 96,
+          "label": "negative",
+          "note": "경계: 최대 기록 기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 97,
+          "label": "negative",
+          "note": "경계: 최장 기간(날짜)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 98,
+          "label": "negative",
+          "note": "경계: 연속·기간 비교",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 99,
+          "label": "negative",
+          "note": "경계: 연속·기록 기간",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 100,
+          "label": "negative",
+          "note": "경계: 동반 상승 최초",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "n_ok": 100,
+      "n_error": 0,
+      "full": {
+        "TP": 50,
+        "FP": 10,
+        "FN": 0,
+        "TN": 40,
+        "precision": 0.8333,
+        "recall": 1.0,
+        "f1": 0.9091
+      },
+      "strict": {
+        "TP": 50,
+        "FP": 5,
+        "FN": 0,
+        "TN": 31,
+        "precision": 0.9091,
+        "recall": 1.0,
+        "f1": 0.9524
+      },
+      "results": [
+        {
+          "id": 1,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 2,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 3,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 4,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 5,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 6,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 7,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 8,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 9,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 10,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 11,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 12,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 13,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 14,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 15,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 16,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 17,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 18,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 19,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 20,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 21,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 22,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 23,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 24,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 25,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 26,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 27,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 28,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 29,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 30,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 31,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 32,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 33,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 34,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 35,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 36,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 37,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 38,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 39,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 40,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 41,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 42,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 43,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 4,
+          "n_nonnone": 4,
+          "pred": "positive"
+        },
+        {
+          "id": 44,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 45,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 46,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 47,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 48,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 49,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 50,
+          "label": "positive",
+          "note": "",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 51,
+          "label": "negative",
+          "note": "발표 일정(월 나열)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 52,
+          "label": "negative",
+          "note": "정성 추세(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 53,
+          "label": "negative",
+          "note": "연도·사건 나열",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 54,
+          "label": "negative",
+          "note": "지표 정의(노년부양비)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 55,
+          "label": "negative",
+          "note": "법정 근로시간 기준",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 56,
+          "label": "negative",
+          "note": "물가 목표치(2%)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 57,
+          "label": "negative",
+          "note": "설문 표본 수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 58,
+          "label": "negative",
+          "note": "전문가 전망 인원수",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 59,
+          "label": "negative",
+          "note": "조사 방법 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 60,
+          "label": "negative",
+          "note": "조사 주간 날짜",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 61,
+          "label": "negative",
+          "note": "일정 앞당김(일수)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 62,
+          "label": "negative",
+          "note": "지원 자격 연령",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 63,
+          "label": "negative",
+          "note": "세대 라벨+정성",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 64,
+          "label": "negative",
+          "note": "물가 목표치(2%)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 65,
+          "label": "negative",
+          "note": "개인 발언(나이)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 66,
+          "label": "negative",
+          "note": "수치 포함범위 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 67,
+          "label": "negative",
+          "note": "수치 정의(합산 대상)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 68,
+          "label": "negative",
+          "note": "연령대 언급(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 69,
+          "label": "negative",
+          "note": "세대 라벨(출생연도)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 70,
+          "label": "negative",
+          "note": "표결 인원수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 71,
+          "label": "negative",
+          "note": "용어 정의(잠재성장률)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 72,
+          "label": "negative",
+          "note": "월 제외·비교(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 73,
+          "label": "negative",
+          "note": "통계 산정 기준 연령",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 74,
+          "label": "negative",
+          "note": "추세 주도층(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 75,
+          "label": "negative",
+          "note": "연령대 언급(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 76,
+          "label": "negative",
+          "note": "지표 정의(합계출산율)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 77,
+          "label": "negative",
+          "note": "취업자 수 순위(1위)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 78,
+          "label": "negative",
+          "note": "연령대 순위 변동",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 79,
+          "label": "negative",
+          "note": "연령대 순위 나열",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 80,
+          "label": "negative",
+          "note": "순위 변천",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 81,
+          "label": "negative",
+          "note": "세대/연령 라벨",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 82,
+          "label": "negative",
+          "note": "세대 라벨(출생연도)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 83,
+          "label": "negative",
+          "note": "지수 해석 기준(100)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 84,
+          "label": "negative",
+          "note": "근로자 용어 정의",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 85,
+          "label": "negative",
+          "note": "전망 기관 수",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 86,
+          "label": "negative",
+          "note": "향후 일정 예고",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 87,
+          "label": "negative",
+          "note": "경계: 전망·추정 비교",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 88,
+          "label": "negative",
+          "note": "경계: 전망 가정(1%대)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 89,
+          "label": "negative",
+          "note": "경계: 총재 견해 발언",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 90,
+          "label": "negative",
+          "note": "경계: 최상급·기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 91,
+          "label": "negative",
+          "note": "경계: 최상급·기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 92,
+          "label": "negative",
+          "note": "경계: IB 성장률 전망",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 93,
+          "label": "negative",
+          "note": "경계: IB 성장률 전망치",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 94,
+          "label": "negative",
+          "note": "경계: 최장 기록(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 95,
+          "label": "negative",
+          "note": "경계: 기록 기간(값 없음)",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 1,
+          "pred": "positive"
+        },
+        {
+          "id": 96,
+          "label": "negative",
+          "note": "경계: 최대 기록 기간(값 없음)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 97,
+          "label": "negative",
+          "note": "경계: 최장 기간(날짜)",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 98,
+          "label": "negative",
+          "note": "경계: 연속·기간 비교",
+          "error": null,
+          "n_total": 2,
+          "n_nonnone": 2,
+          "pred": "positive"
+        },
+        {
+          "id": 99,
+          "label": "negative",
+          "note": "경계: 연속·기록 기간",
+          "error": null,
+          "n_total": 1,
+          "n_nonnone": 0,
+          "pred": "negative"
+        },
+        {
+          "id": 100,
+          "label": "negative",
+          "note": "경계: 동반 상승 최초",
+          "error": null,
+          "n_total": 0,
+          "n_nonnone": 0,
+          "pred": "negative"
+        }
+      ]
+    }
+  ]
+}

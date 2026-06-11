@@ -76,6 +76,7 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
             EXTRACT_CLAIMS.model_name,
             messages,
             max_tokens=EXTRACT_CLAIMS.max_tokens,
+            temperature=EXTRACT_CLAIMS.temperature,
             json_structure=CLAIMS_SCHEMA,
         )
     except LlmError as e:

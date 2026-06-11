@@ -18,6 +18,7 @@ from src.prompts.prompts import CHECK_ALIGNMENT_SYSTEM, CHECK_ALIGNMENT_USER
 from src.schemas.runtime import (
     Claim,
     Evidence,
+    HitlCategory,
     MasterSchema,
     MetricResult,
     MismatchType,
@@ -68,6 +69,7 @@ async def check_alignment(master_schema: MasterSchema) -> None:
         claims[*], analysis[*].evidence        # 기사 주장 ↔ KOSIS 수치 의미
     Output(write):
         claim_results[*].metric 의 verdict(T→T/M/NEI)·mismatch_type·align_reason·align_source
+        LLM 판정 실패 시 추가로 claim_results[*] 의 needs_hitl/hitl_category(SYSTEM_FAILURE)/hitl_reason
 
     수치 일치(T)건만 LLM 으로 '기사가 수치를 오도/왜곡 없이 전달했나' 재판정한다.
     F/NEI 는 통과. 실패 시 raise → runner(개별 LLM 실패는 NEI 로 강등, raise 아님).
@@ -102,6 +104,15 @@ async def check_alignment(master_schema: MasterSchema) -> None:
 
     for cr, judgment in zip(targets, judgments):
         apply_alignment(cr.metric, judgment)
+        # LLM 판정 실패(judgment None) → 시스템 장애로 HITL 라우팅. needs_hitl/category 는
+        # ClaimResult 필드라 metric 만 받는 apply_alignment 가 아니라 여기서 cr 에 찍는다.
+        if judgment is None:
+            cr.needs_hitl = True
+            cr.hitl_category = HitlCategory.SYSTEM_FAILURE
+            cr.hitl_reason = (
+                (cr.hitl_reason + " | " if cr.hitl_reason else "")
+                + "시스템 장애: 정합성 LLM 판정 실패"
+            )
         # 상위 표시 필드 미러링(generate_explanation 등 하위호환).
         cr.verdict = cr.metric.verdict.value if cr.metric.verdict else cr.verdict
         cr.mismatch_type = (

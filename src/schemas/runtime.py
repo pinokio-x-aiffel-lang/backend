@@ -239,6 +239,17 @@ class MismatchType(str, Enum):
     AGGREGATION = "aggregation"  # 집계 방식 불일치(평균↔합계 등)
 
 
+class HitlCategory(str, Enum):
+    """HITL(사람 검토) 사유 분류 (ClaimResult.hitl_category).
+
+    needs_hitl=True 인 건의 라우팅 기준. 두 사유는 다운스트림 처리가 다르다:
+    데이터 모호는 라벨러 판단(재시도 무의미), 시스템 장애는 재시도/운영 대상.
+    """
+
+    DATA_AMBIGUITY = "data_ambiguity"   # [7] 1위 표 불일치인데 다른 표에 근사값 → 라벨러 판단
+    SYSTEM_FAILURE = "system_failure"   # [8] 정합성 LLM 판정 실패(네트워크/파싱) → 재시도/운영
+
+
 class MetricResult(BaseModel):
     """[7] calculate_metric — 주장 수치 ↔ KOSIS 공식 수치 비교 결과.
 
@@ -303,8 +314,9 @@ class ClaimResult(BaseModel):
     llm_model: str = ""
     evidence: list[Evidence] = Field(default_factory=list)
     metric: MetricResult | None = None  # [7] 비교 결과([8]이 보정). 미계산 시 None
-    # [7] HITL 라우팅: 1위 표는 불일치하나 다른 표에 근사값이 있어 사람 판단이 필요한 경우.
+    # HITL 라우팅: [7] 데이터 모호 / [8] 정합성 LLM 판정 실패(시스템 장애) 시 사람 검토 필요.
     needs_hitl: bool = False
+    hitl_category: HitlCategory | None = None  # 사유 분류(라우팅 기준); hitl_reason 은 사람용 설명
     hitl_reason: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)

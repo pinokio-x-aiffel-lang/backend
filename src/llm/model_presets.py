@@ -37,10 +37,12 @@ PREPROCESS = ModelPreset(
 )
 
 # 통계 주장 추출 (extract_statistical_claims)
+# 결정적 추출·평가 재현성을 위해 temperature 0 고정.
 EXTRACT_CLAIMS = ModelPreset(
     model_alias="hyperclova",
     model_name="HCX-007",
     max_tokens=2048,
+    temperature=0.0,
 )
 
 # 네이버 셀렉터 자동 복구 (src/article/naver/repair.py)

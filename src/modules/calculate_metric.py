@@ -7,6 +7,7 @@ from src.schemas.runtime import (
     ClaimResult,
     ClaimType,
     Evidence,
+    HitlCategory,
     MasterSchema,
     MetricResult,
     Verdict,
@@ -80,6 +81,8 @@ def _build_claim_result(claim: Claim, evidences: list[Evidence]) -> ClaimResult:
         metric=metric,
         evidence=list(evidences),  # [6] 정렬: [0]=1위 표
         needs_hitl=needs_hitl,
+        # 7단계의 유일한 HITL 트리거는 데이터 모호(1위 불일치+타 표 근사값).
+        hitl_category=HitlCategory.DATA_AMBIGUITY if needs_hitl else None,
         hitl_reason=hitl_reason,
     )
 

@@ -27,7 +27,7 @@ params = {
     "method": "getList",
     "format": "json",
     "apiKey": API_KEY,
-    "searchNm": "농가 고령 인구",
+    "searchNm": "취업자",
     "resultCount": 10,      # 최대 n개
 }
 
@@ -50,7 +50,7 @@ result = {
     "response": parsed,
 }
 
-out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "temp.json")
+out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "260608_4_kosis-search-table_leeaain.json")
 with open(out_path, "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
