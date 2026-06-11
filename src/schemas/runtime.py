@@ -354,6 +354,7 @@ class MasterSchema(BaseModel):
 
     content: str | None = Field(default=None, exclude=True)  # 원본 입력 (URL/본문)
     article: Article | None = None
+    sentences: list[str] = Field(default_factory=list)  # 검증 단위 원자 문장 ([2]에서 적재)
     claims: list[Claim] = Field(default_factory=list)
     analysis: list[ClaimAnalysis] = Field(default_factory=list)
     verifications: Verifications | None = None
