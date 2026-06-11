@@ -179,7 +179,10 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
     if by is None:
         return None
 
-    # 이전 계열
+    # 이전 계열 — 세부 패턴(동월·동기·분기·반기·말·초)을 포괄 연도 분기보다 먼저 매칭
+    if re.search(r"재작년|지지난\s*해", s):
+        return str(by - 2)
+
     m = re.search(r"(?:작년|전년|지난\s*해)\s*(\d{1,2})월", s)
     if m:
         return f"{by - 1}-{int(m.group(1)):02d}"
@@ -187,6 +190,28 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
     m = re.search(r"지난\s*(\d{1,2})월", s)
     if m:
         return f"{by}-{int(m.group(1)):02d}"
+
+    if re.search(r"(?:전년|작년|지난\s*해)\s*동월", s):
+        return f"{by - 1}-{bm:02d}" if bm else None
+
+    if re.search(r"(?:전년|작년|지난\s*해)\s*동기", s):
+        return f"{by - 1}-Q{(bm - 1) // 3 + 1}" if bm else None
+
+    m = re.search(r"(?:작년|전년|지난\s*해)\s*([1-4])분기", s)
+    if m:
+        return f"{by - 1}-Q{m.group(1)}"
+
+    if re.search(r"(?:작년|전년|지난\s*해)\s*상반기", s):
+        return f"{by - 1}-H1"
+
+    if re.search(r"(?:작년|전년|지난\s*해)\s*하반기", s):
+        return f"{by - 1}-H2"
+
+    if re.search(r"(?:작년|전년|지난\s*해)\s*말", s):
+        return f"{by - 1}-12"
+
+    if re.search(r"(?:작년|전년|지난\s*해)\s*초", s):
+        return f"{by - 1}-01"
 
     if re.search(r"전년|작년|지난\s*해|전년도|전해", s):
         return str(by - 1)
@@ -201,14 +226,16 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
         y, q = (by - 1, 4) if q == 1 else (by, q - 1)
         return f"{y}-Q{q}"
 
-    # 동월/동기
-    if re.search(r"(?:전년|작년|지난\s*해)\s*동월", s):
-        return f"{by - 1}-{bm:02d}" if bm else None
+    # 현재 계열 — 세부(올해 N월·N분기)를 포괄 연도 분기보다 먼저 매칭
+    m = re.search(r"(?:올해|금년|당해|이번\s*해|올)\s*(\d{1,2})월", s)
+    if m:
+        return f"{by}-{int(m.group(1)):02d}"
 
-    if re.search(r"(?:전년|작년|지난\s*해)\s*동기", s):
-        return f"{by - 1}-Q{(bm - 1) // 3 + 1}" if bm else None
+    # 연도 없는 N분기(1분기·올 1분기·지난 1분기) — 절대·작년 분기는 위에서 이미 처리됨
+    m = re.search(r"([1-4])\s*분기", s)
+    if m:
+        return f"{by}-Q{m.group(1)}"
 
-    # 현재 계열
     if re.search(r"올해|금년|당해|이번\s*해|금해", s):
         return str(by)
 
@@ -254,8 +281,6 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
     m = re.search(r"(\d{4})년\s*말", s)
     if m:
         return f"{m.group(1)}-12"
-    if re.search(r"(?:작년|전년|지난\s*해)\s*말", s):
-        return f"{by - 1}-12"
     if re.search(r"(?:올해|금년|당해|이번\s*해)\s*말|연말", s):
         return f"{by}-12"
 
@@ -264,8 +289,6 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
         return f"{m.group(1)}-01"
     if re.search(r"(?:올해|금년|당해|이번\s*해)\s*초|연초", s):
         return f"{by}-01"
-    if re.search(r"(?:작년|전년|지난\s*해)\s*초", s):
-        return f"{by - 1}-01"
 
     return None  # 패턴 미매칭 → LLM 폴백
 
@@ -324,11 +347,30 @@ async def _resolve_value(raw: str) -> str:
     return result
 
 
+_ABS_YEAR = re.compile(r"\d{4}")
+_NEEDS_MONTH = re.compile(r"달|월|분기|반기")
+_DAY_ONLY = re.compile(r"\d{1,2}\s*일")
+
+
+def _llm_fallback_allowed(raw: str, base: str) -> bool:
+    """base 부족·표현 불가 시점은 LLM 폴백 차단 — 그럴듯한 환각 채택 방지."""
+    if _ABS_YEAR.search(raw):
+        return True                          # 절대 연도 포함 → base 불필요
+    by, bm = _parse_base(base)
+    if by is None:
+        return False                         # 상대 표현인데 기준 연도 없음
+    if bm is None and _NEEDS_MONTH.search(raw):
+        return False                         # 월 단위 해소 필요한데 기준 월 없음
+    if _DAY_ONLY.search(raw) and not _NEEDS_MONTH.search(raw):
+        return False                         # 일 단위 — 표준 형식(Y/M/Q/H)으로 표현 불가
+    return True
+
+
 async def _resolve_period(raw: str, base: str) -> str:
     result = _normalize_period(raw, base)
-    if result is None:
+    if result is None and _llm_fallback_allowed(raw, base):
         result = await _llm_normalize_period(raw, base)
-    return result
+    return result if result is not None else raw
 
 
 # ── 엔트리포인트 ──────────────────────────────────────────────────────────────
