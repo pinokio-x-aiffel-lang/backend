@@ -328,6 +328,9 @@ class VerificationSummary(BaseModel):
     total_claims: int
     overall_verdict: str
     average_confidence: float
+    # [10] generate_explanation 이 claim별 결과를 종합해 LLM 으로 생성하는 기사 단위 총평.
+    # LLM 실패 시 결정적 템플릿 총평으로 폴백한다. 미생성 시 "".
+    overall_opinion: str = ""
 
     model_config = ConfigDict(populate_by_name=True)
 
