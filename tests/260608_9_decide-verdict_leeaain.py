@@ -32,7 +32,7 @@ def _make_claim() -> Claim:
         claim_id="clm-0001",
         article_id="a1",
         sentence="2024년 합계출산율은 0.72명이다.",
-        claim_type=ClaimType.OTHER,
+        claim_type=ClaimType.ABSOLUTE,
         subject="합계출산율",
         value=ValueSlot(raw="0.72명", llm_value="0.72", is_inferred=False),
         unit="명",
@@ -49,7 +49,7 @@ def _make_analysis(evidence: Evidence | None) -> ClaimAnalysis:
         claim_id="clm-0001",
         kosis_search=KosisSearch(api="s", query="q", params="p", hits=0, success=0, duration_ms=1),
         kosis_query=KosisQuery(api="d", tbl_id="T1", params="p", rows_returned=0, success=0, duration_ms=1),
-        evidence=evidence,
+        evidences=[evidence] if evidence is not None else [],
     )
 
 
