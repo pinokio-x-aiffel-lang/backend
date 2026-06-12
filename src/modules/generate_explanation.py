@@ -15,7 +15,19 @@ class GenerateExplanationError(Exception):
 
 
 # verdict 코드 → 사람용 라벨. 종합 의견 입력·폴백 총평 공용.
-_VERDICT_LABEL = {"T": "일치", "F": "불일치", "M": "검토 필요", "N": "검증 불가"}
+_VERDICT_LABEL = {"T": "일치", "F": "불일치", "M": "검토필요", "N": "검증불가"}
+
+# mismatch_type(영문 코드) → 한국어 사유. 종합 의견 입력에서 jargon 노출 방지.
+_MISMATCH_LABEL = {
+    "magnitude": "값 크기 차이",
+    "rounding": "반올림 경계",
+    "direction": "증감 방향 차이",
+    "unit": "단위 불일치",
+    "period": "기간 불일치",
+    "population": "모집단 차이",
+    "subject": "측정 주제 차이",
+    "aggregation": "집계 방식 차이",
+}
 
 
 def _has_batchim(text: str) -> bool:
@@ -112,18 +124,34 @@ def _count_verdicts(results: list[ClaimResult]) -> dict[str, int]:
 
 
 def _claim_line(result: ClaimResult, claim: Claim | None) -> str:
-    """종합 의견 LLM 입력용 주장 1건 요약 한 줄."""
+    """종합 의견 LLM 입력용 주장 1건 요약 한 줄. verdict 라벨을 맨 앞에 두고,
+    수치 일치 여부를 =/≠ 로 못 박는다. 특히 검토필요(M)는 '수치는 일치하나
+    해석 오도'임을 명시해 불일치(F=수치 자체가 틀림)와 섞이지 않게 한다.
+    예: '[검토필요] 2024년 주당 평균 근로시간: 기사 38.8시간 = 공식 38.8시간
+        (수치는 일치하나 모집단 차이로 표현 오도)'"""
     subject = claim.subject if claim else "해당 지표"
     unit = (claim.unit if claim else "") or ""
     period_str = (
         _format_period(claim.period_type, claim.period_value.llm_value).strip()
         if claim else ""
     )
-    label = _VERDICT_LABEL.get(result.verdict, "검증 불가")
-    kosis = f"{result.kosis_value}{unit}" if result.kosis_value is not None else "없음"
-    mismatch = f", 불일치 유형 {result.mismatch_type}" if result.mismatch_type else ""
+    label = _VERDICT_LABEL.get(result.verdict, "검증불가")
     head = f"{period_str} {subject}".strip()
-    return f"- {head}: 기사 {result.claim_value}{unit} / KOSIS {kosis} → {label}{mismatch}"
+    cv = f"{result.claim_value}{unit}"
+    kv = f"{result.kosis_value}{unit}" if result.kosis_value is not None else None
+    reason = _MISMATCH_LABEL.get(result.mismatch_type or "", "")
+
+    if result.verdict == "T":
+        body = f"기사 {cv} = 공식 {kv} (수치 일치)"
+    elif result.verdict == "F":
+        why = f"수치 불일치, {reason}" if reason else "수치 불일치"
+        body = f"기사 {cv} ≠ 공식 {kv} ({why})"
+    elif result.verdict == "M":
+        why = f"수치는 일치하나 {reason}로 표현 오도" if reason else "수치는 일치하나 표현 오도"
+        body = f"기사 {cv} = 공식 {kv} ({why})"
+    else:  # N — 검증 불가
+        body = f"기사 {cv}, 공식 통계 없음 (검증 불가)"
+    return f"[{label}] {head}: {body}"
 
 
 def _fallback_opinion(counts: dict[str, int], total: int) -> str:
@@ -145,17 +173,9 @@ def _fallback_opinion(counts: dict[str, int], total: int) -> str:
     return dist + tail
 
 
-def _dominant_label(counts: dict[str, int]) -> str:
-    """분포에서 가장 심각한 verdict 의 한국어 라벨(F>M>N>T). 옛 overall_verdict 라벨 대체."""
-    for code in ("F", "M", "N", "T"):
-        if counts.get(code):
-            return _VERDICT_LABEL.get(code, "검증 불가")
-    return "검증 불가"
-
-
 async def _generate_opinion(
     results: list[ClaimResult], claim_map: dict[str, Claim],
-    counts: dict[str, int],
+    counts: dict[str, int], confidence: float,
 ) -> str | None:
     """claim별 결과 요약을 근거로 기사 단위 종합 의견을 LLM 생성. 실패 시 None."""
     claim_lines = "\n".join(_claim_line(r, claim_map.get(r.claim_id)) for r in results)
@@ -167,7 +187,7 @@ async def _generate_opinion(
                 total=len(results),
                 n_true=counts["T"], n_false=counts["F"],
                 n_review=counts["M"], n_nei=counts["N"],
-                overall=_dominant_label(counts),
+                confidence=f"{round(confidence * 100)}%",
                 claim_lines=claim_lines,
             ),
         },
@@ -215,10 +235,11 @@ async def generate_explanation(master_schema: MasterSchema) -> None:
         result.explanation = _build_explanation(result, claim_map.get(result.claim_id))
 
     # 2) 기사 단위 종합 의견 (LLM, 실패 시 결정적 폴백)
+    #    분포는 [9] decide_verdict 가 확정한 verdict_counts 를 우선 사용([9] 미실행 시 폴백).
     summary = master_schema.verifications.summary
-    counts = _count_verdicts(results)
+    counts = summary.verdict_counts or _count_verdicts(results)
     if not results:
         summary.overall_opinion = _fallback_opinion(counts, 0)
         return
-    opinion = await _generate_opinion(results, claim_map, counts)
+    opinion = await _generate_opinion(results, claim_map, counts, summary.overall_confidence)
     summary.overall_opinion = opinion or _fallback_opinion(counts, len(results))

@@ -27,7 +27,7 @@ from src.schemas.runtime import (
 )
 
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
-STEM = "260612_10_generate-explanation_innnn"
+STEM = "260612_10_generate-explanation_innnn_02"  # _02: M 뉘앙스(수치 일치=/≠) 강화 후 재실행
 
 
 def _vs(raw: str, llm: str) -> ValueSlot:
@@ -90,8 +90,14 @@ def _build_master() -> MasterSchema:
             evidence=[],
         ),
     ]
+    # [9] decide_verdict 산출물 모사: 분포·지표를 직접 채운다(verdict_counts 배선 검증).
+    counts = {"T": 1, "F": 1, "M": 1, "N": 1}
+    resolved = counts["T"] + counts["F"] + counts["M"]
     summary = VerificationSummary(
-        total_claims=len(results), overall_verdict="F", average_confidence=0.0,
+        total_claims=len(results),
+        verdict_counts=counts,
+        overall_confidence=counts["T"] / resolved,   # T/(T+F+M)
+        coverage=resolved / len(results),
     )
     return MasterSchema(
         claims=claims,
@@ -106,7 +112,9 @@ async def _run() -> dict:
     return {
         "stem": STEM,
         "ran_at": datetime.now(timezone.utc).isoformat(),
-        "overall_verdict": v.summary.overall_verdict,
+        "verdict_counts": v.summary.verdict_counts,
+        "overall_confidence": v.summary.overall_confidence,
+        "coverage": v.summary.coverage,
         "overall_opinion": v.summary.overall_opinion,
         "claim_results": [
             {
@@ -132,7 +140,8 @@ def _write_md(data: dict) -> str:
         "4. **일자/작성자**: 2026-06-12 / innnn",
         "",
         f"- 원자료(JSON): `tests/results/{STEM}.json`",
-        f"- overall_verdict: **{data['overall_verdict']}**",
+        f"- verdict_counts: **{data['verdict_counts']}** / 사실 비율(overall_confidence): "
+        f"**{round(data['overall_confidence'] * 100)}%**",
         "",
         "## 기사 단위 종합 의견 (LLM)",
         "",
