@@ -145,9 +145,17 @@ def _fallback_opinion(counts: dict[str, int], total: int) -> str:
     return dist + tail
 
 
+def _dominant_label(counts: dict[str, int]) -> str:
+    """분포에서 가장 심각한 verdict 의 한국어 라벨(F>M>N>T). 옛 overall_verdict 라벨 대체."""
+    for code in ("F", "M", "N", "T"):
+        if counts.get(code):
+            return _VERDICT_LABEL.get(code, "검증 불가")
+    return "검증 불가"
+
+
 async def _generate_opinion(
     results: list[ClaimResult], claim_map: dict[str, Claim],
-    counts: dict[str, int], overall_verdict: str,
+    counts: dict[str, int],
 ) -> str | None:
     """claim별 결과 요약을 근거로 기사 단위 종합 의견을 LLM 생성. 실패 시 None."""
     claim_lines = "\n".join(_claim_line(r, claim_map.get(r.claim_id)) for r in results)
@@ -159,7 +167,7 @@ async def _generate_opinion(
                 total=len(results),
                 n_true=counts["T"], n_false=counts["F"],
                 n_review=counts["M"], n_nei=counts["N"],
-                overall=_VERDICT_LABEL.get(overall_verdict, "검증 불가"),
+                overall=_dominant_label(counts),
                 claim_lines=claim_lines,
             ),
         },
@@ -212,5 +220,5 @@ async def generate_explanation(master_schema: MasterSchema) -> None:
     if not results:
         summary.overall_opinion = _fallback_opinion(counts, 0)
         return
-    opinion = await _generate_opinion(results, claim_map, counts, summary.overall_verdict)
+    opinion = await _generate_opinion(results, claim_map, counts)
     summary.overall_opinion = opinion or _fallback_opinion(counts, len(results))

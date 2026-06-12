@@ -56,8 +56,7 @@ async def calculate_metric(master_schema: MasterSchema) -> None:
     master_schema.verifications = Verifications(
         summary=VerificationSummary(
             total_claims=len(claim_results),
-            overall_verdict="UNVERIFIED",  # [9] decide_verdict 에서 확정
-            average_confidence=0.0,
+            # 분포·신뢰도·검증률은 [9] decide_verdict 에서 확정 (여기선 기본값).
         ),
         claim_results=claim_results,
     )
