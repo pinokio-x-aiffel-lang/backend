@@ -1,0 +1,2579 @@
+# 3_normalize_claim_100_source.jsonl 파일을 3단계 모듈에 통과시킨 것
+{
+  "desc": "[2]extract_statistical_claims → [3]normalize_claim 파이프라인 결과 (100 실문장)",
+  "input": "benchmark/data/3_normalize_claim_100_gold.jsonl",
+  "base": "gold 의 작성일을 article.published_at 로 주입",
+  "n_sentences": 100,
+  "duration_s": 65.6,
+  "results": [
+    {
+      "id": 1,
+      "sentence": "9일 통계청이 발표한 ‘3월 고용동향’에 따르면, 지난 3월 취업자 수는 2858만9000명으로 전년 동월 대비 19만3000명 증가했다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "19만3000명 증가",
+            "llm_value": "19300000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난 3월",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "sentence": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "소비자물가지수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.2%",
+            "llm_value": "2.2"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "sentence": "통계청이 14일 발표한 ‘4월 고용 동향’에 따르면, 지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 늘었다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "19만4000명",
+            "llm_value": "194000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "작년 4월",
+            "llm_value": "2024-04"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "sentence": "지난달 석유류 가격은 7.3% 증가했는데, 지난해 7월(8.4%) 이후 7개월 만에 최대 상승폭이다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "석유류 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "7.3%",
+            "llm_value": "7.3"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "sentence": "고령 돌봄 수요 확대 등에 따라 지난달 보건·사회복지서비스업 취업자 수는 323만4000명으로 전년 동월 대비 21만6000명 증가했다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "보건·사회복지서비스업 취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "21만6000명 증가",
+            "llm_value": "21600000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "sentence": "고령 돌봄 수요 확대 등에 따라 지난달 보건·사회복지서비스업 취업자 수는 323만4000명으로 전년 동월 대비 21만6000명 증가했다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "보건·사회복지서비스업 취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "21만6000명 증가",
+            "llm_value": "21600000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "sentence": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업은 지난달 취업자 수가 441만4000명으로 전년 동월 대비 8만3000명 줄었다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "8만3000명",
+            "llm_value": "83000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "sentence": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업은 지난달 취업자 수가 441만4000명으로 전년 동월 대비 8만3000명 줄었다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "8만3000명",
+            "llm_value": "83000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "sentence": "지난달 건설업 취업자 수도 196만명으로 전년 동월 대비 9만7000명 감소하며 200만명을 밑돌았다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "건설업 취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "9만7000명 감소",
+            "llm_value": "97000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "sentence": "지난달 건설업 취업자 수도 196만명으로 전년 동월 대비 9만7000명 감소하며 200만명을 밑돌았다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "건설업 취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "9만7000명 감소",
+            "llm_value": "97000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "sentence": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "소비자물가지수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.2%",
+            "llm_value": "2.2"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "sentence": "지난달 가공식품 물가는 전년 동월 대비 2.9% 올랐는데, 지난해 1월(3.2%) 이후 13개월 만에 최대 상승폭이다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "가공식품 물가",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.9%",
+            "llm_value": "2.9"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "sentence": "일할 의사가 있지만 취업하지 못한 청년 실업자는 지난달 28만9000명으로 2023년 3월(30만명) 이후 2년 만에 가장 많았다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "청년 실업자 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "28만9000명",
+            "llm_value": "289000000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "sentence": "지난달 청년층 고용률은 44.3%에 그치며 전년 같은 달 대비 1.7%포인트 감소했다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "청년층 고용률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "1.7%p 감소",
+            "llm_value": "-1.7"
+          },
+          "unit": "%p",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "sentence": "16일 통계청이 발표한 ‘2025년 6월 고용동향’에 따르면, 지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 대비 18만3000명 늘었다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "18만3000명",
+            "llm_value": "183000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2025년 6월",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "sentence": "16일 통계청이 발표한 ‘2025년 6월 고용동향’에 따르면, 지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 대비 18만3000명 늘었다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "18만3000명",
+            "llm_value": "183000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2025년 6월",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "sentence": "15일 통계청이 발표한 ‘2024년 12월 및 연간 고용 동향’에 따르면, 지난달 취업자 수는 2804만1000명으로 전년 동월 대비 5만2000명 감소했다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "5만2000명 감소",
+            "llm_value": "52000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2024년 12월",
+            "llm_value": "2024-12"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "sentence": "15일 통계청이 발표한 ‘2024년 12월 및 연간 고용 동향’에 따르면, 지난달 취업자 수는 2804만1000명으로 전년 동월 대비 5만2000명 감소했다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "5만2000명 감소",
+            "llm_value": "52000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2024년 12월",
+            "llm_value": "2024-12"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "sentence": "14일 통계청이 발표한 ‘1월 고용동향’에 따르면, 지난달 취업자 수는 2787만8000명으로 1년 전(2774만3000명)보다 13만5000명 늘었다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "13만5000명",
+            "llm_value": "135000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "1월",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "sentence": "14일 통계청이 발표한 ‘1월 고용동향’에 따르면, 지난달 취업자 수는 2787만8000명으로 1년 전(2774만3000명)보다 13만5000명 늘었다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "취업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "13만5000명",
+            "llm_value": "135000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "1월",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "sentence": "6일 통계청이 발표한 ‘2월 소비자물가 동향’에 따르면, 지난달 소비자물가지수는 116.08로 전년 동월 대비 2% 상승했다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "소비자물가지수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2%",
+            "llm_value": "2.0"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2월",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "sentence": "지난달 석유류 가격은 전년 동월 대비 6.3% 올라, 1월(7.3%)에 이어 두 달 연속으로 5% 이상의 상승폭을 보였다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "석유류 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "6.3%",
+            "llm_value": "6.3"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "sentence": "28일 통계청이 발표한 ‘3월 인구 동향’에 따르면, 지난 1분기(1~3월) 합계출산율은 0.82명으로 1년 전(0.77명)보다 0.05명 증가했다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "합계출산율",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "0.05명 증가",
+            "llm_value": "해당 요청에는 증감을 나타내는 표현이므로, 숫자 변환이 불가능합니다.\n\n결과: \"\""
+          },
+          "unit": "명",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "지난 1분기(1~3월)",
+            "llm_value": "지난 1분기(1~3월)"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "sentence": "28일 통계청이 발표한 ‘3월 인구 동향’에 따르면, 지난 1분기(1~3월) 합계출산율은 0.82명으로 1년 전(0.77명)보다 0.05명 증가했다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "합계출산율",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "0.05명 증가",
+            "llm_value": "해당 요청에는 증감을 나타내는 표현이므로, 숫자 변환이 불가능합니다.\n\n결과: \"\""
+          },
+          "unit": "명",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "지난 1분기(1~3월)",
+            "llm_value": "지난 1분기(1~3월)"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "sentence": "1분기 출생아 수는 6만5022명으로 1년 전(6만568명)보다 7.4% 늘었다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "출생아 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "7.4%",
+            "llm_value": "7.4"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "1분기",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "sentence": "1분기 출생아 수는 6만5022명으로 1년 전(6만568명)보다 7.4% 늘었다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "출생아 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "7.4%",
+            "llm_value": "7.4"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "1분기",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "sentence": "국가데이터처가 22일 발표한 '2025년 8월 경제활동인구조사 근로형태별 부가조사'에 따르면, 지난 8월 기준 비정규직 근로자는 856만8000명으로 전년 동월 대비 11만 명 증가했다.",
+      "base": "2025-09",
+      "error": null,
+      "claims": [
+        {
+          "subject": "비정규직 근로자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "856만8000명",
+            "llm_value": "8560000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2025년 8월",
+            "llm_value": "2025-08"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "sentence": "국가데이터처가 22일 발표한 '2025년 8월 경제활동인구조사 근로형태별 부가조사'에 따르면, 지난 8월 기준 비정규직 근로자는 856만8000명으로 전년 동월 대비 11만 명 증가했다.",
+      "base": "2025-09",
+      "error": null,
+      "claims": [
+        {
+          "subject": "비정규직 근로자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "856만8000명",
+            "llm_value": "8560000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2025년 8월",
+            "llm_value": "2025-08"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "sentence": "12일 국가데이터처(구 통계청)에 따르면 지난해 20대 인구는 630만2000명으로, 전년보다 19만3000명 줄었다.",
+      "base": "2025-10",
+      "error": null,
+      "claims": [
+        {
+          "subject": "20대 인구",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "630만2000명",
+            "llm_value": "6300000"
+          },
+          "unit": "명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "sentence": "12일 국가데이터처(구 통계청)에 따르면 지난해 20대 인구는 630만2000명으로, 전년보다 19만3000명 줄었다.",
+      "base": "2025-10",
+      "error": null,
+      "claims": [
+        {
+          "subject": "20대 인구",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "630만2000명",
+            "llm_value": "6300000"
+          },
+          "unit": "명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "sentence": "7일 농림축산식품부에 따르면, 지난해 K푸드+ 수출액은 130억3000만달러로 1년 전보다 6.1% 증가한 역대 최고치를 기록했다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "K푸드+ 수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "6.1% 증가",
+            "llm_value": "+6.1"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "sentence": "현대모비스는 2023년 해외 수주액이 92억 2000만달러(약 14조원)로 전체의 10% 안팎이었는데, 이 비중을 2033년까지 40%로 늘린다는 계획이다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "해외 수주액",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "92억 2000만달러",
+            "llm_value": "92200000000"
+          },
+          "unit": "달러",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2023년",
+            "llm_value": "2023"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "sentence": "13일 관세청이 발표한 올해 1월 1일~10일 수출입현황에 따르면, 수출은 160억400만달러로 전년 같은 기간보다 3.8% 늘었다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3.8%",
+            "llm_value": "3.8"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "올해 1월 1일~10일",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "sentence": "올해부터 기여금 지원이 강화돼 기존 월 최대 2만4000원에서 3만3000원으로 9000원 증가했다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "기여금 지원 금액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "9000원 증가",
+            "llm_value": "빈 문자열"
+          },
+          "unit": "원",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "올해",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "sentence": "이날 발표된 지난해 일본 소비자물가지수(신선식품 제외)는 전년 대비 2.5% 올라, 3년 연속 2% 이상 상승세를 이어갔다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "소비자물가지수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.5%",
+            "llm_value": "2.5"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "sentence": "30일 서울시 상권분석 서비스에 따르면, 코로나 팬데믹 이전인 2019년 6월말 1만2716개였던 서울시내 호프·간이주점 수는 지난해 같은 기간 8220개로 35%쯤 줄었다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "서울시내 호프·간이주점 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "35%",
+            "llm_value": "35.0"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난해 같은 기간",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "sentence": "5일 금융권에 따르면 KB·신한·하나·우리은행 등 4대 은행의 1월 말 중소기업 대출 잔액은 541조7801억원으로, 작년 말과 비교해 한 달 동안 2290억원 줄었다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "중소기업 대출 잔액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2290억원",
+            "llm_value": "22900000000"
+          },
+          "unit": "억원",
+          "period_type": "M",
+          "period_value": {
+            "raw": "작년 말과 비교해 한 달 동안",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "sentence": "17일 임광현 더불어민주당 의원과 기획재정부에 따르면, 지난해 근로소득세 수입은 61조원으로 전년보다 3.1%(1조9000억원) 증가했다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "근로소득세 수입",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3.1%",
+            "llm_value": "3.1"
+          },
+          "unit": "%p",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "sentence": "한국철강협회에 따르면, 중국산 후판 수입량은 2021년 44만6000t에서 2024년 138만1000t가량으로 최근 3년 새 3배 이상으로 늘었다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "후판 수입량",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3배 이상 증가",
+            "llm_value": "해당 요청에는 증감을 나타내는 표현이므로, 숫자 변환이 불가능합니다.\n\n결과: \"\""
+          },
+          "unit": "불명",
+          "period_type": "S",
+          "period_value": {
+            "raw": "최근 3년",
+            "llm_value": "최근 3년"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "sentence": "작년 벤츠는 전기차(BEV) 판매량(18.5만대)이 재작년 대비 23% 급감한 반면, 내연차 판매는 2% 정도만 줄었다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "전기차 판매량",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "23%",
+            "llm_value": "23.0"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "작년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "내연차 판매",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2%",
+            "llm_value": "2.0"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "작년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "sentence": "2월엔 전월보다 7포인트 내려, 3년 6개월 만에 가장 큰 하락 폭을 보였다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "실업률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "7포인트",
+            "llm_value": "0.7"
+          },
+          "unit": "%p",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2월",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "sentence": "미국은 중국산 수입품에 지난달 10%의 관세를 추가로 부과한 데 이어 이달 들어 10%를 더 붙였고, 중국도 보복관세로 미국산 농산물에 10~15% 관세를 부과하기로 했다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "관세",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "10%",
+            "llm_value": "10.0"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달, 이달",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "sentence": "2021년 5430억원까지 간 매출은 3년 만에 38%가 줄었다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "매출",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "38%",
+            "llm_value": "38.0"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2021년",
+            "llm_value": "2021"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "sentence": "27일 통계청은 ‘2024년 3분기 생활 인구 산정 결과’에서 작년 8월 강원도 내 인구 감소 지역에 해당하는 12개 시·군·구의 체류 인구는 562만4000명으로, 지역에 거주하는 내·외국인 등록 인구(47만7000명)의 11.8배에 달했다고 밝혔다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "체류 인구 대비 내·외국인 등록 인구",
+          "claim_type": "ratio",
+          "value": {
+            "raw": "11.8배",
+            "llm_value": "11.8"
+          },
+          "unit": "배",
+          "period_type": "M",
+          "period_value": {
+            "raw": "작년 8월",
+            "llm_value": "2024-08"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "sentence": "다만 1분기(1~3월) 누적으로는 중국이 49%의 점유율로 한국(27%)을 여전히 앞서고 있다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "점유율",
+          "claim_type": "distribution",
+          "value": {
+            "raw": "49%",
+            "llm_value": "49.0"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "1분기(1~3월)",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "sentence": "6일 통계청의 인구 동향 통계에 따르면, 작년 대전의 일반 혼인율(남녀 인구 1000명당 혼인 건수)은 남성 12.6건, 여성 12.4건으로 전년 대비 모두 4.3건씩 늘었다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "일반 혼인율",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "4.3건",
+            "llm_value": "4.3"
+          },
+          "unit": "건",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "작년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "sentence": "9일 통계청은 ‘3월 고용 동향’에서 지난달 15~29세 청년 실업자는 28만9000명으로 전년 동월 대비 2만6000명 늘었다고 밝혔다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "청년 실업자 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2만6000명",
+            "llm_value": "26000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "sentence": "올 들어 주요 6개 통화에 대한 달러 가치를 표시하는 달러인덱스가 가장 높았던 1월 13일과 이달 15일을 비교해 보면 달러 가치는 9.4% 하락했다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "달러 가치",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "9.4%",
+            "llm_value": "9.4"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "1월 13일~이달 15일",
+            "llm_value": "2025-04"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "sentence": "21일 관세청에 따르면, 이달 1~20일 수출액은 339억 달러로 지난해 같은 기간 대비 5.2% 감소했다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "5.2% 감소",
+            "llm_value": "-5.2"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "이달 1~20일",
+            "llm_value": "2025-04"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "sentence": "또 작년 하반기 월급이 100만~300만원인 중하위 직장인 수는 931만7000명으로 전년 동기 대비 54만5000명 줄었다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "중하위 직장인 수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "54만5000명",
+            "llm_value": "54500000"
+          },
+          "unit": "명",
+          "period_type": "M",
+          "period_value": {
+            "raw": "작년 하반기",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "sentence": "분기 매출은 1704억위안(약 33조6000억원)으로 1249억위안을 기록한 작년보다 36.4% 증가했다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "매출",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "36.4%",
+            "llm_value": "36.4"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "작년 분기 대비",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "sentence": "포드는 올 1분기 순이익이 작년 동기 대비 64% 급감한 4억7100만달러(약 6600억원)를 기록했다고 5일(현지 시각) 밝혔다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "순이익",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "64%",
+            "llm_value": "64.0"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "올 1분기",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "sentence": "현대차그룹은 올 1분기 기준 시장 점유율 24.4%로 일본 도요타(26%)에 이은 2위다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "시장 점유율",
+          "claim_type": "distribution",
+          "value": {
+            "raw": "24.4%",
+            "llm_value": "24.4"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "올 1분기",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "sentence": "여기에 지난 3월 관세 25%가 매겨지면서, 철강 대미 수출액은 작년 3월에 비해 19.3% 줄어들기도 했다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "철강 대미 수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "19.3%",
+            "llm_value": "19.3"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "작년 3월",
+            "llm_value": "2024-03"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "sentence": "산업통상자원부는 1일 지난달 수출액이 작년보다 1.3% 감소한 572억7000만달러(약 79조2500억원)로 집계됐다고 밝혔다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "1.3% 감소",
+            "llm_value": "-1.3"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-05"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "sentence": "한국농촌경제연구원은 오는 8월까지 석 달간 예측값을 발표하며 이달 계란 산지 가격이 1850~1950원(특란 10개)으로 1년 전보다 12.4~18.5% 오를 것으로 전망했다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "계란 산지 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "12.4~18.5%",
+            "llm_value": "빈 문자열"
+          },
+          "unit": "%p",
+          "period_type": "M",
+          "period_value": {
+            "raw": "이달",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "sentence": "모든 연령대를 합친 고용률은 지난달 63.8%로 1년 전보다 0.3%포인트 늘었다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "고용률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "0.3%포인트",
+            "llm_value": "0.3"
+          },
+          "unit": "%p",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-05"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "sentence": "18일 한국은행의 ‘주택시장 양극화의 경제적 영향’ 보고서에 따르면, 2013년 말 대비 올해 5월 서울 집값이 112.3% 오를 때 전국 집값은 42.9% 올라 그 격차가 69.4%포인트로 조사됐다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "서울 집값",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "112.3%",
+            "llm_value": "112.3"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "올해 5월",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "전국 집값",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "42.9%",
+            "llm_value": "42.9"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2013년 말 대비 올해 5월",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "서울과 전국 집값 상승률 차이",
+          "claim_type": "none",
+          "value": {
+            "raw": "69.4%포인트",
+            "llm_value": "해당 요청에는 증감이 포함되어 있으므로, 이에 대해 처리할 수 없습니다. 따라서 빈 문자열을 반환합니다."
+          },
+          "unit": "%포인트",
+          "period_type": "S",
+          "period_value": {
+            "raw": "조사 시점",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "sentence": "실적 3배로 뛰었는데 주가 급락… '빚더미' 한전의 현실 한국전력은 올 1분기(1~3월) 연결 기준 영업이익이 3조7536억원을 기록했다고 13일 공시했습니다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "영업이익",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "3조7536억원",
+            "llm_value": "375360000000"
+          },
+          "unit": "억원",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "올 1분기(1~3월)",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "sentence": "지난 5월 광어 도매 가격은 ㎏당 1만9500원으로, 전년 동기(1만7513원) 대비 11.3% 올랐다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "광어 도매 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "11.3%",
+            "llm_value": "11.3"
+          },
+          "unit": "%p",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난 5월",
+            "llm_value": "2025-05"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "sentence": "한은에 따르면 지난달 4주 차 서울 강남 3구(강남·서초·송파) 아파트 가격 주간 상승률은 0.83%로, 연율로는 53.7%에 달한다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "아파트 가격 상승률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "0.83%",
+            "llm_value": "0.83"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난달 4주 차",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "sentence": "다만 올해 상반기 우리나라로 도착한 FDI 액수는 전년 대비 2.7% 증가한 72억9000만달러를 기록했다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "FDI 액수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.7% 증가",
+            "llm_value": "+2.7"
+          },
+          "unit": "%",
+          "period_type": "S",
+          "period_value": {
+            "raw": "올해 상반기",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "sentence": "이어 2023년 한 해에만 24명이 조사 선상에 올랐고, 지난해에도 21명이 조사를 받았다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "조사 받은 사람 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "24",
+            "llm_value": "24"
+          },
+          "unit": "명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2023년",
+            "llm_value": "2023"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "조사 받은 사람 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "21",
+            "llm_value": "21"
+          },
+          "unit": "명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "sentence": "이를 가구 수(2218만 가구)로 나눈 가구당 가계순자산은 전년보다 2.4% 증가한 5억8916만원, 인구(5175만명)로 나눈 1인당 가계순자산은 3.3% 늘어난 2억5251만원으로 집계됐다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "가구당 가계순자산",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.4%",
+            "llm_value": "2.4"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "전년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "1인당 가계순자산",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3.3%",
+            "llm_value": "3.3"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "전년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "sentence": "국가데이터처가 2일 발표한 ‘9월 소비자물가 동향’에 따르면 지난달 소비자 물가지수는 117.06(2020년=100)으로 1년 전 대비 2.1% 올랐다.",
+      "base": "2025-10",
+      "error": null,
+      "claims": [
+        {
+          "subject": "소비자 물가지수",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.1%",
+            "llm_value": "2.1"
+          },
+          "unit": "%p",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난달",
+            "llm_value": "2025-09"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "sentence": "19일 국가데이터처(옛 통계청)에 따르면, 지난 달 청년층 고용률은 45.1%로 1년 전보다 0.7%포인트(p) 낮아졌다.",
+      "base": "2025-10",
+      "error": null,
+      "claims": [
+        {
+          "subject": "청년층 고용률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "45.1%",
+            "llm_value": "45.1"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난 달",
+            "llm_value": "2025-09"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "sentence": "3일 국토교통부의 주택 통계에 따르면, 9월 전국 전월세 거래 23만745건 중 월세 비율은 65%(15만670건)를 차지했다.",
+      "base": "2025-11",
+      "error": null,
+      "claims": [
+        {
+          "subject": "월세 비율",
+          "claim_type": "distribution",
+          "value": {
+            "raw": "65%",
+            "llm_value": "65.0"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "9월",
+            "llm_value": "2025-09"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "sentence": "10일 국가데이터처와 관세청이 발표한 '2025년 3분기 기준 기업 특성별 무역통계 결과(잠정)'에 따르면, 3분기 수출액은 1850억달러로 지난해 같은 기간보다 6.5% 증가했다.",
+      "base": "2025-11",
+      "error": null,
+      "claims": [
+        {
+          "subject": "수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "6.5% 증가",
+            "llm_value": "+6.5"
+          },
+          "unit": "%",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "2025년 3분기",
+            "llm_value": "2025-Q3"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "sentence": "종전 최대인 2023년의 117조6000억원보다 47% 늘었다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "총액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "47%",
+            "llm_value": "47.0"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2023년",
+            "llm_value": "2023"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "sentence": "올해만도 공공 부채 비율이 2.8%포인트 늘어날 것으로 예상했는데, 이는 작년 예상치보다 두 배 이상 많은 수준이다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "공공 부채 비율",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.8%포인트",
+            "llm_value": "빈 문자열"
+          },
+          "unit": "%p",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "올해",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "sentence": "미국 의회의 초당적 자문기구인 미중 경제안보검토위원회(USCC)에 따르면, 지난 3월 7일 기준으로 미국 증시에는 총 286개의 중국 기업이 상장돼 있으며 이들의 시가총액은 1조1000억달러에 달한다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "상장된 중국 기업 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "286",
+            "llm_value": "286"
+          },
+          "unit": "개",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난 3월 7일",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "시가총액",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "1조1000억 달러",
+            "llm_value": "11000000000000"
+          },
+          "unit": "달러",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난 3월 7일",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "sentence": "김고은 돌직구 에 김재원 '멘붕' ('유미의세포들3') 돌아가기 조선경제 많이 본 뉴스 골드만삭스 \"코스피 목표치 8000 상향… 실적 늘고 저평가\" 글로벌 투자은행(IB) 골드만삭스가 코스피의 향후 12개월 목표치를 기존 7000포인트에서 8000포인트로 상향 조정했다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "코스피 목표치",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "8000 포인트",
+            "llm_value": "8000"
+          },
+          "unit": "포인트",
+          "period_type": "M",
+          "period_value": {
+            "raw": "향후 12개월",
+            "llm_value": "2026-05"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "sentence": "공모펀드 시장이 위축된 상황이지만, KCGI주니어펀드(KCGI주니어증권자투자신탁) 설정액은 2017년 출시 당시 17억원에서 올해 750억원으로 불어났다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "설정액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "750억원",
+            "llm_value": "75000000000"
+          },
+          "unit": "억원",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "올해",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "설정액",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "17억원",
+            "llm_value": "170000000"
+          },
+          "unit": "억원",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2017년",
+            "llm_value": "2017"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "sentence": "출범 당시 18조7000억원이던 자산 규모는 80조8000억원으로 4배 이상 증가했다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "자산 규모",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "4배 이상 증가",
+            "llm_value": "관련 정보가 포함된 이미지를 입력해주세요."
+          },
+          "unit": "불명",
+          "period_type": "S",
+          "period_value": {
+            "raw": "출범 당시",
+            "llm_value": "출범 당시"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "sentence": "#명품 호텔신라 이부진 패션 주주총회 돌체앤가바나 명품 더보기 이부진이 착용했던 이 숄더백, 판매량 1000% 증가 이부진 호텔신라 사장이 지난해 11월 한 행사에서 빠투의 검정 숄더백 ‘르 빠투 백 블랙’을 착용한 직후 해당 숄더백의 판매량이 약 1000% ...",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "판매량",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "약 1000%",
+            "llm_value": "빈 문자열"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "지난해 11월",
+            "llm_value": "2024-11"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "sentence": "도요타는 지난 8일 올 1분기(1~3월) 실적을 발표하며 4~5월 미국의 관세로 인해 12억 달러(약 1조 1700억원)의 손실이 예상된다고 밝혔다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "손실",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "12억 달러",
+            "llm_value": "120000000000"
+          },
+          "unit": "달러",
+          "period_type": "M",
+          "period_value": {
+            "raw": "4~5월",
+            "llm_value": "4~5월"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "sentence": "버핏은 “5개 재단에 대한 평생 기부액이 약 600억 달러에 달하는데 이는 2006년 제 순자산 전체보다 훨씬 큰 규모”라고 밝혔다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "기부액",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "약 600억 달러",
+            "llm_value": "600000000000"
+          },
+          "unit": "달러",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2006년",
+            "llm_value": "2006"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "sentence": "한은에 따르면 지난달 4주 차 서울 강남 3구(강남·서초·송파) 아파트 가격 주간 상승률은 0.83%로, 연율로는 53.7%에 달한다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "아파트 가격 상승률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "0.83%",
+            "llm_value": "0.83"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난달 4주 차",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "sentence": "aT(한국농수산식품유통공사) 농산물 유통 실태 조사에 따르면, 농산물 구매 가격에서 유통 비용이 차지하는 비율을 의미하는 ‘유통 비용률’은 1999년 39%에서 2022년 49.7%까지 높아졌다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "유통 비용률",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "39%에서 49.7%까지 증가",
+            "llm_value": "+39.0"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "1999년부터 2022년까지",
+            "llm_value": "1999"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "sentence": "이번 방안에 따라 연소득 1억원인 대출자가 30년 만기, 연 4.2% 이자로 주택담보대출을 받을 때 대출 한도가 5억9000만원에서 5억7000만원으로 2000만원 줄어든다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "대출 한도",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2000만원 감소",
+            "llm_value": "빈 문자열"
+          },
+          "unit": "만원",
+          "period_type": "S",
+          "period_value": {
+            "raw": "현재",
+            "llm_value": "현재"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "sentence": "고금리가 장기화할 우려가 커지면서 미 국채 10년물 금리는 이날 고용지표 발표 직후 4.79%를 기록까지 기록해 지난 2023년 11월 초 이후 13개월 만에 가장 높은 수치를 기록했다.",
+      "base": "2025-01",
+      "error": null,
+      "claims": [
+        {
+          "subject": "미 국채 10년물 금리",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "4.79%",
+            "llm_value": "4.79"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "이날",
+            "llm_value": "2025-01"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "sentence": "간담회 5일 뒤인 지난달 29일 미국 연방준비제도는 “인플레이션이 다소 상승했고 경제 전망이 불확실하다”며 기준금리를 기존 4.25~4.5%로 동결했다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": []
+    },
+    {
+      "id": 83,
+      "sentence": "2009년 45.9%까지 늘어난 석탄 비중은 꾸준히 40%대를 유지해오다가, 44%를 기록한 2017년을 기점으로 꾸준히 비중이 줄기 시작했다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "석탄 비중",
+          "claim_type": "distribution",
+          "value": {
+            "raw": "45.9%",
+            "llm_value": "45.9"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2009년",
+            "llm_value": "2009"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "sentence": "최기상 민주당 의원이 국세청에서 받은 자료에 따르면 지난 5년간(2019~2023년) 세대생략증여 금액은 3조8135억원에 달했다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "세대생략증여 금액",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "3조8135억원",
+            "llm_value": "381350000000"
+          },
+          "unit": "억원",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2019~2023년",
+            "llm_value": "2019~2023년"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "sentence": "지난 2002년 도입된 리츠 숫자는 작년 말 기준 400개를 돌파했고 운용자산도 100조원을 넘긴 상태다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "리츠 숫자",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "400개",
+            "llm_value": "400"
+          },
+          "unit": "개",
+          "period_type": "D",
+          "period_value": {
+            "raw": "작년 말",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "운용자산",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "100조원",
+            "llm_value": "100000000000000"
+          },
+          "unit": "조원",
+          "period_type": "D",
+          "period_value": {
+            "raw": "작년 말",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "sentence": "작년 말 기준 국내 5대 은행 점포 수는 3900개 정도인데, 금융위는 이 가운데 5~10%인 200~400개 점포가 거점 점포가 될 것으로 보고 있다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "국내 5대 은행 점포 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "3900",
+            "llm_value": "3900"
+          },
+          "unit": "개",
+          "period_type": "S",
+          "period_value": {
+            "raw": "작년 말",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "거점 점포 수",
+          "claim_type": "distribution",
+          "value": {
+            "raw": "5~10%",
+            "llm_value": "해당 요청은 증감을 나타내는 표현이므로, 변환할 수 없습니다. 따라서 빈 문자열을 반환합니다."
+          },
+          "unit": "개",
+          "period_type": "D",
+          "period_value": {
+            "raw": "현재",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "sentence": "비트코인은 전주 대비 약 2% 상승하여 8만6000달러 선에서 거래되는 반면, 이더리움은 6.81% 하락한 2100달러 부근에서 머무르며 대조적인 흐름을 보였다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "비트코인 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "약 2%",
+            "llm_value": "0.02"
+          },
+          "unit": "%p",
+          "period_type": "D",
+          "period_value": {
+            "raw": "전주 대비",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "이더리움 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "6.81% 하락",
+            "llm_value": "-6.81"
+          },
+          "unit": "%p",
+          "period_type": "D",
+          "period_value": {
+            "raw": "전주 대비",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "sentence": "또, “향후 10년간 900억 달러(약 131조원)를 투자하여 신형 전기차 21종 개발, 하이브리드 모델을 확대하겠다”며 전기차 개발에도 속도를 내겠다고 했다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "불명",
+          "claim_type": "none",
+          "value": {
+            "raw": "불명",
+            "llm_value": "''"
+          },
+          "unit": "불명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "불명",
+            "llm_value": "불명"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "sentence": "11일 관세청에 따르면, 지난 1~10일 수출액은 185억8400만달러로 전년 동기(163억5200만달러) 대비 13.7% 늘었다.",
+      "base": "2025-04",
+      "error": null,
+      "claims": [
+        {
+          "subject": "수출액",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "13.7%",
+            "llm_value": "13.7"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난 1~10일",
+            "llm_value": "지난 1~10일"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "sentence": "미국 의회의 초당적 자문기구인 미중 경제안보검토위원회(USCC)에 따르면, 지난 3월 7일 기준으로 미국 증시에는 총 286개의 중국 기업이 상장돼 있으며 이들의 시가총액은 1조1000억달러에 달한다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "상장된 중국 기업 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "286",
+            "llm_value": "286"
+          },
+          "unit": "개",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난 3월 7일",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "시가총액",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "1조1000억 달러",
+            "llm_value": "11000000000000"
+          },
+          "unit": "달러",
+          "period_type": "D",
+          "period_value": {
+            "raw": "지난 3월 7일",
+            "llm_value": "2025-03"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "sentence": "2022년 흥국생명이 5억달러(약 5500억원) 규모의 신종자본증권에 대한 조기 상환을 거부하면서 금융시장 전반에 대한 위기 상황이 불거졌던 게 재연되는 게 아니냐는 우려가 일각에서 나온다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "신종자본증권 규모",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "5억달러 (약 5500억원)",
+            "llm_value": "55000000000"
+          },
+          "unit": "달러, 원",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2022년",
+            "llm_value": "2022"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "sentence": "유지웅 다올투자증권 연구원은 “지난 목요일 하원을 통과한 미국 감세안에 전기차 세액공제액 7500달러(약 1000만원)를 2026년 초 폐지, 첨단 제조 세액공제에 대해 2032년부터 축소 방안을 유지하는 내용을 담고 있다”며 “상원 통과 여부에 따라 시장 잠재 수요자들은 조기 구매를 서두를 가능성이 있다”고 분석했다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "전기차 세액공제액",
+          "claim_type": "verifiable",
+          "value": {
+            "raw": "7500달러",
+            "llm_value": "7500"
+          },
+          "unit": "$",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "불명",
+            "llm_value": "불명"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "sentence": "올해 1분기 한국투자증권의 개인 고객 금융 상품 잔고는 72조3000억원으로 업계 최고 수준을 기록했으며, 매달 평균 1조5000억원 규모의 신규 자금이 유입되고 있다.",
+      "base": "2025-05",
+      "error": null,
+      "claims": [
+        {
+          "subject": "개인 고객 금융 상품 잔고",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "72조3000억원",
+            "llm_value": "720000000000"
+          },
+          "unit": "억원",
+          "period_type": "Q",
+          "period_value": {
+            "raw": "올해 1분기",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "신규 자금 유입 규모",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "1조5000억원",
+            "llm_value": "150000000000"
+          },
+          "unit": "억원",
+          "period_type": "M",
+          "period_value": {
+            "raw": "매달 평균",
+            "llm_value": "2025-05"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "sentence": "18일 한국은행의 ‘주택시장 양극화의 경제적 영향’ 보고서에 따르면, 2013년 말 대비 올해 5월 서울 집값이 112.3% 오를 때 전국 집값은 42.9% 올라 그 격차가 69.4%포인트로 조사됐다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "서울 집값",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "112.3%",
+            "llm_value": "112.3"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "올해 5월",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "전국 집값",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "42.9%",
+            "llm_value": "42.9"
+          },
+          "unit": "%",
+          "period_type": "M",
+          "period_value": {
+            "raw": "2013년 말 대비 올해 5월",
+            "llm_value": "2025"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "서울과 전국 집값 상승률 차이",
+          "claim_type": "none",
+          "value": {
+            "raw": "69.4%포인트",
+            "llm_value": "해당 요청에는 증감이 포함되어 있으므로, 이에 대해 처리할 수 없습니다. 따라서 빈 문자열을 반환합니다."
+          },
+          "unit": "%포인트",
+          "period_type": "S",
+          "period_value": {
+            "raw": "조사 시점",
+            "llm_value": "2025-06"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "sentence": "이어 2023년 한 해에만 24명이 조사 선상에 올랐고, 지난해에도 21명이 조사를 받았다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "조사 받은 사람 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "24",
+            "llm_value": "24"
+          },
+          "unit": "명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "2023년",
+            "llm_value": "2023"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "조사 받은 사람 수",
+          "claim_type": "absolute",
+          "value": {
+            "raw": "21",
+            "llm_value": "21"
+          },
+          "unit": "명",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "지난해",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "sentence": "이를 가구 수(2218만 가구)로 나눈 가구당 가계순자산은 전년보다 2.4% 증가한 5억8916만원, 인구(5175만명)로 나눈 1인당 가계순자산은 3.3% 늘어난 2억5251만원으로 집계됐다.",
+      "base": "2025-07",
+      "error": null,
+      "claims": [
+        {
+          "subject": "가구당 가계순자산",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "2.4%",
+            "llm_value": "2.4"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "전년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "1인당 가계순자산",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3.3%",
+            "llm_value": "3.3"
+          },
+          "unit": "%",
+          "period_type": "Y",
+          "period_value": {
+            "raw": "전년",
+            "llm_value": "2024"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "sentence": "비트코인은 주간 기준 1.5% 상승한 10만3414달러로 마감했고, 이더리움은 3.1% 상승한 2522달러를 기록했다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "비트코인 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "1.5% 상승",
+            "llm_value": "+1.5"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "주간 기준",
+            "llm_value": "주간 기준"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "이더리움 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3.1% 상승",
+            "llm_value": "+3.1"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "주간 기준",
+            "llm_value": "주간 기준"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "sentence": "비트코인은 주간 기준 1.5% 상승한 10만3414달러로 마감했고, 이더리움은 3.1% 상승한 2522달러를 기록했다.",
+      "base": "2025-06",
+      "error": null,
+      "claims": [
+        {
+          "subject": "비트코인 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "1.5% 상승",
+            "llm_value": "+1.5"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "주간 기준",
+            "llm_value": "주간 기준"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "이더리움 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "3.1% 상승",
+            "llm_value": "+3.1"
+          },
+          "unit": "%",
+          "period_type": "D",
+          "period_value": {
+            "raw": "주간 기준",
+            "llm_value": "주간 기준"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "sentence": "비트코인은 전주 대비 약 2% 상승하여 8만6000달러 선에서 거래되는 반면, 이더리움은 6.81% 하락한 2100달러 부근에서 머무르며 대조적인 흐름을 보였다.",
+      "base": "2025-03",
+      "error": null,
+      "claims": [
+        {
+          "subject": "비트코인 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "약 2%",
+            "llm_value": "0.02"
+          },
+          "unit": "%p",
+          "period_type": "D",
+          "period_value": {
+            "raw": "전주 대비",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        },
+        {
+          "subject": "이더리움 가격",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "6.81% 하락",
+            "llm_value": "-6.81"
+          },
+          "unit": "%p",
+          "period_type": "D",
+          "period_value": {
+            "raw": "전주 대비",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "sentence": "1440원 부근에서 소폭 등락하던 달러-원은 미국의 지난 1월 소매판매 지표가가 발표되자 1437.40원까지 하락하며 일중 저점을 찍었다.",
+      "base": "2025-02",
+      "error": null,
+      "claims": [
+        {
+          "subject": "달러-원 환율",
+          "claim_type": "change_rate",
+          "value": {
+            "raw": "1437.40원",
+            "llm_value": "1437.40"
+          },
+          "unit": "원",
+          "period_type": "D",
+          "period_value": {
+            "raw": "일중",
+            "llm_value": "2025-02"
+          },
+          "compare_period_value": null
+        }
+      ]
+    }
+  ]
+}

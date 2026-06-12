@@ -10,20 +10,20 @@
 - 2026-06-10 / leeaain
 
 ### 5. 결과 · 원자료: 260610_1-10_full-pipeline_leeaain.json
-- 입력 문장: **지난해(2023년) 한국의 경제성장률은 1.6%에 그쳤다.**
+- 입력 문장: **지난해(2023년) 북한의 경제성장률은 1.4%에 그쳤다.**
 - overall_verdict: **N**
 
 **추출 claims**
 
 | 유형 | subject | population | 값(raw→정규화) | 시점 |
 |---|---|---|---|---|
-| absolute | 경제성장률 | 대한민국 | 1.6%→1.6 | Y:2023 |
+| absolute | 경제성장률 | 북한 | 1.4%→1.4 | Y:2023 |
 
 **검증 결과**
 
 | verdict | 주장값 | KOSIS값 | 표 | 설명 |
 |---|---|---|---|---|
-| N | 1.6 | 1.35673 | 경제성장률(불변가격) | 2023년 경제성장률에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다. |
+| N | 1.4 | 1.6 | 경제성장률(시도) | 2023년 경제성장률에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다. |
 
 
 ---
@@ -34,7 +34,7 @@
 
 - **article.article_id**: art-0001
 - **article.title**: None
-- **article.content**: 지난해(2023년) 한국의 경제성장률은 1.6%에 그쳤다.
+- **article.content**: 지난해(2023년) 북한의 경제성장률은 1.4%에 그쳤다.
 - **article.published_at**: 2025-04
 - **article.source**: None
 - **article.url**: None
@@ -43,10 +43,10 @@
 
 - **claims[0].claim_id**: clm-0001
 - **claims[0].article_id**: art-0001
-- **claims[0].sentence**: 지난해(2023년) 한국의 경제성장률은 1.6%에 그쳤다.
+- **claims[0].sentence**: 지난해(2023년) 북한의 경제성장률은 1.4%에 그쳤다.
 - **claims[0].claim_type**: ClaimType.ABSOLUTE
 - **claims[0].subject**: 경제성장률
-- **claims[0].value.raw**: 1.6%
+- **claims[0].value.raw**: 1.4%
 - **claims[0].value.llm_value**: 
 - **claims[0].value.is_inferred**: False
 - **claims[0].unit**: %
@@ -57,12 +57,12 @@
 - **claims[0].period_value.is_inferred**: False
 - **claims[0].compare_period_value**: None
 - **claims[0].compare_conquer**: None
-- **claims[0].population**: 대한민국
+- **claims[0].population**: 북한
 - **claims[0].cited_source**: 불명
 
 ## 3. 한국어 수사 산술로 변환
 
-- **claims[0].value.llm_value**:  → 1.6
+- **claims[0].value.llm_value**:  → 1.4
 - **claims[0].period_value.llm_value**:  → 2023
 
 ## 4. KOSIS 통계표 n개 찾기
@@ -76,7 +76,7 @@
 - **analysis[0].kosis_search.selected_tbl_name**: 경제성장률(불변가격)
 - **analysis[0].kosis_search.success**: 1
 - **analysis[0].kosis_search.error_msg**: None
-- **analysis[0].kosis_search.duration_ms**: 372
+- **analysis[0].kosis_search.duration_ms**: 214
 - **analysis[0].candidates[0].org_id**: 101
 - **analysis[0].candidates[0].tbl_id**: DT_2KAA905
 - **analysis[0].candidates[0].tbl_nm**: 경제성장률(불변가격)
@@ -149,9 +149,9 @@
 
 - **analysis[0].cell_attempts[0].tbl_id**: DT_2KAA905
 - **analysis[0].cell_attempts[0].tbl_nm**: 경제성장률(불변가격)
-- **analysis[0].cell_attempts[0].matched**: True
-- **analysis[0].cell_attempts[0].value**: 1.35673
-- **analysis[0].cell_attempts[0].unit**: %
+- **analysis[0].cell_attempts[0].matched**: False
+- **analysis[0].cell_attempts[0].value**: None
+- **analysis[0].cell_attempts[0].unit**: None
 - **analysis[0].cell_attempts[0].itm_id**: T10
 - **analysis[0].cell_attempts[0].items[0]**: 경제성장률(기준년가격 GDP)
 - **analysis[0].cell_attempts[0].axes.국가별[0]**: 세계
@@ -172,7 +172,7 @@
 - **analysis[0].cell_attempts[0].axes.국가별[15]**: …외 226개
 - **analysis[0].cell_attempts[0].population_fallback**: False
 - **analysis[0].cell_attempts[0].match_source**: rule
-- **analysis[0].cell_attempts[0].error**: None
+- **analysis[0].cell_attempts[0].error**: 셀 조회 실패: 30: 데이터가 존재하지 않습니다.
 - **analysis[0].cell_attempts[1].tbl_id**: TX_38803_A026
 - **analysis[0].cell_attempts[1].tbl_nm**: 연도별 전력수급 실적
 - **analysis[0].cell_attempts[1].matched**: False
@@ -219,7 +219,7 @@
 - **analysis[0].cell_attempts[2].axes.국가별[10]**: 베트남
 - **analysis[0].cell_attempts[2].population_fallback**: False
 - **analysis[0].cell_attempts[2].match_source**: rule
-- **analysis[0].cell_attempts[2].error**: 분류축 A 매칭 실패: population='대한민국'
+- **analysis[0].cell_attempts[2].error**: 분류축 A 매칭 실패: population='북한'
 - **analysis[0].cell_attempts[3].tbl_id**: DT_XNN0110
 - **analysis[0].cell_attempts[3].tbl_nm**: 경제성장률(불변가격) - 동북·중앙아시아
 - **analysis[0].cell_attempts[3].matched**: False
@@ -243,7 +243,7 @@
 - **analysis[0].cell_attempts[3].axes.국가별[13]**: 우크라이나
 - **analysis[0].cell_attempts[3].population_fallback**: False
 - **analysis[0].cell_attempts[3].match_source**: rule
-- **analysis[0].cell_attempts[3].error**: 분류축 A 매칭 실패: population='대한민국'
+- **analysis[0].cell_attempts[3].error**: 분류축 A 매칭 실패: population='북한'
 - **analysis[0].cell_attempts[4].tbl_id**: DT_1YL20571
 - **analysis[0].cell_attempts[4].tbl_nm**: 경제성장률(시도)
 - **analysis[0].cell_attempts[4].matched**: True
@@ -267,7 +267,7 @@
 - **analysis[0].cell_attempts[4].axes.행정구역별[13]**: 전북특별자치도
 - **analysis[0].cell_attempts[4].axes.행정구역별[14]**: 전라남도
 - **analysis[0].cell_attempts[4].axes.행정구역별[15]**: …외 3개
-- **analysis[0].cell_attempts[4].population_fallback**: False
+- **analysis[0].cell_attempts[4].population_fallback**: True
 - **analysis[0].cell_attempts[4].match_source**: rule
 - **analysis[0].cell_attempts[4].error**: None
 - **analysis[0].cell_attempts[5].tbl_id**: DT_200Y123
@@ -417,60 +417,41 @@
 - **analysis[0].cell_attempts[9].match_source**: rule
 - **analysis[0].cell_attempts[9].error**: itmId 매칭 실패: subject='경제성장률'
 - **analysis[0].kosis_query.api**: statisticsData.do → statisticsParameterData.do
-- **analysis[0].kosis_query.tbl_id**:  → DT_2KAA905
-- **analysis[0].kosis_query.params**:  → {"method": "getList", "orgId": "101", "tblId": "DT_2KAA905", "itmId": "T10", "objL1": "1005", "objL2": "", "objL3": "", "objL4": "", "prdSe": "Y", "startPrdDe": "2023", "endPrdDe": "2023", "match_filters": {"C1": "1005"}}
-- **analysis[0].kosis_query.rows_returned**: 0 → 2
+- **analysis[0].kosis_query.tbl_id**:  → DT_1YL20571
+- **analysis[0].kosis_query.params**:  → {"method": "getList", "orgId": "101", "tblId": "DT_1YL20571", "itmId": "T10", "objL1": "00", "objL2": "", "objL3": "", "objL4": "", "prdSe": "Y", "startPrdDe": "2023", "endPrdDe": "2023", "match_filters": {"C1": "00"}}
+- **analysis[0].kosis_query.rows_returned**: 0 → 1
 - **analysis[0].kosis_query.success**: 0 → 1
-- **analysis[0].kosis_query.duration_ms**: 0 → 532
+- **analysis[0].kosis_query.duration_ms**: 0 → 3601
 - **analysis[0].evidences[0].claim_id**: clm-0001
 - **analysis[0].evidences[0].source**: KOSIS
 - **analysis[0].evidences[0].subject**: 경제성장률
 - **analysis[0].evidences[0].unit**: %
 - **analysis[0].evidences[0].period_type**: Y
 - **analysis[0].evidences[0].period**: 2023
-- **analysis[0].evidences[0].population**: 대한민국
+- **analysis[0].evidences[0].population**: 북한
 - **analysis[0].evidences[0].evidence_id**: None
-- **analysis[0].evidences[0].value**: 1.35673
+- **analysis[0].evidences[0].value**: 1.6
 - **analysis[0].evidences[0].kosis_org_id**: 101
-- **analysis[0].evidences[0].kosis_tbl_id**: DT_2KAA905
-- **analysis[0].evidences[0].table_name**: 경제성장률(불변가격)
+- **analysis[0].evidences[0].kosis_tbl_id**: DT_1YL20571
+- **analysis[0].evidences[0].table_name**: 경제성장률(시도)
 - **analysis[0].evidences[0].kosis_item_id**: T10
 - **analysis[0].evidences[0].url**: None
-- **analysis[0].evidences[0].classification.C1**: 1005
-- **analysis[0].evidences[0].last_updated**: 2025-09-17
-- **analysis[0].evidences[0].retrieved_at**: 2026-06-11T03:49:19+00:00
-- **analysis[0].evidences[0].population_fallback**: False
+- **analysis[0].evidences[0].classification.C1**: 00
+- **analysis[0].evidences[0].last_updated**: 2025-12-24
+- **analysis[0].evidences[0].retrieved_at**: 2026-06-11T09:20:43+00:00
+- **analysis[0].evidences[0].population_fallback**: True
 - **analysis[0].evidences[0].match_source**: rule
-- **analysis[0].evidences[1].claim_id**: clm-0001
-- **analysis[0].evidences[1].source**: KOSIS
-- **analysis[0].evidences[1].subject**: 경제성장률
-- **analysis[0].evidences[1].unit**: %
-- **analysis[0].evidences[1].period_type**: Y
-- **analysis[0].evidences[1].period**: 2023
-- **analysis[0].evidences[1].population**: 대한민국
-- **analysis[0].evidences[1].evidence_id**: None
-- **analysis[0].evidences[1].value**: 1.6
-- **analysis[0].evidences[1].kosis_org_id**: 101
-- **analysis[0].evidences[1].kosis_tbl_id**: DT_1YL20571
-- **analysis[0].evidences[1].table_name**: 경제성장률(시도)
-- **analysis[0].evidences[1].kosis_item_id**: T10
-- **analysis[0].evidences[1].url**: None
-- **analysis[0].evidences[1].classification.C1**: 00
-- **analysis[0].evidences[1].last_updated**: 2025-12-24
-- **analysis[0].evidences[1].retrieved_at**: 2026-06-11T03:49:19+00:00
-- **analysis[0].evidences[1].population_fallback**: False
-- **analysis[0].evidences[1].match_source**: rule
 
 ### 📊 5단계 상세 — claim 추출값 · 검색값 · 후보 표 디버깅
 
 **[clm-0001] 경제성장률**
-- 📌 claim 추출값: 값 `1.6`(원문 `1.6%`) | 시점 `2023`(원문 `2023년`) | 모집단 `대한민국` | 단위 `%` | subject `경제성장률`
-- 🔍 KOSIS 에 넣은 값: subject `경제성장률`(공백 제거) | population `대한민국` | period `2023`
+- 📌 claim 추출값: 값 `1.4`(원문 `1.4%`) | 시점 `2023`(원문 `2023년`) | 모집단 `북한` | 단위 `%` | subject `경제성장률`
+- 🔍 KOSIS 에 넣은 값: subject `경제성장률`(공백 제거) | population `북한` | period `2023`
 - 📑 후보 표별 조회 시도 10개:
-    - `DT_2KAA905` 경제성장률(불변가격) ★채택
+    - `DT_2KAA905` 경제성장률(불변가격)
         - 항목: 경제성장률(기준년가격 GDP)
         - 분류축 [국가별]: 세계, 아시아, 대한민국, 아프가니스탄, 아르메니아, 아제르바이잔, 바레인, 방글라데시, 부탄, 브루나이, 캄보디아, 중국, 키프로스, 조지아, 홍콩, …외 226개
-        - 결과: ✅ 1.35673 % (itmId T10)
+        - 결과: ❌ 셀 조회 실패: 30: 데이터가 존재하지 않습니다.
     - `TX_38803_A026` 연도별 전력수급 실적
         - 항목: 연도별 전력수급 실적
         - 분류축 [실적구분별]: 경제성장률, 설비용량(연말), 설비용량(연말)-성장률, 최대전력, 최대전력-성장률, 설비예비율, 공급예비율, 총발전량, 총발전량-성장률, 이용률, 발전소내 소비전력률, 발전소내 소비전력량, 판매전력량, 판매전력량-수요성장률, 송전전력량(양수제외), …외 12개
@@ -478,11 +459,11 @@
     - `DT_XNS0110` 경제성장률(불변가격) - 남부·동남아시아
         - 항목: 경제성장률(기준년가격 GDP)
         - 분류축 [국가별]: 브루나이, 캄보디아, 인도, 인도네시아, 라오스, 말레이시아, 미얀마, 필리핀, 싱가포르, 태국, 베트남
-        - 결과: ❌ 분류축 A 매칭 실패: population='대한민국'
+        - 결과: ❌ 분류축 A 매칭 실패: population='북한'
     - `DT_XNN0110` 경제성장률(불변가격) - 동북·중앙아시아
         - 항목: 경제성장률(기준년가격 GDP)
         - 분류축 [국가별]: 아르메니아, 아제르바이잔, 중국, 조지아, 카자흐스탄, 키르기스스탄, 몽골, 타지키스탄, 투르크메니스탄, 우즈베키스탄, 벨라루스, 몰도바, 러시아, 우크라이나
-        - 결과: ❌ 분류축 A 매칭 실패: population='대한민국'
+        - 결과: ❌ 분류축 A 매칭 실패: population='북한'
     - `DT_1YL20571` 경제성장률(시도) ★채택
         - 항목: 성장률
         - 분류축 [행정구역별]: 전국, 서울특별시, 부산광역시, 대구광역시, 인천광역시, 광주광역시, 대전광역시, 울산광역시, 세종특별자치시, 경기도, 강원특별자치도, 충청북도, 충청남도, 전북특별자치도, 전라남도, …외 3개
@@ -511,8 +492,8 @@
         - 항목: HDI 순위, 인간개발지수, 기대수명(세), 평균교육기간(년), 기대교육기간(년), 1인당 GNI(2021 PPP$)
         - 분류축 [국가별]: 아르메니아, 아제르바이잔, 중국, 조지아, 카자흐스탄, 키르기스스탄, 몽골, 타지키스탄, 투르크메니스탄, 우즈베키스탄, 벨라루스, 몰도바, 러시아, 우크라이나
         - 결과: ❌ itmId 매칭 실패: subject='경제성장률'
-- 🎯 얻으려는 셀 좌표: `{"method": "getList", "orgId": "101", "tblId": "DT_2KAA905", "itmId": "T10", "objL1": "1005", "objL2": "", "objL3": "", "objL4": "", "prdSe": "Y", "startPrdDe": "2023", "endPrdDe": "2023", "match_filters": {"C1": "1005"}}`
-- 🎯 얻어낸 cell 값: **1.35673 %** | 시점 2023 | 표 `DT_2KAA905` | itmId T10
+- 🎯 얻으려는 셀 좌표: `{"method": "getList", "orgId": "101", "tblId": "DT_1YL20571", "itmId": "T10", "objL1": "00", "objL2": "", "objL3": "", "objL4": "", "prdSe": "Y", "startPrdDe": "2023", "endPrdDe": "2023", "match_filters": {"C1": "00"}}`
+- 🎯 얻어낸 cell 값: **1.6 %** | 시점 2023 | 표 `DT_1YL20571` | itmId T10
 
 
 ## 6. 증거 랭킹
@@ -529,8 +510,8 @@ _(변경 없음)_
 - **verifications.claim_results[0].verdict_human**: None
 - **verifications.claim_results[0].verdict_human_note**: None
 - **verifications.claim_results[0].mismatch_type**: None
-- **verifications.claim_results[0].claim_value**: 1.6
-- **verifications.claim_results[0].kosis_value**: 1.35673
+- **verifications.claim_results[0].claim_value**: 1.4
+- **verifications.claim_results[0].kosis_value**: 1.6
 - **verifications.claim_results[0].explanation**: 
 - **verifications.claim_results[0].confidence**: 0.0
 - **verifications.claim_results[0].llm_model**: 
@@ -540,53 +521,34 @@ _(변경 없음)_
 - **verifications.claim_results[0].evidence[0].unit**: %
 - **verifications.claim_results[0].evidence[0].period_type**: Y
 - **verifications.claim_results[0].evidence[0].period**: 2023
-- **verifications.claim_results[0].evidence[0].population**: 대한민국
+- **verifications.claim_results[0].evidence[0].population**: 북한
 - **verifications.claim_results[0].evidence[0].evidence_id**: None
-- **verifications.claim_results[0].evidence[0].value**: 1.35673
+- **verifications.claim_results[0].evidence[0].value**: 1.6
 - **verifications.claim_results[0].evidence[0].kosis_org_id**: 101
-- **verifications.claim_results[0].evidence[0].kosis_tbl_id**: DT_2KAA905
-- **verifications.claim_results[0].evidence[0].table_name**: 경제성장률(불변가격)
+- **verifications.claim_results[0].evidence[0].kosis_tbl_id**: DT_1YL20571
+- **verifications.claim_results[0].evidence[0].table_name**: 경제성장률(시도)
 - **verifications.claim_results[0].evidence[0].kosis_item_id**: T10
 - **verifications.claim_results[0].evidence[0].url**: None
-- **verifications.claim_results[0].evidence[0].classification.C1**: 1005
-- **verifications.claim_results[0].evidence[0].last_updated**: 2025-09-17
-- **verifications.claim_results[0].evidence[0].retrieved_at**: 2026-06-11T03:49:19+00:00
-- **verifications.claim_results[0].evidence[0].population_fallback**: False
+- **verifications.claim_results[0].evidence[0].classification.C1**: 00
+- **verifications.claim_results[0].evidence[0].last_updated**: 2025-12-24
+- **verifications.claim_results[0].evidence[0].retrieved_at**: 2026-06-11T09:20:43+00:00
+- **verifications.claim_results[0].evidence[0].population_fallback**: True
 - **verifications.claim_results[0].evidence[0].match_source**: rule
-- **verifications.claim_results[0].evidence[1].claim_id**: clm-0001
-- **verifications.claim_results[0].evidence[1].source**: KOSIS
-- **verifications.claim_results[0].evidence[1].subject**: 경제성장률
-- **verifications.claim_results[0].evidence[1].unit**: %
-- **verifications.claim_results[0].evidence[1].period_type**: Y
-- **verifications.claim_results[0].evidence[1].period**: 2023
-- **verifications.claim_results[0].evidence[1].population**: 대한민국
-- **verifications.claim_results[0].evidence[1].evidence_id**: None
-- **verifications.claim_results[0].evidence[1].value**: 1.6
-- **verifications.claim_results[0].evidence[1].kosis_org_id**: 101
-- **verifications.claim_results[0].evidence[1].kosis_tbl_id**: DT_1YL20571
-- **verifications.claim_results[0].evidence[1].table_name**: 경제성장률(시도)
-- **verifications.claim_results[0].evidence[1].kosis_item_id**: T10
-- **verifications.claim_results[0].evidence[1].url**: None
-- **verifications.claim_results[0].evidence[1].classification.C1**: 00
-- **verifications.claim_results[0].evidence[1].last_updated**: 2025-12-24
-- **verifications.claim_results[0].evidence[1].retrieved_at**: 2026-06-11T03:49:19+00:00
-- **verifications.claim_results[0].evidence[1].population_fallback**: False
-- **verifications.claim_results[0].evidence[1].match_source**: rule
 - **verifications.claim_results[0].metric.operation**: absolute
-- **verifications.claim_results[0].metric.claim_value**: 1.6
-- **verifications.claim_results[0].metric.kosis_value**: 1.35673
-- **verifications.claim_results[0].metric.rel_diff**: 0.17930612575825705
+- **verifications.claim_results[0].metric.claim_value**: 1.4
+- **verifications.claim_results[0].metric.kosis_value**: 1.6
+- **verifications.claim_results[0].metric.rel_diff**: 0.1250000000000001
 - **verifications.claim_results[0].metric.within_tolerance**: False
 - **verifications.claim_results[0].metric.verdict**: Verdict.NOT_ENOUGH_INFO
 - **verifications.claim_results[0].metric.mismatch_type**: None
-- **verifications.claim_results[0].metric.note**: 1위 적합 표와는 불일치하나 타 표에 근사값 존재 → 라벨러 검토
+- **verifications.claim_results[0].metric.note**: population_fallback: 요청 집단 대신 전체(합계)값과 비교 — [8] 정합성 확인 대상 | 요청 집단을 어느 표에서도 매칭 못 함(전부 전체값 폴백) → 검증 불가
 - **verifications.claim_results[0].metric.align_reason**: None
 - **verifications.claim_results[0].metric.align_source**: None
 - **verifications.claim_results[0].metric.compare_id**: None
 - **verifications.claim_results[0].metric.computed_value**: None
-- **verifications.claim_results[0].needs_hitl**: True
-- **verifications.claim_results[0].hitl_category**: HitlCategory.DATA_AMBIGUITY
-- **verifications.claim_results[0].hitl_reason**: 1위 적합 표와 불일치하나 다른 표에 근사값이 있어 사람 판단 필요
+- **verifications.claim_results[0].needs_hitl**: False
+- **verifications.claim_results[0].hitl_category**: None
+- **verifications.claim_results[0].hitl_reason**: None
 
 ## 8. 통계수치와 문장의 정합성 판단
 
