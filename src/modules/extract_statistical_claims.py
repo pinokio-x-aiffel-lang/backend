@@ -4,12 +4,10 @@ import asyncio
 import json
 
 from src.llm.client import LlmError
-from src.llm.llm_caller import LlmCaller
 from src.llm.model_presets import EXTRACT_CLAIMS
+from src.observability.tracing import traced_chat
 from src.prompts.prompts import EXTRACT_CLAIMS_SYSTEM, EXTRACT_CLAIMS_USER
 from src.schemas.runtime import Claim, ClaimType, MasterSchema, ValueSlot
-
-_llm = LlmCaller()
 
 _VALID_PERIOD_TYPES: frozenset[str] = frozenset({"Y", "M", "Q", "S", "D"})
 
@@ -33,9 +31,47 @@ def _parse_claim_type(raw: object) -> ClaimType:
     return ClaimType.NONE
 
 
+# 필드 단위 구조 강제 — HCX responseFormat 이 필드 오타·타입 오류를 차단한다.
+#
+# ⚠ 스펙 신뢰 등급: 개별 키워드(type/properties/items/enum/required)는 CLOVA Studio
+# Structured Outputs 공식 지원 목록에 있으나, 다음은 공식 문서에 없는 영역이다:
+#   - 배열 items 안의 required (공식 예시는 평평한 객체 1단뿐 — 조합 사용례 없음)
+#   - enum/required 설정 시 출력이 어떻게 보장·제약되는지 (동작 설명 자체가 문서에 없음)
+# 즉 이 스키마의 효과는 스펙 보증이 아니라 260612 실측으로만 검증된 가정이며,
+# HCX 모델/스펙 변경 시 회귀 테스트로 재확인해야 한다.
+#
+# required 는 핵심 4개만(claim_type/subject/value_raw/period_raw — 이게 없으면 하류에서
+# claim 으로 못 쓰는 최소 집합): 10개 전부 강제하면 다중 claim 문장에서 HCX 가
+# {"claims": []} 로 후퇴하는 현상이 결정적으로 재현됨(260612 분리 실험, 3회).
+# 나머지 필드는 파서가 .get() 으로 방어(미존재 시 '불명'/None).
+# 필드 의미 규칙은 프롬프트(EXTRACT_CLAIMS_SYSTEM/USER)가 담당.
 CLAIMS_SCHEMA = {
     "type": "object",
-    "properties": {"claims": {"type": "array", "items": {"type": "object"}}},
+    "properties": {
+        "claims": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "sentence": {"type": "string"},
+                    "claim_type": {
+                        "type": "string",
+                        "enum": ["absolute", "change_rate", "ratio", "distribution",
+                                 "comparison", "metaphoric", "verifiable", "none"],
+                    },
+                    "subject": {"type": "string"},
+                    "value_raw": {"type": "string"},
+                    "unit": {"type": "string"},
+                    "period_raw": {"type": "string"},
+                    "period_type": {"type": "string", "enum": ["Y", "M", "Q", "S", "D"]},
+                    "compare_period_raw": {"type": "string"},
+                    "population": {"type": "string"},
+                    "cited_source": {"type": "string"},
+                },
+                "required": ["claim_type", "subject", "value_raw", "period_raw"],
+            },
+        }
+    },
     "required": ["claims"],
 }
 
@@ -71,13 +107,14 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
 
     try:
         response = await asyncio.to_thread(
-            _llm.chat,
-            EXTRACT_CLAIMS.model_alias,
-            EXTRACT_CLAIMS.model_name,
-            messages,
+            traced_chat,
+            model_alias=EXTRACT_CLAIMS.model_alias,
+            model_name=EXTRACT_CLAIMS.model_name,
+            messages=messages,
             max_tokens=EXTRACT_CLAIMS.max_tokens,
             temperature=EXTRACT_CLAIMS.temperature,
             json_structure=CLAIMS_SCHEMA,
+            trace_name="extract_claims",
         )
     except LlmError as e:
         raise ExtractStatisticalClaimsError(f"LLM 호출 실패: {e}") from e
@@ -100,6 +137,12 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
         if period_type not in _VALID_PERIOD_TYPES:
             period_type = "Y"
 
+        compare_raw = _to_str(item.get("compare_period_raw"), "").strip()
+        compare_period_value = (
+            ValueSlot(raw=compare_raw, llm_value="", is_inferred=False)
+            if compare_raw and compare_raw != "불명" else None
+        )
+
         claims.append(
             Claim(
                 claim_id=f"clm-{idx:04d}",
@@ -112,7 +155,7 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
                 aggregation="값",
                 period_type=period_type,
                 period_value=ValueSlot(raw=_to_str(item.get("period_raw")), llm_value="", is_inferred=False),
-                compare_period_value=None,
+                compare_period_value=compare_period_value,
                 population=_to_str(item.get("population")),
                 cited_source=_to_str(item.get("cited_source")),
             )
