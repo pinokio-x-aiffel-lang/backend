@@ -67,7 +67,7 @@ def _build_claim_result(claim: Claim, evidences: list[Evidence]) -> ClaimResult:
     """[6]이 정렬한 evidences[0](=1위 적합 표) 기준으로 판정한다.
 
     1위 표 비교가 T → T(다음 [8]로). T 아니면(F) 나머지 표에 근사값(T 가능)이 있으면
-    NEI + needs_hitl(라벨러 판단), 없으면 F. 무증거/비절대형은 NEI.
+    NEI + needs_hitl(라벨러 판단), 없으면 F. 무증거/비절대형/요청 집단 전부 폴백은 NEI.
     evidences[0] 을 항상 대표 출처로 둬 값·출처 표기를 일치시킨다([10] evidence[0] 인용).
     """
     metric, needs_hitl, hitl_reason = _decide_metric(claim, evidences)
@@ -96,6 +96,19 @@ def _decide_metric(
         return _compute_metric(claim, None), False, None
     if claim.claim_type not in _ABSOLUTE_TYPES:
         return _compute_metric(claim, evidences[0]), False, None  # 그룹연산 → NEI
+
+    # 요청 집단을 어느 표에서도 못 맞춰 전부 전체값 폴백뿐이면 → 검증 불가(NEI).
+    # (예: '북한'처럼 표 모집단 축에 없는 집단 — 전국 합계로 대체된 값만 남은 상태.
+    #  전체값과 비교해 우연히 T/F 가 나오는 오염을 막는다.)
+    if all(ev.population_fallback for ev in evidences):
+        base = _compute_metric(claim, evidences[0])
+        m = base.model_copy(update={
+            "verdict": Verdict.NOT_ENOUGH_INFO,
+            "mismatch_type": None,
+            "note": (base.note + " | " if base.note else "")
+            + "요청 집단을 어느 표에서도 매칭 못 함(전부 전체값 폴백) → 검증 불가",
+        })
+        return m, False, None
 
     top = evidences[0]                       # [6]이 고른 1위 적합 표
     top_metric = _compute_metric(claim, top)

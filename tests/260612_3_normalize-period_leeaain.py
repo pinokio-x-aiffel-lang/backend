@@ -94,8 +94,7 @@ CASES = [
     ("경계", "지난달", "2025", None),     # base에 월 없음 → 해소 불가가 정답
     ("경계", "지난달", "", None),         # base 없음 → 해소 불가가 정답
     # 일 단위 (포맷 밖 — 현행 출력형식은 Y/M/Q/H만)
-    ("일단위", "지난 3일", A, None),
-]
+    ("일단위", "지난 3일", A, None),]
 
 
 async def run_case(cat: str, raw: str, base: str, gold: str | None) -> dict:
@@ -109,6 +108,7 @@ async def run_case(cat: str, raw: str, base: str, gold: str | None) -> dict:
         ok = final in (raw, None)  # 해소 불가가 정답 → raw 반환(미해소)이 정상
     else:
         ok = final == gold
+    print(raw, "|", base, "|", gold)
     return {"category": cat, "raw": raw, "base": base, "gold": gold,
             "rule": rule, "final": final, "path": path, "ok": ok}
 

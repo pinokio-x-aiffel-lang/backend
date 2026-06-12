@@ -1,0 +1,2402 @@
+{
+  "module": "normalize_claim (모듈 엔트리포인트, 2단계 미경유)",
+  "input": "benchmark/data/3_normalize_claim_100_gold.jsonl",
+  "n_sentences": 100,
+  "n_slots": 238,
+  "note": "R1~R4 수정 후 재측정. 건별 소요시간 측정 위해 순차 실행.",
+  "accuracy": {
+    "total": 0.6176,
+    "by_slot": {
+      "value": {
+        "n": 100,
+        "ok": 55,
+        "acc": 0.55
+      },
+      "period_value": {
+        "n": 77,
+        "ok": 74,
+        "acc": 0.961
+      },
+      "compare_period_value": {
+        "n": 61,
+        "ok": 18,
+        "acc": 0.2951
+      }
+    }
+  },
+  "timing": {
+    "mean_s": 0.355,
+    "median_s": 0.406,
+    "min_s": 0.0,
+    "max_s": 0.95,
+    "total_s": 35.5
+  },
+  "results": [
+    {
+      "id": 1,
+      "base": "2025-04",
+      "duration_s": 0.526,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2858만9000명",
+          "expected": "28589000",
+          "got": "289590000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 3월",
+          "expected": "2025-03",
+          "got": "2025-03",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-03",
+          "got": "2024-04",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "base": "2025-02",
+      "duration_s": 0.001,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.2% 상승",
+          "expected": "+2.2",
+          "got": "+2.2",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-01",
+          "got": "2024-02",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "base": "2025-05",
+      "duration_s": 0.511,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2888만7000명",
+          "expected": "28887000",
+          "got": "288870000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-04",
+          "got": "2025-04",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "작년 4월",
+          "expected": "2024-04",
+          "got": "2024-04",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "base": "2025-02",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "7.3% 증가",
+          "expected": "+7.3",
+          "got": "+7.3",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "base": "2025-07",
+      "duration_s": 0.418,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "323만4000명",
+          "expected": "3234000",
+          "got": "32300000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "base": "2025-07",
+      "duration_s": 0.401,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "21만6000명 증가",
+          "expected": "+216000",
+          "got": "21600000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "base": "2025-07",
+      "duration_s": 0.41,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "441만4000명",
+          "expected": "4414000",
+          "got": "4410000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "base": "2025-07",
+      "duration_s": 0.517,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "8만3000명 줄었다",
+          "expected": "-83000",
+          "got": "830000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "base": "2025-07",
+      "duration_s": 0.465,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "196만명",
+          "expected": "1960000",
+          "got": "1960000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "base": "2025-07",
+      "duration_s": 0.315,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "9만7000명 감소",
+          "expected": "-97000",
+          "got": "97000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "base": "2025-02",
+      "duration_s": 0.34,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "115.71",
+          "expected": "115.71",
+          "got": "115.71",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-01",
+          "got": "2024-02",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "base": "2025-03",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.9% 올랐",
+          "expected": "+2.9",
+          "got": "+2.9",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-02",
+          "got": "2025-02",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-02",
+          "got": "2024-03",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "base": "2025-04",
+      "duration_s": 0.315,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "28만9000명",
+          "expected": "289000",
+          "got": "289000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-03",
+          "got": "2025-03",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "base": "2025-03",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1.7%포인트 감소",
+          "expected": "-1.7",
+          "got": "-1.7",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-02",
+          "got": "2025-02",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 같은 달",
+          "expected": "2024-02",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "base": "2025-07",
+      "duration_s": 0.415,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2909만1000명",
+          "expected": "29091000",
+          "got": "2910000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "base": "2025-07",
+      "duration_s": 0.364,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "18만3000명 늘었다",
+          "expected": "+183000",
+          "got": "183000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-06",
+          "got": "2024-07",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "base": "2025-01",
+      "duration_s": 0.346,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2804만1000명",
+          "expected": "28041000",
+          "got": "2804100000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2024-12",
+          "got": "2024-12",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2023-12",
+          "got": "2024-01",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "base": "2025-01",
+      "duration_s": 0.322,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "5만2000명 감소",
+          "expected": "-52000",
+          "got": "52000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2024-12",
+          "got": "2024-12",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2023-12",
+          "got": "2024-01",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "base": "2025-02",
+      "duration_s": 0.351,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2787만8000명",
+          "expected": "27878000",
+          "got": "27878000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024-01",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "base": "2025-02",
+      "duration_s": 0.384,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "13만5000명 늘었다",
+          "expected": "+135000",
+          "got": "135000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024-01",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "base": "2025-03",
+      "duration_s": 0.882,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "116.08",
+          "expected": "116.08",
+          "got": "116.08",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-02",
+          "got": "2025-02",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-02",
+          "got": "2024-03",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "base": "2025-03",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "6.3% 올라",
+          "expected": "+6.3",
+          "got": "+6.3",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-02",
+          "got": "2025-02",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-02",
+          "got": "2024-03",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "base": "2025-04",
+      "duration_s": 0.511,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "0.82명",
+          "expected": "0.82",
+          "got": "0.82",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "base": "2025-04",
+      "duration_s": 0.924,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "0.05명 증가",
+          "expected": "+0.05",
+          "got": "해당 요청에는 증감을 나타내는 표현이므로, 숫자 변환이 불가능합니다.\n\n결과: \"\"",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "base": "2025-04",
+      "duration_s": 0.406,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "6만5022명",
+          "expected": "65022",
+          "got": "65022",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "base": "2025-04",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "7.4% 늘었다",
+          "expected": "+7.4",
+          "got": "+7.4",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "base": "2025-09",
+      "duration_s": 0.41,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "856만8000명",
+          "expected": "8568000",
+          "got": "8560000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 8월",
+          "expected": "2025-08",
+          "got": "2025-08",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-08",
+          "got": "2024-09",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "base": "2025-09",
+      "duration_s": 0.372,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "11만 명 증가",
+          "expected": "+110000",
+          "got": "110000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 8월",
+          "expected": "2025-08",
+          "got": "2025-08",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-08",
+          "got": "2024-09",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "base": "2025-10",
+      "duration_s": 0.344,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "630만2000명",
+          "expected": "6302000",
+          "got": "6300000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2023",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "base": "2025-10",
+      "duration_s": 0.41,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "19만3000명 줄었다",
+          "expected": "-193000",
+          "got": "190000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2023",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "base": "2025-01",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "6.1% 증가",
+          "expected": "+6.1",
+          "got": "+6.1",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2023",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "base": "2025-01",
+      "duration_s": 0.364,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "92억 2000만달러",
+          "expected": "9220000000",
+          "got": "92200000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "2023년",
+          "expected": "2023",
+          "got": "2023",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "base": "2025-01",
+      "duration_s": 0.353,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "160억400만달러",
+          "expected": "16004000000",
+          "got": "164000000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해 1월",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 같은 기간",
+          "expected": "2024-01",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "base": "2025-01",
+      "duration_s": 0.358,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "3만3000원",
+          "expected": "33000",
+          "got": "33000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해",
+          "expected": "2025",
+          "got": "2025",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "base": "2025-01",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.5% 올라",
+          "expected": "+2.5",
+          "got": "+2.5",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2023",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "base": "2025-01",
+      "duration_s": 0.462,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "8220개",
+          "expected": "8220",
+          "got": "8220",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "base": "2025-02",
+      "duration_s": 0.449,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2290억원 줄었다",
+          "expected": "-229000000000",
+          "got": "22900000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "1월 말",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "작년 말",
+          "expected": "2024",
+          "got": "2024-12",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "base": "2025-02",
+      "duration_s": 0.369,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "61조원",
+          "expected": "61000000000000",
+          "got": "610000000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2023",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "base": "2025-02",
+      "duration_s": 0.41,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "138만1000t",
+          "expected": "1381000",
+          "got": "1380000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "2024년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2021년",
+          "expected": "2021",
+          "got": "2021",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "base": "2025-02",
+      "duration_s": 0.797,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "23% 급감",
+          "expected": "-23",
+          "got": "해당 요청에는 증감을 나타내는 표현이 포함되어 있으므로, 변환할 수 없습니다.\n\n결과: \"\"",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "작년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "재작년",
+          "expected": "2023",
+          "got": "2023",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "base": "2025-03",
+      "duration_s": 0.845,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "7포인트 내려",
+          "expected": "-7",
+          "got": "해당 요청은 숫자 표현이 아니므로, 규칙에 따라 빈 문자열을 반환합니다.",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "2월",
+          "expected": "2025-02",
+          "got": "2025-02",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전월",
+          "expected": "2025-01",
+          "got": "2025-02",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "base": "2025-03",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "10%",
+          "expected": "10",
+          "got": "10.0",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-02",
+          "got": "2025-02",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "base": "2025-03",
+      "duration_s": 0.507,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "38%가 줄었다",
+          "expected": "-38",
+          "got": "-38.0",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2021년",
+          "expected": "2021",
+          "got": "2021",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "base": "2025-03",
+      "duration_s": 0.411,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "562만4000명",
+          "expected": "5624000",
+          "got": "562000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "작년 8월",
+          "expected": "2024-08",
+          "got": "2024-08",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "base": "2025-04",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "49%",
+          "expected": "49",
+          "got": "49.0",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "base": "2025-04",
+      "duration_s": 0.95,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "4.3건씩 늘었다",
+          "expected": "+4.3",
+          "got": "해당 요청에는 증감을 나타내는 표현이 포함되어 있으므로, 이에 대한 숫자 값을 제공할 수 없습니다. 따라서 이 경우에는 빈 문자열을 반환합니다.",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "작년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2023",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "base": "2025-04",
+      "duration_s": 0.474,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "28만9000명",
+          "expected": "289000",
+          "got": "289000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-03",
+          "got": "2025-03",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동월",
+          "expected": "2024-03",
+          "got": "2024-04",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "base": "2025-04",
+      "duration_s": 0.417,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "9.4% 하락",
+          "expected": "-9.4",
+          "got": "-9.4",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "이달",
+          "expected": "2025-04",
+          "got": "2025-04",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1월",
+          "expected": "2025-01",
+          "got": "2025-01",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "base": "2025-04",
+      "duration_s": 0.511,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "339억 달러",
+          "expected": "33900000000",
+          "got": "339000000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "이달",
+          "expected": "2025-04",
+          "got": "2025-04",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "지난해 같은 기간",
+          "expected": "2024-04",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "base": "2025-04",
+      "duration_s": 0.615,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "54만5000명 줄었다",
+          "expected": "-545000",
+          "got": "54500000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "작년 하반기",
+          "expected": "2024-H2",
+          "got": "2024-H2",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동기",
+          "expected": "2023-H2",
+          "got": "2024-Q2",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "base": "2025-04",
+      "duration_s": 0.511,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "36.4% 증가",
+          "expected": "+36.4",
+          "got": "+36.4",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "작년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "base": "2025-05",
+      "duration_s": 0.821,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "64% 급감",
+          "expected": "-64",
+          "got": "해당 요청에는 증감이 포함되어 있으므로, 이에 대해 처리할 수 없습니다. 따라서 빈 문자열을 반환합니다.",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "작년 동기",
+          "expected": "2024-Q1",
+          "got": "2024-Q2",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "base": "2025-05",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "24.4%",
+          "expected": "24.4",
+          "got": "24.4",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "올 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "base": "2025-05",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "19.3% 줄어",
+          "expected": "-19.3",
+          "got": "-19.3",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 3월",
+          "expected": "2025-03",
+          "got": "2025-03",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "작년 3월",
+          "expected": "2024-03",
+          "got": "2024-03",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "base": "2025-06",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1.3% 감소",
+          "expected": "-1.3",
+          "got": "-1.3",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-05",
+          "got": "2025-05",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "작년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "base": "2025-06",
+      "duration_s": 0.409,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1850~1950원",
+          "expected": "1850~1950",
+          "got": "빈 문자열",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "이달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024-06",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "base": "2025-06",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "0.3%포인트 늘었다",
+          "expected": "+0.3",
+          "got": "+0.3",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-05",
+          "got": "2025-05",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024-05",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "base": "2025-06",
+      "duration_s": 0.918,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "112.3% 오를",
+          "expected": "+112.3",
+          "got": "해당 요청에는 증감을 나타내는 표현이 포함되어 있으므로, 이를 변환할 수 없습니다. 따라서 빈 문자열을 반환합니다.",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해 5월",
+          "expected": "2025-05",
+          "got": "2025-05",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2013년 말",
+          "expected": "2013",
+          "got": "2013-12",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "base": "2025-06",
+      "duration_s": 0.434,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "3조7536억원",
+          "expected": "3753600000000",
+          "got": "375360000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "base": "2025-06",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "11.3% 올랐",
+          "expected": "+11.3",
+          "got": "+11.3",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 5월",
+          "expected": "2025-05",
+          "got": "2025-05",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동기",
+          "expected": "2024-05",
+          "got": "2024-Q2",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "base": "2025-07",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "0.83%",
+          "expected": "0.83",
+          "got": "0.83",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "base": "2025-07",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.7% 증가",
+          "expected": "+2.7",
+          "got": "+2.7",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해 상반기",
+          "expected": "2025-H1",
+          "got": "2025",
+          "ok": false
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "base": "2025-07",
+      "duration_s": 0.37,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "21명",
+          "expected": "21",
+          "got": "빈 문자열",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난해",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2023년",
+          "expected": "2023",
+          "got": "2023",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "base": "2025-07",
+      "duration_s": 0.425,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.4% 증가",
+          "expected": "+2.4",
+          "got": "+2.4",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년",
+          "expected": "2024",
+          "got": "2024",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "base": "2025-10",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.1% 올랐",
+          "expected": "+2.1",
+          "got": "+2.1",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-09",
+          "got": "2025-09",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024-09",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "base": "2025-10",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "0.7%포인트(p) 낮아졌다",
+          "expected": "-0.7",
+          "got": "-0.7",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난 달",
+          "expected": "2025-09",
+          "got": "2025-09",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1년 전",
+          "expected": "2024-09",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "base": "2025-11",
+      "duration_s": 0.41,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "65%",
+          "expected": "65",
+          "got": "65.0",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "9월",
+          "expected": "2025-09",
+          "got": "2025-09",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "base": "2025-11",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "6.5% 증가",
+          "expected": "+6.5",
+          "got": "+6.5",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "3분기",
+          "expected": "2025-Q3",
+          "got": "2025-Q3",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "지난해 같은 기간",
+          "expected": "2024-Q3",
+          "got": "2024",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "base": "2025-01",
+      "duration_s": 0.51,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "47% 늘었다",
+          "expected": "+47",
+          "got": "+47.0",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2023년",
+          "expected": "2023",
+          "got": "2023",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "base": "2025-04",
+      "duration_s": 0.424,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "2.8%포인트",
+          "expected": "+2.8",
+          "got": "빈 문자열",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해",
+          "expected": "2025",
+          "got": "2025",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "base": "2025-05",
+      "duration_s": 0.466,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "286개",
+          "expected": "286",
+          "got": "286",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "base": "2025-05",
+      "duration_s": 0.681,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "8000포인트",
+          "expected": "8000",
+          "got": "8000",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "base": "2025-05",
+      "duration_s": 0.479,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "750억원",
+          "expected": "75000000000",
+          "got": "75000000000",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해",
+          "expected": "2025",
+          "got": "2025",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2017년",
+          "expected": "2017",
+          "got": "2017",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "base": "2025-03",
+      "duration_s": 0.443,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "80조8000억원",
+          "expected": "80800000000000",
+          "got": "808000000000",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "base": "2025-03",
+      "duration_s": 0.394,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1000% 증가",
+          "expected": "+1000",
+          "got": "+1000.0",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "base": "2025-05",
+      "duration_s": 0.41,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "12억 달러",
+          "expected": "1200000000",
+          "got": "120000000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "base": "2025-06",
+      "duration_s": 0.419,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "약 600억 달러",
+          "expected": "60000000000",
+          "got": "600000000000",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "base": "2025-07",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "53.7%",
+          "expected": "53.7",
+          "got": "53.7",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "지난달",
+          "expected": "2025-06",
+          "got": "2025-06",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "base": "2025-06",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "49.7%",
+          "expected": "49.7",
+          "got": "49.7",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "2022년",
+          "expected": "2022",
+          "got": "2022",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "1999년",
+          "expected": "1999",
+          "got": "1999",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "base": "2025-05",
+      "duration_s": 0.628,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "5억7000만원",
+          "expected": "570000000",
+          "got": "57000000000",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "base": "2025-01",
+      "duration_s": 0.453,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "4.79%",
+          "expected": "4.79",
+          "got": "4.79",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "base": "2025-02",
+      "duration_s": 0.516,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "4.25~4.5%",
+          "expected": "4.25~4.5",
+          "got": "빈 문자열",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "base": "2025-02",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "45.9%",
+          "expected": "45.9",
+          "got": "45.9",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "2009년",
+          "expected": "2009",
+          "got": "2009",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "base": "2025-02",
+      "duration_s": 0.412,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "3조8135억원",
+          "expected": "3813500000000",
+          "got": "381350000000",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "base": "2025-02",
+      "duration_s": 0.278,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "400개",
+          "expected": "400",
+          "got": "400",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "작년 말",
+          "expected": "2024",
+          "got": "2024-12",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "base": "2025-02",
+      "duration_s": 0.357,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "3900개",
+          "expected": "3900",
+          "got": "3900",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "작년 말",
+          "expected": "2024",
+          "got": "2024-12",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "base": "2025-03",
+      "duration_s": 0.377,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "8만6000달러",
+          "expected": "86000",
+          "got": "860000",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "base": "2025-03",
+      "duration_s": 0.436,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "900억 달러",
+          "expected": "90000000000",
+          "got": "900000000000",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "base": "2025-04",
+      "duration_s": 0.351,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "185억8400만달러",
+          "expected": "18584000000",
+          "got": "188400000000",
+          "ok": false
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "전년 동기",
+          "expected": "2024-04",
+          "got": "2024-Q2",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "base": "2025-05",
+      "duration_s": 0.444,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1조1000억달러",
+          "expected": "1100000000000",
+          "got": "1100000000000",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "base": "2025-05",
+      "duration_s": 0.428,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "5억달러",
+          "expected": "500000000",
+          "got": "5000000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "2022년",
+          "expected": "2022",
+          "got": "2022",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "base": "2025-05",
+      "duration_s": 0.452,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "7500달러",
+          "expected": "7500",
+          "got": "7500",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "base": "2025-05",
+      "duration_s": 0.377,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "72조3000억원",
+          "expected": "72300000000000",
+          "got": "720000000000",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해 1분기",
+          "expected": "2025-Q1",
+          "got": "2025-Q1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "base": "2025-06",
+      "duration_s": 0.0,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "42.9% 올라",
+          "expected": "+42.9",
+          "got": "+42.9",
+          "ok": true
+        },
+        {
+          "slot": "period_value",
+          "raw": "올해 5월",
+          "expected": "2025-05",
+          "got": "2025-05",
+          "ok": true
+        },
+        {
+          "slot": "compare_period_value",
+          "raw": "2013년 말",
+          "expected": "2013",
+          "got": "2013-12",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "base": "2025-07",
+      "duration_s": 0.403,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "24명",
+          "expected": "24",
+          "got": "빈 문자열",
+          "ok": false
+        },
+        {
+          "slot": "period_value",
+          "raw": "2023년",
+          "expected": "2023",
+          "got": "2023",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "base": "2025-07",
+      "duration_s": 0.406,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "3.3% 늘어난",
+          "expected": "+3.3",
+          "got": "+3.3",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "base": "2025-06",
+      "duration_s": 0.517,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1.5% 상승",
+          "expected": "+1.5",
+          "got": "+1.5",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "base": "2025-06",
+      "duration_s": 0.401,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "3.1% 상승",
+          "expected": "+3.1",
+          "got": "+3.1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "base": "2025-03",
+      "duration_s": 0.332,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "6.81% 하락",
+          "expected": "-6.81",
+          "got": "-6.81",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "base": "2025-02",
+      "duration_s": 0.407,
+      "slots": [
+        {
+          "slot": "value",
+          "raw": "1437.40원",
+          "expected": "1437.4",
+          "got": "1437.40",
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

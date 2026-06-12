@@ -1,2828 +1,4007 @@
 {
   "module": "extract_statistical_claims",
+  "model": "HCX-007(hyperclova) temperature=0.0 max_tokens=2048 (EXTRACT_CLAIMS)",
   "input": "benchmark/data/2_single_sentence_for_claim_extractor.jsonl",
-  "model": "HCX-007(hyperclova) temperature=0.0 max_tokens=2048 (EXTRACT_CLAIMS preset)",
-  "note": "detection P/R/F1 (non-NONE claim>=1 => positive). load_article 미사용.",
   "n": 100,
   "n_runs": 3,
-  "duration_s": 167.8,
+  "duration_s": 173.4,
+  "note": "detection (non-NONE claim>=1 => positive). load_article 미사용. 단일컷(경계 폐기).",
+  "summary": {
+    "precision": {
+      "mean": 0.8362,
+      "min": 0.8305,
+      "max": 0.8448
+    },
+    "recall": {
+      "mean": 0.9867,
+      "min": 0.98,
+      "max": 1.0
+    },
+    "f1": {
+      "mean": 0.9052,
+      "min": 0.8991,
+      "max": 0.9091
+    }
+  },
   "pred_flips_across_runs": [
     44,
     77
   ],
-  "summary": {
-    "precision": {
-      "full": {
-        "mean": 0.8371,
-        "min": 0.8305,
-        "max": 0.8475
-      },
-      "strict": {
-        "mean": 0.9141,
-        "min": 0.9074,
-        "max": 0.9259
-      }
-    },
-    "recall": {
-      "full": {
-        "mean": 0.9933,
-        "min": 0.98,
-        "max": 1.0
-      },
-      "strict": {
-        "mean": 0.9933,
-        "min": 0.98,
-        "max": 1.0
-      }
-    },
-    "f1": {
-      "full": {
-        "mean": 0.9085,
-        "min": 0.8991,
-        "max": 0.9174
-      },
-      "strict": {
-        "mean": 0.9521,
-        "min": 0.9423,
-        "max": 0.9615
-      }
-    }
-  },
   "runs": [
-    {
-      "run": 1,
-      "n_ok": 100,
-      "n_error": 0,
-      "full": {
-        "TP": 49,
-        "FP": 10,
-        "FN": 1,
-        "TN": 40,
-        "precision": 0.8305,
-        "recall": 0.98,
-        "f1": 0.8991
+    [
+      {
+        "id": 1,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "한국은행은 지난 2월 경제전망보고서를 발표하고, 올해 우리나라 경제성장률 전망치를 기존 1.9%에서 1.5%로 낮췄다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "경제성장률=1.5%(change_rate)"
+        ]
       },
-      "strict": {
-        "TP": 49,
-        "FP": 5,
-        "FN": 1,
-        "TN": 31,
-        "precision": 0.9074,
-        "recall": 0.98,
-        "f1": 0.9423
+      {
+        "id": 2,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "9일 통계청이 발표한 ‘3월 고용동향’에 따르면, 지난 3월 취업자 수는 2858만9000명으로 전년 동월 대비 19만3000명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=19만3000명 증가(change_rate)"
+        ]
       },
-      "results": [
-        {
-          "id": 1,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 2,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 3,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 4,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 5,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 6,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 7,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 8,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 9,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 10,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 11,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 12,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 13,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 14,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 15,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 16,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 17,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 18,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 19,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 20,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 21,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 22,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 23,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 24,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 25,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 26,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 27,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 28,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 29,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 30,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 31,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 32,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 33,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 34,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 35,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 36,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 37,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 38,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 39,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 40,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 41,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 42,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 43,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 4,
-          "n_nonnone": 4,
-          "pred": "positive"
-        },
-        {
-          "id": 44,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 45,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 46,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 47,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 48,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 49,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 50,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 51,
-          "label": "negative",
-          "note": "발표 일정(월 나열)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 52,
-          "label": "negative",
-          "note": "정성 추세(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 53,
-          "label": "negative",
-          "note": "연도·사건 나열",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 54,
-          "label": "negative",
-          "note": "지표 정의(노년부양비)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 55,
-          "label": "negative",
-          "note": "법정 근로시간 기준",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 56,
-          "label": "negative",
-          "note": "물가 목표치(2%)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 57,
-          "label": "negative",
-          "note": "설문 표본 수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 58,
-          "label": "negative",
-          "note": "전문가 전망 인원수",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 59,
-          "label": "negative",
-          "note": "조사 방법 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 60,
-          "label": "negative",
-          "note": "조사 주간 날짜",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 61,
-          "label": "negative",
-          "note": "일정 앞당김(일수)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 62,
-          "label": "negative",
-          "note": "지원 자격 연령",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 63,
-          "label": "negative",
-          "note": "세대 라벨+정성",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 64,
-          "label": "negative",
-          "note": "물가 목표치(2%)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 65,
-          "label": "negative",
-          "note": "개인 발언(나이)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 66,
-          "label": "negative",
-          "note": "수치 포함범위 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 67,
-          "label": "negative",
-          "note": "수치 정의(합산 대상)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 68,
-          "label": "negative",
-          "note": "연령대 언급(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 69,
-          "label": "negative",
-          "note": "세대 라벨(출생연도)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 70,
-          "label": "negative",
-          "note": "표결 인원수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 71,
-          "label": "negative",
-          "note": "용어 정의(잠재성장률)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 72,
-          "label": "negative",
-          "note": "월 제외·비교(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 73,
-          "label": "negative",
-          "note": "통계 산정 기준 연령",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 74,
-          "label": "negative",
-          "note": "추세 주도층(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 75,
-          "label": "negative",
-          "note": "연령대 언급(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 76,
-          "label": "negative",
-          "note": "지표 정의(합계출산율)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 77,
-          "label": "negative",
-          "note": "취업자 수 순위(1위)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 78,
-          "label": "negative",
-          "note": "연령대 순위 변동",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 79,
-          "label": "negative",
-          "note": "연령대 순위 나열",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 80,
-          "label": "negative",
-          "note": "순위 변천",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 81,
-          "label": "negative",
-          "note": "세대/연령 라벨",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 82,
-          "label": "negative",
-          "note": "세대 라벨(출생연도)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 83,
-          "label": "negative",
-          "note": "지수 해석 기준(100)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 84,
-          "label": "negative",
-          "note": "근로자 용어 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 85,
-          "label": "negative",
-          "note": "전망 기관 수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 86,
-          "label": "negative",
-          "note": "향후 일정 예고",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 87,
-          "label": "negative",
-          "note": "경계: 전망·추정 비교",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 88,
-          "label": "negative",
-          "note": "경계: 전망 가정(1%대)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 89,
-          "label": "negative",
-          "note": "경계: 총재 견해 발언",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 90,
-          "label": "negative",
-          "note": "경계: 최상급·기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 91,
-          "label": "negative",
-          "note": "경계: 최상급·기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 92,
-          "label": "negative",
-          "note": "경계: IB 성장률 전망",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 93,
-          "label": "negative",
-          "note": "경계: IB 성장률 전망치",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 94,
-          "label": "negative",
-          "note": "경계: 최장 기록(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 95,
-          "label": "negative",
-          "note": "경계: 기록 기간(값 없음)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 96,
-          "label": "negative",
-          "note": "경계: 최대 기록 기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 97,
-          "label": "negative",
-          "note": "경계: 최장 기간(날짜)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 98,
-          "label": "negative",
-          "note": "경계: 연속·기간 비교",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 99,
-          "label": "negative",
-          "note": "경계: 연속·기록 기간",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 100,
-          "label": "negative",
-          "note": "경계: 동반 상승 최초",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        }
-      ]
-    },
-    {
-      "run": 2,
-      "n_ok": 100,
-      "n_error": 0,
-      "full": {
-        "TP": 50,
-        "FP": 9,
-        "FN": 0,
-        "TN": 41,
-        "precision": 0.8475,
-        "recall": 1.0,
-        "f1": 0.9174
+      {
+        "id": 3,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "일할 의사가 있지만 취업하지 못한 청년 실업자는 지난달 28만9000명으로 2023년 3월(30만명) 이후 2년 만에 가장 많았다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년 실업자 수=28만9000명(absolute)"
+        ]
       },
-      "strict": {
-        "TP": 50,
-        "FP": 4,
-        "FN": 0,
-        "TN": 32,
-        "precision": 0.9259,
-        "recall": 1.0,
-        "f1": 0.9615
+      {
+        "id": 4,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "청년 경제활동인구 대비 실업자 수를 뜻하는 청년 실업률은 7.5%로 코로나 대유행이 한창이었던 2021년 6월(8.9%) 이후 3년 9개월 이후 최고치를 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년 실업률=7.5%(absolute)"
+        ]
       },
-      "results": [
-        {
-          "id": 1,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 2,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 3,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 4,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 5,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 6,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 7,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 8,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 9,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 10,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 11,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 12,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 13,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 14,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 15,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 16,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 17,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 18,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 19,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 20,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 21,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 22,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 23,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 24,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 25,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 26,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 27,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 28,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 29,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 30,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 31,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 32,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 33,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 34,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 35,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 36,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 37,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 38,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 39,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 40,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 41,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 42,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 43,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 4,
-          "n_nonnone": 4,
-          "pred": "positive"
-        },
-        {
-          "id": 44,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 45,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 46,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 47,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 48,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 49,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 50,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 51,
-          "label": "negative",
-          "note": "발표 일정(월 나열)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 52,
-          "label": "negative",
-          "note": "정성 추세(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 53,
-          "label": "negative",
-          "note": "연도·사건 나열",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 54,
-          "label": "negative",
-          "note": "지표 정의(노년부양비)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 55,
-          "label": "negative",
-          "note": "법정 근로시간 기준",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 56,
-          "label": "negative",
-          "note": "물가 목표치(2%)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 57,
-          "label": "negative",
-          "note": "설문 표본 수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 58,
-          "label": "negative",
-          "note": "전문가 전망 인원수",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 59,
-          "label": "negative",
-          "note": "조사 방법 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 60,
-          "label": "negative",
-          "note": "조사 주간 날짜",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 61,
-          "label": "negative",
-          "note": "일정 앞당김(일수)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 62,
-          "label": "negative",
-          "note": "지원 자격 연령",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 63,
-          "label": "negative",
-          "note": "세대 라벨+정성",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 64,
-          "label": "negative",
-          "note": "물가 목표치(2%)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 65,
-          "label": "negative",
-          "note": "개인 발언(나이)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 66,
-          "label": "negative",
-          "note": "수치 포함범위 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 67,
-          "label": "negative",
-          "note": "수치 정의(합산 대상)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 68,
-          "label": "negative",
-          "note": "연령대 언급(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 69,
-          "label": "negative",
-          "note": "세대 라벨(출생연도)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 70,
-          "label": "negative",
-          "note": "표결 인원수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 71,
-          "label": "negative",
-          "note": "용어 정의(잠재성장률)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 72,
-          "label": "negative",
-          "note": "월 제외·비교(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 73,
-          "label": "negative",
-          "note": "통계 산정 기준 연령",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 74,
-          "label": "negative",
-          "note": "추세 주도층(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 75,
-          "label": "negative",
-          "note": "연령대 언급(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 76,
-          "label": "negative",
-          "note": "지표 정의(합계출산율)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 77,
-          "label": "negative",
-          "note": "취업자 수 순위(1위)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 78,
-          "label": "negative",
-          "note": "연령대 순위 변동",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 79,
-          "label": "negative",
-          "note": "연령대 순위 나열",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 80,
-          "label": "negative",
-          "note": "순위 변천",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 81,
-          "label": "negative",
-          "note": "세대/연령 라벨",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 82,
-          "label": "negative",
-          "note": "세대 라벨(출생연도)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 83,
-          "label": "negative",
-          "note": "지수 해석 기준(100)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 84,
-          "label": "negative",
-          "note": "근로자 용어 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 85,
-          "label": "negative",
-          "note": "전망 기관 수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 86,
-          "label": "negative",
-          "note": "향후 일정 예고",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 87,
-          "label": "negative",
-          "note": "경계: 전망·추정 비교",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 88,
-          "label": "negative",
-          "note": "경계: 전망 가정(1%대)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 89,
-          "label": "negative",
-          "note": "경계: 총재 견해 발언",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 90,
-          "label": "negative",
-          "note": "경계: 최상급·기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 91,
-          "label": "negative",
-          "note": "경계: 최상급·기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 92,
-          "label": "negative",
-          "note": "경계: IB 성장률 전망",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 93,
-          "label": "negative",
-          "note": "경계: IB 성장률 전망치",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 94,
-          "label": "negative",
-          "note": "경계: 최장 기록(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 95,
-          "label": "negative",
-          "note": "경계: 기록 기간(값 없음)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 96,
-          "label": "negative",
-          "note": "경계: 최대 기록 기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 97,
-          "label": "negative",
-          "note": "경계: 최장 기간(날짜)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 98,
-          "label": "negative",
-          "note": "경계: 연속·기간 비교",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 99,
-          "label": "negative",
-          "note": "경계: 연속·기록 기간",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 100,
-          "label": "negative",
-          "note": "경계: 동반 상승 최초",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        }
-      ]
-    },
-    {
-      "run": 3,
-      "n_ok": 100,
-      "n_error": 0,
-      "full": {
-        "TP": 50,
-        "FP": 10,
-        "FN": 0,
-        "TN": 40,
-        "precision": 0.8333,
-        "recall": 1.0,
-        "f1": 0.9091
+      {
+        "id": 5,
+        "label": "positive",
+        "note": "",
+        "claim_type": "배수",
+        "sentence": "지난달 청년층 실업률은 전체 연령대 실업률(3.1%)의 2.4배에 달한다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "실업률=2.4배(ratio)"
+        ]
       },
-      "strict": {
-        "TP": 50,
-        "FP": 5,
-        "FN": 0,
-        "TN": 31,
-        "precision": 0.9091,
-        "recall": 1.0,
-        "f1": 0.9524
+      {
+        "id": 6,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "지난달 쉬었음 인구는 251만7000명으로 1년 전 대비 7만1000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "쉬었음 인구=7만1000명(change_rate)"
+        ]
       },
-      "results": [
-        {
-          "id": 1,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 2,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 3,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 4,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 5,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 6,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 7,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 8,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 9,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 10,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 11,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 12,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 13,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 14,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 15,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 16,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 17,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 18,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 19,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 20,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 21,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 22,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 23,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 24,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 25,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 26,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 27,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 28,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 29,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 30,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 31,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 32,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 33,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 34,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 35,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 36,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 37,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 38,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 39,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 40,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 41,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 42,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 43,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 4,
-          "n_nonnone": 4,
-          "pred": "positive"
-        },
-        {
-          "id": 44,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 45,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 46,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 47,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 48,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 49,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 50,
-          "label": "positive",
-          "note": "",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 51,
-          "label": "negative",
-          "note": "발표 일정(월 나열)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 52,
-          "label": "negative",
-          "note": "정성 추세(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 53,
-          "label": "negative",
-          "note": "연도·사건 나열",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 54,
-          "label": "negative",
-          "note": "지표 정의(노년부양비)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 55,
-          "label": "negative",
-          "note": "법정 근로시간 기준",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 56,
-          "label": "negative",
-          "note": "물가 목표치(2%)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 57,
-          "label": "negative",
-          "note": "설문 표본 수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 58,
-          "label": "negative",
-          "note": "전문가 전망 인원수",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 59,
-          "label": "negative",
-          "note": "조사 방법 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 60,
-          "label": "negative",
-          "note": "조사 주간 날짜",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 61,
-          "label": "negative",
-          "note": "일정 앞당김(일수)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 62,
-          "label": "negative",
-          "note": "지원 자격 연령",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 63,
-          "label": "negative",
-          "note": "세대 라벨+정성",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 64,
-          "label": "negative",
-          "note": "물가 목표치(2%)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 65,
-          "label": "negative",
-          "note": "개인 발언(나이)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 66,
-          "label": "negative",
-          "note": "수치 포함범위 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 67,
-          "label": "negative",
-          "note": "수치 정의(합산 대상)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 68,
-          "label": "negative",
-          "note": "연령대 언급(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 69,
-          "label": "negative",
-          "note": "세대 라벨(출생연도)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 70,
-          "label": "negative",
-          "note": "표결 인원수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 71,
-          "label": "negative",
-          "note": "용어 정의(잠재성장률)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 72,
-          "label": "negative",
-          "note": "월 제외·비교(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 73,
-          "label": "negative",
-          "note": "통계 산정 기준 연령",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 74,
-          "label": "negative",
-          "note": "추세 주도층(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 75,
-          "label": "negative",
-          "note": "연령대 언급(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 76,
-          "label": "negative",
-          "note": "지표 정의(합계출산율)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 77,
-          "label": "negative",
-          "note": "취업자 수 순위(1위)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 78,
-          "label": "negative",
-          "note": "연령대 순위 변동",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 79,
-          "label": "negative",
-          "note": "연령대 순위 나열",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 80,
-          "label": "negative",
-          "note": "순위 변천",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 81,
-          "label": "negative",
-          "note": "세대/연령 라벨",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 82,
-          "label": "negative",
-          "note": "세대 라벨(출생연도)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 83,
-          "label": "negative",
-          "note": "지수 해석 기준(100)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 84,
-          "label": "negative",
-          "note": "근로자 용어 정의",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 85,
-          "label": "negative",
-          "note": "전망 기관 수",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 86,
-          "label": "negative",
-          "note": "향후 일정 예고",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 87,
-          "label": "negative",
-          "note": "경계: 전망·추정 비교",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 88,
-          "label": "negative",
-          "note": "경계: 전망 가정(1%대)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 89,
-          "label": "negative",
-          "note": "경계: 총재 견해 발언",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 90,
-          "label": "negative",
-          "note": "경계: 최상급·기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 91,
-          "label": "negative",
-          "note": "경계: 최상급·기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 92,
-          "label": "negative",
-          "note": "경계: IB 성장률 전망",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 93,
-          "label": "negative",
-          "note": "경계: IB 성장률 전망치",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 94,
-          "label": "negative",
-          "note": "경계: 최장 기록(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 95,
-          "label": "negative",
-          "note": "경계: 기록 기간(값 없음)",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 1,
-          "pred": "positive"
-        },
-        {
-          "id": 96,
-          "label": "negative",
-          "note": "경계: 최대 기록 기간(값 없음)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 97,
-          "label": "negative",
-          "note": "경계: 최장 기간(날짜)",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 98,
-          "label": "negative",
-          "note": "경계: 연속·기간 비교",
-          "error": null,
-          "n_total": 2,
-          "n_nonnone": 2,
-          "pred": "positive"
-        },
-        {
-          "id": 99,
-          "label": "negative",
-          "note": "경계: 연속·기록 기간",
-          "error": null,
-          "n_total": 1,
-          "n_nonnone": 0,
-          "pred": "negative"
-        },
-        {
-          "id": 100,
-          "label": "negative",
-          "note": "경계: 동반 상승 최초",
-          "error": null,
-          "n_total": 0,
-          "n_nonnone": 0,
-          "pred": "negative"
-        }
-      ]
-    }
+      {
+        "id": 7,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "이 중 약 절반인 1700만 명이 고령 인구가 된다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고령 인구=1700만 명(distribution)"
+        ]
+      },
+      {
+        "id": 8,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "한국의 노년 부양비는 2024년 27.4명에서 2072년 104.2명으로 3.8배 증가한다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "노년 부양비=3.8배(ratio)"
+        ]
+      },
+      {
+        "id": 9,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "전국적으로는 2.2% 감소했고, 울산(-6.6%), 경기(-5.7%), 강원(-5.3%) 등에서 특히 크게 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "실업률=2.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 10,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "19일 국가데이터처(옛 통계청)에 따르면, 지난 달 청년층 고용률은 45.1%로 1년 전보다 0.7%포인트(p) 낮아졌다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년층 고용률=45.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 11,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "8월 제조업 취업자는 미국 관세정책 불확실성 등 여파로 6만1000명 줄며 15개월 연속 내리막을 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "제조업 취업자 수=6만1000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 12,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "올해 1분기 임금근로 일자리 중 신규채용은 총 546만7000개로, 2018년 통계 작성 시작 이래 가장 적었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "신규채용=546만7000개(verifiable)"
+        ]
+      },
+      {
+        "id": 13,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "전체 일자리에서 신규채용이 차지하는 비중은 26.6%로 통계 작성 이래 최저치였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "신규채용 비중=26.6%(distribution)"
+        ]
+      },
+      {
+        "id": 14,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "16일 통계청이 발표한 ‘2025년 6월 고용동향’에 따르면, 지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 대비 18만3000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=18만3000명(change_rate)"
+        ]
+      },
+      {
+        "id": 15,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "전체 인구 중 취업자 비율을 뜻하는 고용률은 63.6%로 전년 동월 대비 0.1%포인트 증가하며, 지난 1982년 관련 통계 작성 이래 최고치를 새로 썼다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=0.1%포인트(change_rate)"
+        ]
+      },
+      {
+        "id": 16,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "국제 비교 기준인 15~64세 고용률은 70.3%로 마찬가지로 6월 기준 역대 최대치를 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=70.3%(absolute)"
+        ]
+      },
+      {
+        "id": 17,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업은 지난달 취업자 수가 441만4000명으로 전년 동월 대비 8만3000명 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=8만3000명(change_rate)"
+        ]
+      },
+      {
+        "id": 18,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "지난달 건설업 취업자 수도 196만명으로 전년 동월 대비 9만7000명 감소하며 200만명을 밑돌았다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "건설업 취업자 수=9만7000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 19,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "주당 근로시간이 36시간 미만인 ‘단기 근로자’ 비율이 10년 새 2배로 늘어나 전체 근로자의 30%를 넘어섰다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "단기 근로자 비율=2배(change_rate)"
+        ]
+      },
+      {
+        "id": 20,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "30일 통계청에 따르면, 지난해 일주일에 36시간 미만으로 일한 근로자는 881만명으로 전체 근로자(2857만6000명)의 30.8%를 차지했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "근로자=30.8%(distribution)"
+        ]
+      },
+      {
+        "id": 21,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청에 따르면, 지난해 주 14시간 이하로 일하는 ‘초단기 근로자’는 174만2000명으로 전체 근로자의 6%에 달했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "근로자=174만2000명(distribution)"
+        ]
+      },
+      {
+        "id": 22,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 23,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 석유류 가격은 7.3% 증가했는데, 지난해 7월(8.4%) 이후 7개월 만에 최대 상승폭이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "석유류 가격=7.3%(change_rate)"
+        ]
+      },
+      {
+        "id": 24,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "6일 통계청이 발표한 ‘2월 소비자물가 동향’에 따르면, 지난달 소비자물가지수는 116.08로 전년 동월 대비 2% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2%(change_rate)"
+        ]
+      },
+      {
+        "id": 25,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 석유류 가격은 전년 동월 대비 6.3% 올라, 1월(7.3%)에 이어 두 달 연속으로 5% 이상의 상승폭을 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "석유류 가격=6.3%(change_rate)"
+        ]
+      },
+      {
+        "id": 26,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 식용유지 가격 상승률은 9%로, 지난해 6월(11.6%) 이후 8개월 만에 최대 상승폭을 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "식용유지 가격=9%(change_rate)"
+        ]
+      },
+      {
+        "id": 27,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "다만 토마토(-19.5%)와 딸기(-6.9%), 바나나(-11.4%) 등 과실류 가격이 떨어지면서 농산물 물가는 전년 동월 대비 1.2% 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "농산물 물가=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 28,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청이 14일 발표한 ‘4월 고용 동향’에 따르면, 지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=19만4000명(change_rate)"
+        ]
+      },
+      {
+        "id": 29,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "하지만 20대 고용이 많은 제조업 분야 취업자는 12만4000명 줄어 작년 7월부터 10개월 연속 감소세를 이어갔다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=12만4000명(change_rate)"
+        ]
+      },
+      {
+        "id": 30,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 소비자물가 상승률이 2.1%를 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가 상승률=2.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 31,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "국가데이터처가 2일 발표한 '9월 소비자물가 동향'에 따르면, 지난달 소비자물가지수는 117.06(2020=100)으로 전년 동월 대비 2.1% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 32,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "농축수산물 가운데 수산물 가격은 전년 동월 대비 6.4%, 축산물은 5.4% 올랐다.",
+        "error": null,
+        "n_total": 2,
+        "n_nonnone": 2,
+        "pred": "positive",
+        "evidence": [
+          "수산물 가격=6.4%(change_rate)",
+          "축산물 가격=5.4%(change_rate)"
+        ]
+      },
+      {
+        "id": 33,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "공공서비스 가격은 전년 동월보다 1.2% 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "공공서비스 가격=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 34,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "한국은행이 25일 금융통화위원회를 열고 기준금리를 연 2.75%로 0.25%포인트 인하했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "기준금리=0.25%포인트(change_rate)"
+        ]
+      },
+      {
+        "id": 35,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "17일 국가데이터처가 발표한 ‘9월 고용동향’에 따르면 지난달 15세 이상 취업자는 2915만4000명으로 전년 동월 대비 31만2000명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=31만2000명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 36,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "15일 통계청이 발표한 ‘2024년 12월 및 연간 고용 동향’에 따르면, 지난달 취업자 수는 2804만1000명으로 전년 동월 대비 5만2000명 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=5만2000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 37,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "14일 통계청이 발표한 ‘1월 고용동향’에 따르면, 지난달 취업자 수는 2787만8000명으로 1년 전(2774만3000명)보다 13만5000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=13만5000명(change_rate)"
+        ]
+      },
+      {
+        "id": 38,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "이 덕분에 지난달 65세 이상 고령층 취업자만 33만8000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=33만8000명(change_rate)"
+        ]
+      },
+      {
+        "id": 39,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "26일 통계청이 발표한 ‘2024년 출생·사망통계’에 따르면, 작년 출생아 수는 23만8300명으로 전년(23만명)대비 8300명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=8300명(change_rate)"
+        ]
+      },
+      {
+        "id": 40,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "27일 통계청의 ‘경제활동인구조사’에 따르면, 평생 대부분을 일한 ‘주된 일자리’를 법적 정년 이후인 60~64세에 그만뒀다는 응답자가 지난해 77만명으로 1년 전(73만2000명)보다 5.2% 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "주된 일자리 퇴직자 수=5.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 41,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "28일 통계청이 발표한 ‘3월 인구 동향’에 따르면, 지난 1분기(1~3월) 합계출산율은 0.82명으로 1년 전(0.77명)보다 0.05명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "합계출산율=0.05명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 42,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청에 따르면 지난달 한국 근로자의 주당 평균 근로시간은 38.8시간이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "주당 평균 근로시간=38.8(absolute)"
+        ]
+      },
+      {
+        "id": 43,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "일본의 경우 65세 이상 노동시장 참여율(26%)이 프랑스(4%) 등을 앞서고 있으며, 이는 일본의 1997년 이후 연평균 노동생산성 증가율(1.1%)이 서유럽(0.8%)을 앞설 수 있던 요인이 됐다고 했다.",
+        "error": null,
+        "n_total": 4,
+        "n_nonnone": 4,
+        "pred": "positive",
+        "evidence": [
+          "65세 이상 노동시장 참여율=26%(ratio)",
+          "65세 이상 노동시장 참여율=4%(ratio)",
+          "노동생산성 증가율=1.1%(change_rate)",
+          "노동생산성 증가율=0.8%(change_rate)"
+        ]
+      },
+      {
+        "id": 44,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "한국은행이 16일 금융통화위원회를 열고 현재 연 3%인 기준금리를 동결하기로 결정했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 45,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "환율이 달러당 1400원대 중후반에 고착화하면서, 지난달 수입 물가는 전년보다 6.6%나 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "수입 물가=6.6%(change_rate)"
+        ]
+      },
+      {
+        "id": 46,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 청년층 고용률은 44.3%에 그치며 전년 같은 달 대비 1.7%포인트 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년층 고용률=1.7%p(change_rate)"
+        ]
+      },
+      {
+        "id": 47,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 65세 이상 고용률은 40.4%로 전년 동월 대비 1.2%포인트 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=40.4%(change_rate)"
+        ]
+      },
+      {
+        "id": 48,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "법적 정년을 넘긴 60세 이상 고령층 취업자가 사상 처음으로 700만명을 넘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "60세 이상 고령층 취업자 수=700만명(absolute)"
+        ]
+      },
+      {
+        "id": 49,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "12일 국가데이터처(구 통계청)에 따르면 지난해 20대 인구는 630만2000명으로, 전년보다 19만3000명 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "20대 인구=630만2000명(change_rate)"
+        ]
+      },
+      {
+        "id": 50,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "국가데이터처가 22일 발표한 '2025년 8월 경제활동인구조사 근로형태별 부가조사'에 따르면, 지난 8월 기준 비정규직 근로자는 856만8000명으로 전년 동월 대비 11만 명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "비정규직 근로자 수=856만8000명(change_rate)"
+        ]
+      },
+      {
+        "id": 51,
+        "label": "negative",
+        "note": "발표 일정(월 나열)",
+        "claim_type": "",
+        "sentence": "한국은행은 매년 2·5·8·11월 경제전망보고서를 발표한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 52,
+        "label": "negative",
+        "note": "정성 추세(값 없음)",
+        "claim_type": "",
+        "sentence": "올해 성장률 전망치의 경우 작년 5월 이후 줄곧 하향 조정돼 왔다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 53,
+        "label": "negative",
+        "note": "연도·사건 나열",
+        "claim_type": "",
+        "sentence": "과거 30년간 우리나라 경제성장률이 올해 전망치인 1.5%보다 낮았던 때는 1998년 외환 위기, 2009년 글로벌 금융 위기, 2020년 코로나 팬데믹 위기 등이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 54,
+        "label": "negative",
+        "note": "지표 정의(노년부양비)",
+        "claim_type": "",
+        "sentence": "이 지표는 15~64세 생산연령인구 1명이 65세 이상의 고령 인구 몇 명을 부양해야 하는지를 나타낸다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 55,
+        "label": "negative",
+        "note": "법정 근로시간 기준",
+        "claim_type": "",
+        "sentence": "현행법상 주 15시간 이상 일한 직원에게는 하루 치 급여를 ‘주휴 수당’으로 줘야 하는데, 최저임금이 오르자 주휴 수당을 주지 않으려 주 14시간 이하로만 고용하는 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 56,
+        "label": "negative",
+        "note": "물가 목표치(2%)",
+        "claim_type": "",
+        "sentence": "2%는 한국은행이 제시한 물가상승률 목표치이기도 하다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "물가상승률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 57,
+        "label": "negative",
+        "note": "설문 표본 수",
+        "claim_type": "",
+        "sentence": "이날 한국경제인협회(한경협)는 전국 상경 계열 교수 111명을 대상으로 실시한 ‘한국경제 중장기 전망 및 주요 리스크’ 설문조사 결과를 발표했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 58,
+        "label": "negative",
+        "note": "전문가 전망 인원수",
+        "claim_type": "",
+        "sentence": "앞서 지난 21일 금융투자협회가 채권 전문가 100명을 대상으로 한 조사에서도 55명이 금리 인하를 점쳤다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "금리 인하 예상 응답자 비율=55(distribution)"
+        ]
+      },
+      {
+        "id": 59,
+        "label": "negative",
+        "note": "조사 방법 정의",
+        "claim_type": "",
+        "sentence": "통계청은 매월 15일이 끼어있는 일주일을 조사 대상 기간으로 잡고 해당 주에 한 시간 이상 일한 사람을 취업자로 분류한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 60,
+        "label": "negative",
+        "note": "조사 주간 날짜",
+        "claim_type": "",
+        "sentence": "그런데 지난달 15일은 일요일이어서 조사 대상 주간이 15~21일이었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 61,
+        "label": "negative",
+        "note": "일정 앞당김(일수)",
+        "claim_type": "",
+        "sentence": "지난해 2월 1일에 착수했던 것에 비해 20일 가량 앞당긴 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 62,
+        "label": "negative",
+        "note": "지원 자격 연령",
+        "claim_type": "",
+        "sentence": "노인 일자리는 통상 65세 이상인 경우 지원할 수 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 63,
+        "label": "negative",
+        "note": "세대 라벨+정성",
+        "claim_type": "",
+        "sentence": "인구가 많았던 1차 베이비부머(1955~1963년생)가 순차적으로 은퇴하기 시작한 2010년대 후반부터 작년까지도 국내 취업자 수는 줄지 않고 오히려 늘었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 64,
+        "label": "negative",
+        "note": "물가 목표치(2%)",
+        "claim_type": "",
+        "sentence": "2%는 한국은행이 물가상승률 목표로 제시한 수치다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "물가상승률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 65,
+        "label": "negative",
+        "note": "개인 발언(나이)",
+        "claim_type": "",
+        "sentence": "백씨는 “친구들 중에는 정년 맞춰서 일을 그만두기도 했는데, 나는 진작부터 회사와 더 일하기로 얘기했다”며 “연금 나오려면 몇 년 남기도 했고 아직 몸도 건강해서 65세까지는 일하려고 한다”고 했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 66,
+        "label": "negative",
+        "note": "수치 포함범위 정의",
+        "claim_type": "",
+        "sentence": "이 수치에는 임시직으로 일하다 60세 이후에 일을 그만둔 사람은 포함되지 않는다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 67,
+        "label": "negative",
+        "note": "수치 정의(합산 대상)",
+        "claim_type": "",
+        "sentence": "중장년기 대부분을 보낸 전일제 직장에서 정년이 지난 뒤에도 고령자 계속 고용 방식으로 더 근무하다 그만뒀거나 정년이 아예 60세 이후로 정해져 있는 직장을 그만둔 퇴직자를 합친 숫자다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 68,
+        "label": "negative",
+        "note": "연령대 언급(값 없음)",
+        "claim_type": "",
+        "sentence": "출생아 증가의 일차적 원인은 출산 적령기인 30~34세 인구가 많기 때문이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 69,
+        "label": "negative",
+        "note": "세대 라벨(출생연도)",
+        "claim_type": "",
+        "sentence": "올해 30~34세는 ‘2차 에코붐 세대’라 불리는 1991~1995년생이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 70,
+        "label": "negative",
+        "note": "표결 인원수",
+        "claim_type": "",
+        "sentence": "이날 금통위원 6명 중 신성환 위원 1명이 금리를 내려야 한다는 소수 의견을 냈다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 71,
+        "label": "negative",
+        "note": "용어 정의(잠재성장률)",
+        "claim_type": "",
+        "sentence": "잠재성장률이란 자본·노동력을 최대한 활용했을 때 달성할 수 있는 성장률로, 이 총재의 말은 우리나라가 최선을 다해도 GDP가 2%도 채 늘지 않는다는 뜻이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "GDP 증가율=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 72,
+        "label": "negative",
+        "note": "월 제외·비교(값 없음)",
+        "claim_type": "",
+        "sentence": "올해 1월과 5월, 9월을 제외하고, 매월 이 산업의 취업자 수는 전체 산업 취업자보다 많았다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 73,
+        "label": "negative",
+        "note": "통계 산정 기준 연령",
+        "claim_type": "",
+        "sentence": "작년 취업자 수 증가 폭은 국적을 불문하고 국내에서 일한 15세 이상의 취업자를 따져 나온 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 74,
+        "label": "negative",
+        "note": "추세 주도층(값 없음)",
+        "claim_type": "",
+        "sentence": "최근 혼인 증가세는 1990년대 초반생들이 이끌고 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 75,
+        "label": "negative",
+        "note": "연령대 언급(값 없음)",
+        "claim_type": "",
+        "sentence": "30대 초·중반에 접어든 이들이 본격적인 결혼·출산 적령기에 돌입한 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 76,
+        "label": "negative",
+        "note": "지표 정의(합계출산율)",
+        "claim_type": "",
+        "sentence": "합계출산율은 여성 1명이 가임 기간(15~49세)에 낳을 것으로 기대되는 평균 출생아 수를 말한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 77,
+        "label": "negative",
+        "note": "취업자 수 순위(1위)",
+        "claim_type": "",
+        "sentence": "모든 연령대를 통틀어 취업자 수 1위가 60세 이상이 됐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 78,
+        "label": "negative",
+        "note": "연령대 순위 변동",
+        "claim_type": "",
+        "sentence": "연령대별 취업자 수 순위에서도 올 들어 60세 이상이 1위로 올라섰다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 79,
+        "label": "negative",
+        "note": "연령대 순위 나열",
+        "claim_type": "",
+        "sentence": "관련 통계가 집계되기 시작한 1963년부터 1989년까지 취업자 수는 청년층이 가장 많았고 이어 30대, 40대, 50대, 60세 이상의 순이었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 80,
+        "label": "negative",
+        "note": "순위 변천",
+        "claim_type": "",
+        "sentence": "60세 이상 취업자 수는 2017년 청년층을 추월한 데 이어 2021년엔 30대, 작년엔 40대, 올 3월부터는 50대까지 차례로 제치고 1위가 됐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 81,
+        "label": "negative",
+        "note": "세대/연령 라벨",
+        "claim_type": "",
+        "sentence": "이 같은 결혼 및 출산 반등 추세는 2차 베이비붐 세대의 자녀들인 ‘2차 에코붐 세대’(1991~1996년생)들이 30대 초중반에 접어들어 아이를 낳기 시작한 점이 영향을 줬다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 82,
+        "label": "negative",
+        "note": "세대 라벨(출생연도)",
+        "claim_type": "",
+        "sentence": "최근 결혼과 출산 반등 추세를 만드는 건 2차 베이비부머의 자녀 세대인 ‘2차 에코붐 세대’(1991~1996년생)다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 83,
+        "label": "negative",
+        "note": "지수 해석 기준(100)",
+        "claim_type": "",
+        "sentence": "이 지표는 대표적 소비 지표인 소매 판매액 지수와 건축·토목공사 실적을 뜻하는 건설 기성, 숙박·음식업, 운수·창고업 같은 서비스업 생산 지수를 종합한 것으로, 100 이상이면 현재 경기가 좋은 편이고 100 미만이면 나쁜 편이라는 뜻이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 84,
+        "label": "negative",
+        "note": "근로자 용어 정의",
+        "claim_type": "",
+        "sentence": "한시적 근로자는 근로계약 기간이 정해진 기간제 근로자와, 비자발적 사유로 계속 근무를 기대하기 어려운 비기간제 근로자를 포함한다.시간제 근로자는 같은 사업장 내 근로자보다 1시간 이상 근로시간이 짧은 근로자를 말한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 85,
+        "label": "negative",
+        "note": "전망 기관 수",
+        "claim_type": "",
+        "sentence": "한은 뉴욕사무소가 이달 발표한 보고서에 따르면 글로벌 투자 은행 10 곳 중 2곳이 올해 미국의 금리 인하가 없을 것이라고 봤다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 86,
+        "label": "negative",
+        "note": "향후 일정 예고",
+        "claim_type": "",
+        "sentence": "이와 함께 다음주 도널드 트럼프 미 대통령 당선인 취임, 이달 말 미 연방준비제도의 올해 첫 기준금리 결정 등 주요 일정들도 예정됐다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 87,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "정부의 올해 성장률 전망치는 2~2.1%로 추정되는 잠재 성장률(생산 자원을 모두 투입했을 때 물가 상승 없이 최대한 달성할 수 있는 성장률)보다 낮다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "성장률=2~2.1%(verifiable)"
+        ]
+      },
+      {
+        "id": 88,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "성장률과 물가 상승률이 모두 1%대에 머무른다는 정부 전망이 현실화될 경우 경기 침체 우려가 커질 수 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 89,
+        "label": "negative",
+        "note": "견해(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "이와 관련해 이창용 한국은행 총재는 \"우리나라 잠재성장률은 2% 밑으로 떨어졌다고 보고 있다\"면서 \"미국같이 큰 나라도 2%가 넘는 잠재성장률을 갖고 있다\"고 경고했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "잠재성장률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 90,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "대표적인 내수 지표인 소매 판매가 2003년 ‘카드 대란’ 이후 가장 큰 폭으로 줄어 21년 만에 최악의 소비 절벽이 나타났다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 91,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "또 다른 내수 지표인 건설 공사 실적도 3년 만에 가장 큰 폭으로 악화된 것으로 집계되는 등 내수 부진의 골이 깊어져 끝이 보이지 않는다는 우려가 나온다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 92,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "일부 글로벌 투자은행(IB)들은 한국의 올해 성장률 전망을 1%대 초반까지 낮춰 잡고 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 93,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "JP모건은 올해 한국 경제가 1.2% 성장하는 데 그친다고 보고 있다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "경제 성장=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 94,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "33년여 만에 최장 기간 혼인 증가세 기록을 다시 경신한 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 95,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "2월 기준으로 출생아 수가 전년보다 늘어난 것은 2014년 이후 11년 만이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=+ (change_rate)"
+        ]
+      },
+      {
+        "id": 96,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "2015년 관련 통계 집계 이후 최대 증가 폭이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 97,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "이처럼 장기간 결혼·출산이 동반 상승한 것은 1991년 3월~1991년 12월 이후 33년 반 만이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 98,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "월별 출생아 수는 지난해 7월부터 10개월째 증가세를 보이고 있는데, 10개월 연속 증가세는 2006년 2월~2008년 2월(25개월) 이후 최장 기간이다.",
+        "error": null,
+        "n_total": 2,
+        "n_nonnone": 2,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=10개월째 증가세(change_rate)",
+          "출생아 수 증가세=10개월 연속(verifiable)"
+        ]
+      },
+      {
+        "id": 99,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "지난해 4월부터 13개월 연속 증가한 것으로, 이는 1991년 3월부터 같은 해 12월까지 10개월 연속 증가한 이후 33년 6개월 만이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 100,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "결혼과 출산이 10개월 연속 동반 상승을 보인 것도 이 때 이후 처음이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      }
+    ],
+    [
+      {
+        "id": 1,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "한국은행은 지난 2월 경제전망보고서를 발표하고, 올해 우리나라 경제성장률 전망치를 기존 1.9%에서 1.5%로 낮췄다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "경제성장률=1.5%(change_rate)"
+        ]
+      },
+      {
+        "id": 2,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "9일 통계청이 발표한 ‘3월 고용동향’에 따르면, 지난 3월 취업자 수는 2858만9000명으로 전년 동월 대비 19만3000명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=19만3000명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 3,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "일할 의사가 있지만 취업하지 못한 청년 실업자는 지난달 28만9000명으로 2023년 3월(30만명) 이후 2년 만에 가장 많았다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년 실업자 수=28만9000명(absolute)"
+        ]
+      },
+      {
+        "id": 4,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "청년 경제활동인구 대비 실업자 수를 뜻하는 청년 실업률은 7.5%로 코로나 대유행이 한창이었던 2021년 6월(8.9%) 이후 3년 9개월 이후 최고치를 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년 실업률=7.5%(absolute)"
+        ]
+      },
+      {
+        "id": 5,
+        "label": "positive",
+        "note": "",
+        "claim_type": "배수",
+        "sentence": "지난달 청년층 실업률은 전체 연령대 실업률(3.1%)의 2.4배에 달한다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "실업률=2.4배(ratio)"
+        ]
+      },
+      {
+        "id": 6,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "지난달 쉬었음 인구는 251만7000명으로 1년 전 대비 7만1000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "쉬었음 인구=7만1000명(change_rate)"
+        ]
+      },
+      {
+        "id": 7,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "이 중 약 절반인 1700만 명이 고령 인구가 된다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고령 인구=1700만 명(distribution)"
+        ]
+      },
+      {
+        "id": 8,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "한국의 노년 부양비는 2024년 27.4명에서 2072년 104.2명으로 3.8배 증가한다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "노년 부양비=3.8배(ratio)"
+        ]
+      },
+      {
+        "id": 9,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "전국적으로는 2.2% 감소했고, 울산(-6.6%), 경기(-5.7%), 강원(-5.3%) 등에서 특히 크게 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "실업률=2.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 10,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "19일 국가데이터처(옛 통계청)에 따르면, 지난 달 청년층 고용률은 45.1%로 1년 전보다 0.7%포인트(p) 낮아졌다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년층 고용률=45.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 11,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "8월 제조업 취업자는 미국 관세정책 불확실성 등 여파로 6만1000명 줄며 15개월 연속 내리막을 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "제조업 취업자 수=6만1000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 12,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "올해 1분기 임금근로 일자리 중 신규채용은 총 546만7000개로, 2018년 통계 작성 시작 이래 가장 적었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "신규채용=546만7000개(verifiable)"
+        ]
+      },
+      {
+        "id": 13,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "전체 일자리에서 신규채용이 차지하는 비중은 26.6%로 통계 작성 이래 최저치였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "신규채용 비중=26.6%(distribution)"
+        ]
+      },
+      {
+        "id": 14,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "16일 통계청이 발표한 ‘2025년 6월 고용동향’에 따르면, 지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 대비 18만3000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=18만3000명(change_rate)"
+        ]
+      },
+      {
+        "id": 15,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "전체 인구 중 취업자 비율을 뜻하는 고용률은 63.6%로 전년 동월 대비 0.1%포인트 증가하며, 지난 1982년 관련 통계 작성 이래 최고치를 새로 썼다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=0.1%포인트(change_rate)"
+        ]
+      },
+      {
+        "id": 16,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "국제 비교 기준인 15~64세 고용률은 70.3%로 마찬가지로 6월 기준 역대 최대치를 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=70.3%(absolute)"
+        ]
+      },
+      {
+        "id": 17,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업은 지난달 취업자 수가 441만4000명으로 전년 동월 대비 8만3000명 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=8만3000명(change_rate)"
+        ]
+      },
+      {
+        "id": 18,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "지난달 건설업 취업자 수도 196만명으로 전년 동월 대비 9만7000명 감소하며 200만명을 밑돌았다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "건설업 취업자 수=9만7000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 19,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "주당 근로시간이 36시간 미만인 ‘단기 근로자’ 비율이 10년 새 2배로 늘어나 전체 근로자의 30%를 넘어섰다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "단기 근로자 비율=2배(change_rate)"
+        ]
+      },
+      {
+        "id": 20,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "30일 통계청에 따르면, 지난해 일주일에 36시간 미만으로 일한 근로자는 881만명으로 전체 근로자(2857만6000명)의 30.8%를 차지했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "근로자 중 일주일 36시간 미만 근무자 비율=30.8%(distribution)"
+        ]
+      },
+      {
+        "id": 21,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청에 따르면, 지난해 주 14시간 이하로 일하는 ‘초단기 근로자’는 174만2000명으로 전체 근로자의 6%에 달했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "근로자=6%(distribution)"
+        ]
+      },
+      {
+        "id": 22,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 23,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 석유류 가격은 7.3% 증가했는데, 지난해 7월(8.4%) 이후 7개월 만에 최대 상승폭이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "석유류 가격=7.3%(change_rate)"
+        ]
+      },
+      {
+        "id": 24,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "6일 통계청이 발표한 ‘2월 소비자물가 동향’에 따르면, 지난달 소비자물가지수는 116.08로 전년 동월 대비 2% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2%(change_rate)"
+        ]
+      },
+      {
+        "id": 25,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 석유류 가격은 전년 동월 대비 6.3% 올라, 1월(7.3%)에 이어 두 달 연속으로 5% 이상의 상승폭을 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "석유류 가격=6.3%(change_rate)"
+        ]
+      },
+      {
+        "id": 26,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 식용유지 가격 상승률은 9%로, 지난해 6월(11.6%) 이후 8개월 만에 최대 상승폭을 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "식용유지 가격=9%(change_rate)"
+        ]
+      },
+      {
+        "id": 27,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "다만 토마토(-19.5%)와 딸기(-6.9%), 바나나(-11.4%) 등 과실류 가격이 떨어지면서 농산물 물가는 전년 동월 대비 1.2% 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "농산물 물가=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 28,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청이 14일 발표한 ‘4월 고용 동향’에 따르면, 지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=19만4000명(change_rate)"
+        ]
+      },
+      {
+        "id": 29,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "하지만 20대 고용이 많은 제조업 분야 취업자는 12만4000명 줄어 작년 7월부터 10개월 연속 감소세를 이어갔다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=12만4000명(change_rate)"
+        ]
+      },
+      {
+        "id": 30,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 소비자물가 상승률이 2.1%를 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가 상승률=2.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 31,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "국가데이터처가 2일 발표한 '9월 소비자물가 동향'에 따르면, 지난달 소비자물가지수는 117.06(2020=100)으로 전년 동월 대비 2.1% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 32,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "농축수산물 가운데 수산물 가격은 전년 동월 대비 6.4%, 축산물은 5.4% 올랐다.",
+        "error": null,
+        "n_total": 2,
+        "n_nonnone": 2,
+        "pred": "positive",
+        "evidence": [
+          "수산물 가격=6.4%(change_rate)",
+          "축산물 가격=5.4%(change_rate)"
+        ]
+      },
+      {
+        "id": 33,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "공공서비스 가격은 전년 동월보다 1.2% 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "공공서비스 가격=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 34,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "한국은행이 25일 금융통화위원회를 열고 기준금리를 연 2.75%로 0.25%포인트 인하했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "기준금리=0.25%포인트(change_rate)"
+        ]
+      },
+      {
+        "id": 35,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "17일 국가데이터처가 발표한 ‘9월 고용동향’에 따르면 지난달 15세 이상 취업자는 2915만4000명으로 전년 동월 대비 31만2000명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=31만2000명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 36,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "15일 통계청이 발표한 ‘2024년 12월 및 연간 고용 동향’에 따르면, 지난달 취업자 수는 2804만1000명으로 전년 동월 대비 5만2000명 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=5만2000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 37,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "14일 통계청이 발표한 ‘1월 고용동향’에 따르면, 지난달 취업자 수는 2787만8000명으로 1년 전(2774만3000명)보다 13만5000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=13만5000명(change_rate)"
+        ]
+      },
+      {
+        "id": 38,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "이 덕분에 지난달 65세 이상 고령층 취업자만 33만8000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=33만8000명(change_rate)"
+        ]
+      },
+      {
+        "id": 39,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "26일 통계청이 발표한 ‘2024년 출생·사망통계’에 따르면, 작년 출생아 수는 23만8300명으로 전년(23만명)대비 8300명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=8300명(change_rate)"
+        ]
+      },
+      {
+        "id": 40,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "27일 통계청의 ‘경제활동인구조사’에 따르면, 평생 대부분을 일한 ‘주된 일자리’를 법적 정년 이후인 60~64세에 그만뒀다는 응답자가 지난해 77만명으로 1년 전(73만2000명)보다 5.2% 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "주된 일자리를 법적 정년 이후에 그만둔 사람 수=5.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 41,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "28일 통계청이 발표한 ‘3월 인구 동향’에 따르면, 지난 1분기(1~3월) 합계출산율은 0.82명으로 1년 전(0.77명)보다 0.05명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "합계출산율=0.05명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 42,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청에 따르면 지난달 한국 근로자의 주당 평균 근로시간은 38.8시간이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "주당 평균 근로시간=38.8시간(absolute)"
+        ]
+      },
+      {
+        "id": 43,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "일본의 경우 65세 이상 노동시장 참여율(26%)이 프랑스(4%) 등을 앞서고 있으며, 이는 일본의 1997년 이후 연평균 노동생산성 증가율(1.1%)이 서유럽(0.8%)을 앞설 수 있던 요인이 됐다고 했다.",
+        "error": null,
+        "n_total": 4,
+        "n_nonnone": 4,
+        "pred": "positive",
+        "evidence": [
+          "65세 이상 노동시장 참여율=26%(ratio)",
+          "65세 이상 노동시장 참여율=4%(ratio)",
+          "노동생산성 증가율=1.1%(change_rate)",
+          "노동생산성 증가율=0.8%(change_rate)"
+        ]
+      },
+      {
+        "id": 44,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "한국은행이 16일 금융통화위원회를 열고 현재 연 3%인 기준금리를 동결하기로 결정했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 45,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "환율이 달러당 1400원대 중후반에 고착화하면서, 지난달 수입 물가는 전년보다 6.6%나 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "수입 물가=6.6%(change_rate)"
+        ]
+      },
+      {
+        "id": 46,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 청년층 고용률은 44.3%에 그치며 전년 같은 달 대비 1.7%포인트 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년층 고용률=1.7%p(change_rate)"
+        ]
+      },
+      {
+        "id": 47,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 65세 이상 고용률은 40.4%로 전년 동월 대비 1.2%포인트 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=40.4%(change_rate)"
+        ]
+      },
+      {
+        "id": 48,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "법적 정년을 넘긴 60세 이상 고령층 취업자가 사상 처음으로 700만명을 넘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "60세 이상 고령층 취업자 수=700만명(absolute)"
+        ]
+      },
+      {
+        "id": 49,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "12일 국가데이터처(구 통계청)에 따르면 지난해 20대 인구는 630만2000명으로, 전년보다 19만3000명 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "20대 인구=630만2000명(change_rate)"
+        ]
+      },
+      {
+        "id": 50,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "국가데이터처가 22일 발표한 '2025년 8월 경제활동인구조사 근로형태별 부가조사'에 따르면, 지난 8월 기준 비정규직 근로자는 856만8000명으로 전년 동월 대비 11만 명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "비정규직 근로자 수=856만8000명(change_rate)"
+        ]
+      },
+      {
+        "id": 51,
+        "label": "negative",
+        "note": "발표 일정(월 나열)",
+        "claim_type": "",
+        "sentence": "한국은행은 매년 2·5·8·11월 경제전망보고서를 발표한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 52,
+        "label": "negative",
+        "note": "정성 추세(값 없음)",
+        "claim_type": "",
+        "sentence": "올해 성장률 전망치의 경우 작년 5월 이후 줄곧 하향 조정돼 왔다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 53,
+        "label": "negative",
+        "note": "연도·사건 나열",
+        "claim_type": "",
+        "sentence": "과거 30년간 우리나라 경제성장률이 올해 전망치인 1.5%보다 낮았던 때는 1998년 외환 위기, 2009년 글로벌 금융 위기, 2020년 코로나 팬데믹 위기 등이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 54,
+        "label": "negative",
+        "note": "지표 정의(노년부양비)",
+        "claim_type": "",
+        "sentence": "이 지표는 15~64세 생산연령인구 1명이 65세 이상의 고령 인구 몇 명을 부양해야 하는지를 나타낸다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 55,
+        "label": "negative",
+        "note": "법정 근로시간 기준",
+        "claim_type": "",
+        "sentence": "현행법상 주 15시간 이상 일한 직원에게는 하루 치 급여를 ‘주휴 수당’으로 줘야 하는데, 최저임금이 오르자 주휴 수당을 주지 않으려 주 14시간 이하로만 고용하는 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 56,
+        "label": "negative",
+        "note": "물가 목표치(2%)",
+        "claim_type": "",
+        "sentence": "2%는 한국은행이 제시한 물가상승률 목표치이기도 하다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "물가상승률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 57,
+        "label": "negative",
+        "note": "설문 표본 수",
+        "claim_type": "",
+        "sentence": "이날 한국경제인협회(한경협)는 전국 상경 계열 교수 111명을 대상으로 실시한 ‘한국경제 중장기 전망 및 주요 리스크’ 설문조사 결과를 발표했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 58,
+        "label": "negative",
+        "note": "전문가 전망 인원수",
+        "claim_type": "",
+        "sentence": "앞서 지난 21일 금융투자협회가 채권 전문가 100명을 대상으로 한 조사에서도 55명이 금리 인하를 점쳤다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "금리 인하 예상 응답자 비율=55(distribution)"
+        ]
+      },
+      {
+        "id": 59,
+        "label": "negative",
+        "note": "조사 방법 정의",
+        "claim_type": "",
+        "sentence": "통계청은 매월 15일이 끼어있는 일주일을 조사 대상 기간으로 잡고 해당 주에 한 시간 이상 일한 사람을 취업자로 분류한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 60,
+        "label": "negative",
+        "note": "조사 주간 날짜",
+        "claim_type": "",
+        "sentence": "그런데 지난달 15일은 일요일이어서 조사 대상 주간이 15~21일이었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 61,
+        "label": "negative",
+        "note": "일정 앞당김(일수)",
+        "claim_type": "",
+        "sentence": "지난해 2월 1일에 착수했던 것에 비해 20일 가량 앞당긴 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 62,
+        "label": "negative",
+        "note": "지원 자격 연령",
+        "claim_type": "",
+        "sentence": "노인 일자리는 통상 65세 이상인 경우 지원할 수 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 63,
+        "label": "negative",
+        "note": "세대 라벨+정성",
+        "claim_type": "",
+        "sentence": "인구가 많았던 1차 베이비부머(1955~1963년생)가 순차적으로 은퇴하기 시작한 2010년대 후반부터 작년까지도 국내 취업자 수는 줄지 않고 오히려 늘었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 64,
+        "label": "negative",
+        "note": "물가 목표치(2%)",
+        "claim_type": "",
+        "sentence": "2%는 한국은행이 물가상승률 목표로 제시한 수치다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "물가상승률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 65,
+        "label": "negative",
+        "note": "개인 발언(나이)",
+        "claim_type": "",
+        "sentence": "백씨는 “친구들 중에는 정년 맞춰서 일을 그만두기도 했는데, 나는 진작부터 회사와 더 일하기로 얘기했다”며 “연금 나오려면 몇 년 남기도 했고 아직 몸도 건강해서 65세까지는 일하려고 한다”고 했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 66,
+        "label": "negative",
+        "note": "수치 포함범위 정의",
+        "claim_type": "",
+        "sentence": "이 수치에는 임시직으로 일하다 60세 이후에 일을 그만둔 사람은 포함되지 않는다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 67,
+        "label": "negative",
+        "note": "수치 정의(합산 대상)",
+        "claim_type": "",
+        "sentence": "중장년기 대부분을 보낸 전일제 직장에서 정년이 지난 뒤에도 고령자 계속 고용 방식으로 더 근무하다 그만뒀거나 정년이 아예 60세 이후로 정해져 있는 직장을 그만둔 퇴직자를 합친 숫자다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 68,
+        "label": "negative",
+        "note": "연령대 언급(값 없음)",
+        "claim_type": "",
+        "sentence": "출생아 증가의 일차적 원인은 출산 적령기인 30~34세 인구가 많기 때문이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 69,
+        "label": "negative",
+        "note": "세대 라벨(출생연도)",
+        "claim_type": "",
+        "sentence": "올해 30~34세는 ‘2차 에코붐 세대’라 불리는 1991~1995년생이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 70,
+        "label": "negative",
+        "note": "표결 인원수",
+        "claim_type": "",
+        "sentence": "이날 금통위원 6명 중 신성환 위원 1명이 금리를 내려야 한다는 소수 의견을 냈다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 71,
+        "label": "negative",
+        "note": "용어 정의(잠재성장률)",
+        "claim_type": "",
+        "sentence": "잠재성장률이란 자본·노동력을 최대한 활용했을 때 달성할 수 있는 성장률로, 이 총재의 말은 우리나라가 최선을 다해도 GDP가 2%도 채 늘지 않는다는 뜻이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "GDP 증가율=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 72,
+        "label": "negative",
+        "note": "월 제외·비교(값 없음)",
+        "claim_type": "",
+        "sentence": "올해 1월과 5월, 9월을 제외하고, 매월 이 산업의 취업자 수는 전체 산업 취업자보다 많았다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 73,
+        "label": "negative",
+        "note": "통계 산정 기준 연령",
+        "claim_type": "",
+        "sentence": "작년 취업자 수 증가 폭은 국적을 불문하고 국내에서 일한 15세 이상의 취업자를 따져 나온 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 74,
+        "label": "negative",
+        "note": "추세 주도층(값 없음)",
+        "claim_type": "",
+        "sentence": "최근 혼인 증가세는 1990년대 초반생들이 이끌고 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 75,
+        "label": "negative",
+        "note": "연령대 언급(값 없음)",
+        "claim_type": "",
+        "sentence": "30대 초·중반에 접어든 이들이 본격적인 결혼·출산 적령기에 돌입한 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 76,
+        "label": "negative",
+        "note": "지표 정의(합계출산율)",
+        "claim_type": "",
+        "sentence": "합계출산율은 여성 1명이 가임 기간(15~49세)에 낳을 것으로 기대되는 평균 출생아 수를 말한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 77,
+        "label": "negative",
+        "note": "취업자 수 순위(1위)",
+        "claim_type": "",
+        "sentence": "모든 연령대를 통틀어 취업자 수 1위가 60세 이상이 됐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=1위(distribution)"
+        ]
+      },
+      {
+        "id": 78,
+        "label": "negative",
+        "note": "연령대 순위 변동",
+        "claim_type": "",
+        "sentence": "연령대별 취업자 수 순위에서도 올 들어 60세 이상이 1위로 올라섰다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 79,
+        "label": "negative",
+        "note": "연령대 순위 나열",
+        "claim_type": "",
+        "sentence": "관련 통계가 집계되기 시작한 1963년부터 1989년까지 취업자 수는 청년층이 가장 많았고 이어 30대, 40대, 50대, 60세 이상의 순이었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 80,
+        "label": "negative",
+        "note": "순위 변천",
+        "claim_type": "",
+        "sentence": "60세 이상 취업자 수는 2017년 청년층을 추월한 데 이어 2021년엔 30대, 작년엔 40대, 올 3월부터는 50대까지 차례로 제치고 1위가 됐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 81,
+        "label": "negative",
+        "note": "세대/연령 라벨",
+        "claim_type": "",
+        "sentence": "이 같은 결혼 및 출산 반등 추세는 2차 베이비붐 세대의 자녀들인 ‘2차 에코붐 세대’(1991~1996년생)들이 30대 초중반에 접어들어 아이를 낳기 시작한 점이 영향을 줬다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 82,
+        "label": "negative",
+        "note": "세대 라벨(출생연도)",
+        "claim_type": "",
+        "sentence": "최근 결혼과 출산 반등 추세를 만드는 건 2차 베이비부머의 자녀 세대인 ‘2차 에코붐 세대’(1991~1996년생)다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 83,
+        "label": "negative",
+        "note": "지수 해석 기준(100)",
+        "claim_type": "",
+        "sentence": "이 지표는 대표적 소비 지표인 소매 판매액 지수와 건축·토목공사 실적을 뜻하는 건설 기성, 숙박·음식업, 운수·창고업 같은 서비스업 생산 지수를 종합한 것으로, 100 이상이면 현재 경기가 좋은 편이고 100 미만이면 나쁜 편이라는 뜻이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 84,
+        "label": "negative",
+        "note": "근로자 용어 정의",
+        "claim_type": "",
+        "sentence": "한시적 근로자는 근로계약 기간이 정해진 기간제 근로자와, 비자발적 사유로 계속 근무를 기대하기 어려운 비기간제 근로자를 포함한다.시간제 근로자는 같은 사업장 내 근로자보다 1시간 이상 근로시간이 짧은 근로자를 말한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 85,
+        "label": "negative",
+        "note": "전망 기관 수",
+        "claim_type": "",
+        "sentence": "한은 뉴욕사무소가 이달 발표한 보고서에 따르면 글로벌 투자 은행 10 곳 중 2곳이 올해 미국의 금리 인하가 없을 것이라고 봤다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 86,
+        "label": "negative",
+        "note": "향후 일정 예고",
+        "claim_type": "",
+        "sentence": "이와 함께 다음주 도널드 트럼프 미 대통령 당선인 취임, 이달 말 미 연방준비제도의 올해 첫 기준금리 결정 등 주요 일정들도 예정됐다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 87,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "정부의 올해 성장률 전망치는 2~2.1%로 추정되는 잠재 성장률(생산 자원을 모두 투입했을 때 물가 상승 없이 최대한 달성할 수 있는 성장률)보다 낮다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "성장률=2~2.1%(metaphoric)"
+        ]
+      },
+      {
+        "id": 88,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "성장률과 물가 상승률이 모두 1%대에 머무른다는 정부 전망이 현실화될 경우 경기 침체 우려가 커질 수 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 89,
+        "label": "negative",
+        "note": "견해(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "이와 관련해 이창용 한국은행 총재는 \"우리나라 잠재성장률은 2% 밑으로 떨어졌다고 보고 있다\"면서 \"미국같이 큰 나라도 2%가 넘는 잠재성장률을 갖고 있다\"고 경고했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "잠재성장률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 90,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "대표적인 내수 지표인 소매 판매가 2003년 ‘카드 대란’ 이후 가장 큰 폭으로 줄어 21년 만에 최악의 소비 절벽이 나타났다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 91,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "또 다른 내수 지표인 건설 공사 실적도 3년 만에 가장 큰 폭으로 악화된 것으로 집계되는 등 내수 부진의 골이 깊어져 끝이 보이지 않는다는 우려가 나온다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 92,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "일부 글로벌 투자은행(IB)들은 한국의 올해 성장률 전망을 1%대 초반까지 낮춰 잡고 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 93,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "JP모건은 올해 한국 경제가 1.2% 성장하는 데 그친다고 보고 있다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "경제 성장=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 94,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "33년여 만에 최장 기간 혼인 증가세 기록을 다시 경신한 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 95,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "2월 기준으로 출생아 수가 전년보다 늘어난 것은 2014년 이후 11년 만이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=+ (change_rate)"
+        ]
+      },
+      {
+        "id": 96,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "2015년 관련 통계 집계 이후 최대 증가 폭이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 97,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "이처럼 장기간 결혼·출산이 동반 상승한 것은 1991년 3월~1991년 12월 이후 33년 반 만이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 98,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "월별 출생아 수는 지난해 7월부터 10개월째 증가세를 보이고 있는데, 10개월 연속 증가세는 2006년 2월~2008년 2월(25개월) 이후 최장 기간이다.",
+        "error": null,
+        "n_total": 2,
+        "n_nonnone": 2,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=10개월째 증가세(change_rate)",
+          "출생아 수 증가세=10개월 연속(verifiable)"
+        ]
+      },
+      {
+        "id": 99,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "지난해 4월부터 13개월 연속 증가한 것으로, 이는 1991년 3월부터 같은 해 12월까지 10개월 연속 증가한 이후 33년 6개월 만이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 100,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "결혼과 출산이 10개월 연속 동반 상승을 보인 것도 이 때 이후 처음이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      }
+    ],
+    [
+      {
+        "id": 1,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "한국은행은 지난 2월 경제전망보고서를 발표하고, 올해 우리나라 경제성장률 전망치를 기존 1.9%에서 1.5%로 낮췄다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "경제성장률=1.5%(change_rate)"
+        ]
+      },
+      {
+        "id": 2,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "9일 통계청이 발표한 ‘3월 고용동향’에 따르면, 지난 3월 취업자 수는 2858만9000명으로 전년 동월 대비 19만3000명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=19만3000명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 3,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "일할 의사가 있지만 취업하지 못한 청년 실업자는 지난달 28만9000명으로 2023년 3월(30만명) 이후 2년 만에 가장 많았다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년 실업자 수=28만9000명(absolute)"
+        ]
+      },
+      {
+        "id": 4,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "청년 경제활동인구 대비 실업자 수를 뜻하는 청년 실업률은 7.5%로 코로나 대유행이 한창이었던 2021년 6월(8.9%) 이후 3년 9개월 이후 최고치를 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년 실업률=7.5%(absolute)"
+        ]
+      },
+      {
+        "id": 5,
+        "label": "positive",
+        "note": "",
+        "claim_type": "배수",
+        "sentence": "지난달 청년층 실업률은 전체 연령대 실업률(3.1%)의 2.4배에 달한다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "실업률=2.4배(ratio)"
+        ]
+      },
+      {
+        "id": 6,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "지난달 쉬었음 인구는 251만7000명으로 1년 전 대비 7만1000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "쉬었음 인구=7만1000명(change_rate)"
+        ]
+      },
+      {
+        "id": 7,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "이 중 약 절반인 1700만 명이 고령 인구가 된다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고령 인구=1700만 명(distribution)"
+        ]
+      },
+      {
+        "id": 8,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "한국의 노년 부양비는 2024년 27.4명에서 2072년 104.2명으로 3.8배 증가한다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "노년 부양비=3.8배(ratio)"
+        ]
+      },
+      {
+        "id": 9,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "전국적으로는 2.2% 감소했고, 울산(-6.6%), 경기(-5.7%), 강원(-5.3%) 등에서 특히 크게 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "실업률=2.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 10,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "19일 국가데이터처(옛 통계청)에 따르면, 지난 달 청년층 고용률은 45.1%로 1년 전보다 0.7%포인트(p) 낮아졌다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년층 고용률=45.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 11,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "8월 제조업 취업자는 미국 관세정책 불확실성 등 여파로 6만1000명 줄며 15개월 연속 내리막을 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "제조업 취업자 수=6만1000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 12,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "올해 1분기 임금근로 일자리 중 신규채용은 총 546만7000개로, 2018년 통계 작성 시작 이래 가장 적었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "신규채용=546만7000개(verifiable)"
+        ]
+      },
+      {
+        "id": 13,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "전체 일자리에서 신규채용이 차지하는 비중은 26.6%로 통계 작성 이래 최저치였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "신규채용 비중=26.6%(distribution)"
+        ]
+      },
+      {
+        "id": 14,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "16일 통계청이 발표한 ‘2025년 6월 고용동향’에 따르면, 지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 대비 18만3000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=18만3000명(change_rate)"
+        ]
+      },
+      {
+        "id": 15,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "전체 인구 중 취업자 비율을 뜻하는 고용률은 63.6%로 전년 동월 대비 0.1%포인트 증가하며, 지난 1982년 관련 통계 작성 이래 최고치를 새로 썼다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=0.1%포인트(change_rate)"
+        ]
+      },
+      {
+        "id": 16,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "국제 비교 기준인 15~64세 고용률은 70.3%로 마찬가지로 6월 기준 역대 최대치를 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=70.3%(absolute)"
+        ]
+      },
+      {
+        "id": 17,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업은 지난달 취업자 수가 441만4000명으로 전년 동월 대비 8만3000명 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=8만3000명(change_rate)"
+        ]
+      },
+      {
+        "id": 18,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "지난달 건설업 취업자 수도 196만명으로 전년 동월 대비 9만7000명 감소하며 200만명을 밑돌았다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "건설업 취업자 수=9만7000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 19,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "주당 근로시간이 36시간 미만인 ‘단기 근로자’ 비율이 10년 새 2배로 늘어나 전체 근로자의 30%를 넘어섰다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "단기 근로자 비율=2배(change_rate)"
+        ]
+      },
+      {
+        "id": 20,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "30일 통계청에 따르면, 지난해 일주일에 36시간 미만으로 일한 근로자는 881만명으로 전체 근로자(2857만6000명)의 30.8%를 차지했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "근로자=30.8%(distribution)"
+        ]
+      },
+      {
+        "id": 21,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청에 따르면, 지난해 주 14시간 이하로 일하는 ‘초단기 근로자’는 174만2000명으로 전체 근로자의 6%에 달했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "근로자=6%(distribution)"
+        ]
+      },
+      {
+        "id": 22,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 23,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 석유류 가격은 7.3% 증가했는데, 지난해 7월(8.4%) 이후 7개월 만에 최대 상승폭이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "석유류 가격=7.3%(change_rate)"
+        ]
+      },
+      {
+        "id": 24,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "6일 통계청이 발표한 ‘2월 소비자물가 동향’에 따르면, 지난달 소비자물가지수는 116.08로 전년 동월 대비 2% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2%(change_rate)"
+        ]
+      },
+      {
+        "id": 25,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 석유류 가격은 전년 동월 대비 6.3% 올라, 1월(7.3%)에 이어 두 달 연속으로 5% 이상의 상승폭을 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "석유류 가격=6.3%(change_rate)"
+        ]
+      },
+      {
+        "id": 26,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 식용유지 가격 상승률은 9%로, 지난해 6월(11.6%) 이후 8개월 만에 최대 상승폭을 보였다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "식용유지 가격=9%(change_rate)"
+        ]
+      },
+      {
+        "id": 27,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "다만 토마토(-19.5%)와 딸기(-6.9%), 바나나(-11.4%) 등 과실류 가격이 떨어지면서 농산물 물가는 전년 동월 대비 1.2% 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "농산물 물가=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 28,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청이 14일 발표한 ‘4월 고용 동향’에 따르면, 지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=19만4000명(change_rate)"
+        ]
+      },
+      {
+        "id": 29,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "하지만 20대 고용이 많은 제조업 분야 취업자는 12만4000명 줄어 작년 7월부터 10개월 연속 감소세를 이어갔다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=12만4000명(change_rate)"
+        ]
+      },
+      {
+        "id": 30,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 소비자물가 상승률이 2.1%를 기록했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가 상승률=2.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 31,
+        "label": "positive",
+        "note": "",
+        "claim_type": "지수",
+        "sentence": "국가데이터처가 2일 발표한 '9월 소비자물가 동향'에 따르면, 지난달 소비자물가지수는 117.06(2020=100)으로 전년 동월 대비 2.1% 상승했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "소비자물가지수=2.1%(change_rate)"
+        ]
+      },
+      {
+        "id": 32,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "농축수산물 가운데 수산물 가격은 전년 동월 대비 6.4%, 축산물은 5.4% 올랐다.",
+        "error": null,
+        "n_total": 2,
+        "n_nonnone": 2,
+        "pred": "positive",
+        "evidence": [
+          "수산물 가격=6.4%(change_rate)",
+          "축산물 가격=5.4%(change_rate)"
+        ]
+      },
+      {
+        "id": 33,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "공공서비스 가격은 전년 동월보다 1.2% 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "공공서비스 가격=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 34,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "한국은행이 25일 금융통화위원회를 열고 기준금리를 연 2.75%로 0.25%포인트 인하했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "기준금리=0.25%포인트(change_rate)"
+        ]
+      },
+      {
+        "id": 35,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "17일 국가데이터처가 발표한 ‘9월 고용동향’에 따르면 지난달 15세 이상 취업자는 2915만4000명으로 전년 동월 대비 31만2000명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=31만2000명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 36,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "15일 통계청이 발표한 ‘2024년 12월 및 연간 고용 동향’에 따르면, 지난달 취업자 수는 2804만1000명으로 전년 동월 대비 5만2000명 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=5만2000명 감소(change_rate)"
+        ]
+      },
+      {
+        "id": 37,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "14일 통계청이 발표한 ‘1월 고용동향’에 따르면, 지난달 취업자 수는 2787만8000명으로 1년 전(2774만3000명)보다 13만5000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=13만5000명(change_rate)"
+        ]
+      },
+      {
+        "id": 38,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "이 덕분에 지난달 65세 이상 고령층 취업자만 33만8000명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=33만8000명(change_rate)"
+        ]
+      },
+      {
+        "id": 39,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "26일 통계청이 발표한 ‘2024년 출생·사망통계’에 따르면, 작년 출생아 수는 23만8300명으로 전년(23만명)대비 8300명 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=8300명(change_rate)"
+        ]
+      },
+      {
+        "id": 40,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "27일 통계청의 ‘경제활동인구조사’에 따르면, 평생 대부분을 일한 ‘주된 일자리’를 법적 정년 이후인 60~64세에 그만뒀다는 응답자가 지난해 77만명으로 1년 전(73만2000명)보다 5.2% 늘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "주된 일자리를 법적 정년 이후에 그만둔 사람 수=5.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 41,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "28일 통계청이 발표한 ‘3월 인구 동향’에 따르면, 지난 1분기(1~3월) 합계출산율은 0.82명으로 1년 전(0.77명)보다 0.05명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "합계출산율=0.05명 증가(change_rate)"
+        ]
+      },
+      {
+        "id": 42,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "통계청에 따르면 지난달 한국 근로자의 주당 평균 근로시간은 38.8시간이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "주당 평균 근로시간=38.8(absolute)"
+        ]
+      },
+      {
+        "id": 43,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "일본의 경우 65세 이상 노동시장 참여율(26%)이 프랑스(4%) 등을 앞서고 있으며, 이는 일본의 1997년 이후 연평균 노동생산성 증가율(1.1%)이 서유럽(0.8%)을 앞설 수 있던 요인이 됐다고 했다.",
+        "error": null,
+        "n_total": 4,
+        "n_nonnone": 4,
+        "pred": "positive",
+        "evidence": [
+          "65세 이상 노동시장 참여율=26%(ratio)",
+          "65세 이상 노동시장 참여율=4%(ratio)",
+          "노동생산성 증가율=1.1%(change_rate)",
+          "노동생산성 증가율=0.8%(change_rate)"
+        ]
+      },
+      {
+        "id": 44,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "한국은행이 16일 금융통화위원회를 열고 현재 연 3%인 기준금리를 동결하기로 결정했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "기준금리=3%(verifiable)"
+        ]
+      },
+      {
+        "id": 45,
+        "label": "positive",
+        "note": "",
+        "claim_type": "증감",
+        "sentence": "환율이 달러당 1400원대 중후반에 고착화하면서, 지난달 수입 물가는 전년보다 6.6%나 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "수입 물가=6.6%(change_rate)"
+        ]
+      },
+      {
+        "id": 46,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 청년층 고용률은 44.3%에 그치며 전년 같은 달 대비 1.7%포인트 감소했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "청년층 고용률=1.7%p(change_rate)"
+        ]
+      },
+      {
+        "id": 47,
+        "label": "positive",
+        "note": "",
+        "claim_type": "비율",
+        "sentence": "지난달 65세 이상 고용률은 40.4%로 전년 동월 대비 1.2%포인트 올랐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "고용률=40.4%(change_rate)"
+        ]
+      },
+      {
+        "id": 48,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "법적 정년을 넘긴 60세 이상 고령층 취업자가 사상 처음으로 700만명을 넘었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "60세 이상 고령층 취업자 수=700만명(absolute)"
+        ]
+      },
+      {
+        "id": 49,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "12일 국가데이터처(구 통계청)에 따르면 지난해 20대 인구는 630만2000명으로, 전년보다 19만3000명 줄었다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "20대 인구=630만2000명(change_rate)"
+        ]
+      },
+      {
+        "id": 50,
+        "label": "positive",
+        "note": "",
+        "claim_type": "절대값",
+        "sentence": "국가데이터처가 22일 발표한 '2025년 8월 경제활동인구조사 근로형태별 부가조사'에 따르면, 지난 8월 기준 비정규직 근로자는 856만8000명으로 전년 동월 대비 11만 명 증가했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "비정규직 근로자 수=856만8000명(change_rate)"
+        ]
+      },
+      {
+        "id": 51,
+        "label": "negative",
+        "note": "발표 일정(월 나열)",
+        "claim_type": "",
+        "sentence": "한국은행은 매년 2·5·8·11월 경제전망보고서를 발표한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 52,
+        "label": "negative",
+        "note": "정성 추세(값 없음)",
+        "claim_type": "",
+        "sentence": "올해 성장률 전망치의 경우 작년 5월 이후 줄곧 하향 조정돼 왔다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 53,
+        "label": "negative",
+        "note": "연도·사건 나열",
+        "claim_type": "",
+        "sentence": "과거 30년간 우리나라 경제성장률이 올해 전망치인 1.5%보다 낮았던 때는 1998년 외환 위기, 2009년 글로벌 금융 위기, 2020년 코로나 팬데믹 위기 등이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 54,
+        "label": "negative",
+        "note": "지표 정의(노년부양비)",
+        "claim_type": "",
+        "sentence": "이 지표는 15~64세 생산연령인구 1명이 65세 이상의 고령 인구 몇 명을 부양해야 하는지를 나타낸다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 55,
+        "label": "negative",
+        "note": "법정 근로시간 기준",
+        "claim_type": "",
+        "sentence": "현행법상 주 15시간 이상 일한 직원에게는 하루 치 급여를 ‘주휴 수당’으로 줘야 하는데, 최저임금이 오르자 주휴 수당을 주지 않으려 주 14시간 이하로만 고용하는 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 56,
+        "label": "negative",
+        "note": "물가 목표치(2%)",
+        "claim_type": "",
+        "sentence": "2%는 한국은행이 제시한 물가상승률 목표치이기도 하다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "물가상승률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 57,
+        "label": "negative",
+        "note": "설문 표본 수",
+        "claim_type": "",
+        "sentence": "이날 한국경제인협회(한경협)는 전국 상경 계열 교수 111명을 대상으로 실시한 ‘한국경제 중장기 전망 및 주요 리스크’ 설문조사 결과를 발표했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 58,
+        "label": "negative",
+        "note": "전문가 전망 인원수",
+        "claim_type": "",
+        "sentence": "앞서 지난 21일 금융투자협회가 채권 전문가 100명을 대상으로 한 조사에서도 55명이 금리 인하를 점쳤다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "금리 인하 예상=55명(verifiable)"
+        ]
+      },
+      {
+        "id": 59,
+        "label": "negative",
+        "note": "조사 방법 정의",
+        "claim_type": "",
+        "sentence": "통계청은 매월 15일이 끼어있는 일주일을 조사 대상 기간으로 잡고 해당 주에 한 시간 이상 일한 사람을 취업자로 분류한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 60,
+        "label": "negative",
+        "note": "조사 주간 날짜",
+        "claim_type": "",
+        "sentence": "그런데 지난달 15일은 일요일이어서 조사 대상 주간이 15~21일이었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 61,
+        "label": "negative",
+        "note": "일정 앞당김(일수)",
+        "claim_type": "",
+        "sentence": "지난해 2월 1일에 착수했던 것에 비해 20일 가량 앞당긴 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 62,
+        "label": "negative",
+        "note": "지원 자격 연령",
+        "claim_type": "",
+        "sentence": "노인 일자리는 통상 65세 이상인 경우 지원할 수 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 63,
+        "label": "negative",
+        "note": "세대 라벨+정성",
+        "claim_type": "",
+        "sentence": "인구가 많았던 1차 베이비부머(1955~1963년생)가 순차적으로 은퇴하기 시작한 2010년대 후반부터 작년까지도 국내 취업자 수는 줄지 않고 오히려 늘었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 64,
+        "label": "negative",
+        "note": "물가 목표치(2%)",
+        "claim_type": "",
+        "sentence": "2%는 한국은행이 물가상승률 목표로 제시한 수치다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "물가상승률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 65,
+        "label": "negative",
+        "note": "개인 발언(나이)",
+        "claim_type": "",
+        "sentence": "백씨는 “친구들 중에는 정년 맞춰서 일을 그만두기도 했는데, 나는 진작부터 회사와 더 일하기로 얘기했다”며 “연금 나오려면 몇 년 남기도 했고 아직 몸도 건강해서 65세까지는 일하려고 한다”고 했다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 66,
+        "label": "negative",
+        "note": "수치 포함범위 정의",
+        "claim_type": "",
+        "sentence": "이 수치에는 임시직으로 일하다 60세 이후에 일을 그만둔 사람은 포함되지 않는다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 67,
+        "label": "negative",
+        "note": "수치 정의(합산 대상)",
+        "claim_type": "",
+        "sentence": "중장년기 대부분을 보낸 전일제 직장에서 정년이 지난 뒤에도 고령자 계속 고용 방식으로 더 근무하다 그만뒀거나 정년이 아예 60세 이후로 정해져 있는 직장을 그만둔 퇴직자를 합친 숫자다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 68,
+        "label": "negative",
+        "note": "연령대 언급(값 없음)",
+        "claim_type": "",
+        "sentence": "출생아 증가의 일차적 원인은 출산 적령기인 30~34세 인구가 많기 때문이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 69,
+        "label": "negative",
+        "note": "세대 라벨(출생연도)",
+        "claim_type": "",
+        "sentence": "올해 30~34세는 ‘2차 에코붐 세대’라 불리는 1991~1995년생이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 70,
+        "label": "negative",
+        "note": "표결 인원수",
+        "claim_type": "",
+        "sentence": "이날 금통위원 6명 중 신성환 위원 1명이 금리를 내려야 한다는 소수 의견을 냈다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 71,
+        "label": "negative",
+        "note": "용어 정의(잠재성장률)",
+        "claim_type": "",
+        "sentence": "잠재성장률이란 자본·노동력을 최대한 활용했을 때 달성할 수 있는 성장률로, 이 총재의 말은 우리나라가 최선을 다해도 GDP가 2%도 채 늘지 않는다는 뜻이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "GDP 증가율=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 72,
+        "label": "negative",
+        "note": "월 제외·비교(값 없음)",
+        "claim_type": "",
+        "sentence": "올해 1월과 5월, 9월을 제외하고, 매월 이 산업의 취업자 수는 전체 산업 취업자보다 많았다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 73,
+        "label": "negative",
+        "note": "통계 산정 기준 연령",
+        "claim_type": "",
+        "sentence": "작년 취업자 수 증가 폭은 국적을 불문하고 국내에서 일한 15세 이상의 취업자를 따져 나온 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 74,
+        "label": "negative",
+        "note": "추세 주도층(값 없음)",
+        "claim_type": "",
+        "sentence": "최근 혼인 증가세는 1990년대 초반생들이 이끌고 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 75,
+        "label": "negative",
+        "note": "연령대 언급(값 없음)",
+        "claim_type": "",
+        "sentence": "30대 초·중반에 접어든 이들이 본격적인 결혼·출산 적령기에 돌입한 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 76,
+        "label": "negative",
+        "note": "지표 정의(합계출산율)",
+        "claim_type": "",
+        "sentence": "합계출산율은 여성 1명이 가임 기간(15~49세)에 낳을 것으로 기대되는 평균 출생아 수를 말한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 77,
+        "label": "negative",
+        "note": "취업자 수 순위(1위)",
+        "claim_type": "",
+        "sentence": "모든 연령대를 통틀어 취업자 수 1위가 60세 이상이 됐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "취업자 수=1위(distribution)"
+        ]
+      },
+      {
+        "id": 78,
+        "label": "negative",
+        "note": "연령대 순위 변동",
+        "claim_type": "",
+        "sentence": "연령대별 취업자 수 순위에서도 올 들어 60세 이상이 1위로 올라섰다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 79,
+        "label": "negative",
+        "note": "연령대 순위 나열",
+        "claim_type": "",
+        "sentence": "관련 통계가 집계되기 시작한 1963년부터 1989년까지 취업자 수는 청년층이 가장 많았고 이어 30대, 40대, 50대, 60세 이상의 순이었다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 80,
+        "label": "negative",
+        "note": "순위 변천",
+        "claim_type": "",
+        "sentence": "60세 이상 취업자 수는 2017년 청년층을 추월한 데 이어 2021년엔 30대, 작년엔 40대, 올 3월부터는 50대까지 차례로 제치고 1위가 됐다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 81,
+        "label": "negative",
+        "note": "세대/연령 라벨",
+        "claim_type": "",
+        "sentence": "이 같은 결혼 및 출산 반등 추세는 2차 베이비붐 세대의 자녀들인 ‘2차 에코붐 세대’(1991~1996년생)들이 30대 초중반에 접어들어 아이를 낳기 시작한 점이 영향을 줬다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 82,
+        "label": "negative",
+        "note": "세대 라벨(출생연도)",
+        "claim_type": "",
+        "sentence": "최근 결혼과 출산 반등 추세를 만드는 건 2차 베이비부머의 자녀 세대인 ‘2차 에코붐 세대’(1991~1996년생)다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 83,
+        "label": "negative",
+        "note": "지수 해석 기준(100)",
+        "claim_type": "",
+        "sentence": "이 지표는 대표적 소비 지표인 소매 판매액 지수와 건축·토목공사 실적을 뜻하는 건설 기성, 숙박·음식업, 운수·창고업 같은 서비스업 생산 지수를 종합한 것으로, 100 이상이면 현재 경기가 좋은 편이고 100 미만이면 나쁜 편이라는 뜻이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 84,
+        "label": "negative",
+        "note": "근로자 용어 정의",
+        "claim_type": "",
+        "sentence": "한시적 근로자는 근로계약 기간이 정해진 기간제 근로자와, 비자발적 사유로 계속 근무를 기대하기 어려운 비기간제 근로자를 포함한다.시간제 근로자는 같은 사업장 내 근로자보다 1시간 이상 근로시간이 짧은 근로자를 말한다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 85,
+        "label": "negative",
+        "note": "전망 기관 수",
+        "claim_type": "",
+        "sentence": "한은 뉴욕사무소가 이달 발표한 보고서에 따르면 글로벌 투자 은행 10 곳 중 2곳이 올해 미국의 금리 인하가 없을 것이라고 봤다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 86,
+        "label": "negative",
+        "note": "향후 일정 예고",
+        "claim_type": "",
+        "sentence": "이와 함께 다음주 도널드 트럼프 미 대통령 당선인 취임, 이달 말 미 연방준비제도의 올해 첫 기준금리 결정 등 주요 일정들도 예정됐다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 87,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "정부의 올해 성장률 전망치는 2~2.1%로 추정되는 잠재 성장률(생산 자원을 모두 투입했을 때 물가 상승 없이 최대한 달성할 수 있는 성장률)보다 낮다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "성장률=2~2.1%(metaphoric)"
+        ]
+      },
+      {
+        "id": 88,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "성장률과 물가 상승률이 모두 1%대에 머무른다는 정부 전망이 현실화될 경우 경기 침체 우려가 커질 수 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 89,
+        "label": "negative",
+        "note": "견해(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "이와 관련해 이창용 한국은행 총재는 \"우리나라 잠재성장률은 2% 밑으로 떨어졌다고 보고 있다\"면서 \"미국같이 큰 나라도 2%가 넘는 잠재성장률을 갖고 있다\"고 경고했다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "잠재성장률=2%(verifiable)"
+        ]
+      },
+      {
+        "id": 90,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "대표적인 내수 지표인 소매 판매가 2003년 ‘카드 대란’ 이후 가장 큰 폭으로 줄어 21년 만에 최악의 소비 절벽이 나타났다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 91,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "또 다른 내수 지표인 건설 공사 실적도 3년 만에 가장 큰 폭으로 악화된 것으로 집계되는 등 내수 부진의 골이 깊어져 끝이 보이지 않는다는 우려가 나온다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 92,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "일부 글로벌 투자은행(IB)들은 한국의 올해 성장률 전망을 1%대 초반까지 낮춰 잡고 있다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 93,
+        "label": "negative",
+        "note": "전망치(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "JP모건은 올해 한국 경제가 1.2% 성장하는 데 그친다고 보고 있다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "경제 성장=1.2%(change_rate)"
+        ]
+      },
+      {
+        "id": 94,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "33년여 만에 최장 기간 혼인 증가세 기록을 다시 경신한 것이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 95,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "2월 기준으로 출생아 수가 전년보다 늘어난 것은 2014년 이후 11년 만이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 1,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=+ (change_rate)"
+        ]
+      },
+      {
+        "id": 96,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "2015년 관련 통계 집계 이후 최대 증가 폭이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 97,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "이처럼 장기간 결혼·출산이 동반 상승한 것은 1991년 3월~1991년 12월 이후 33년 반 만이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 98,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "월별 출생아 수는 지난해 7월부터 10개월째 증가세를 보이고 있는데, 10개월 연속 증가세는 2006년 2월~2008년 2월(25개월) 이후 최장 기간이다.",
+        "error": null,
+        "n_total": 2,
+        "n_nonnone": 2,
+        "pred": "positive",
+        "evidence": [
+          "출생아 수=10개월째 증가세(change_rate)",
+          "출생아 수 증가세=10개월 연속(verifiable)"
+        ]
+      },
+      {
+        "id": 99,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "지난해 4월부터 13개월 연속 증가한 것으로, 이는 1991년 3월부터 같은 해 12월까지 10개월 연속 증가한 이후 33년 6개월 만이다.",
+        "error": null,
+        "n_total": 1,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      },
+      {
+        "id": 100,
+        "label": "negative",
+        "note": "기록/추세(비-claim 확정)",
+        "claim_type": "",
+        "sentence": "결혼과 출산이 10개월 연속 동반 상승을 보인 것도 이 때 이후 처음이다.",
+        "error": null,
+        "n_total": 0,
+        "n_nonnone": 0,
+        "pred": "negative",
+        "evidence": []
+      }
+    ]
   ]
 }
