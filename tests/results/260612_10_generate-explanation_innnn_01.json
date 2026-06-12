@@ -1,0 +1,47 @@
+{
+  "stem": "260612_10_generate-explanation_innnn_01",
+  "ran_at": "2026-06-12T07:36:33.936920+00:00",
+  "verdict_counts": {
+    "T": 1,
+    "F": 1,
+    "M": 1,
+    "N": 1
+  },
+  "overall_confidence": 0.3333333333333333,
+  "coverage": 0.75,
+  "overall_opinion": "이 기사는 총 네 가지 통계 주장을 다루고 있으며, 그중 세 가지는 부분적으로 정확하거나 오해를 일으킬 가능성이 있습니다. 두 개의 수치(청년 실업률 및 주당 평균 근로시간)에서 기사와 공식 통계 간의 차이가 존재하며, 나머지 하나(합계출산율)는 정확히 일치합니다. 또한 노인 빈곤율에 관한 공식 통계가 없기 때문에 이 부분은 검증할 수 없습니다. 따라서 전체적으로 볼 때, 이 기사의 통계 인용은 일부 부정확성과 모호한 부분이 있어 주의 깊게 읽어야 할 필요가 있습니다.",
+  "claim_results": [
+    {
+      "claim_id": "c1",
+      "verdict": "F",
+      "mismatch_type": "magnitude",
+      "claim_value": "6.5",
+      "kosis_value": "7.1",
+      "explanation": "기사의 2023년 청년 실업률 6.5%는 KOSIS 공식 수치(7.1%)와 다릅니다. 불일치 유형: magnitude. (출처: 경제활동인구조사)"
+    },
+    {
+      "claim_id": "c2",
+      "verdict": "T",
+      "mismatch_type": null,
+      "claim_value": "0.72",
+      "kosis_value": "0.72",
+      "explanation": "기사의 2024년 합계출산율 0.72명은 KOSIS 공식 수치와 일치합니다. (출처: 인구동향조사)"
+    },
+    {
+      "claim_id": "c3",
+      "verdict": "M",
+      "mismatch_type": "population",
+      "claim_value": "38.8",
+      "kosis_value": "38.8",
+      "explanation": "기사의 2024년 주당 평균 근로시간 38.8시간은 KOSIS 공식 수치(38.8시간)와 부분적으로 일치합니다. (출처: 근로형태별 근로실태조사)"
+    },
+    {
+      "claim_id": "c4",
+      "verdict": "N",
+      "mismatch_type": null,
+      "claim_value": "45.0",
+      "kosis_value": null,
+      "explanation": "2023년 노인 빈곤율에 대한 KOSIS 공식 통계를 찾지 못해 검증할 수 없습니다."
+    }
+  ]
+}

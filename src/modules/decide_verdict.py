@@ -13,24 +13,29 @@ class DecideVerdictError(Exception):
     """검증 결과 판정/조립 실패."""
 
 
-# overall_verdict 심각도 우선순위 (높을수록 우선). TODO(full [9])에서 정밀화.
-_SEVERITY = {"F": 3, "M": 2, "N": 1, "T": 0}
+_VERDICT_CODES = ("T", "F", "M", "N")
 
 
 async def decide_verdict(master_schema: MasterSchema) -> None:
     """
-    [9] Decide Verdict (옛 _synthesize + _verdict 통합)
+    [9] Decide Verdict
 
     Input:
         master_schema.verifications.claim_results[*].metric  # [7]~[8] 비교·정합성 결과
 
     Output:
-        master_schema.verifications   # summary(overall_verdict, average_confidence) 확정
+        master_schema.verifications.claim_results[*].verdict / mismatch_type  # metric 으로 확정
+        master_schema.verifications.summary  # verdict_counts·overall_confidence·coverage 확정
 
     Responsibility:
-        [7] 이 생성하고 [8] 이 보정한 claim_results 를 종합해 overall_verdict 를 산출한다.
-        현재는 전이 구현 — metric.verdict 를 claim_result.verdict 로 확정하고 요약만
-        채운다. confidence(rel_diff→[0,1]) · verdict_human 정밀 산출은 TODO.
+        [7]이 생성하고 [8]이 보정한 claim_results 를 종합한다.
+          1) claim별: metric.verdict 를 claim_result.verdict 로 확정한다.
+          2) 기사별: verdict 분포(verdict_counts)와 두 지표를 산출한다.
+             - overall_confidence = T / (T+F+M)    (검증된 것 중 사실 비율, N 제외)
+             - coverage           = (T+F+M) / total (검증해낸 비율; N=미검증)
+        단일 종합 라벨은 더 내지 않는다 — 분포(verdict_counts)를 프론트가 받아 표시한다.
+        N 의 세부 사유(데이터 모호/시스템 장애)는 상류가 찍은 needs_hitl·hitl_category 를
+        그대로 보존한다([9]는 가공하지 않음).
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     verifications = master_schema.verifications
@@ -39,6 +44,7 @@ async def decide_verdict(master_schema: MasterSchema) -> None:
         verifications = _build_skeleton(master_schema)
         master_schema.verifications = verifications
 
+    # 1) claim별 verdict 확정 ([8] 까지 보정된 metric.verdict 를 표시 필드로).
     for cr in verifications.claim_results:
         metric = cr.metric
         if metric is not None and metric.verdict is not None:
@@ -46,25 +52,32 @@ async def decide_verdict(master_schema: MasterSchema) -> None:
             cr.mismatch_type = (
                 metric.mismatch_type.value if metric.mismatch_type else cr.mismatch_type
             )
-        # TODO(full [9]): confidence(rel_diff→[0,1]) · verdict_human · llm_model.
 
-    verifications.summary = VerificationSummary(
-        total_claims=len(verifications.claim_results),
-        overall_verdict=_overall_verdict(verifications.claim_results),
-        average_confidence=0.0,
-    )
+    # 2) 기사 단위 분포·지표 산출.
+    counts = _count_verdicts(verifications.claim_results)
+    total = len(verifications.claim_results)
+    resolved = counts["T"] + counts["F"] + counts["M"]  # 판정이 선 건(N 제외)
+
+    summary = verifications.summary
+    summary.total_claims = total
+    summary.verdict_counts = counts
+    summary.overall_confidence = counts["T"] / resolved if resolved else 0.0
+    summary.coverage = resolved / total if total else 0.0
 
 
-def _overall_verdict(claim_results: list[ClaimResult]) -> str:
-    """claim별 verdict 중 가장 심각한 것. 비어 있으면 UNVERIFIED."""
-    verdicts = [cr.verdict for cr in claim_results if cr.verdict in _SEVERITY]
-    if not verdicts:
-        return "UNVERIFIED"
-    return max(verdicts, key=lambda v: _SEVERITY[v])
+def _count_verdicts(claim_results: list[ClaimResult]) -> dict[str, int]:
+    """claim별 verdict 분포. T/F/M/N 외 값(UNVERIFIED 등)은 N(검증 불가)으로 집계."""
+    counts = {code: 0 for code in _VERDICT_CODES}
+    for cr in claim_results:
+        counts[cr.verdict if cr.verdict in counts else "N"] += 1
+    return counts
 
 
 def _build_skeleton(master_schema: MasterSchema) -> Verifications:
-    """[7] 미실행 시 claims 로 빈 claim_results 골격 생성(레거시 폴백)."""
+    """[7] 미실행 시 claims 로 빈 claim_results 골격 생성(레거시 폴백).
+
+    summary 의 분포·지표는 본 산출이 덮어쓰므로 여기선 기본값만 둔다.
+    """
     evidence_by_claim = {
         a.claim_id: (a.evidences[0] if a.evidences else None)
         for a in master_schema.analysis
@@ -96,10 +109,6 @@ def _build_skeleton(master_schema: MasterSchema) -> Verifications:
             )
         )
     return Verifications(
-        summary=VerificationSummary(
-            total_claims=len(claim_results),
-            overall_verdict="UNVERIFIED",
-            average_confidence=0.0,
-        ),
+        summary=VerificationSummary(total_claims=len(claim_results)),
         claim_results=claim_results,
     )

@@ -326,8 +326,16 @@ class VerificationSummary(BaseModel):
     """기사 단위 검증 요약."""
 
     total_claims: int
-    overall_verdict: str
-    average_confidence: float
+    # claim별 verdict 분포 카운트 {"T":..,"F":..,"M":..,"N":..}. 비율은 프론트가
+    # total_claims 로 나눠 도출(카운트가 원본, 비율은 파생). 옛 overall_verdict(단일 라벨) 대체.
+    verdict_counts: dict[str, int] = Field(default_factory=dict)
+    # 기사 사실성: T / (T+F+M). N(검증 불가) 제외 — '검증된 것 중 사실' 비율.
+    overall_confidence: float = 0.0
+    # 검증률: (T+F+M) / total_claims. 우리가 실제 검증해낸 비율(N=미검증).
+    coverage: float = 0.0
+    # [10] generate_explanation 이 claim별 결과를 종합해 LLM 으로 생성하는 기사 단위 총평.
+    # LLM 실패 시 결정적 템플릿 총평으로 폴백한다. 미생성 시 "".
+    overall_opinion: str = ""
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -354,6 +362,7 @@ class MasterSchema(BaseModel):
 
     content: str | None = Field(default=None, exclude=True)  # 원본 입력 (URL/본문)
     article: Article | None = None
+    sentences: list[str] = Field(default_factory=list)  # 검증 단위 원자 문장 ([2]에서 적재)
     claims: list[Claim] = Field(default_factory=list)
     analysis: list[ClaimAnalysis] = Field(default_factory=list)
     verifications: Verifications | None = None

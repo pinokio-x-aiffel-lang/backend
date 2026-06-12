@@ -23,6 +23,7 @@ dependencies = [
     "bcrypt>=4.1",
     "selectolax>=0.4.10",
     "trafilatura>=2.0.0",
+    "pyyaml>=6.0.3",
 ]
 
 [build-system]

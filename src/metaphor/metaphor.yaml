@@ -1,0 +1,187 @@
+# 비유비교 사전 — 기사 빈출 비유 기준물의 언론 관행값
+#
+# 용도: claim_type=METAPHORIC("여의도 면적의 3배") 표현을 실수치로 환산.
+# 값 선정 원칙: 언론 보도 관행값 우선(공식값과 다르면 note 에 병기).
+# source/note 는 프로그램이 쓰지 않는 사람용 기록 — 값의 출처·정의 논쟁 방지용.
+#
+# 필드:
+#   id        영문 식별자 (유일)
+#   name      표준 명칭
+#   aliases   기사에서 쓰이는 표기들 (전 엔트리 통틀어 유일해야 함)
+#   category  area | height | length | volume | weight
+#   value     기준값 (반드시 양수)
+#   unit      km2 | m2 | m | km | m3 | 톤  (ASCII 표기, 무게만 KOSIS 단위 '톤')
+#   counters  수량사 — "축구장 70개", "지구 두 바퀴" 식 매칭에 사용 (기본 [개])
+#   source    값의 출처/기준
+#   note      주의사항 (다른 정의·값이 통용되는 경우 등)
+
+version: 1
+
+entries:
+  # ── 면적 (area) ──────────────────────────────────────────────
+  - id: yeouido_area
+    name: 여의도 면적
+    aliases: [여의도 면적, 여의도]
+    category: area
+    value: 2.9
+    unit: km2
+    source: "언론 관행값 — 제방 안쪽(윤중로 둑 내부) 기준"
+    note: "정의에 따라 4.5㎢(행정구역 여의도동)·8.4㎢(한강 둔치 포함)도 쓰임. 기사가 다른 정의를 쓰면 최대 3배 오차 가능"
+
+  - id: soccer_field_area
+    name: 축구장 면적
+    aliases: [축구장, 축구 경기장]
+    category: area
+    value: 7140
+    unit: m2
+    counters: [개]
+    source: "FIFA 국제규격 105m × 68m = 7,140㎡"
+    note: "기사에 따라 7,500㎡로 어림하기도 함"
+
+  - id: seoul_area
+    name: 서울시 면적
+    aliases: [서울시 면적, 서울 면적]
+    category: area
+    value: 605.2
+    unit: km2
+    source: "서울특별시 공식 행정구역 면적 605.2㎢"
+    note: "'서울' 단독 표기는 인구·예산 등 다른 비교와 혼동되어 별칭에서 제외"
+
+  - id: south_korea_area
+    name: 대한민국 면적
+    aliases: [대한민국 면적, 남한 면적, 국토 면적]
+    category: area
+    value: 100449
+    unit: km2
+    source: "국토교통부 지적통계(2023) 100,449㎢"
+    note: "언론에서 '약 10만㎢'로 어림하는 값"
+
+  - id: jeju_area
+    name: 제주도 면적
+    aliases: [제주도 면적, 제주 면적]
+    category: area
+    value: 1850
+    unit: km2
+    source: "제주특별자치도 1,850.3㎢"
+
+  # ── 높이 (height) ────────────────────────────────────────────
+  - id: building63_height
+    name: 63빌딩 높이
+    aliases: [63빌딩, 63시티, 육삼빌딩]
+    category: height
+    value: 250
+    unit: m
+    source: "언론 관행값 250m"
+    note: "공식 높이 249.7m"
+
+  - id: namsan_height
+    name: 남산 높이
+    aliases: [남산]
+    category: height
+    value: 265
+    unit: m
+    source: "해발 265.2m (서울시)"
+    note: "N서울타워(타워 자체 236.7m)와 혼동 주의 — 이 값은 산 높이"
+
+  - id: lotte_tower_height
+    name: 롯데월드타워 높이
+    aliases: [롯데월드타워, 롯데타워]
+    category: height
+    value: 555
+    unit: m
+    source: "언론 관행값 555m"
+    note: "공식 높이 554.5m"
+
+  - id: eiffel_height
+    name: 에펠탑 높이
+    aliases: [에펠탑]
+    category: height
+    value: 330
+    unit: m
+    source: "안테나 포함 330m (2022년 이후 공식)"
+    note: "과거 표기 324m도 여전히 통용"
+
+  - id: hallasan_height
+    name: 한라산 높이
+    aliases: [한라산]
+    category: height
+    value: 1947
+    unit: m
+    source: "해발 1,947.06m (국토지리정보원 2023 재측량)"
+
+  - id: baekdusan_height
+    name: 백두산 높이
+    aliases: [백두산]
+    category: height
+    value: 2744
+    unit: m
+    source: "해발 2,744m (한국 측 기준)"
+    note: "중국 측 표기 2,749.2m"
+
+  - id: everest_height
+    name: 에베레스트 높이
+    aliases: [에베레스트산, 에베레스트]
+    category: height
+    value: 8849
+    unit: m
+    source: "2020년 중국-네팔 공동 측량 8,848.86m"
+    note: "과거 표기 8,848m도 통용"
+
+  # ── 길이/거리 (length) ───────────────────────────────────────
+  - id: seoul_busan_distance
+    name: 서울-부산 거리
+    aliases: [서울~부산, 서울-부산, 서울부산]
+    category: length
+    value: 400
+    unit: km
+    source: "언론 관행값 약 400km"
+    note: "경부고속도로 약 416km, 직선거리 약 325km — 문맥에 따라 다름"
+
+  - id: earth_circumference
+    name: 지구 둘레
+    aliases: [지구 둘레, 지구]
+    category: length
+    value: 40075
+    unit: km
+    counters: [바퀴]
+    source: "적도 기준 40,075km"
+    note: "'지구 N바퀴'는 수량사(바퀴) 패턴으로 매칭. '지구의 N배'(천체 크기 비교)는 둘레가 아닐 수 있어 오탐 가능 — 주의"
+
+  - id: earth_moon_distance
+    name: 지구-달 거리
+    aliases: [지구에서 달까지, 달까지 거리, 지구-달]
+    category: length
+    value: 384400
+    unit: km
+    source: "지구-달 평균 거리 384,400km"
+
+  - id: han_river_length
+    name: 한강 길이
+    aliases: [한강 길이, 한강]
+    category: length
+    value: 494
+    unit: km
+    source: "한강 본류(발원지~하구) 약 494km"
+    note: "508km(태백 검룡소 기준) 표기도 쓰임"
+
+  # ── 부피 (volume) ────────────────────────────────────────────
+  - id: olympic_pool_volume
+    name: 올림픽 수영장
+    aliases: [올림픽 수영장, 올림픽 규격 수영장, 국제 규격 수영장]
+    category: volume
+    value: 2500
+    unit: m3
+    counters: [개]
+    source: "50m × 25m × 수심 2m = 2,500㎥"
+    note: "수심 3m 기준 3,750㎥로 쓰는 기사도 있음"
+
+  # ── 무게 (weight) ────────────────────────────────────────────
+  - id: elephant_weight
+    name: 코끼리 무게
+    aliases: [코끼리]
+    category: weight
+    value: 6
+    unit: 톤
+    counters: [마리]
+    source: "아프리카코끼리 성체 수컷 평균 약 6톤 (언론 관행값)"
+    note: "실제 범위 4~7톤 — 어림 비유에만 사용"

@@ -171,8 +171,9 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
     summary = VerificationSummary(
         total_claims=s.total_claims,
         overall_verdict=_overall_verdict(codes),
-        average_confidence=s.average_confidence,
-        overview_reason=f"총 {s.total_claims}건의 주장을 분석했습니다.",
+        average_confidence=s.overall_confidence,
+        # [10] generate_explanation 이 생성한 기사 단위 종합 의견. 미생성 시 폴백 문구.
+        overview_reason=s.overall_opinion or f"총 {s.total_claims}건의 주장을 분석했습니다.",
     )
 
     return VerifyResponse(

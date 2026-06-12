@@ -2,14 +2,30 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 
 from src.llm.client import LlmError
 from src.llm.model_presets import EXTRACT_CLAIMS
+from src.modules.preprocess_article import atomize_sentences, clean_and_split
 from src.observability.tracing import traced_chat
 from src.prompts.prompts import EXTRACT_CLAIMS_SYSTEM, EXTRACT_CLAIMS_USER
 from src.schemas.runtime import Claim, ClaimType, MasterSchema, ValueSlot
 
 _VALID_PERIOD_TYPES: frozenset[str] = frozenset({"Y", "M", "Q", "S", "D"})
+
+# 통계 후보 문장 필터: 아라비아 숫자, %·퍼센트·포인트, 비유적 수치 표현(두 배·절반 등).
+# 재현율 우선 — 과포함은 LLM 토큰 낭비에 그치지만 누락은 claim 유실로 이어진다.
+_RE_STAT_CANDIDATE = re.compile(
+    r"[0-9０-９]"
+    r"|%|퍼센트|포인트"
+    r"|절반|반토막|갑절|곱절"
+    r"|(?:두|세|네|다섯|여섯|일곱|여덟|아홉|열|스무|몇)\s?배"
+)
+
+
+def _filter_stat_candidates(sentences: list[str]) -> list[str]:
+    """통계 주장 후보가 될 만한 문장만 남긴다 (원자화 LLM 호출 전 비용 절감)."""
+    return [s for s in sentences if _RE_STAT_CANDIDATE.search(s)]
 
 _VALID_CLAIM_TYPES: frozenset[str] = frozenset(
     ct.value for ct in ClaimType if ct is not ClaimType.NONE
@@ -88,20 +104,38 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
         master_schema.article        # [1]에서 적재된 기사
 
     Output:
+        master_schema.sentences      # list[str] (필터·원자화된 검증 단위 문장)
         master_schema.claims         # list[Claim] (claim_type == NONE 포함)
 
     Responsibility:
-        LLM으로 기사 본문에서 수치 기반 통계 주장을 추출하고 claim_type 분류.
+        내부 3단계로 기사 본문에서 수치 기반 통계 주장을 추출하고 claim_type 분류.
+          [a] 문장 필터 — 정제·문장분리(규칙) 후 통계 후보 문장만 선별
+          [b] 전처리   — preprocess_article 의 원자 문장화(HCX-005) 호출
+          [c] 추출     — 원자 문장들에서 LLM 으로 claim 추출·스키마 적재
         claim_type == NONE 인 항목도 claims에 포함 — 필터링은 분기 모듈 담당.
         실패 시 raise → runner 가 StepEvent(error) 로 처리.
     """
     if not master_schema.article:
         raise ExtractStatisticalClaimsError("master_schema.article 이 없습니다.")
 
+    # [a] 문장 필터: 정제 + 문장 분리(규칙) 후 통계 후보 문장만 선별
+    sentences = clean_and_split(master_schema.article.content)
+    candidates = _filter_stat_candidates(sentences)
+    if not candidates:
+        # 수치 문장이 전혀 없으면 통계 주장도 없다 — LLM 호출 없이 종료
+        master_schema.sentences = []
+        master_schema.claims = []
+        return
+
+    # [b] 전처리: 복합 문장 → 검증 단위 원자 문장 (HCX-005)
+    atomic_sentences = await atomize_sentences(candidates)
+    master_schema.sentences = atomic_sentences
+
+    # [c] 추출: 원자 문장 목록에서 claim 추출
     messages = [
         {"role": "system", "content": EXTRACT_CLAIMS_SYSTEM},
         {"role": "user", "content": EXTRACT_CLAIMS_USER.format(
-            content=master_schema.article.content
+            content="\n".join(atomic_sentences)
         )},
     ]
 

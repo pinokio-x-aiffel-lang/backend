@@ -108,3 +108,14 @@ CHECK_ALIGNMENT = ModelPreset(
     max_tokens=256,
     temperature=0.0,
 )
+
+# 기사 단위 종합 의견 ([10] generate_explanation)
+# claim별 검증 결과 요약을 받아 기사 전체 총평을 한 문단으로 자유 서술(structured 불필요).
+# 자연스러운 한국어 문단 생성이라 HCX-005·넉넉한 토큰. 약간의 유창함을 위해 저온도(0).
+# 보다는 살짝 높여 0.3. 실패 시 호출부가 결정적 템플릿 총평으로 폴백한다.
+GENERATE_OPINION = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-005",
+    max_tokens=512,
+    temperature=0.3,
+)

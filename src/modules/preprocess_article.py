@@ -111,6 +111,18 @@ def _clean_sentences(sentences: list[str]) -> list[str]:
     return cleaned
 
 
+# ── 공개 API ─────────────────────────────────────────────────────────────────
+
+def clean_and_split(content: str) -> list[str]:
+    """[1] 문서 정제 + [2] 문장 분리 (규칙 기반, LLM 미사용)."""
+    return _split_sentences(_clean_document(content))
+
+
+async def atomize_sentences(sentences: list[str]) -> list[str]:
+    """[3] 원자 문장화 (HCX-005) + [4] 문장 정제."""
+    return _clean_sentences(await _atomize_all(sentences))
+
+
 # ── 엔트리포인트 ──────────────────────────────────────────────────────────────
 
 class PreprocessArticleError(Exception):
