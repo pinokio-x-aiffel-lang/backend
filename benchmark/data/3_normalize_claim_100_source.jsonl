@@ -1,3 +1,4 @@
+// 3_normalize_claim_100_gold.jsonl에서 3단계 모듈 테스트에 필요한 값만 남긴 것.
 {"base": "2025-04", "value": {"raw": "2858만9000명"}, "period_value": {"raw": "지난 3월"}, "compare_period_value": {"raw": "전년 동월"}}
 {"base": "2025-02", "value": {"raw": "2.2% 상승"}, "period_value": {"raw": "지난달"}, "compare_period_value": {"raw": "전년 동월"}}
 {"base": "2025-05", "value": {"raw": "2888만7000명"}, "period_value": {"raw": "지난달"}, "compare_period_value": {"raw": "작년 4월"}}

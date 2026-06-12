@@ -1,3 +1,6 @@
+// 조선일보 실문장(2_claim_extractor_50_source.txt)에서 value/period/compare의 raw를
+//   원문 그대로(verbatim) 뽑고, expected(정답)는 스크립트 안 ITEMS 리스트에 검증용 정답 기재
+// 3단계 모듈의 수치 정규화/기간 정규화를 동시에 테스트 가능
 {"id": 1, "base": "2025-04", "value": {"raw": "2858만9000명", "kind": "절대값", "expected": "28589000", "match": "num"}, "period_value": {"raw": "지난 3월", "expected": "2025-03", "match": "exact"}, "compare_period_value": {"raw": "전년 동월", "expected": "2024-03", "match": "exact"}, "src": "9일 통계청이 발표한 ‘3월 고용동향’에 따르면, 지난 3월 취업자 수는 2858만9000명으로 전년 동월 대비 19만3000명 증가했다."}
 {"id": 2, "base": "2025-02", "value": {"raw": "2.2% 상승", "kind": "증감", "expected": "+2.2", "match": "num"}, "period_value": {"raw": "지난달", "expected": "2025-01", "match": "exact"}, "compare_period_value": {"raw": "전년 동월", "expected": "2024-01", "match": "exact"}, "src": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다."}
 {"id": 3, "base": "2025-05", "value": {"raw": "2888만7000명", "kind": "절대값", "expected": "28887000", "match": "num"}, "period_value": {"raw": "지난달", "expected": "2025-04", "match": "exact"}, "compare_period_value": {"raw": "작년 4월", "expected": "2024-04", "match": "exact"}, "src": "통계청이 14일 발표한 ‘4월 고용 동향’에 따르면, 지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 늘었다."}
