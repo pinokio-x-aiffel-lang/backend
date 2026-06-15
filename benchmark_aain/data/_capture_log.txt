@@ -1,0 +1,29 @@
+A new release of infisical is available: 0.43.91 -> 0.43.93
+
+To update, run: brew update && brew upgrade infisical
+
+[90m2026-06-14T23:01:24+09:00[0m [32mINF[0m Injecting 22 Infisical secrets into your application process
+KOSIS 모집단 폴백: claim=clm-0002 population='불명' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7011S)
+KOSIS 모집단 폴백: claim=clm-0002 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7E26S_NEW)
+KOSIS 모집단 폴백: claim=clm-0001 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7E26S_NEW)
+KOSIS 모집단 폴백: claim=clm-0002 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_38304_2013_N015)
+KOSIS 모집단 폴백: claim=clm-0001 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_38304_2013_N015)
+KOSIS 모집단 폴백: claim=clm-0002 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_38302_2016_N018)
+KOSIS 요청 실패 (1/3): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) — 0.5s 후 재시도
+KOSIS 모집단 폴백: claim=clm-0002 population='불명' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7104S)
+KOSIS 모집단 폴백: claim=clm-0002 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7003S)
+KOSIS 모집단 폴백: claim=clm-0001 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7003S)
+KOSIS 모집단 폴백: claim=clm-0001 population='30~34세 여성' 미매칭 → 전체값으로 대체 (tbl=DT_1B81A17)
+KOSIS 모집단 폴백: claim=clm-0003 population='30~34세 여성' 미매칭 → 전체값으로 대체 (tbl=DT_1B81A23)
+KOSIS 모집단 폴백: claim=clm-0002 population='30~34세 여성' 미매칭 → 전체값으로 대체 (tbl=DT_1B81A17)
+KOSIS 모집단 폴백: claim=clm-0002 population='불명' 미매칭 → 전체값으로 대체 (tbl=DT_1B81A17)
+KOSIS 모집단 폴백: claim=clm-0001 population='불명' 미매칭 → 전체값으로 대체 (tbl=DT_1DA7104S)
+KOSIS 모집단 폴백: claim=clm-0001 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_MLTM_5557)
+KOSIS 모집단 폴백: claim=clm-0001 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_MLTM_5557)
+KOSIS 요청 실패 (1/3): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) — 0.5s 후 재시도
+KOSIS 모집단 폴백: claim=clm-0001 population='불명' 미매칭 → 전체값으로 대체 (tbl=DT_1PE105)
+KOSIS 모집단 폴백: claim=clm-0001 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_MLTM_5557)
+KOSIS 모집단 폴백: claim=clm-0002 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_MLTM_5557)
+KOSIS 모집단 폴백: claim=clm-0002 population='대한민국' 미매칭 → 전체값으로 대체 (tbl=DT_1HDAAB03)
+captured 213 rows in 674.8s -> benchmark_aain/data/260614_capture_master_stage1to8.json
+ok=213 fail=0  fail_at={}
