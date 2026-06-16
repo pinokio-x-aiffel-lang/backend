@@ -65,12 +65,12 @@ class _HttpClient:
         timeout: float = 30.0,
         retries: int = 3,
         retry_delay: float = 0.5,
-        max_per_minute: int = 900,
+        max_per_minute: int = 700,
     ) -> None:
         self.timeout = timeout
         self.retries = retries
         self.retry_delay = retry_delay  # 지수 백오프 기준값(초)
-        # KOSIS 한도는 1분 1000콜. 여유를 둬 기본 900/min. 0이면 비활성.
+        # KOSIS 한도는 1분 1000콜. 여유를 둬 기본 700/min. 0이면 비활성.
         self.max_per_minute = max_per_minute
         self._session = requests.Session()
         self._rate_lock = threading.Lock()
