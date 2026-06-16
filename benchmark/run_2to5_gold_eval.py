@@ -1,4 +1,4 @@
-"""from_labeled_true_2~6_source.jsonl → 2→5 실행 + 5단계 gold 값 채점.
+"""2~6_from_labeled_true_source.jsonl → 2→5 실행 + 5단계 gold 값 채점.
 
 각 record.claim 을 파이프라인 1→5 단계(load_article→extract→normalize→retrieve→fetch)로
 흘려보내고, stage5 가 가져온 evidences(KOSIS 공식값)를 record.gold(원래 통계표 수치)와
@@ -27,7 +27,7 @@ from src.modules.normalize_claim import normalize_claim
 from src.modules.retrieve_kosis_candidates import retrieve_kosis_candidates
 from src.schemas.runtime import MasterSchema
 
-DATA = Path("benchmark/data/from_labeled_true_2~6_source.jsonl")
+DATA = Path("benchmark/data/2~6_from_labeled_true_source.jsonl")
 OUTJSON = Path("tests/results/260615_2-5_gold-figure-recall_leeaain.json")
 OUTMD = Path("tests/results/260615_2-5_gold-figure-recall_leeaain.md")
 STEPS = [
@@ -171,7 +171,7 @@ def _summary(items: list[dict]) -> dict:
 def _md(s: dict) -> str:
     L = [f"# {OUTMD.stem}", ""]
     L += ["### 1. 테스트 목적",
-          "`from_labeled_true_2~6_source.jsonl`(123건, 전부 label=True)의 각 claim을 파이프라인 "
+          "`2~6_from_labeled_true_source.jsonl`(123건, 전부 label=True)의 각 claim을 파이프라인 "
           "[1]~[5]로 흘려보내고, **[5] fetch_kosis_data가 가져온 값이 gold(원래 통계표 수치)를 "
           "재현하는지**(gold figure recall)를 채점한다.", ""]
     L += ["### 2. 검증 대상 모듈", "- src/modules/fetch_kosis_data.py — [5] KOSIS 셀 값 조회", ""]
