@@ -1,20 +1,14 @@
-"""한국어 수사 파서 — 한자어·고유어 수사 및 큰 수 단위 → 숫자 문자열.
+"""한국어 수사 파서 — 한자어·고유어 수사 및 큰 수 단위 → 숫자 문자열 (룰 전용·동기).
 
-공개 API (async):
-    parse_number(raw)         아라비아+큰수단위(만/억/조/경) → 숫자 문자열
-    parse_korean_numeral(raw) 한자어·고유어 수사            → 숫자 문자열
+공개 룰 함수:
+    _parse_number_rule(raw)          아라비아+큰수단위(만/억/조/경) → 숫자 문자열
+    _parse_korean_numeral_rule(raw)  한자어·고유어 수사            → 숫자 문자열
 
-규칙 베이스 실패 시 LLM 폴백을 자체 처리한다.
+LLM 폴백은 호출부(normalize_claim._resolve_value)가 룰 전부 실패 시 한 번만 담당한다.
 """
 from __future__ import annotations
 
-import asyncio
 import re
-
-from src.llm.client import LlmError
-from src.llm.model_presets import PARSE_NUMBER as _PRESET
-from src.observability.tracing import traced_chat
-from src.prompts.prompts import PARSE_NUMBER_SYSTEM, PARSE_NUMBER_USER
 
 # ── 상수 ──────────────────────────────────────────────────────────────────────
 
@@ -80,6 +74,33 @@ def _parse_sino(s: str) -> int | None:
             return None
     result += current
     return result if result > 0 else None
+
+
+def _parse_sino_with_units(s: str) -> int | None:
+    """한자어 수사 + 큰 수 단위. "백이십만"→1200000, "오천억"→500000000000.
+
+    단위(만/억/조/경)로 끊어 각 구간을 _parse_sino 로 계수화한다.
+    큰 수 단위가 없으면 _parse_sino 와 동일하게 동작한다.
+    """
+    s = s.strip()
+    total = 0
+    rest = s
+    for unit_char, unit_val in _BIG:          # 경·조·억·만 순
+        if unit_char in rest:
+            pre, rest = rest.split(unit_char, 1)
+            if pre:
+                coeff = _parse_sino(pre)
+                if coeff is None:
+                    return None
+            else:
+                coeff = 1                      # "만"·"억" 단독 = 단위값
+            total += coeff * unit_val
+    if rest:                                   # 단위 뒤 잔여(천/백/십/일~구)
+        tail = _parse_sino(rest)
+        if tail is None:
+            return None
+        total += tail
+    return total if total > 0 else None
 
 
 def _parse_native(s: str) -> int | None:
@@ -148,51 +169,10 @@ def _parse_korean_numeral_rule(raw: str) -> str | None:
     m = re.fullmatch(r"제\s*(\d+)", s)
     if m:
         return m.group(1)
-    v = _parse_sino(s)
+    v = _parse_sino_with_units(s)   # 천/백/십 + 만/억/조/경 ("백이십만"→1200000)
     if v is not None:
         return str(v)
     v = _parse_native(s)
     if v is not None:
         return str(v)
     return None
-
-
-# ── LLM 폴백 ──────────────────────────────────────────────────────────────────
-
-async def _llm_parse_number(raw: str) -> str | None:
-    """순수 숫자 표현 LLM 변환. 실패 또는 비숫자 표현이면 None."""
-    messages = [
-        {"role": "system", "content": PARSE_NUMBER_SYSTEM},
-        {"role": "user",   "content": PARSE_NUMBER_USER.format(raw=raw)},
-    ]
-    try:
-        response = await asyncio.to_thread(
-            traced_chat,
-            model_alias=_PRESET.model_alias,
-            model_name=_PRESET.model_name,
-            messages=messages,
-            max_tokens=_PRESET.max_tokens,
-            trace_name="parse_korean_number:llm",
-        )
-        text = response.text.strip()
-        return text if text else None
-    except (LlmError, AttributeError):
-        return None
-
-
-# ── 공개 API (async) ───────────────────────────────────────────────────────────
-
-async def parse_number(raw: str) -> str | None:
-    """아라비아+큰수단위(만/억/조/경) → 숫자 문자열. 실패 시 None."""
-    result = _parse_number_rule(raw)
-    if result is None:
-        result = await _llm_parse_number(raw)
-    return result
-
-
-async def parse_korean_numeral(raw: str) -> str | None:
-    """한자어·고유어 수사 → 숫자 문자열. 실패 시 None."""
-    result = _parse_korean_numeral_rule(raw)
-    if result is None:
-        result = await _llm_parse_number(raw)
-    return result

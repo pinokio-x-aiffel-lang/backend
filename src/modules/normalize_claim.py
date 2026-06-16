@@ -11,9 +11,8 @@ import re
 from src.llm.client import LlmError
 from src.llm.model_presets import NORMALIZE_PERIOD, NORMALIZE_VALUE
 from src.modules.parse_korean_number import (
+    _parse_korean_numeral_rule,
     _parse_number_rule,
-    parse_korean_numeral,
-    parse_number,
 )
 from src.observability.tracing import traced_chat
 from src.prompts.prompts import (
@@ -31,15 +30,13 @@ class NormalizeClaimError(Exception):
 
 # ── 수치 정규화 ────────────────────────────────────────────────────────────────
 
-_INCREASE = re.compile(r"증가|상승|늘어|올라|증대|올랐|늘었")
-_DECREASE = re.compile(r"감소|하락|줄어|내려|하강|감축|내렸|줄었|낮췄|낮아졌")
+_INCREASE = re.compile(r"증가|급증|상승|늘어|올라|올랐|오를|증대|늘었")
+_DECREASE = re.compile(r"감소|급감|하락|줄어|내려|하강|감축|내렸|줄었|낮췄|낮아졌")
 
 
 def _fmt_decimal(x: float) -> str:
-    s = f"{x:.4g}"
-    if "." not in s and "e" not in s and "E" not in s:
-        s += ".0"
-    return s
+    # 유효숫자 4자리 포맷. 정수에 .0 을 붙이지 않는다(룰 경로와 표현 통일: 49%→"49").
+    return f"{x:.4g}"
 
 
 def _try_range(s: str) -> str | None:
@@ -48,18 +45,23 @@ def _try_range(s: str) -> str | None:
         a = _parse_number_rule(m.group(1)) or m.group(1).strip()
         b = _parse_number_rule(m.group(2)) or m.group(2).strip()
         return f"{a}~{b}"
-    m = re.fullmatch(r"(\d[\d,.]*)~(\d[\d,.]*)", s.replace(" ", ""))
-    if m:
-        a = _parse_number_rule(m.group(1)) or m.group(1)
-        b = _parse_number_rule(m.group(2)) or m.group(2)
-        return f"{a}~{b}"
+    # 틸드 범위 — 단위 접미사(원·만·억·%)가 붙어도 양쪽을 각각 파싱한다.
+    # 예: "1850~1950원"→"1850~1950", "100만~200만"→"1000000~2000000".
+    if "~" in s:
+        parts = s.split("~")
+        if len(parts) == 2 and all(re.search(r"\d", p) for p in parts):
+            a = _parse_number_rule(parts[0]) or parts[0].strip()
+            b = _parse_number_rule(parts[1]) or parts[1].strip()
+            return f"{a}~{b}"
     patterns = [
         (r"(.+?)\s*이상", ">="), (r"(.+?)\s*이하", "<="),
         (r"(.+?)\s*초과", ">"),  (r"(.+?)\s*미만", "<"),
         (r"최[대고]\s*(.+)", "<="), (r"최[소저]\s*(.+)", ">="),
     ]
+    # 종결어미(이다·이라 등)가 붙어도 이상/이하/초과/미만을 포착하도록 허용.
+    end = r"(?:\s*(?:이다|이라|입니다|임|였다|이었다))?"
     for pat, op in patterns:
-        m = re.fullmatch(pat, s)
+        m = re.fullmatch(pat + end, s)
         if m:
             num = _parse_number_rule(m.group(1)) or m.group(1).strip()
             return f"{op}{num}"
@@ -72,20 +74,27 @@ def _try_change(s: str) -> str | None:
         return str(float(m.group(1)))
     if s in ("갑절",):
         return "2.0"
+    inc, dec = _INCREASE.search(s), _DECREASE.search(s)
     m = re.search(r"(\d+(?:\.\d+)?)\s*(?:%|퍼센트)", s)
-    if m and (_INCREASE.search(s) or _DECREASE.search(s)):
+    if m and (inc or dec):
         val = _fmt_decimal(float(m.group(1)))
-        sign = "-" if _DECREASE.search(s) else "+"
-        return f"{sign}{val}"
-    if _INCREASE.search(s) and not re.search(r"\d", s):
+        return f"{'-' if dec else '+'}{val}"
+    # 단위(만·억·원·명·포인트 등) 동반 증감 — 수치를 파싱해 방향 부호를 붙인다.
+    # 예: "21만6000명 증가"→"+216000", "2290억원 줄었다"→"-229000000000".
+    if (inc or dec) and re.search(r"\d", s):
+        num = _parse_number_rule(s)
+        if num is not None:
+            return f"{'-' if dec else '+'}{num}"
+    if inc and not re.search(r"\d", s):
         return "+"
-    if _DECREASE.search(s) and not re.search(r"\d", s):
+    if dec and not re.search(r"\d", s):
         return "-"
     return None
 
 
 def _try_ratio(s: str) -> str | None:
-    m = re.fullmatch(r"(\d+(?:\.\d+)?)\s*대\s*(\d+(?:\.\d+)?)", s)
+    # 단위·접미사(비율 등)가 붙어도 매칭되도록 search. "3대 5 비율"→"3:5".
+    m = re.search(r"(\d+(?:\.\d+)?)\s*대\s*(\d+(?:\.\d+)?)", s)
     if m:
         return f"{m.group(1)}:{m.group(2)}"
     _HAL = {"할": 0.1, "푼": 0.01, "리": 0.001, "모": 0.0001}
@@ -95,9 +104,18 @@ def _try_ratio(s: str) -> str | None:
     if hits:
         total = sum(int(n) * _HAL[u] for n, u in hits)
         return f"{round(total, 4):.4g}"
-    m = re.fullmatch(r"(\d+(?:\.\d+)?)\s*분의\s*(\d+(?:\.\d+)?)", s)
+    # "N분의M" = M/N. 접미사 허용(search). "3분의 1"→"0.3333".
+    m = re.search(r"(\d+(?:\.\d+)?)\s*분의\s*(\d+(?:\.\d+)?)", s)
     if m:
         denom, numer = float(m.group(1)), float(m.group(2))
+        if denom == 0:
+            return None
+        return f"{round(numer / denom, 4):.4g}"
+    # "A/B" 분수 = A/B. 분자·분모 1~2자리 + 'YYYY/MM(/DD)' 날짜(4자리 연도)는 제외.
+    # 예: "1/3"→"0.3333"; "2025/03"·"2024/12/31"→매칭 안 함.
+    m = re.search(r"(?<!\d)(\d{1,2})\s*/\s*(\d{1,2})(?!\d)", s)
+    if m and not re.search(r"\d{4}\s*/\s*\d{1,2}", s):
+        numer, denom = int(m.group(1)), int(m.group(2))
         if denom == 0:
             return None
         return f"{round(numer / denom, 4):.4g}"
@@ -112,15 +130,20 @@ def _try_ratio(s: str) -> str | None:
     return None
 
 
-async def _parse_value(raw: str) -> str | None:
-    """수치 룰 베이스 정규화. 실패 시 None."""
+def _parse_value(raw: str) -> str | None:
+    """수치 룰 베이스 정규화 (전부 동기·LLM 무관). 모든 룰 실패 시 None.
+
+    룰을 먼저 전부 시도한다. LLM 폴백은 _resolve_value 에서 단 한 번만 호출한다 —
+    예전엔 parse_korean_numeral 의 LLM 폴백이 parse_number 룰보다 먼저 끼어들어
+    '아라비아+만' 수치를 환각 오스케일(×10/×100/×1000)하던 문제가 있었다.
+    """
     s = raw.strip()
     return (
         _try_range(s)
         or _try_change(s)
         or _try_ratio(s)
-        or await parse_korean_numeral(s)
-        or await parse_number(raw)
+        or _parse_korean_numeral_rule(s)
+        or _parse_number_rule(raw)
     )
 
 
@@ -341,9 +364,9 @@ async def _llm_normalize_period(raw: str, base: str) -> str:
 # ── resolve (룰 베이스 → LLM 폴백) ───────────────────────────────────────────
 
 async def _resolve_value(raw: str) -> str:
-    result = await _parse_value(raw)
+    result = _parse_value(raw)                     # 룰 전부 시도(동기)
     if result is None:
-        result = await _llm_normalize_value(raw)
+        result = await _llm_normalize_value(raw)   # 전부 실패 시에만 LLM 1회
     return result
 
 

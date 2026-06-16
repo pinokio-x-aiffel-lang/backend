@@ -71,14 +71,6 @@ NORMALIZE_PERIOD = ModelPreset(
     temperature=0.0,
 )
 
-# 한국어 숫자 파싱 LLM 폴백 (parse_korean_number)
-PARSE_NUMBER = ModelPreset(
-    model_alias="hyperclova",
-    model_name="HCX-005",
-    max_tokens=32,
-    temperature=0.0,
-)
-
 # KOSIS 분류축 값 매칭 LLM 폴백 (fetch_kosis_data → resolve 의 population→objL 코드)
 # 규칙+동의어 매칭이 실패할 때만 호출한다. 주어진 보기(코드 목록) 중 하나를 고르는
 # 닫힌 선택 문제라 저토큰·저온도. structured outputs 가 필요해 HCX-007.
