@@ -2,9 +2,15 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import time
 
-from src.kosis import KosisError, SearchHit, search_tables
+from src.kosis import KosisError, SearchHit, search_tables_many
+from src.kosis.keyword_expand import expand_subject
+from src.llm.client import LlmError
+from src.llm.model_presets import EXPAND_KEYWORDS
+from src.observability.tracing import traced_chat
+from src.prompts.prompts import EXPAND_KEYWORDS_SYSTEM, EXPAND_KEYWORDS_USER
 from src.schemas.runtime import (
     Claim,
     ClaimAnalysis,
@@ -14,16 +20,22 @@ from src.schemas.runtime import (
     MasterSchema,
 )
 
-TOP_N = 10  # claim별 후보 통계표 상위 N개
+logger = logging.getLogger(__name__)
+
+TOP_N = 10            # claim별 후보 통계표 상위 N개(병합·재랭킹 후 절단)
+MAX_VARIANTS = 4      # subject당 검색 키워드 변형 상한 — KOSIS 호출 증폭 가드
 _SEARCH_API = "statisticsSearch.do"
 _DATA_API = "statisticsData.do"
 
-# subject 앞에 붙는 국가 한정어는 KOSIS 키워드 오염 원인 → 제거
-_SUBJECT_DROP_PREFIXES = ("한국 ", "한국의 ", "우리나라 ", "우리나라의 ")
+_EXPAND_SCHEMA = {
+    "type": "object",
+    "properties": {"keywords": {"type": "array", "items": {"type": "string"}}},
+    "required": ["keywords"],
+}
 
 
 """
-표 찾기(statisticsSearch.do, 키워드)
+표 찾기(statisticsSearch.do) — subject 변형 다중 검색 → 병합·재랭킹.
 """
 
 
@@ -35,29 +47,19 @@ async def retrieve_kosis_candidates(master_schema: MasterSchema) -> None:
     """
     [4] Retrieve KOSIS Candidates
 
-    Input:
-        master_schema.claims         # subject / unit / period 등
+    Input:  master_schema.claims         # subject / unit / period 등
+    Output: master_schema.analysis       # claim별 ClaimAnalysis
+              - kosis_search : 통합검색 로그(사용 키워드 변형 포함)
+              - candidates   : 병합·재랭킹 후 상위 TOP_N 후보 통계표
+              - kosis_query  : placeholder ([5]에서 채움)
 
-    Output:
-        master_schema.analysis       # claim별 ClaimAnalysis 초기화
-                                      #   - kosis_search : 통합검색 호출 로그
-                                      #   - candidates   : 상위 TOP_N개 후보 통계표
-                                      #   - kosis_query  : placeholder ([5]에서 채움)
+    claim별 subject 를 여러 검색어 변형(원본·핵심명사·동의어·상위어; 룰 결정적,
+    빈약 시 LLM 폴백)으로 통합검색(statisticsSearch.do)해 결과를 tbl_id 기준 병합·
+    dedup 하고, 시군구·국제표를 후순위로 재랭킹한 뒤 상위 TOP_N 을 후보로 둔다.
+    '가장 적합한 1개' 선정은 이후 단계의 몫이라 RANK 1위만 임시 selected 로 둔다.
 
-    Responsibility:
-        claim별 subject 로 KOSIS 통합검색(statisticsSearch.do)을 호출해
-        후보 통계표 상위 TOP_N개를 수집, master_schema.analysis 를 초기화한다.
-        '가장 적합한 1개' 선정은 이후 단계의 몫이라 여기선 수집만 하고,
-        [5] fetch_kosis_data 가 동작하도록 RANK 1위를 selected_tbl_id 에 임시로 둔다.
-
-        한 claim 의 검색 실패(KosisError/ValueError)는 success=0 + error_msg 로
-        기록하고 계속 진행한다(한 건이 전체 파이프라인을 막지 않게). 그 외
-        예기치 못한 예외만 raise → runner 가 StepEvent(error) 로 처리.
+    한 claim 의 검색 실패(KosisError/ValueError)는 success=0 으로 기록하고 계속 진행.
     """
-    # search_tables 는 동기 requests 기반이라 이벤트 루프를 막지 않게 to_thread 로
-    # 위임한다(_search_one_claim 내부). claim 간 검색은 gather 로 동시 호출 —
-    # rate limit 은 공유 client 가 sliding-window lock 으로 1000/min 이하 강제(동시 안전).
-    # gather 는 입력 순서를 보존하므로 analysis 순서 == claims 순서.
     master_schema.analysis = list(
         await asyncio.gather(
             *(_search_one_claim(claim) for claim in master_schema.claims)
@@ -65,21 +67,10 @@ async def retrieve_kosis_candidates(master_schema: MasterSchema) -> None:
     )
 
 
-def _preprocess_subject(subject: str) -> str:
-    """KOSIS 검색어 전처리: 국가 한정 접두어 제거 + 공백 제거."""
-    s = subject.strip()
-    for prefix in _SUBJECT_DROP_PREFIXES:
-        if s.startswith(prefix):
-            s = s[len(prefix):]
-            break
-    return "".join(s.split())
-
-
 def _rerank_hits(hits: list[SearchHit]) -> list[SearchHit]:
-    """시군구통계·국제통계(DT_2*)를 후순위로 밀고 원래 RANK 순서 유지(stable sort).
+    """시군구통계·국제통계(DT_2*)를 후순위로 밀고 그 외 RANK 순서 유지(stable sort).
 
-    [현재 미사용] 후보 10개에 동시 요청해 매칭되는 표를 고르는 방식이라
-    순위 조정이 불필요. 보존만 해 둔다(필요 시 _search_one_claim 에서 재연결).
+    전국(계) 표가 시군구·국제표에 밀려 TOP_N 밖으로 잘리는 것을 막는다(오버페치 후 절단).
     """
     def _score(h: SearchHit) -> int:
         if h.stat_nm == "시군구통계":
@@ -90,36 +81,100 @@ def _rerank_hits(hits: list[SearchHit]) -> list[SearchHit]:
     return sorted(hits, key=_score)
 
 
-async def _search_one_claim(claim: Claim) -> ClaimAnalysis:
-    """claim 1건 → 통합검색 → ClaimAnalysis (후보 풀 포함)."""
-    keyword = _preprocess_subject(claim.subject or "")
-    t0 = time.perf_counter()
+def _merge_dedup(variants: list[str], hits_by_kw: dict[str, list[SearchHit]]) -> list[SearchHit]:
+    """변형 순서대로 검색 결과를 union, tbl_id 기준 dedup(첫 등장 유지)."""
+    seen: set[str] = set()
+    pool: list[SearchHit] = []
+    for kw in variants:
+        for h in hits_by_kw.get(kw, []):
+            if h.tbl_id and h.tbl_id not in seen:
+                seen.add(h.tbl_id)
+                pool.append(h)
+    return pool
+
+
+def _llm_expand_keywords(subject: str) -> list[str]:
+    """룰 변형이 빈약할 때만 호출하는 LLM 폴백 — KOSIS 검색어 후보 목록.
+
+    닫힌 형식(JSON 배열)을 structured outputs 로 강제. 실패/빈 응답은 [] (결정적 폴백).
+    """
+    messages = [
+        {"role": "system", "content": EXPAND_KEYWORDS_SYSTEM},
+        {"role": "user", "content": EXPAND_KEYWORDS_USER.format(subject=subject)},
+    ]
     try:
-        hits: list[SearchHit] = await asyncio.to_thread(
-            search_tables, keyword, top_n=TOP_N
+        resp = traced_chat(
+            model_alias=EXPAND_KEYWORDS.model_alias,
+            model_name=EXPAND_KEYWORDS.model_name,
+            messages=messages,
+            max_tokens=EXPAND_KEYWORDS.max_tokens,
+            temperature=EXPAND_KEYWORDS.temperature,
+            json_structure=_EXPAND_SCHEMA,
+            trace_name="retrieve_kosis_candidates:expand_keywords",
         )
+    except (LlmError, AttributeError) as exc:
+        logger.warning("키워드 확장 LLM 폴백 실패(%s): %s", subject, exc)
+        return []
+    try:
+        data = json.loads(resp.text.strip())
+    except (json.JSONDecodeError, AttributeError):
+        return []
+    return ["".join(str(k).split()) for k in (data.get("keywords") or []) if k]
+
+
+async def _search_one_claim(claim: Claim) -> ClaimAnalysis:
+    """claim 1건 → 변형 다중 검색 → 병합·재랭킹 → ClaimAnalysis(후보 풀).
+
+    룰 변형 검색이 0건일 때만 LLM 폴백으로 검색어를 보강해 재검색한다(진짜 '미스'
+    한정 → LLM 호출·비결정성·KOSIS 호출을 최소화).
+    """
+    subject = claim.subject or ""
+    variants = expand_subject(subject, max_variants=MAX_VARIANTS)
+    t0 = time.perf_counter()
+
+    if not variants:
+        return _analysis(claim.claim_id, "", variants, hits=[], success=1,
+                         error_msg=None, duration_ms=_ms_since(t0))
+
+    try:
+        hits_by_kw = await asyncio.to_thread(search_tables_many, variants, top_n=TOP_N)
     except (KosisError, ValueError) as exc:
-        return _analysis(
-            claim.claim_id,
-            keyword,
-            hits=[],
-            success=0,
-            error_msg=str(exc),
-            duration_ms=_ms_since(t0),
-        )
-    return _analysis(
-        claim.claim_id,
-        keyword,
-        hits=hits,
-        success=1,
-        error_msg=None,
-        duration_ms=_ms_since(t0),
-    )
+        return _analysis(claim.claim_id, variants[0], variants, hits=[], success=0,
+                         error_msg=str(exc), duration_ms=_ms_since(t0))
+
+    pool = _rerank_hits(_merge_dedup(variants, hits_by_kw))[:TOP_N]
+    used = list(variants)
+
+    # 룰 검색 0건 = 진짜 미스 → LLM 폴백 검색어로 재검색.
+    if not pool:
+        extra = [e for e in _dedup_keep_order(await asyncio.to_thread(_llm_expand_keywords, subject))
+                 if e not in set(variants)][:MAX_VARIANTS]
+        if extra:
+            try:
+                more = await asyncio.to_thread(search_tables_many, extra, top_n=TOP_N)
+                used = variants + extra
+                pool = _rerank_hits(_merge_dedup(used, {**hits_by_kw, **more}))[:TOP_N]
+            except (KosisError, ValueError):
+                pass
+
+    return _analysis(claim.claim_id, used[0], used, hits=pool, success=1,
+                     error_msg=None, duration_ms=_ms_since(t0))
+
+
+def _dedup_keep_order(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for x in items:
+        if x and x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
 
 
 def _analysis(
     claim_id: str,
     keyword: str,
+    variants: list[str],
     *,
     hits: list[SearchHit],
     success: int,
@@ -133,7 +188,7 @@ def _analysis(
         kosis_search=KosisSearch(
             api=_SEARCH_API,
             query=keyword,
-            params=_params_log(keyword),
+            params=_params_log(variants),
             hits=len(hits),
             selected_tbl_id=top.tbl_id if top else None,
             selected_tbl_name=top.tbl_nm if top else None,
@@ -169,12 +224,13 @@ def _placeholder_query() -> KosisQuery:
     )
 
 
-def _params_log(keyword: str) -> str:
+def _params_log(variants: list[str]) -> str:
     """검색 호출 파라미터를 로그용 JSON 문자열로. apiKey 는 절대 포함하지 않는다."""
     return json.dumps(
         {
             "method": "getList",
-            "searchNm": keyword,
+            "searchNm": variants[0] if variants else "",
+            "variants": variants,
             "startCount": "1",
             "resultCount": str(TOP_N),
             "sort": "RANK",

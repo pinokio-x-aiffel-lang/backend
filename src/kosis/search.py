@@ -13,7 +13,7 @@ import time
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from src.kosis.client import SEARCH_URL, kosis_get, resolve_api_key
+from src.kosis.client import SEARCH_URL, KosisError, kosis_get, resolve_api_key
 
 logger = logging.getLogger("kosis")
 
@@ -99,7 +99,12 @@ def search_tables_many(
     results: dict[str, list[SearchHit]] = {}
     t0 = time.perf_counter()
     for kw in keywords:
-        results[kw] = search_tables(kw, api_key, top_n=top_n, sort=sort)
+        try:
+            results[kw] = search_tables(kw, api_key, top_n=top_n, sort=sort)
+        except KosisError as exc:
+            # 한 키워드 실패가 다른 변형 결과까지 버리지 않게 흡수([4] 다중검색용).
+            logger.warning("KOSIS 검색 '%s' 실패(흡수): %s", kw, exc)
+            results[kw] = []
     total = time.perf_counter() - t0
     logger.info(
         "KOSIS 검색 %d개 키워드: 총 %.3fs (평균 %.3fs/키워드)",

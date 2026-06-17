@@ -81,6 +81,16 @@ RESOLVE_AXIS_MATCH = ModelPreset(
     temperature=0.0,
 )
 
+# KOSIS 검색 키워드 확장 LLM 폴백 ([4] retrieve_kosis_candidates)
+# 룰 사전이 변형을 못 만들 때만 호출. subject → KOSIS 표명 어휘의 검색어 몇 개를
+# 자유 생성(동의어·상위어). 짧은 목록이라 저토큰. structured outputs(JSON) → HCX-007.
+EXPAND_KEYWORDS = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
+
 # 증거 표 리랭킹 ([6] rank_evidence)
 # 후보 표들(표명·항목·분류축; 값 제외) 중 주장에 가장 적합한 표 1위를 고른다.
 # 닫힌 선택(보기 중 하나)이라 저토큰·저온도. structured outputs 필요 → HCX-007.
