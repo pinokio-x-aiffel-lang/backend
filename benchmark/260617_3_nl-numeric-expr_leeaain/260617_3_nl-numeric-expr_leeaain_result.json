@@ -1,0 +1,645 @@
+{
+  "base": "2025-03-14",
+  "n": 71,
+  "rows": [
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "3.1%",
+      "result": "3.1",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "49퍼센트",
+      "result": "49",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "1,250원",
+      "result": "1250",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "2290억원",
+      "result": "229000000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "21만6000명",
+      "result": "216000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "350만 가구",
+      "result": "3500000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "1조 2천억",
+      "result": "1200000000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "5천4백만",
+      "result": "54000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "절대+단위",
+      "expr": "0.7%포인트",
+      "result": "0.7",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "5.2% 증가",
+      "result": "+5.2",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "3%p 하락",
+      "result": "-3",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "21만6000명 증가",
+      "result": "+216000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "2290억원 줄었다",
+      "result": "-229000000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "2배",
+      "result": "2.0",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "3.5배",
+      "result": "3.5",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "갑절",
+      "result": "2.0",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "두 배",
+      "result": "2.0",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "세 배",
+      "result": "3.0",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "급증",
+      "result": "+",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "두 배로",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    },
+    {
+      "slot": "value",
+      "category": "증감",
+      "expr": "절반으로 줄어",
+      "result": "-",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "3대 5",
+      "result": "3:5",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "7:3",
+      "result": "73",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "3분의 1",
+      "result": "0.3333",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "1/3",
+      "result": "0.3333",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "2할 5푼",
+      "result": "0.25",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "절반",
+      "result": "0.5",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "과반",
+      "result": "0.5",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "4명 중 1명",
+      "result": "41",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "비율/분수",
+      "expr": "3명에 1명꼴",
+      "result": "31",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "1850~1950원",
+      "result": "1850~1950",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "100만~200만",
+      "result": "1000000~2000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "30% 이상",
+      "result": ">=30",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "50명 미만",
+      "result": "<50",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "최대 3조",
+      "result": "<=3000000000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "최소 100명",
+      "result": ">=100",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "범위/경계",
+      "expr": "5천 명부터 1만 명까지",
+      "result": "5000~10000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "약 3만",
+      "result": "30000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "3만여",
+      "result": "30000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "3만 안팎",
+      "result": "30000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "3만 가량",
+      "result": "30000",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "수십만",
+      "result": "100000",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "수백억",
+      "result": "10000000000",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "십수 명",
+      "result": "10",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "거의 절반",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "두 배 이상",
+      "result": ">=두 배",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "두 자릿수 성장",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    },
+    {
+      "slot": "value",
+      "category": "근사/모호",
+      "expr": "사상 최대",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    },
+    {
+      "slot": "value",
+      "category": "순위/서수",
+      "expr": "1위",
+      "result": "1",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "순위/서수",
+      "expr": "상위 10%",
+      "result": "10",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "value",
+      "category": "순위/서수",
+      "expr": "톱5",
+      "result": "5",
+      "expect": "cover",
+      "passed": true,
+      "status": "⚠ 검증됨(값 오류)"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2025년 3월",
+      "result": "2025-03",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2025/03",
+      "result": "2025-03",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2025.03",
+      "result": "2025-03",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2025년 1분기",
+      "result": "2025-Q1",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2025년 상반기",
+      "result": "2025-H1",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2025년 하반기",
+      "result": "2025-H2",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2024년",
+      "result": "2024",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2024년 이후",
+      "result": "2024",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-절대",
+      "expr": "2024 회계연도",
+      "result": "2024",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "작년 3월",
+      "result": "2024-03",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "전년 동월",
+      "result": "2024-03",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "재작년",
+      "result": "2023",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "지난달",
+      "result": "2025-02",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "전분기",
+      "result": "2024-Q4",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "올해 3월",
+      "result": "2025-03",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-상대",
+      "expr": "이번 1분기",
+      "result": "2025-Q1",
+      "expect": "cover",
+      "passed": true,
+      "status": "✅ 검증됨"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-미커버",
+      "expr": "최근",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-미커버",
+      "expr": "올 들어",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-미커버",
+      "expr": "2020~2024년",
+      "result": null,
+      "expect": "cover",
+      "passed": false,
+      "status": "❌ 미스(갭)"
+    },
+    {
+      "slot": "period_value",
+      "category": "기간-미커버",
+      "expr": "코로나 이전",
+      "result": null,
+      "expect": "skip",
+      "passed": true,
+      "status": "✅ 미검증(의도대로)"
+    }
+  ]
+}

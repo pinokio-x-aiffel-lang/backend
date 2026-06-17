@@ -4,6 +4,7 @@
 > **목적**: 한국어 자연어 산술 표현을 수치값으로 변환하는 규칙의 단일 출처(single source of truth).
 > **근거**: deep-research(2026-06-02, 논문 23편 조사·25주장 3표결 검증/19통과) + 국립국어원 규범 보완 + 2026-06-03 추가 조사(어림수·겹수사·주관적 수량·비율단위·큰/작은 수 단위, §9 13~17). 상세 출처는 [§9](#9-근거-문헌).
 > **관련 코드**: `src/numeric/parse_numeric_expression.py`(신설 예정), `src/modules/normalize_claim.py`, `src/modules/calculate_metric.py`, `src/kosis/units.py`, `src/schemas/runtime.py`.
+> **현재 구현 현황**: 본 문서는 *목표 스펙*이다. 지금 런타임 룰(`_parse_value`/`_normalize_period`)이 실제 커버하는 범위·**의도적 미커버 결정**은 `docs/numeral_parser_coverage.md` 참조.
 
 ---
 

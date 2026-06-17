@@ -75,6 +75,7 @@ async def _atomize_batch(sentences: list[str]) -> list[str]:
             messages=messages,
             max_tokens=PREPROCESS.max_tokens,
             trace_name="preprocess:atomize",
+            prompt_name="preprocess_article",
         )
         text = response.text.strip()
         if text.startswith("```"):

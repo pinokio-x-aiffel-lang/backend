@@ -13,7 +13,7 @@
 ## 파일
 ### 마스터 / 중간 산출물
 - `data/260605_평가셋_T_F_M_NEI_모음.xlsx` — 마스터(213행: T123/F30/M30/NEI30). 원본 CSV에서 추출·라벨링.
-- `data/260614_master_eval_213_parsed.jsonl` — 마스터 읽기전용 파싱 스파인.
+- `data/260614_master_eval_213_parsed_human_checked.jsonl` — 마스터 읽기전용 파싱 스파인.
 - `data/260614_capture_master_stage1to8.json` — 마스터 213문장을 1~8단계에 통과시킨 실제 캡처(입력 재료).
 
 ### 단계별 평가셋 (`data/260614_source_from_origin_for_<모듈>.jsonl`)

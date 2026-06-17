@@ -5,7 +5,7 @@
   benchmark/data/2~6_from_labeled_true_source.jsonl       (True 123행 파싱 gold, 재사용)
 
 출력(신규):
-  benchmark_aain/data/260614_master_eval_213_parsed.jsonl
+  benchmark_aain/data/260614_master_eval_213_parsed_human_checked.jsonl
 
 각 행: {row_id, label(T/F/M/NEI), text, figure_raw, gold_figures}
   - gold_figures: True 행만 [{period_raw,period,item,value_raw,value}] (기존 파싱본 재사용),
@@ -24,7 +24,7 @@ import openpyxl
 ROOT = Path(__file__).resolve().parent.parent
 MASTER_XLSX = ROOT / "benchmark_aain/data/260605_평가셋_T_F_M_NEI_모음.xlsx"
 PARSED_TRUE = ROOT / "benchmark/data/2~6_from_labeled_true_source.jsonl"
-OUT = ROOT / "benchmark_aain/data/260614_master_eval_213_parsed.jsonl"
+OUT = ROOT / "benchmark_aain/data/260614_master_eval_213_parsed_human_checked.jsonl"
 
 
 def _norm_label(v: object) -> str:

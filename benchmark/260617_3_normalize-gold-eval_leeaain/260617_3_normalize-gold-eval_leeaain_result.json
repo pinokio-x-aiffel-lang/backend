@@ -1,0 +1,496 @@
+{
+  "gold": "benchmark/data/3_normalize_claim_100_gold.jsonl",
+  "output": "benchmark/data/3_normalize_claim_100_output.jsonl",
+  "n_gold": 100,
+  "mode_A_rule_only_vs_gold": {
+    "value": {
+      "correct": 100,
+      "total": 100,
+      "acc": 1.0
+    },
+    "period_value": {
+      "correct": 71,
+      "total": 77,
+      "acc": 0.922
+    },
+    "compare_period_value": {
+      "correct": 17,
+      "total": 61,
+      "acc": 0.279
+    },
+    "overall": {
+      "correct": 188,
+      "total": 238,
+      "acc": 0.79
+    }
+  },
+  "mode_A_mismatches": [
+    {
+      "id": 1,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-03",
+      "pred": "2024-04",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 2,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-01",
+      "pred": "2024-02",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 5,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 6,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 7,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 8,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 9,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 10,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 11,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-01",
+      "pred": "2024-02",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 12,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-02",
+      "pred": "2024-03",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 14,
+      "slot": "compare_period_value",
+      "raw": "전년 같은 달",
+      "expected": "2024-02",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 15,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 16,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-06",
+      "pred": "2024-07",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 17,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2023-12",
+      "pred": "2024-01",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 18,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2023-12",
+      "pred": "2024-01",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 19,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2024-01",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 20,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2024-01",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 21,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-02",
+      "pred": "2024-03",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 22,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-02",
+      "pred": "2024-03",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 27,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-08",
+      "pred": "2024-09",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 28,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-08",
+      "pred": "2024-09",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 29,
+      "slot": "compare_period_value",
+      "raw": "전년",
+      "expected": "2023",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 30,
+      "slot": "compare_period_value",
+      "raw": "전년",
+      "expected": "2023",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 31,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2023",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 33,
+      "slot": "compare_period_value",
+      "raw": "전년 같은 기간",
+      "expected": "2024-01",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 35,
+      "slot": "compare_period_value",
+      "raw": "전년",
+      "expected": "2023",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 37,
+      "slot": "period_value",
+      "raw": "1월 말",
+      "expected": "2025-01",
+      "pred": null,
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 37,
+      "slot": "compare_period_value",
+      "raw": "작년 말",
+      "expected": "2024",
+      "pred": "2024-12",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 38,
+      "slot": "compare_period_value",
+      "raw": "전년",
+      "expected": "2023",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 41,
+      "slot": "period_value",
+      "raw": "2월",
+      "expected": "2025-02",
+      "pred": null,
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 41,
+      "slot": "compare_period_value",
+      "raw": "전월",
+      "expected": "2025-01",
+      "pred": "2025-02",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 46,
+      "slot": "compare_period_value",
+      "raw": "전년",
+      "expected": "2023",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 47,
+      "slot": "compare_period_value",
+      "raw": "전년 동월",
+      "expected": "2024-03",
+      "pred": "2024-04",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 48,
+      "slot": "compare_period_value",
+      "raw": "1월",
+      "expected": "2025-01",
+      "pred": null,
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 49,
+      "slot": "compare_period_value",
+      "raw": "지난해 같은 기간",
+      "expected": "2024-04",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 50,
+      "slot": "compare_period_value",
+      "raw": "전년 동기",
+      "expected": "2023-H2",
+      "pred": "2024-Q2",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 52,
+      "slot": "compare_period_value",
+      "raw": "작년 동기",
+      "expected": "2024-Q1",
+      "pred": "2024-Q2",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 56,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2024-06",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 57,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2024-05",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 58,
+      "slot": "compare_period_value",
+      "raw": "2013년 말",
+      "expected": "2013",
+      "pred": "2013-12",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 60,
+      "slot": "compare_period_value",
+      "raw": "전년 동기",
+      "expected": "2024-05",
+      "pred": "2024-Q2",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 62,
+      "slot": "period_value",
+      "raw": "올해 상반기",
+      "expected": "2025-H1",
+      "pred": "2025",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 65,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2024-09",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 66,
+      "slot": "compare_period_value",
+      "raw": "1년 전",
+      "expected": "2024-09",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 67,
+      "slot": "period_value",
+      "raw": "9월",
+      "expected": "2025-09",
+      "pred": null,
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 68,
+      "slot": "compare_period_value",
+      "raw": "지난해 같은 기간",
+      "expected": "2024-Q3",
+      "pred": "2024",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 85,
+      "slot": "period_value",
+      "raw": "작년 말",
+      "expected": "2024",
+      "pred": "2024-12",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 86,
+      "slot": "period_value",
+      "raw": "작년 말",
+      "expected": "2024",
+      "pred": "2024-12",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 89,
+      "slot": "compare_period_value",
+      "raw": "전년 동기",
+      "expected": "2024-04",
+      "pred": "2024-Q2",
+      "kind": null,
+      "match": "exact"
+    },
+    {
+      "id": 94,
+      "slot": "compare_period_value",
+      "raw": "2013년 말",
+      "expected": "2013",
+      "pred": "2013-12",
+      "kind": null,
+      "match": "exact"
+    }
+  ],
+  "mode_B_existing_output_vs_gold": {
+    "value": {
+      "matched": 32,
+      "correct": 18,
+      "total": 100
+    },
+    "period_value": {
+      "matched": 50,
+      "correct": 41,
+      "total": 77
+    },
+    "compare_period_value": {
+      "matched": 0,
+      "correct": 0,
+      "total": 61
+    }
+  }
+}

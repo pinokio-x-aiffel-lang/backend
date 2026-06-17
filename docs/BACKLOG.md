@@ -39,6 +39,10 @@
   ② 파싱부에서 `ValueSlot(raw=...)` 생성 (없으면 None 유지).
   암시적 비교("두 달 연속")의 추론값은 `is_inferred=True`로 구분.
 - **선결**: 없음 — 두 군데 수정으로 즉시 가능. [3] 이후는 이미 대응되어 있음.
+- **측정(260617)**: stage4~5 cell-recall 베이스라인에서 T-figure gold 160건 중
+  **105건(66%)이 증감형** → 절대 셀조회로 재현 0건(1/105). 이 compare 체인 단절의
+  영향 규모를 정량 확인. KOSIS 값-recall 측정 시 절대값형(55건)과 반드시 분리할 것.
+  (`benchmark/260617_4~5_cell-recall-baseline_leeaain/`)
 
 ### 4. [3] value 정규화 — 룰 우선·LLM 최후 재구성
 

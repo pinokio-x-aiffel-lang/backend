@@ -4,7 +4,7 @@
 '지어내면 안 되는' 실제 데이터다 → 실제 파이프라인을 1회 돌려 캡처한다(라이브 KOSIS/LLM).
 verdict 정답은 캡처가 아니라 마스터 라벨을 쓴다(옵션 ②). 여기선 입력 재료만 모은다.
 
-입력(읽기만): benchmark_aain/data/260614_master_eval_213_parsed.jsonl
+입력(읽기만): benchmark_aain/data/260614_master_eval_213_parsed_human_checked.jsonl
 출력(신규):   benchmark_aain/data/260614_capture_master_stage1to8.json
 
 실행(시크릿 주입 필수):
@@ -31,7 +31,7 @@ from src.modules.retrieve_kosis_candidates import retrieve_kosis_candidates
 from src.schemas.runtime import MasterSchema
 
 ROOT = Path(__file__).resolve().parent.parent
-SPINE = ROOT / "benchmark_aain/data/260614_master_eval_213_parsed.jsonl"
+SPINE = ROOT / "benchmark_aain/data/260614_master_eval_213_parsed_human_checked.jsonl"
 OUT = ROOT / "benchmark_aain/data/260614_capture_master_stage1to8.json"
 
 # runner.py 와 동일 배선 (1~8단계만; 9=결정적 집계, 10=LLM 총평은 별도 구성).

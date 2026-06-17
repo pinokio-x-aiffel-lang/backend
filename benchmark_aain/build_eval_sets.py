@@ -1,6 +1,6 @@
 """마스터 스파인 + 기존 실제 캡처 → 단계별 평가셋(jsonl) 결정적 생성.
 
-무생성 원칙: 모든 값은 ①마스터(260614_master_eval_213_parsed.jsonl) ②기존 실제 gold
+무생성 원칙: 모든 값은 ①마스터(260614_master_eval_213_parsed_human_checked.jsonl) ②기존 실제 gold
 (2_claim_extractor_output / 3_normalize_claim_100_gold) ③라이브 캡처(260614_capture_*)
 에서만 온다. 지어낸 값 없음. 기존 파일은 읽기만 한다. 출력은 benchmark_aain/data/ 신규만.
 
@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "benchmark_aain/data"
-SPINE = DATA / "260614_master_eval_213_parsed.jsonl"
+SPINE = DATA / "260614_master_eval_213_parsed_human_checked.jsonl"
 
 # 기존 실제 gold (읽기 전용)
 EXIST_EXTRACT = ROOT / "benchmark/data/2_claim_extractor_output.jsonl"

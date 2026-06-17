@@ -33,6 +33,12 @@ class NormalizeClaimError(Exception):
 _INCREASE = re.compile(r"증가|급증|상승|늘어|올라|올랐|오를|증대|늘었")
 _DECREASE = re.compile(r"감소|급감|하락|줄어|내려|하강|감축|내렸|줄었|낮췄|낮아졌")
 
+# native 수사(관형사형) 배수 — "두 배"=2.0 (아라비아 "2배" 와 parity).
+_NATIVE_MULT = {
+    "한": 1, "두": 2, "세": 3, "네": 4, "다섯": 5,
+    "여섯": 6, "일곱": 7, "여덟": 8, "아홉": 9, "열": 10,
+}
+
 
 def _fmt_decimal(x: float) -> str:
     # 유효숫자 4자리 포맷. 정수에 .0 을 붙이지 않는다(룰 경로와 표현 통일: 49%→"49").
@@ -72,6 +78,9 @@ def _try_change(s: str) -> str | None:
     m = re.fullmatch(r"(\d+(?:\.\d+)?)\s*배", s)
     if m:
         return str(float(m.group(1)))
+    m = re.fullmatch(r"(한|두|세|네|다섯|여섯|일곱|여덟|아홉|열)\s*배", s)
+    if m:
+        return str(float(_NATIVE_MULT[m.group(1)]))
     if s in ("갑절",):
         return "2.0"
     inc, dec = _INCREASE.search(s), _DECREASE.search(s)
@@ -172,6 +181,12 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
     if m:
         return f"{m.group(1)}-{int(m.group(2)):02d}"
 
+    # 슬래시·점 날짜 YYYY/MM·YYYY.MM(·/DD) → YYYY-MM
+    # (?!\s*분기): "2024.4분기" 를 4월로 오타입하지 않도록 분기 표기는 제외(아래 분기 룰로 위임).
+    m = re.match(r"(\d{4})\s*[/.]\s*(\d{1,2})(?!\s*분기)", s)
+    if m:
+        return f"{m.group(1)}-{int(m.group(2)):02d}"
+
     m = re.match(r"(\d{4})년?\s*([1-4])분기", s)
     if m:
         return f"{m.group(1)}-Q{m.group(2)}"
@@ -183,6 +198,11 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
     m = re.match(r"(\d{4})년?\s*하반기", s)
     if m:
         return f"{m.group(1)}-H2"
+
+    # YYYY 회계연도 → 연도만 (YYYY년과 동일 처리)
+    m = re.match(r"(\d{4})\s*회계연도", s)
+    if m:
+        return m.group(1)
 
     # YYYY년 이후/이전/부터/까지 → 연도만
     m = re.match(r"(\d{4})년?\s*(?:이후|이전|부터|까지)", s)

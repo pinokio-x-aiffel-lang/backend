@@ -47,7 +47,7 @@ xrows = list(ws.iter_rows(values_only=True))[1:]
 xtext = {i + 1: (r[0] or "") for i, r in enumerate(xrows)}      # row_id → 원문 텍스트(strip 안 함)
 xfig = {i + 1: (r[2] if len(r) > 2 and r[2] else "") for i, r in enumerate(xrows)}
 
-spine = {r["row_id"]: r for r in jl(DATA / "260614_master_eval_213_parsed.jsonl")}
+spine = {r["row_id"]: r for r in jl(DATA / "260614_master_eval_213_parsed_human_checked.jsonl")}
 
 # ── A. 마스터 텍스트: spine ↔ xlsx ──
 hdr("[A] 마스터 텍스트  spine ↔ xlsx 원문")
