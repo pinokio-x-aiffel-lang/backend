@@ -1,0 +1,6463 @@
+{
+  "source": "benchmark/data/2~6_from_labeled_true_source.jsonl",
+  "stages": "1-5(채점=5)",
+  "rerun_of": "260615_2-5_gold-figure-recall_leeaain",
+  "old_baseline": {
+    "records_with_evidence": 46,
+    "total_claims_extracted": 248,
+    "total_evidences": 159,
+    "gold_absolute": 70,
+    "gold_delta_unwired": 156,
+    "gold_range_or_none_excluded": 10,
+    "abs_value_recall": 0.1571,
+    "abs_value_period_recall": 0.0571,
+    "abs_value_hits": 11,
+    "abs_value_period_hits": 4,
+    "delta_value_hits": 0
+  },
+  "summary": {
+    "records": 123,
+    "ok": 123,
+    "fail": 0,
+    "records_with_evidence": 35,
+    "total_claims_extracted": 246,
+    "total_evidences": 115,
+    "gold_single": 226,
+    "gold_absolute": 70,
+    "gold_delta_unwired": 156,
+    "gold_range_or_none_excluded": 10,
+    "abs_value_recall": 0.1143,
+    "abs_value_period_recall": 0.0429,
+    "abs_value_hits": 8,
+    "abs_value_period_hits": 3,
+    "delta_value_hits": 0
+  },
+  "records": [
+    {
+      "id": 1,
+      "claim": "9일 통계청이 발표한 ‘3월 고용동향’에 따르면, 지난 3월 취업자 수는 2858만9000명으로 전년 동월 대비 19만3000",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 15.57,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "취업자 수",
+            "value_raw": "28,589",
+            "value": 28589
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "claim": " 60대와 30대를 중심으로 취업자가 늘며 올 들어 3개월 연속으로 취업자가 10만명 넘게 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 16.32,
+      "n_claims": 2,
+      "subjects": [
+        "취업자",
+        "취업자"
+      ],
+      "n_evidences": 5,
+      "evidences": [
+        {
+          "period": "202507",
+          "value": 29028.5,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7011S",
+          "tbl_nm": "취업시간별 취업자"
+        },
+        {
+          "period": "202507",
+          "value": 5263.5,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7035S",
+          "tbl_nm": "행정구역(시도)/종사상지위별 취업자"
+        },
+        {
+          "period": "202507",
+          "value": 29028.5,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7030S",
+          "tbl_nm": "행정구역(시도)/성별 취업자"
+        },
+        {
+          "period": "202507",
+          "value": 29028.5,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7025S",
+          "tbl_nm": "성/교육정도별 취업자"
+        },
+        {
+          "period": "202507",
+          "value": 29028.5,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7032S",
+          "tbl_nm": "행정구역(시도)/교육정도별 취업자"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "30대 취업자 수 증감 전년동월비",
+            "value_raw": "32",
+            "value": 32
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "30대 취업자 수 증감 전년동월비",
+            "value_raw": "129",
+            "value": 129
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01~2025.03",
+            "period": "2025-01~2025-03",
+            "item": "취업자 수 증감 전년동월비",
+            "value_raw": "135 136 193",
+            "value": [
+              135,
+              136,
+              193
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "claim": "지난달 취업자 수 증가폭은 취업자가 26만명 넘게 늘어난 작년 4월 이후 11개월 만에 가장 크다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 13.62,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 1,
+      "evidences": [
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.04",
+            "period": "2024-04",
+            "item": "취업자 수 증감 전년대비",
+            "value_raw": "261",
+            "value": 261
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "취업자 수 증감 전년대비",
+            "value_raw": "193",
+            "value": 193
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "claim": "하지만 청년층(15~29세) 취업자는 20만6000명 줄어 비상계엄이 터진 작년 12월부터 4개월 연속 20만명대 감소세를 기",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 16.49,
+      "n_claims": 2,
+      "subjects": [
+        "청년층 취업자",
+        "취업자"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202412",
+          "value": 28041.1,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7011S",
+          "tbl_nm": "취업시간별 취업자"
+        },
+        {
+          "period": "202412",
+          "value": 28041.1,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7036S",
+          "tbl_nm": "행정구역(시도)/취업시간별 취업자"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "청년층 취업자 수 증감 전년동월비",
+            "value_raw": "-217",
+            "value": -217
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "청년층 취업자 수 증감 전년동월비",
+            "value_raw": "-218",
+            "value": -218
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "청년층 취업자 수 증감 전년동월비",
+            "value_raw": "-235",
+            "value": -235
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년층 취업자 수 증감 전년동월비",
+            "value_raw": "-202",
+            "value": -202
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "claim": "제조업과 도소매업에서 취업자 수가 각각 11만2000명, 2만6000명 감소하는 등 청년층 취업자 비중이 높은 분야의 고용이 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.71,
+      "n_claims": 1,
+      "subjects": [
+        "취업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "제조업 취업자 수 증감 전년동월비",
+            "value_raw": "-112",
+            "value": -112
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "도소매업 취업자 수 증감 전년동월비",
+            "value_raw": "-26",
+            "value": -26
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "claim": "일할 의사가 있지만 취업하지 못한 청년 실업자는 지난달 28만9000명으로 2023년 3월(30만명) 이후 2년 만에 가장 많",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.44,
+      "n_claims": 2,
+      "subjects": [
+        "청년 실업자",
+        "청년 실업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2023.03",
+            "period": "2023-03",
+            "item": "청년층 실업자 수",
+            "value_raw": "300",
+            "value": 300
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년층 실업자 수",
+            "value_raw": "289",
+            "value": 289
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "claim": "청년 경제활동인구 대비 실업자 수를 뜻하는 청년 실업률은 7.5%로 코로나 대유행이 한창이었던 2021년 6월(8.9%) 이후",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.77,
+      "n_claims": 2,
+      "subjects": [
+        "청년 실업률",
+        "청년 실업률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년실업률",
+            "value_raw": "7.5",
+            "value": 7.5
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2021.06",
+            "period": "2021-06",
+            "item": "청년실업률",
+            "value_raw": "8.9",
+            "value": 8.9
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "claim": "3월 기준으로는 청년 실업률이 10%에 달했던 2021년 3월 이후 4년 만에 가장 높다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.3,
+      "n_claims": 1,
+      "subjects": [
+        "청년 실업률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년실업률",
+            "value_raw": "7.5",
+            "value": 7.5
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2021.03",
+            "period": "2021-03",
+            "item": "청년실업률",
+            "value_raw": "10",
+            "value": 10
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "claim": "지난달 청년층 실업률은 전체 연령대 실업률(3.1%)의 2.4배에 달한다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 11.01,
+      "n_claims": 2,
+      "subjects": [
+        "실업률",
+        "실업률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년실업률",
+            "value_raw": "7.5",
+            "value": 7.5
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "전체실업률",
+            "value_raw": "3.1",
+            "value": 3.1
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "claim": "건설업 부진 장기화로 40대와 50대 취업자 수도 각각 4만9000명, 2만6000명 줄었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 9.01,
+      "n_claims": 2,
+      "subjects": [
+        "취업자",
+        "취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "40대 취업자 수 증감 전년동월비",
+            "value_raw": "-49",
+            "value": -49
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "50대 취업자 수 증감 전년동월비",
+            "value_raw": "-26",
+            "value": -26
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "claim": "지난달 쉬었음 인구는 251만7000명으로 1년 전 대비 7만1000명 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 9.46,
+      "n_claims": 2,
+      "subjects": [
+        "쉬었음 인구",
+        "쉬었음 인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025",
+            "period": "2025",
+            "item": "쉬었음 인구 증감 전년대비",
+            "value_raw": "71",
+            "value": 71
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "claim": "특히 청년층 쉬었음 인구는 45만5000명으로 1년새 5만2000명 불었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.31,
+      "n_claims": 2,
+      "subjects": [
+        "쉬었음 인구",
+        "쉬었음 인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년층 쉬었음 인구 수",
+            "value_raw": "455",
+            "value": 455
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년층 쉬었음 인구 수  증감 전년동월비",
+            "value_raw": "52",
+            "value": 52
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "claim": "지난 1분기(1~3월) 월 평균 쉬었음 인구는 46만4000명으로 코로나 대유행이 시작된 2020년 2분기의 직전 최고치(46",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.44,
+      "n_claims": 2,
+      "subjects": [
+        "쉬었음 인구",
+        "쉬었음 인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "월 평균 쉬었음 인구",
+            "value_raw": "464",
+            "value": 464
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2020.2/4",
+            "period": "2020-Q2",
+            "item": "월 평균 쉬었음 인구",
+            "value_raw": "461",
+            "value": 461
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "claim": "통계청이 발표한 ‘세계와 한국의 인구 현황및 전망(2024)’에 따르면, 한국 인구는 2024년 5200만 명에서 2072년 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 6.25,
+      "n_claims": 1,
+      "subjects": [
+        "인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "한국인구",
+            "value_raw": "52000",
+            "value": 52000
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2072",
+            "period": "2072",
+            "item": "한국인구, 추정치",
+            "value_raw": "36000",
+            "value": 36000
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "claim": "한국의 노년 부양비는 2024년 27.4명에서 2072년 104.2명으로 3.8배 증가한다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 11.89,
+      "n_claims": 3,
+      "subjects": [
+        "노년 부양비",
+        "노년 부양비",
+        "노년 부양비 증가율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "한국 노년 부양비",
+            "value_raw": "27.4",
+            "value": 27.4
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2072",
+            "period": "2072",
+            "item": "한국 노년 부양비",
+            "value_raw": "104.2",
+            "value": 104.2
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "claim": "19일 국가데이터처(옛 통계청)에 따르면, 지난 달 청년층 고용률은 45.1%로 1년 전보다 0.7%포인트(p) 낮아졌다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.64,
+      "n_claims": 2,
+      "subjects": [
+        "고용률",
+        "고용률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "청년층 고용률",
+            "value_raw": "45.1",
+            "value": 45.1
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.09",
+            "period": "2024-09",
+            "item": "청년층 고용률",
+            "value_raw": "45.8",
+            "value": 45.8
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "claim": "8월 제조업 취업자는 미국 관세정책 불확실성 등 여파로 6만1000명 줄며 15개월 연속 내리막을 기록했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 49.15,
+      "n_claims": 2,
+      "subjects": [
+        "제조업 취업자",
+        "제조업 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "제조업 취업자 수 증감",
+            "value_raw": "-61",
+            "value": -61
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "claim": "건설업 취업자도 8만4000명 줄면서 17개월째 마이너스다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.17,
+      "n_claims": 1,
+      "subjects": [
+        "건설업 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "건설업 취업자 수 증감",
+            "value_raw": "-84",
+            "value": -84
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "claim": "지난달에는 민생회복 소비쿠폰 효과로 취업자 수가 30만명 넘게 늘었지만 주로 단기직에 집중되면서 청년층은 오히려 14만6000",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 50.95,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "청년층 취업자"
+      ],
+      "n_evidences": 1,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 5116.2,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "전체 취업자 수 증감",
+            "value_raw": "312",
+            "value": 312
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "청년층 취업자 수 증감",
+            "value_raw": "-146",
+            "value": -146
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "claim": "올해 1분기 임금근로 일자리 중 신규채용은 총 546만7000개로, 2018년 통계 작성 시작 이래 가장 적었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.56,
+      "n_claims": 2,
+      "subjects": [
+        "임금근로 일자리 중 신규 채용",
+        "임금근로 일자리 중 신규 채용"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "신규채용",
+            "value_raw": "5,467",
+            "value": 5467
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "claim": "16일 통계청이 발표한 ‘2025년 6월 고용동향’에 따르면, 지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 6.22,
+      "n_claims": 1,
+      "subjects": [
+        "취업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "전체 취업자 수",
+            "value_raw": "29,091",
+            "value": 29091
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.06",
+            "period": "2024-06",
+            "item": "전체 취업자 수",
+            "value_raw": "28,907",
+            "value": 28907
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "전체 취업자 수 증감",
+            "value_raw": "183",
+            "value": 183
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "claim": "전체 인구 중 취업자 비율을 뜻하는 고용률은 63.6%로 전년 동월 대비 0.1%포인트 증가하며, 지난 1982년 관련 통계 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 58.06,
+      "n_claims": 2,
+      "subjects": [
+        "고용률",
+        "고용률"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "202404",
+          "value": 63.0,
+          "unit": "%",
+          "item_id": "T90",
+          "tbl": "DT_1DA7001S",
+          "tbl_nm": "성별 경제활동인구 총괄"
+        },
+        {
+          "period": "202404",
+          "value": 62.0,
+          "unit": "%",
+          "item_id": "T90",
+          "tbl": "DT_1DA7004S",
+          "tbl_nm": "행정구역(시도)별 경제활동인구"
+        },
+        {
+          "period": "202404",
+          "value": 63.0,
+          "unit": "%",
+          "item_id": "T90",
+          "tbl": "DT_1DA7002S",
+          "tbl_nm": "연령별 경제활동인구 총괄"
+        },
+        {
+          "period": "202404",
+          "value": 63.0,
+          "unit": "%",
+          "item_id": "T90",
+          "tbl": "INH_1DA7014S_03",
+          "tbl_nm": "고용률(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "전체 고용률",
+            "value_raw": "63.6",
+            "value": 63.6
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": false,
+          "matched_ev": {
+            "period": "202404",
+            "value": 63.0,
+            "unit": "%",
+            "item_id": "T90",
+            "tbl": "DT_1DA7001S",
+            "tbl_nm": "성별 경제활동인구 총괄"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "전체 고용률 증감 전년대비",
+            "value_raw": "0.1",
+            "value": 0.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "claim": "국제 비교 기준인 15~64세 고용률은 70.3%로 마찬가지로 6월 기준 역대 최대치를 보였다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 46.82,
+      "n_claims": 1,
+      "subjects": [
+        "15~64세 고용률"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202506",
+          "value": 70.4,
+          "unit": "%",
+          "item_id": "T100",
+          "tbl": "DT_1DA7004S",
+          "tbl_nm": "행정구역(시도)별 경제활동인구"
+        },
+        {
+          "period": "202506",
+          "value": 70.3,
+          "unit": "%",
+          "item_id": "T100",
+          "tbl": "DT_1DA7014S",
+          "tbl_nm": "행정구역(시도)/성별 경제활동인구"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "15~64세 고용률",
+            "value_raw": "70.3",
+            "value": 70.3
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": true,
+          "matched_ev": {
+            "period": "202506",
+            "value": 70.4,
+            "unit": "%",
+            "item_id": "T100",
+            "tbl": "DT_1DA7004S",
+            "tbl_nm": "행정구역(시도)별 경제활동인구"
+          }
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "claim": "고령 돌봄 수요 확대 등에 따라 지난달 보건·사회복지서비스업 취업자 수는 323만4000명으로 전년 동월 대비 21만6000명",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 52.74,
+      "n_claims": 3,
+      "subjects": [
+        "보건·사회복지서비스업 취업자",
+        "보건·사회복지서비스업 취업자",
+        "보건·사회복지서비스업 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "보건·사회복지서비스업 취업자 수",
+            "value_raw": "3,234",
+            "value": 3234
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "보건·사회복지서비스업 취업자 수 증감 전년동월비",
+            "value_raw": "233",
+            "value": 233
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "claim": "전문·과학기술서비스업(10만2000명)과 교육서비스업(7만2000명)도 마찬가지로 증가세를 보였다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 49.54,
+      "n_claims": 2,
+      "subjects": [
+        "전문·과학기술서비스업 종사자",
+        "교육서비스업 종사자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "전문·과학기술서비스업 취업자 수 증감",
+            "value_raw": "102",
+            "value": 102
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "교육서비스업 취업자 수 증감",
+            "value_raw": "72",
+            "value": 72
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "claim": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업은 지난달 취업자 수가 441만4000명으로 전년 동월 대비 8만3000명",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 45.06,
+      "n_claims": 2,
+      "subjects": [
+        "제조업 취업자 수",
+        "제조업 취업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "제조업 취업자 수",
+            "value_raw": "4,414",
+            "value": 4414
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "제조업 취업자 수 증감 전년동월비",
+            "value_raw": "-83",
+            "value": -83
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "claim": "지난달 건설업 취업자 수도 196만명으로 전년 동월 대비 9만7000명 감소하며 200만명을 밑돌았다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 51.97,
+      "n_claims": 4,
+      "subjects": [
+        "건설업 취업자",
+        "건설업 취업자",
+        "건설업 취업자",
+        "건설업 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "건설업 취업자 수",
+            "value_raw": "1,960",
+            "value": 1960
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.06",
+            "period": "2025-06",
+            "item": "건설업 취업자 수 증감 전년동월비",
+            "value_raw": "-97",
+            "value": -97
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "claim": "주당 근로시간이 36시간 미만인 ‘단기 근로자’ 비율이 10년 새 2배로 늘어나 전체 근로자의 30%를 넘어섰다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.9,
+      "n_claims": 2,
+      "subjects": [
+        "단기 근로자 비율",
+        "단기 근로자 비율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2014",
+            "period": "2014",
+            "item": "단기 근로자 수",
+            "value_raw": "3,984",
+            "value": 3984
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2014",
+            "period": "2014",
+            "item": "전체 근로자 수",
+            "value_raw": "25,897",
+            "value": 25897
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025",
+            "period": "2025",
+            "item": "단기 근로자 수",
+            "value_raw": "7,242",
+            "value": 7242
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025",
+            "period": "2025",
+            "item": "전체 근로자 수",
+            "value_raw": "28,769",
+            "value": 28769
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "claim": "30일 통계청에 따르면, 지난해 일주일에 36시간 미만으로 일한 근로자는 881만명으로 전체 근로자(2857만6000명)의 3",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 13.98,
+      "n_claims": 3,
+      "subjects": [
+        "일주일 36시간 미만 근로자 수",
+        "전체 근로자 수",
+        "일주일 36시간 미만 근로자 비율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "전체 근로자 수",
+            "value_raw": "28,576",
+            "value": 28576
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "36시간 미만 근로자 수",
+            "value_raw": "8,810",
+            "value": 8810
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "claim": "10년 전인 2014년(15.4%)과 비교하면 단기 근로자 비율은 2배가 됐다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 11.65,
+      "n_claims": 2,
+      "subjects": [
+        "단기 근로자 비율",
+        "단기 근로자 비율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2014",
+            "period": "2014",
+            "item": "단기 근로자 수",
+            "value_raw": "3,984",
+            "value": 3984
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2014",
+            "period": "2014",
+            "item": "전체 근로자 수",
+            "value_raw": "25,897",
+            "value": 25897
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025",
+            "period": "2025",
+            "item": "단기 근로자 수",
+            "value_raw": "7,242",
+            "value": 7242
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025",
+            "period": "2025",
+            "item": "전체 근로자 수",
+            "value_raw": "28,769",
+            "value": 28769
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "claim": "통계청에 따르면, 지난해 주 14시간 이하로 일하는 ‘초단기 근로자’는 174만2000명으로 전체 근로자의 6%에 달했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.63,
+      "n_claims": 2,
+      "subjects": [
+        "초단기 근로자 수",
+        "초단기 근로자 비율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "14시간 이하 근로자 수",
+            "value_raw": "1,742",
+            "value": 1742
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "전체 근로자 수",
+            "value_raw": "28,576",
+            "value": 28576
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "claim": "5일 통계청에 따르면, 지난달 소비자물가지수는 115.71(2020년=100)로 전년 동월 대비 2.2% 상승했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.25,
+      "n_claims": 2,
+      "subjects": [
+        "소비자물가지수",
+        "소비자물가지수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "소비자물가지수",
+            "value_raw": "115.71",
+            "value": 115.71
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "소비자물가지수 증감 전년동월비",
+            "value_raw": "2.2",
+            "value": 2.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "claim": "소비자 물가상승률은 지난해 9월부터 12월까지 1%대를 유지했지만, 새해 들어 2%대로 올라선 모습이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.06,
+      "n_claims": 2,
+      "subjects": [
+        "소비자 물가 상승률",
+        "소비자 물가 상승률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.09~12",
+            "period": "2024-09~12",
+            "item": "소비자물가상승률 증감 전년동월비",
+            "value_raw": "1.6 1.3 1.5 1.9",
+            "value": [
+              1.6,
+              1.3,
+              1.5,
+              1.9
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "claim": "지난해 장기간 이어진 폭염 등 이상기후로 수급에 어려움을 겪었던 무(79.5%)와 배추(66.8%), 당근(76.4%) 등 일",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 22.94,
+      "n_claims": 4,
+      "subjects": [
+        "채소 가격",
+        "무 가격",
+        "배추 가격",
+        "당근 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "무 증감 전년동월비",
+            "value_raw": "79.5",
+            "value": 79.5
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "배추 증감 전년동월비",
+            "value_raw": "66.8",
+            "value": 66.8
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "당근 증감 전년동월비",
+            "value_raw": "76.4",
+            "value": 76.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "claim": "다만 파(-32%)와 오이(-11.6%) 등 가격이 떨어진 품목도 있었고, 사과(-2.2%)는 지난해 1~2월 가격이 워낙 크",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 15.94,
+      "n_claims": 4,
+      "subjects": [
+        "파 가격",
+        "오이 가격",
+        "사과 가격",
+        "사과 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "파 전년동월대비 증감",
+            "value_raw": "-32",
+            "value": -32
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "오이 전년동월대비 증감",
+            "value_raw": "-11.6",
+            "value": -11.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "사과 전년동월대비 증감",
+            "value_raw": "-2.2",
+            "value": -2.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.01",
+            "period": "2024-01",
+            "item": "사과 전월대비 증감",
+            "value_raw": "4.1",
+            "value": 4.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.02",
+            "period": "2024-02",
+            "item": "사과 전월대비 증감",
+            "value_raw": "9.0",
+            "value": 9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "claim": "외식을 제외한 개인 서비스는 3.5% 상승하면서 물가를 끌어 올리는 또다른 요인으로 작용했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.41,
+      "n_claims": 1,
+      "subjects": [
+        "개인 서비스"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "외식 제외 개인서비스 전년동월비",
+            "value_raw": "3.5",
+            "value": 3.5
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "claim": "6일 통계청이 발표한 ‘2월 소비자물가 동향’에 따르면, 지난달 소비자물가지수는 116.08로 전년 동월 대비 2% 상승했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.19,
+      "n_claims": 2,
+      "subjects": [
+        "소비자물가지수",
+        "소비자물가지수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "소비자물가지수",
+            "value_raw": "116.08",
+            "value": 116.08
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "소비자물가지수 전년동월비",
+            "value_raw": "2.0",
+            "value": 2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "claim": "지난 1월에 비해 상승 폭이 0.2%포인트 줄었지만, 여전히 2%대에 머무른 것이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.71,
+      "n_claims": 2,
+      "subjects": [
+        "상승 폭",
+        "상승 폭"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "소비자물가지수 전년동월비",
+            "value_raw": "2.2",
+            "value": 2.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "소비자물가지수 전년동월비",
+            "value_raw": "2.0",
+            "value": 2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "claim": "물가 상승률은 지난해 9월(1.6%)부터 4개월간 1%대로 가라앉았다가 올해 들어 꾸준히 2%대를 유지하고 있다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 13.15,
+      "n_claims": 3,
+      "subjects": [
+        "물가 상승률",
+        "물가 상승률",
+        "물가 상승률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.09",
+            "period": "2024-09",
+            "item": "소비자물가지수 전년동월비",
+            "value_raw": "1.6",
+            "value": 1.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.9~2024.12",
+            "period": "2024-09~2024-12",
+            "item": "소비자물가지수 전년동월비",
+            "value_raw": "1.6 1.3 1.5 1.9",
+            "value": [
+              1.6,
+              1.3,
+              1.5,
+              1.9
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "claim": "지난달 석유류 가격은 전년 동월 대비 6.3% 올라, 1월(7.3%)에 이어 두 달 연속으로 5% 이상의 상승폭을 보였다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.92,
+      "n_claims": 2,
+      "subjects": [
+        "석유류 가격",
+        "석유류 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "석유류 전년동월비",
+            "value_raw": "6.3",
+            "value": 6.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "석유류 전년동월비",
+            "value_raw": "7.3",
+            "value": 7.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "claim": "휘발유 가격도 7.2% 오르며, 1월(9.2%)에 이어 고공행진을 이어갔다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.82,
+      "n_claims": 2,
+      "subjects": [
+        "휘발유 가격",
+        "휘발유 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "휘발유 전년동월비",
+            "value_raw": "7.2",
+            "value": 7.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "휘발유 전년동월비",
+            "value_raw": "9.2",
+            "value": 9.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "claim": "지난달 식용유지 가격 상승률은 9%로, 지난해 6월(11.6%) 이후 8개월 만에 최대 상승폭을 보였다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.06,
+      "n_claims": 2,
+      "subjects": [
+        "식용유지 가격",
+        "식용유지 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "식용유지 전년동월비",
+            "value_raw": "9.0",
+            "value": 9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.06",
+            "period": "2024-06",
+            "item": "식용유지 전년동월비",
+            "value_raw": "11.6",
+            "value": 11.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "claim": "기름값 부담이 반영된 생활물가지수는 지난달 2.6% 오르며 지난해 7월(3%) 이후 7개월 만에 최대 상승폭을 보였다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 6.36,
+      "n_claims": 1,
+      "subjects": [
+        "생활물가지수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "생활물가지수 전년동월비",
+            "value_raw": "2.6",
+            "value": 2.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.07",
+            "period": "2024-07",
+            "item": "생활물가지수 전년동월비",
+            "value_raw": "3.0",
+            "value": 3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "claim": "생활물가지수는 지난해 10월(1.2%)을 저점으로 꾸준히 오름세를 보이고 있는데, 소비자들이 실제 체감하는 물가 수준이 높아지",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 5.68,
+      "n_claims": 1,
+      "subjects": [
+        "생활물가지수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.10",
+            "period": "2024-10",
+            "item": "생활물가지수 전년동월비",
+            "value_raw": "1.2",
+            "value": 1.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "claim": "지난달 가공식품 물가는 전년 동월 대비 2.9% 올랐는데, 지난해 1월(3.2%) 이후 13개월 만에 최대 상승폭이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 11.15,
+      "n_claims": 2,
+      "subjects": [
+        "가공식품 물가",
+        "가공식품 물가"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "가공식품 전년동월비",
+            "value_raw": "2.9",
+            "value": 2.9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.01",
+            "period": "2024-01",
+            "item": "가공식품 전년동월비",
+            "value_raw": "3.2",
+            "value": 3.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "claim": "마찬가지로 지난달 외식 물가는 전년 동월 대비 3% 상승했는데, 지난해 6월(3%) 이후 8개월 만에 최대 상승폭이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 10.81,
+      "n_claims": 2,
+      "subjects": [
+        "외식 물가",
+        "외식 물가"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "외식물가 전년동월비",
+            "value_raw": "3.0",
+            "value": 3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.06",
+            "period": "2024-06",
+            "item": "외식물가 전년동월비",
+            "value_raw": "3.0",
+            "value": 3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "claim": "다만 토마토(-19.5%)와 딸기(-6.9%), 바나나(-11.4%) 등 과실류 가격이 떨어지면서 농산물 물가는 전년 동월 대",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 35.06,
+      "n_claims": 4,
+      "subjects": [
+        "토마토 가격",
+        "딸기 가격",
+        "바나나 가격",
+        "농산물 물가"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "토마토 전년동월비",
+            "value_raw": "-19.5",
+            "value": -19.5
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "딸기 전년동월비",
+            "value_raw": "-6.9",
+            "value": -6.9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "바나나 전년동월비",
+            "value_raw": "-11.4",
+            "value": -11.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "농산물물가 전년동월비",
+            "value_raw": "-1.2",
+            "value": -1.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "claim": "이에 따라 신선식품지수는 전년 동월 대비 1.4% 감소했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 5.95,
+      "n_claims": 1,
+      "subjects": [
+        "신선식품지수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "신선식품지수 전년동월비",
+            "value_raw": "-1.4",
+            "value": -1.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "claim": "신선식품지수가 감소세를 보인 건 지난 2022년 3월(-2.1%) 이후 34개월 만이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.43,
+      "n_claims": 1,
+      "subjects": [
+        "신선식품지수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2022.03",
+            "period": "2022-03",
+            "item": "신선식품지수 전년동월비",
+            "value_raw": "-2.1",
+            "value": -2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "claim": "청년 실업률이 지난달 7.5%까지 치솟으며 코로나 위기 때인 2021년 이후 4년 만에 최대치를 기록했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 6.24,
+      "n_claims": 1,
+      "subjects": [
+        "청년 실업률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년실업률",
+            "value_raw": "7.5",
+            "value": 7.5
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "claim": "‘그냥 쉬었다’는 청년도 1분기(1~3월) 46만명을 넘으며 통계 작성 이래 가장 많았다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 9.95,
+      "n_claims": 2,
+      "subjects": [
+        "'그냥 쉬었다'는 청년 수",
+        "'그냥 쉬었다'는 청년의 분포"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "쉬었음 청년 인구",
+            "value_raw": "464",
+            "value": 464
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "claim": "9일 통계청은 ‘3월 고용 동향’에서 지난달 15~29세 청년 실업자는 28만9000명으로 전년 동월 대비 2만6000명 늘었",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.75,
+      "n_claims": 2,
+      "subjects": [
+        "청년 실업자 수",
+        "청년 실업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년 실업자 수",
+            "value_raw": "289",
+            "value": 289
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년 실업자 수 전년동월비",
+            "value_raw": "26",
+            "value": 26
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "claim": "청년 경제활동인구 대비 실업자 수를 뜻하는 청년 실업률은 7.5%에 달했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 41.06,
+      "n_claims": 1,
+      "subjects": [
+        "실업률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "청년실업률",
+            "value_raw": "7.5",
+            "value": 7.5
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "claim": "이는 2021년 6월(8.9%) 이후 3년 9개월 만에 가장 높은 것이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 9.22,
+      "n_claims": 2,
+      "subjects": [
+        "지수",
+        "지수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202106",
+          "value": 124.9820637,
+          "unit": "2017.11 ＝ 100.0",
+          "item_id": "T1",
+          "tbl": "DT_KAB_11672_S30",
+          "tbl_nm": "계절조정 아파트 전세 실거래 가격지수"
+        },
+        {
+          "period": "202307",
+          "value": 114.7001954,
+          "unit": "2017.11 ＝ 100.0",
+          "item_id": "T1",
+          "tbl": "DT_KAB_11672_S30",
+          "tbl_nm": "계절조정 아파트 전세 실거래 가격지수"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2021.06",
+            "period": "2021-06",
+            "item": "청년실업률",
+            "value_raw": "8.9",
+            "value": 8.9
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "claim": "청년 취업자 비율이 높은 제조업(-11만2000명)과 건설업(-18만5000명), 도·소매업(-2만6000명) 등에서 줄줄이 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 71.45,
+      "n_claims": 3,
+      "subjects": [
+        "고용",
+        "고용",
+        "고용"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "제조업 취업자 증감 수",
+            "value_raw": "-112",
+            "value": -112
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "건설업 취업자 증감 수",
+            "value_raw": "-185",
+            "value": -185
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "도소매업 취업자 증감 수",
+            "value_raw": "-26",
+            "value": -26
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "claim": "특히 건설업 취업자 수는 전년 동월 대비 8.7% 줄었는데, 2013년 관련 통계 작성 이래 최대 감소 폭이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 22.54,
+      "n_claims": 2,
+      "subjects": [
+        "건설업 취업자",
+        "건설업 취업자 감소 폭"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "건설업 취업자 수 전년동월비",
+            "value_raw": "-8.7",
+            "value": -8.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "claim": "지난 1분기 청년층 가운데 취업이나 구직 활동을 하지 않고 그냥 시간을 보냈다는 ‘쉬었음’ 인구도 46만4000명으로 코로나가",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 31.3,
+      "n_claims": 1,
+      "subjects": [
+        "쉬었음 인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "쉬었음 청년 인구",
+            "value_raw": "464 / 2020.2/4(쉬었음 청년 인구) 461",
+            "value": [
+              464,
+              461
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "claim": "통계청이 14일 발표한 ‘4월 고용 동향’에 따르면, 지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 늘",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 27.27,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "전체 취업자 수",
+            "value_raw": "28,887",
+            "value": 28887
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "전체 취업자 수 전년동월비",
+            "value_raw": "194",
+            "value": 194
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "claim": "60세 이상 취업자가 많은 보건·사회복지 분야를 중심으로 취업자가 늘면서 올해 1월부터 넉 달째 취업자 증가 폭이 10만명대를",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 62.61,
+      "n_claims": 2,
+      "subjects": [
+        "60세 이상 취업자",
+        "취업자"
+      ],
+      "n_evidences": 10,
+      "evidences": [
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7011S",
+          "tbl_nm": "취업시간별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7029S",
+          "tbl_nm": "성/취업시간별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7024S",
+          "tbl_nm": "성/연령별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7028S",
+          "tbl_nm": "성/종사상지위별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7010S",
+          "tbl_nm": "종사상지위별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 5101.1,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7036S",
+          "tbl_nm": "행정구역(시도)/취업시간별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7035S",
+          "tbl_nm": "행정구역(시도)/종사상지위별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7030S",
+          "tbl_nm": "행정구역(시도)/성별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7025S",
+          "tbl_nm": "성/교육정도별 취업자"
+        },
+        {
+          "period": "202501",
+          "value": 27878.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7032S",
+          "tbl_nm": "행정구역(시도)/교육정도별 취업자"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "보건업및사회복지서비스업 취업자 수 증감",
+            "value_raw": "218",
+            "value": 218
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "보건업및사회복지서비스업 취업자 수 증감률",
+            "value_raw": "7.3",
+            "value": 7.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "raw_entry": "2025.01~2025.04 135 136 193 194",
+            "period": null,
+            "item": null,
+            "value": null
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "claim": "하지만 20대 고용이 많은 제조업 분야 취업자는 12만4000명 줄어 작년 7월부터 10개월 연속 감소세를 이어갔다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 22.58,
+      "n_claims": 2,
+      "subjects": [
+        "20대 고용이 많은 제조업 분야 취업자",
+        "제조업 분야 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "제조업 취업자 전년동월비",
+            "value_raw": "-124",
+            "value": -124
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "raw_entry": "2024.07~2025.04 -11 -35 -49 -33 -95 -97 -56 -74 -112 -124",
+            "period": null,
+            "item": null,
+            "value": null
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "claim": "지난달 제조업 취업자 감소 폭은 2019년 2월(-15만1000명) 이후 6년 2개월 만에 가장 컸다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 20.95,
+      "n_claims": 2,
+      "subjects": [
+        "제조업 취업자",
+        "제조업 취업자 감소 폭"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "제조업 취업자 전년동월비",
+            "value_raw": "-124",
+            "value": -124
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2019.02",
+            "period": "2019-02",
+            "item": "제조업 취업자 전년동월비",
+            "value_raw": "-151",
+            "value": -151
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "claim": "지난달 소비자물가 상승률이 2.1%를 기록했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 10.68,
+      "n_claims": 1,
+      "subjects": [
+        "소비자물가 상승률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "소비자물가 전년동월비",
+            "value_raw": "2.1",
+            "value": 2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "claim": "전월보다 0.4%포인트(p) 높아진 수치로, 두 달 만에 다시 2%로 올라섰다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 65.96,
+      "n_claims": 2,
+      "subjects": [
+        "수치",
+        "실업률"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "202506",
+          "value": 2.8,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7102S",
+          "tbl_nm": "성/연령별 실업률"
+        },
+        {
+          "period": "202506",
+          "value": 2.8,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7104S",
+          "tbl_nm": "행정구역(시도)/성별 실업률"
+        },
+        {
+          "period": "202506",
+          "value": 2.8,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7103S",
+          "tbl_nm": "성/교육정도별 실업률"
+        },
+        {
+          "period": "202506",
+          "value": 2.8,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "INH_1DA7104S",
+          "tbl_nm": "실업률(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.08",
+            "period": "2025-08",
+            "item": "소비자물가 전년동월비",
+            "value_raw": "1.7",
+            "value": 1.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "소비자물가 전년동월비",
+            "value_raw": "2.1",
+            "value": 2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "claim": "국가데이터처가 2일 발표한 '9월 소비자물가 동향'에 따르면, 지난달 소비자물가지수는 117.06(2020=100)으로 전년 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 36.77,
+      "n_claims": 2,
+      "subjects": [
+        "소비자물가지수",
+        "소비자물가"
+      ],
+      "n_evidences": 3,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 116.29,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "DT_1J22003",
+          "tbl_nm": "소비자물가지수(2020=100)"
+        },
+        {
+          "period": "202503",
+          "value": 116.29,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "INH_1J22003",
+          "tbl_nm": "소비자물가지수(시도)"
+        },
+        {
+          "period": "202503",
+          "value": 112.52,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "DT_1J22009",
+          "tbl_nm": "식료품 및 에너지제외지수(2020=100)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "소비자물가",
+            "value_raw": "117.06",
+            "value": 117.06
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": false,
+          "matched_ev": {
+            "period": "202503",
+            "value": 116.29,
+            "unit": "2020＝100",
+            "item_id": "T",
+            "tbl": "DT_1J22003",
+            "tbl_nm": "소비자물가지수(2020=100)"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "소비자물가 전년동월비",
+            "value_raw": "2.1",
+            "value": 2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "claim": "농축수산물 가운데 수산물 가격은 전년 동월 대비 6.4%, 축산물은 5.4% 올랐다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 31.71,
+      "n_claims": 2,
+      "subjects": [
+        "수산물 가격",
+        "축산물 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "수산물 전년동월비",
+            "value_raw": "6.4",
+            "value": 6.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "축산물 전년동월비",
+            "value_raw": "5.4",
+            "value": 5.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "claim": "반면 채소 가격은 전년 동월 대비 -12.3% 하락했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 24.4,
+      "n_claims": 1,
+      "subjects": [
+        "채소 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "채소 전년동월비",
+            "value_raw": "-12.3",
+            "value": -12.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "claim": "공업제품 중에서는 석유류 가격이 전년 동월 대비 2.3% 상승했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 26.39,
+      "n_claims": 1,
+      "subjects": [
+        "석유류 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "석유류 전년동월비",
+            "value_raw": "2.3",
+            "value": 2.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "claim": "소폭의 국제유가 상승, 환율, 유류세 인하율 변화, 전년 9월 기저효과(-7.6%) 등이 영향을 미쳤다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 60.78,
+      "n_claims": 3,
+      "subjects": [
+        "국제유가",
+        "환율",
+        "유류세 인하율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.09",
+            "period": "2024-09",
+            "item": "석유류 전년동월비",
+            "value_raw": "-7.6",
+            "value": -7.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "claim": "가공식품 물가는 4.2% 뛰며 전체 물가를 0.36%p 끌어올렸다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 18.92,
+      "n_claims": 2,
+      "subjects": [
+        "가공식품 물가",
+        "전체 물가"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "가공식품 전년동월비",
+            "value_raw": "4.2",
+            "value": 4.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "가공식품 기여도 전년동월비",
+            "value_raw": "0.36",
+            "value": 0.36
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "claim": "특히 빵(6.5%), 커피(15.6%) 등의 상승세가 두드러졌다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 18.29,
+      "n_claims": 2,
+      "subjects": [
+        "빵 가격",
+        "커피 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "빵 전년동월비",
+            "value_raw": "6.5",
+            "value": 6.5
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "커피 전년동월비",
+            "value_raw": "15.6",
+            "value": 15.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "claim": "공공서비스 가격은 전년 동월보다 1.2% 올랐다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 17.14,
+      "n_claims": 1,
+      "subjects": [
+        "공공서비스 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "공공서비스 전년동월비",
+            "value_raw": "1.2",
+            "value": 1.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "claim": "공공서비스 물가 상승률은 지난달 -3.6%였으나, 이달 상승 전환했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 15.3,
+      "n_claims": 1,
+      "subjects": [
+        "공공서비스 물가"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "공공서비스 물가 상승률 전년동월비",
+            "value_raw": "1.2",
+            "value": 1.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.08",
+            "period": "2025-08",
+            "item": "공공서비스 물가 상승률 전년동월비",
+            "value_raw": "-3.6",
+            "value": -3.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "claim": "개인 서비스 물가 상승률은 지난달 3.1%에서 2.9% 상승으로 상승폭을 축소했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.69,
+      "n_claims": 2,
+      "subjects": [
+        "개인 서비스 물가 상승률",
+        "개인 서비스 물가 상승률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.08",
+            "period": "2025-08",
+            "item": "개인서비스 물가상승률 전년동월비",
+            "value_raw": "3.1",
+            "value": 3.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "개인서비스 물가상승률 전년동월비",
+            "value_raw": "2.9",
+            "value": 2.9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "claim": "지난 9월 전체 취업자 수가 31만명 이상 늘어 1년 7개월 만에 최대 증가 폭을 기록했지만, 청년층은 14만6000명이나 줄",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 18.12,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "청년층 취업자"
+      ],
+      "n_evidences": 1,
+      "evidences": [
+        {
+          "period": "202509",
+          "value": 5254.3,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "전체 취업자 수 증감",
+            "value_raw": "312",
+            "value": 312
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "청년층 취업자 증감 전년동월비",
+            "value_raw": "-146",
+            "value": -146
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "claim": "17일 국가데이터처가 발표한 ‘9월 고용동향’에 따르면 지난달 15세 이상 취업자는 2915만4000명으로 전년 동월 대비 3",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 40.59,
+      "n_claims": 3,
+      "subjects": [
+        "15세 이상 취업자",
+        "15세 이상 취업자",
+        "15세 이상 취업자"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7001S",
+          "tbl_nm": "성별 경제활동인구 총괄"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7003S",
+          "tbl_nm": "교육정도별 경제활동인구"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7001S",
+          "tbl_nm": "성별 경제활동인구 총괄"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7003S",
+          "tbl_nm": "교육정도별 경제활동인구"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "15세 이상 취업자 수",
+            "value_raw": "29,154",
+            "value": 29154
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "15세 이상 취업자 수 증감 전년동월비",
+            "value_raw": "312",
+            "value": 312
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "claim": "이는 지난해 2월(32만9000명) 이후 1년 7개월 만에 가장 큰 증가 폭이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 44.74,
+      "n_claims": 1,
+      "subjects": [
+        "인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.02",
+            "period": "2024-02",
+            "item": "15세 이상 취업자 수 증감 전년동월비",
+            "value_raw": "329",
+            "value": 329
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "claim": "취업자 수 증가 폭은 올해 들어 5월(24만5000명)을 제외하고 매달 10만명대를 맴돌다가 9월 들어 크게 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 22.88,
+      "n_claims": 3,
+      "subjects": [
+        "취업자 수",
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 3,
+      "evidences": [
+        {
+          "period": "202505",
+          "value": 5253.3,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202504",
+          "value": 5180.6,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202509",
+          "value": 5254.3,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01~2025.09 135 136 193 194 245",
+            "period": "2025-01~2025.09 135 136 193 194 245",
+            "item": "5월",
+            "value_raw": "183 171 166 312(9월)",
+            "value": [
+              183,
+              171,
+              166
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "claim": "반면 청년(15~29세) 취업자는 14만6200명 감소했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 22.14,
+      "n_claims": 1,
+      "subjects": [
+        "청년 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "청년취업자 증감 전년동월비",
+            "value_raw": "-146",
+            "value": -146
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "claim": "제조업(-6만1400명)과 건설업(-8만3500명)도 동반 감소했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 41.14,
+      "n_claims": 2,
+      "subjects": [
+        "제조업 취업자 수",
+        "건설업 취업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "제조업 취업자 증감 전년동월비",
+            "value_raw": "-61",
+            "value": -61
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "건설업 취업자 증감 전년동월비",
+            "value_raw": "-84",
+            "value": -84
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "claim": "40대와 50대 취업자도 각각 4만5200명, 1만1000명 줄었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 32.69,
+      "n_claims": 2,
+      "subjects": [
+        "40대 취업자",
+        "50대 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "40대 취업자 증감 전년대비",
+            "value_raw": "-45",
+            "value": -45
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "50대 취업자 증감 전년대비",
+            "value_raw": "-11",
+            "value": -11
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "claim": "15일 통계청이 발표한 ‘2024년 12월 및 연간 고용 동향’에 따르면, 지난달 취업자 수는 2804만1000명으로 전년 동",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 35.58,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 5116.2,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "전체 취업자 수",
+            "value_raw": "28,041",
+            "value": 28041
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "전체 취업자 수 증감 전년동월비",
+            "value_raw": "-52",
+            "value": -52
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "claim": "건설 경기 부진으로 건설업 취업자 수가 15만7000명 줄었고, 제조업과 도소매업 취업자 수 감소폭도 각각 10만명에 육박했다",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 85.22,
+      "n_claims": 3,
+      "subjects": [
+        "건설업 취업자 수",
+        "제조업 취업자 수",
+        "도소매업 취업자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "건설업 취업자 수 증감 전년동월비",
+            "value_raw": "-157",
+            "value": -157
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "제조업 취업자 수 증감 전년동월비",
+            "value_raw": "-97",
+            "value": -97
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "도소매업 취업자 수 증감 전년동월비",
+            "value_raw": "-96",
+            "value": -96
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "claim": "14일 통계청이 발표한 ‘1월 고용동향’에 따르면, 지난달 취업자 수는 2787만8000명으로 1년 전(2774만3000명)보",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 57.85,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 5116.2,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "2024",
+          "value": 4125.0,
+          "unit": "명",
+          "item_id": "T002",
+          "tbl": "DT_920024_3N_009",
+          "tbl_nm": "직업계고 시도 및 근로지역별 취업현황"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "전체 취업자 수",
+            "value_raw": "27,878",
+            "value": 27878
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.01",
+            "period": "2024-01",
+            "item": "전체 취업자 수",
+            "value_raw": "27,743",
+            "value": 27743
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "전체 취업자 수 증감 전년동월비",
+            "value_raw": "135",
+            "value": 135
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "claim": "지난해 7월(17만2000명) 이후 6개월 만에 최대 증가폭이자, 전달(-5만2000명) 감소세에서 한 달 만에 증가로 전환한",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 97.17,
+      "n_claims": 3,
+      "subjects": [
+        "인구",
+        "인구",
+        "인구"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.07",
+            "period": "2024-07",
+            "item": "전체 취업자 수 증감 전년대비",
+            "value_raw": "172",
+            "value": 172
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "전체 취업자 수 증감 전년대비",
+            "value_raw": "-52",
+            "value": -52
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "전체 취업자 수 증감 전년대비",
+            "value_raw": "135",
+            "value": 135
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "claim": "이 덕분에 지난달 65세 이상 고령층 취업자만 33만8000명 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 30.74,
+      "n_claims": 1,
+      "subjects": [
+        "65세 이상 고령층 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "65세 이상 취업자 증감 전년대비",
+            "value_raw": "338",
+            "value": 338
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "claim": "노인 일자리에 참여하려는 고령층도 다수 몰리며 65세 이상 실업률이 9.6%로 전년 동월 대비 0.2%포인트 오르기도 했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 92.86,
+      "n_claims": 2,
+      "subjects": [
+        "실업률",
+        "실업률"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "202404",
+          "value": 1.8,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7102S",
+          "tbl_nm": "성/연령별 실업률"
+        },
+        {
+          "period": "202404",
+          "value": 3.0,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7104S",
+          "tbl_nm": "행정구역(시도)/성별 실업률"
+        },
+        {
+          "period": "202404",
+          "value": 3.0,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7103S",
+          "tbl_nm": "성/교육정도별 실업률"
+        },
+        {
+          "period": "202404",
+          "value": 3.0,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "INH_1DA7104S",
+          "tbl_nm": "실업률(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "65세 이상 실업률",
+            "value_raw": "9.6",
+            "value": 9.6
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "65세 이상 실업률 증감 전년대비",
+            "value_raw": "0.2",
+            "value": 0.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "claim": "1980년대 후반(1986~1990년)에는 매년 62만~64만명대가 태어났지만, 1990년대 초반(1991~1995년)에는 출",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 29.34,
+      "n_claims": 2,
+      "subjects": [
+        "출생아 수",
+        "출생아 수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "1986",
+          "value": 631021.0,
+          "unit": "명",
+          "item_id": "T055",
+          "tbl": "DT_2AAF013",
+          "tbl_nm": "월별 출생아 수"
+        },
+        {
+          "period": "1991",
+          "value": 708390.0,
+          "unit": "명",
+          "item_id": "T055",
+          "tbl": "DT_2AAF013",
+          "tbl_nm": "월별 출생아 수"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "1986~1990",
+            "period": "1986~1990",
+            "item": "출생아 수",
+            "value_raw": "636,019 623,831 633,092 639,431 649,738",
+            "value": [
+              636019,
+              623831,
+              633092,
+              639431,
+              649738
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        },
+        {
+          "gold": {
+            "period_raw": "1991~1995",
+            "period": "1991~1995",
+            "item": "출생아 수",
+            "value_raw": "709,275 730,678 715,826 721,185 715,020",
+            "value": [
+              709275,
+              730678,
+              715826,
+              721185,
+              715020
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "claim": "지난해 출생아 수가 전년 대비 3.6% 늘어나며 9년 만에 반등한 것으로 나타났다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 18.51,
+      "n_claims": 1,
+      "subjects": [
+        "출생아 수"
+      ],
+      "n_evidences": 1,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 238317.0,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A28",
+          "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "출생아 수 전년 대비 증감",
+            "value_raw": "3.6",
+            "value": 3.6
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2016~2023",
+            "period": "2016~2023",
+            "item": "출생아 수 전년 대비 증감",
+            "value_raw": "-0.067 -0.120 -0.075 -0.059 -0.081 -0.029 -0.030 -0.057",
+            "value": [
+              -0.067,
+              -0.12,
+              -0.075,
+              -0.059,
+              -0.081,
+              -0.029,
+              -0.03,
+              -0.057
+            ]
+          },
+          "kind": "range_or_none",
+          "value_hit": null,
+          "vp_hit": null
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "claim": "26일 통계청이 발표한 ‘2024년 출생·사망통계’에 따르면, 작년 출생아 수는 23만8300명으로 전년(23만명)대비 830",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 23.74,
+      "n_claims": 3,
+      "subjects": [
+        "출생아 수",
+        "출생아 수",
+        "출생아 수"
+      ],
+      "n_evidences": 3,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 238317.0,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A28",
+          "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+        },
+        {
+          "period": "2024",
+          "value": 238317.0,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A28",
+          "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+        },
+        {
+          "period": "2024",
+          "value": 238317.0,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A28",
+          "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "출생아 수",
+            "value_raw": "238,317",
+            "value": 238317
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": true,
+          "matched_ev": {
+            "period": "2024",
+            "value": 238317.0,
+            "unit": "",
+            "item_id": "T1",
+            "tbl": "DT_1B81A28",
+            "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "출생아 수 증감 전년대비",
+            "value_raw": "8,289",
+            "value": 8289
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "claim": "출생아 수가 전년 대비 증가한 것은 지난 2015년(3000명) 이후 9년 만이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 14.23,
+      "n_claims": 1,
+      "subjects": [
+        "출생아 수"
+      ],
+      "n_evidences": 1,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 238317.0,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A28",
+          "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2015",
+            "period": "2015",
+            "item": "출생아 수 증감 전년대비",
+            "value_raw": "2,985",
+            "value": 2985
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "claim": "여성 한 명이 낳을 것으로 예상되는 아이 수를 뜻하는 합계출산율도 작년 0.75명으로 전년(0.72명) 대비 0.03명 늘었다",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 20.04,
+      "n_claims": 2,
+      "subjects": [
+        "합계출산율",
+        "합계출산율"
+      ],
+      "n_evidences": 10,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 0.734,
+          "unit": "명",
+          "item_id": "T10",
+          "tbl": "DT_2KAA207",
+          "tbl_nm": "합계출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A17",
+          "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "INH_1B81A17",
+          "tbl_nm": "합계출산율(시도/시/군/구)"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T2",
+          "tbl": "DT_1B81A23",
+          "tbl_nm": "시군구/출생아수, 합계출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A21",
+          "tbl_nm": "시도/합계출산율, 모의 연령별 출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.734,
+          "unit": "명",
+          "item_id": "T10",
+          "tbl": "DT_2KAA207",
+          "tbl_nm": "합계출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A17",
+          "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "INH_1B81A17",
+          "tbl_nm": "합계출산율(시도/시/군/구)"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T2",
+          "tbl": "DT_1B81A23",
+          "tbl_nm": "시군구/출생아수, 합계출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A21",
+          "tbl_nm": "시도/합계출산율, 모의 연령별 출산율"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "합계출산율",
+            "value_raw": "0.748",
+            "value": 0.748
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": true,
+          "matched_ev": {
+            "period": "2024",
+            "value": 0.734,
+            "unit": "명",
+            "item_id": "T10",
+            "tbl": "DT_2KAA207",
+            "tbl_nm": "합계출산율"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "합계출산율 증감 전년대비",
+            "value_raw": "0.027",
+            "value": 0.027
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "claim": "지난해 30~34세(1990~1994년생) 여성 1000명당 출산율은 70.4명으로 전년(66.7명) 대비 3.7명 증가하면서",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 63.78,
+      "n_claims": 3,
+      "subjects": [
+        "출산율",
+        "출산율",
+        "출산율"
+      ],
+      "n_evidences": 7,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A17",
+          "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "INH_1B81A17",
+          "tbl_nm": "합계출산율(시도/시/군/구)"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T2",
+          "tbl": "DT_1B81A23",
+          "tbl_nm": "시군구/출생아수, 합계출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A17",
+          "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "INH_1B81A17",
+          "tbl_nm": "합계출산율(시도/시/군/구)"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T2",
+          "tbl": "DT_1B81A23",
+          "tbl_nm": "시군구/출생아수, 합계출산율"
+        },
+        {
+          "period": "2025",
+          "value": 0.8,
+          "unit": "",
+          "item_id": "T2",
+          "tbl": "DT_1B81A23",
+          "tbl_nm": "시군구/출생아수, 합계출산율"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "30~34세 여성 출산율",
+            "value_raw": "70.4",
+            "value": 70.4
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2023",
+            "period": "2023",
+            "item": "30~34세 여성 출산율",
+            "value_raw": "66.7",
+            "value": 66.7
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "30~34세 여성 출산율 증감 전년 대비",
+            "value_raw": "3.7",
+            "value": 3.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "claim": "특히 첫째아가 14만6100명으로 전년(13만8400명)보다 7700명 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 63.43,
+      "n_claims": 2,
+      "subjects": [
+        "첫째아",
+        "첫째아"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 105.0,
+          "unit": "명",
+          "item_id": "T2",
+          "tbl": "DT_1B81A19",
+          "tbl_nm": "시도/출산순위별 출생성비"
+        },
+        {
+          "period": "2024",
+          "value": 5192.0,
+          "unit": "명",
+          "item_id": "T2",
+          "tbl": "DT_1B81A11",
+          "tbl_nm": "시도/출산순위별 출생(쌍태아 이상)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "첫째아 출산 수",
+            "value_raw": "146.1",
+            "value": 146.1
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2023",
+            "period": "2023",
+            "item": "첫째아 출산 수",
+            "value_raw": "138.4",
+            "value": 138.4
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "첫째아 출산 수 증감 전년대비",
+            "value_raw": "7.7",
+            "value": 7.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "claim": "지난달 농산물과 석유류 등 가격 변동성이 큰 품목들을 제외해 물가의 기조적인 흐름을 보여주는 ‘근원물가’가 전년 동월 대비 2",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 43.87,
+      "n_claims": 2,
+      "subjects": [
+        "근원물가",
+        "상승폭"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "근원물가 증감 전년동월비",
+            "value_raw": "2.4",
+            "value": 2.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "claim": "2일 통계청이 발표한 ‘4월 소비자물가 동향’에 따르면, 지난달 소비자물가 지수는 116.38로 전년 동월 대비 2.1% 올랐",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 51.39,
+      "n_claims": 2,
+      "subjects": [
+        "소비자물가 지수",
+        "소비자물가 지수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 116.29,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "DT_1J22003",
+          "tbl_nm": "소비자물가지수(2020=100)"
+        },
+        {
+          "period": "202503",
+          "value": 116.29,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "INH_1J22003",
+          "tbl_nm": "소비자물가지수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "소비자물가지수",
+            "value_raw": "116.38",
+            "value": 116.38
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": false,
+          "matched_ev": {
+            "period": "202503",
+            "value": 116.29,
+            "unit": "2020＝100",
+            "item_id": "T",
+            "tbl": "DT_1J22003",
+            "tbl_nm": "소비자물가지수(2020=100)"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "소비자물가지수 증감 전년동월비",
+            "value_raw": "2.1",
+            "value": 2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "claim": "올해 들어 소비자물가는 지난 1월(2.2%)부터 2월(2.0%), 3월(2.1%), 그리고 4월까지 넉 달 연속으로 2%대를 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 34.47,
+      "n_claims": 3,
+      "subjects": [
+        "소비자물가",
+        "소비자물가",
+        "소비자물가"
+      ],
+      "n_evidences": 3,
+      "evidences": [
+        {
+          "period": "202501",
+          "value": 112.14,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "DT_1J22009",
+          "tbl_nm": "식료품 및 에너지제외지수(2020=100)"
+        },
+        {
+          "period": "202502",
+          "value": 112.29,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "DT_1J22009",
+          "tbl_nm": "식료품 및 에너지제외지수(2020=100)"
+        },
+        {
+          "period": "202503",
+          "value": 112.52,
+          "unit": "2020＝100",
+          "item_id": "T",
+          "tbl": "DT_1J22009",
+          "tbl_nm": "식료품 및 에너지제외지수(2020=100)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.01",
+            "period": "2025-01",
+            "item": "소비자물가지수 증감 전년동월비",
+            "value_raw": "2.2",
+            "value": 2.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.02",
+            "period": "2025-02",
+            "item": "소비자물가지수 증감 전년동월비",
+            "value_raw": "2.0",
+            "value": 2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.03",
+            "period": "2025-03",
+            "item": "소비자물가지수 증감 전년동월비",
+            "value_raw": "2.1",
+            "value": 2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "소비자물가지수 증감 전년동월비",
+            "value_raw": "2.1",
+            "value": 2.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "claim": "연초 미국의 석유 증산 등으로 국제 유가가 떨어졌던 게 시차를 두고 반영되면서, 지난달 석유류 가격은 1.7% 떨어졌다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 14.99,
+      "n_claims": 1,
+      "subjects": [
+        "석유류 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "석유류 증감 전년동월비",
+            "value_raw": "-1.7",
+            "value": -1.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "claim": "휘발유(-2.4%)와 경유(-2.9%) 등 가격이 전년 동월 대비 일제히 감소했는데, 이는 작년 11월에 각각 3.4%, 10",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 29.36,
+      "n_claims": 4,
+      "subjects": [
+        "휘발유 가격",
+        "경유 가격",
+        "휘발유 가격",
+        "경유 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "휘발유 증감 전년동월비",
+            "value_raw": "-2.4",
+            "value": -2.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "경유 증감 전년동월비",
+            "value_raw": "-2.9",
+            "value": -2.9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.11",
+            "period": "2024-11",
+            "item": "휘발유 증감 전년동월비",
+            "value_raw": "-3.4",
+            "value": -3.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.11",
+            "period": "2024-11",
+            "item": "경유 증감 전년동월비",
+            "value_raw": "-10.4",
+            "value": -10.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "claim": "농산물 가격도 작년 주요 과일과 채소 가격이 높았던 기저효과로 지난달에는 1.5% 하락한 것으로 나타났다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 10.57,
+      "n_claims": 1,
+      "subjects": [
+        "농산물 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "농산물 증감 전년동월비",
+            "value_raw": "-1.5",
+            "value": -1.5
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "claim": "사과(-5.7%)와 참외(-16.5%), 파(-20.8%) 등 가격 하락폭이 특히 컸다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 11.16,
+      "n_claims": 3,
+      "subjects": [
+        "사과 가격",
+        "참외 가격",
+        "파 가격"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "사과 증감 전년동월비",
+            "value_raw": "-5.7",
+            "value": -5.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "참외 증감 전년동월비",
+            "value_raw": "-16.5",
+            "value": -16.5
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.04",
+            "period": "2025-04",
+            "item": "파 증감 전년동월비",
+            "value_raw": "-20.8",
+            "value": -20.8
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "claim": "올해 1분기 합계출산율(여성 한 명이 평생 낳을 것으로 기대되는 아이 수)이 2년 만에 0.8명대로 올라섰다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 13.23,
+      "n_claims": 1,
+      "subjects": [
+        "합계출산율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "합계출산율",
+            "value_raw": "0.82",
+            "value": 0.82
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "claim": "28일 통계청이 발표한 ‘3월 인구 동향’에 따르면, 지난 1분기(1~3월) 합계출산율은 0.82명으로 1년 전(0.77명)보",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 65.87,
+      "n_claims": 2,
+      "subjects": [
+        "합계출산율",
+        "합계출산율"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A17",
+          "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "INH_1B81A17",
+          "tbl_nm": "합계출산율(시도/시/군/구)"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T2",
+          "tbl": "DT_1B81A23",
+          "tbl_nm": "시군구/출생아수, 합계출산율"
+        },
+        {
+          "period": "2024",
+          "value": 0.748,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A21",
+          "tbl_nm": "시도/합계출산율, 모의 연령별 출산율"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "합계출산율",
+            "value_raw": "0.82",
+            "value": 0.82
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": false,
+          "matched_ev": {
+            "period": "2024",
+            "value": 0.748,
+            "unit": "",
+            "item_id": "T1",
+            "tbl": "DT_1B81A17",
+            "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2024.1/4",
+            "period": "2024-Q1",
+            "item": "합계출산율",
+            "value_raw": "0.77",
+            "value": 0.77
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": true,
+          "vp_hit": false,
+          "matched_ev": {
+            "period": "2024",
+            "value": 0.748,
+            "unit": "",
+            "item_id": "T1",
+            "tbl": "DT_1B81A17",
+            "tbl_nm": "시군구/합계출산율, 모의 연령별 출산율"
+          }
+        },
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "합계출산율 증감 전년동분기비",
+            "value_raw": "0.05",
+            "value": 0.05
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "claim": "분기 기준으로 합계출산율이 0.8명대를 기록한 것은 지난 2023년 1분기(0.82명) 이후 2년 만이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 65.39,
+      "n_claims": 1,
+      "subjects": [
+        "합계출산율"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2023.1/4",
+            "period": "2023-Q1",
+            "item": "합계출산율",
+            "value_raw": "0.82",
+            "value": 0.82
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "claim": "1분기 출생아 수는 6만5022명으로 1년 전(6만568명)보다 7.4% 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 63.03,
+      "n_claims": 3,
+      "subjects": [
+        "출생아 수",
+        "출생아 수",
+        "출생아 수"
+      ],
+      "n_evidences": 1,
+      "evidences": [
+        {
+          "period": "2024",
+          "value": 238317.0,
+          "unit": "",
+          "item_id": "T1",
+          "tbl": "DT_1B81A28",
+          "tbl_nm": "시군구/ 모의 평균 출산연령, 모의 연령별(5세간격) 출생"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "출생아 수",
+            "value_raw": "65,022",
+            "value": 65022
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "출생아 수 증감 전년동분기비",
+            "value_raw": "7.4",
+            "value": 7.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "claim": "분기별로 출생아 수가 6만5000명을 넘은 것은 지난 2022년 1분기(6만8339명) 이후 3년 만이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 64.21,
+      "n_claims": 2,
+      "subjects": [
+        "출생아 수",
+        "출생아 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2022.1/4",
+            "period": "2022-Q1",
+            "item": "출생아 수",
+            "value_raw": "68,339",
+            "value": 68339
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.1/4",
+            "period": "2025-Q1",
+            "item": "출생아 수",
+            "value_raw": "65,022",
+            "value": 65022
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "claim": "11일 통계청의 ‘2025년 5월 고용동향’에 따르면, 지난달 취업자는 2916만명으로 전년 동월 대비 24만5000명 증가했",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 64.0,
+      "n_claims": 2,
+      "subjects": [
+        "취업자",
+        "취업자 수"
+      ],
+      "n_evidences": 11,
+      "evidences": [
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7011S",
+          "tbl_nm": "취업시간별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7029S",
+          "tbl_nm": "성/취업시간별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7024S",
+          "tbl_nm": "성/연령별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7028S",
+          "tbl_nm": "성/종사상지위별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7010S",
+          "tbl_nm": "종사상지위별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 5116.2,
+          "unit": "천명 시간",
+          "item_id": "T30",
+          "tbl": "DT_1DA7036S",
+          "tbl_nm": "행정구역(시도)/취업시간별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7035S",
+          "tbl_nm": "행정구역(시도)/종사상지위별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7030S",
+          "tbl_nm": "행정구역(시도)/성별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7025S",
+          "tbl_nm": "성/교육정도별 취업자"
+        },
+        {
+          "period": "202503",
+          "value": 28589.0,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "DT_1DA7032S",
+          "tbl_nm": "행정구역(시도)/교육정도별 취업자"
+        },
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "취업자 수",
+            "value_raw": "29,160",
+            "value": 29160
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "취업자 수 증감 전년동월비",
+            "value_raw": "245",
+            "value": 245
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "claim": "보건업·사회복지서비스업(+23만3000명), 금융·보험업(+7만2000명) 등에서 취업자가 큰 폭으로 늘어나면서 취업자가 26",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 61.88,
+      "n_claims": 4,
+      "subjects": [
+        "보건업·사회복지서비스업 취업자 수",
+        "금융·보험업 취업자 수",
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202404",
+          "value": 5252.1,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "보건업 및 사회복지서비스업 취업자 수 증감 전년동월비",
+            "value_raw": "233",
+            "value": 233
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "금융 및 보험업 취업자 수 증감 전년동월비",
+            "value_raw": "72",
+            "value": 72
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.04",
+            "period": "2024-04",
+            "item": "취업자 수 증감 전년대비",
+            "value_raw": "261",
+            "value": 261
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "취업자 수 증감 전년대비",
+            "value_raw": "245",
+            "value": 245
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "claim": "하지만 전체 취업자의 15% 이상을 차지하는 취업자 수 1위 업종인 제조업 분야 취업자는 전년 동월 대비 6만7000명 줄어 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 65.18,
+      "n_claims": 3,
+      "subjects": [
+        "취업자 수",
+        "제조업 분야 취업자",
+        "제조업 분야 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "제조업 취업자 수 증감 전년대비",
+            "value_raw": "-67",
+            "value": -67
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 109,
+      "claim": "건설 경기 불황으로 건설업 취업자도 10만6000명 줄어, 작년 5월 이후 1년1개월째 취업자가 줄었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 45.92,
+      "n_claims": 1,
+      "subjects": [
+        "건설업 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "건설업 취업자 수 증감 전년대비",
+            "value_raw": "-106",
+            "value": -106
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "claim": "내수 부진 여파로 지난달 숙박·음식점업 취업자도 6만7000명 줄었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 7.4,
+      "n_claims": 1,
+      "subjects": [
+        "숙박·음식점업 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.05",
+            "period": "2025-05",
+            "item": "숙박 및 음식점업 취업자 수 증감 전년대비",
+            "value_raw": "-67",
+            "value": -67
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "claim": "17만1000명, 16만6000명, 31만2000명… 지난해 같은 기간 대비 늘어난 올해 7~9월 월별 취업자 수다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 57.05,
+      "n_claims": 4,
+      "subjects": [
+        "취업자 수",
+        "취업자 수",
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "2025",
+          "value": 3767.0,
+          "unit": "명",
+          "item_id": "T002",
+          "tbl": "DT_920024_3N_009",
+          "tbl_nm": "직업계고 시도 및 근로지역별 취업현황"
+        },
+        {
+          "period": "202507",
+          "value": 5263.5,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202508",
+          "value": 5260.9,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        },
+        {
+          "period": "202509",
+          "value": 5254.3,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.07",
+            "period": "2025-07",
+            "item": "취업자 수 증감 전년동월대비",
+            "value_raw": "171",
+            "value": 171
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.08",
+            "period": "2025-08",
+            "item": "취업자 수 증감 전년동월대비",
+            "value_raw": "166",
+            "value": 166
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "취업자 수 증감 전년동월대비",
+            "value_raw": "312",
+            "value": 312
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "claim": "취업자 수는 올해 들어 매월 10만명 이상 늘고 있는데, 지난달엔 30만명을 돌파하며 19개월 만에 가장 큰 증가 폭을 기록하",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 49.2,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "취업자 수"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "2025",
+          "value": 3767.0,
+          "unit": "명",
+          "item_id": "T002",
+          "tbl": "DT_920024_3N_009",
+          "tbl_nm": "직업계고 시도 및 근로지역별 취업현황"
+        },
+        {
+          "period": "202503",
+          "value": 5116.2,
+          "unit": "천명",
+          "item_id": "T30",
+          "tbl": "INH_1DA7030S",
+          "tbl_nm": "취업자수(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "취업자 수 증감 전년동월대비",
+            "value_raw": "312",
+            "value": 312
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 113,
+      "claim": "취업자 수가 31만2000명 증가한 지난 9월 보건업 및 사회복지 서비스업에서는 30만4000명이 늘었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 57.59,
+      "n_claims": 2,
+      "subjects": [
+        "취업자 수",
+        "보건업 및 사회복지 서비스업의 취업자"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "전체 취업자 수 증감 전년대비",
+            "value_raw": "312",
+            "value": 312
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2025.09",
+            "period": "2025-09",
+            "item": "보건업 및 사회복지서비스업 취업자 수 증감 전년대비",
+            "value_raw": "304",
+            "value": 304
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "claim": "26일 통계청에 따르면 지난해 12월 20대 이하(15~29세) 청년 고용률은 44.7%로 1년 전보다 1.3%포인트 감소하며",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 52.53,
+      "n_claims": 2,
+      "subjects": [
+        "청년 고용률",
+        "청년 고용률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "청년고용률",
+            "value_raw": "44.7",
+            "value": 44.7
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "-1.3",
+            "value": -1.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2024.05",
+            "period": "2024-05",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "-0.7",
+            "value": -0.7
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 115,
+      "claim": "청년 고용률이 45% 아래로 떨어진 건 코로나가 한창 기승하던 2021년 5월(44.4%) 이후 43개월 만이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 52.64,
+      "n_claims": 2,
+      "subjects": [
+        "청년 고용률",
+        "청년 고용률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024.12",
+            "period": "2024-12",
+            "item": "청년고용률",
+            "value_raw": "44.7",
+            "value": 44.7
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "claim": "12월 기준으로는 지난 2020년 12월(41.3%) 이후 4년 만에 최저치다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 56.48,
+      "n_claims": 1,
+      "subjects": [
+        "실업률"
+      ],
+      "n_evidences": 4,
+      "evidences": [
+        {
+          "period": "202012",
+          "value": 4.1,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7102S",
+          "tbl_nm": "성/연령별 실업률"
+        },
+        {
+          "period": "202012",
+          "value": 4.1,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7104S",
+          "tbl_nm": "행정구역(시도)/성별 실업률"
+        },
+        {
+          "period": "202012",
+          "value": 4.1,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "DT_1DA7103S",
+          "tbl_nm": "성/교육정도별 실업률"
+        },
+        {
+          "period": "202012",
+          "value": 4.1,
+          "unit": "%",
+          "item_id": "T80",
+          "tbl": "INH_1DA7104S",
+          "tbl_nm": "실업률(시도)"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2020.12",
+            "period": "2020-12",
+            "item": "청년고용률",
+            "value_raw": "41.3",
+            "value": 41.3
+          },
+          "kind": "single",
+          "type": "absolute",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 117,
+      "claim": "박 전 대통령의 탄핵 소추가 이뤄지기 직전인 2016년 11월의 경우 전년 동월 대비 청년 고용률이 보합(0%포인트 변동)을 ",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 53.28,
+      "n_claims": 3,
+      "subjects": [
+        "청년 고용률",
+        "청년 고용률",
+        "청년 고용률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2016.11",
+            "period": "2016-11",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "0.0",
+            "value": 0
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "claim": "박 전 대통령 탄핵 소추안이 통과된 2016년 12월 청년 고용률은 0.4%포인트 증가세로 전환했지만, 이듬해인 2017년 1",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 51.23,
+      "n_claims": 3,
+      "subjects": [
+        "청년 고용률",
+        "청년 고용률",
+        "청년 고용률"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2016.12",
+            "period": "2016-12",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "0.4",
+            "value": 0.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2017.01",
+            "period": "2017-01",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "0.2",
+            "value": 0.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2017.02",
+            "period": "2017-02",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "0.2",
+            "value": 0.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 119,
+      "claim": "그나마 당시 반도체 경기가 워낙 좋았던 덕분에 수출·투자가 견실하게 버텨주며 2017년 3월부터 증가폭(0.9%포인트)을 끌어",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 9.7,
+      "n_claims": 1,
+      "subjects": [
+        "반도체 경기"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2017.03",
+            "period": "2017-03",
+            "item": "청년고용률 증감 전년동월비",
+            "value_raw": "0.9",
+            "value": 0.9
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 120,
+      "claim": "3일 통계청이 발표한 ‘2024년 12월 및 연간 산업활동 동향’에 따르면, 작년 연간 소매판매액은 전년보다 2.2% 감소했다",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 6.48,
+      "n_claims": 1,
+      "subjects": [
+        "연간 소매판매액"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2024",
+            "period": "2024",
+            "item": "소매판매액지수 증감 전년동월비",
+            "value_raw": "-2.2",
+            "value": -2.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 121,
+      "claim": "신용카드 대란으로 신용불량자가 372만명까지 불어났던 2003년(-3.2%) 이후 21년 만에 가장 큰 낙폭이다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 6.47,
+      "n_claims": 2,
+      "subjects": [
+        "신용불량자 수",
+        "신용불량자 수"
+      ],
+      "n_evidences": 0,
+      "evidences": [],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2003",
+            "period": "2003",
+            "item": "소매판매액지수 증감 전년대비",
+            "value_raw": "-3.2",
+            "value": -3.2
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 122,
+      "claim": "코로나 대유행이 시작된 2020년 0.1% 감소했던 소매판매는 이듬해 5.8% 증가세로 돌아섰었다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 8.02,
+      "n_claims": 2,
+      "subjects": [
+        "소매판매",
+        "소매판매"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "2020",
+          "value": 112.9224,
+          "unit": "2015＝100",
+          "item_id": "T1",
+          "tbl": "DT_2KAA2301",
+          "tbl_nm": "소매판매액지수"
+        },
+        {
+          "period": "2021",
+          "value": 119.4541,
+          "unit": "2015＝100",
+          "item_id": "T1",
+          "tbl": "DT_2KAA2301",
+          "tbl_nm": "소매판매액지수"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2020",
+            "period": "2020",
+            "item": "소매판매액지수 증감 전년대비",
+            "value_raw": "-0.1",
+            "value": -0.1
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2021",
+            "period": "2021",
+            "item": "소매판매액지수 증감 전년대비",
+            "value_raw": "5.8",
+            "value": 5.8
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "claim": "하지만 고금리·고물가로 2022년 다시 0.3% 감소했고 2023년엔 수출 부진까지 겹쳐 소매판매가 1.5% 감소했다.",
+      "label": "True",
+      "ok": true,
+      "error": null,
+      "duration_s": 12.02,
+      "n_claims": 3,
+      "subjects": [
+        "소매판매",
+        "수출 부진",
+        "소매판매"
+      ],
+      "n_evidences": 2,
+      "evidences": [
+        {
+          "period": "2022",
+          "value": 119.1435,
+          "unit": "2015＝100",
+          "item_id": "T1",
+          "tbl": "DT_2KAA2301",
+          "tbl_nm": "소매판매액지수"
+        },
+        {
+          "period": "2023",
+          "value": 117.5247,
+          "unit": "2015＝100",
+          "item_id": "T1",
+          "tbl": "DT_2KAA2301",
+          "tbl_nm": "소매판매액지수"
+        }
+      ],
+      "gold_results": [
+        {
+          "gold": {
+            "period_raw": "2022",
+            "period": "2022",
+            "item": "소매판매액지수 증감 전년대비",
+            "value_raw": "-0.3",
+            "value": -0.3
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        },
+        {
+          "gold": {
+            "period_raw": "2023",
+            "period": "2023",
+            "item": "소매판매액지수 증감 전년대비",
+            "value_raw": "-1.4",
+            "value": -1.4
+          },
+          "kind": "single",
+          "type": "delta",
+          "value_hit": false,
+          "vp_hit": false,
+          "matched_ev": null
+        }
+      ]
+    }
+  ]
+}
