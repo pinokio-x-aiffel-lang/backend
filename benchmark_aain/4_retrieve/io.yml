@@ -1,0 +1,13 @@
+module: retrieve_kosis_candidates
+step: 4
+folder: "4_retrieve"
+title: "KOSIS 통계표 n개 찾기"
+description: "claim 의 subject/unit/period 로 KOSIS 통합검색을 돌려 후보 통계표 풀을 만든다."
+reads:
+  - field: "claims"
+    type: "list[Claim]"
+    desc: "subject/unit/period 등 검색 키"
+writes:
+  - field: "analysis"
+    type: "list[ClaimAnalysis]"
+    desc: "claim별 kosis_search 로그 + candidates 풀"

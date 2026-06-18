@@ -182,6 +182,11 @@ class Evidence(BaseModel):
     classification: dict[str, str] = Field(default_factory=dict)
     last_updated: str | None = None
     retrieved_at: str | None = None
+    # CHANGE_RATE(증감) 검증용 — 같은 셀 좌표를 기준 시점(compare_period)으로 한 번 더
+    # 조회한 값. value(현재 시점) − compare_value 로 증감을 계산한다([7] compute_change).
+    # 절대형/그룹형 claim 이거나 기준 시점 조회 실패면 None.
+    compare_value: float | None = None
+    compare_period: str | None = None
     # 요청 모집단(population)을 축값에 못 맞춰 '전체(합계)'로 대체했으면 True.
     # → 이 값은 요청 집단이 아닌 전체값이므로 검증 단계가 신뢰도를 낮춰야 한다.
     population_fallback: bool = False

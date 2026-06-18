@@ -1,0 +1,19 @@
+module: generate_explanation
+step: 10
+folder: "10_explanation"
+title: "설명 생성"
+description: "claim별 설명과 기사 단위 종합 의견(overall_opinion)을 생성한다(LLM 실패 시 템플릿 폴백)."
+reads:
+  - field: "verifications"
+    type: "Verifications"
+    desc: "[9] 확정 판정 결과"
+  - field: "claims"
+    type: "list[Claim]"
+    desc: "subject/unit/period 참조"
+writes:
+  - field: "verifications.claim_results[*].explanation"
+    type: "str"
+    desc: "claim별 설명"
+  - field: "verifications.summary.overall_opinion"
+    type: "str"
+    desc: "기사 단위 LLM 종합 의견"

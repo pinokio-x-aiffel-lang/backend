@@ -56,6 +56,17 @@ def resolve_api_key(api_key: Optional[str] = None) -> str:
     return key
 
 
+# KOSIS 가 분당 호출 한도 초과 시 주는 오류(HTTP 200 + err=40). 일시적 → 재시도 대상.
+_RATE_LIMIT_ERR_CODES = {"40"}
+
+
+def _is_rate_limit_error(data: dict[str, Any]) -> bool:
+    """KOSIS 응답이 rate limit 오류인지. err 코드(40) 또는 메시지로 판별."""
+    err = str(data.get("err", "")).strip()
+    msg = str(data.get("errMsg", ""))
+    return err in _RATE_LIMIT_ERR_CODES or "호출가능건수" in msg
+
+
 class _HttpClient:
     """공유 HTTP 클라이언트. Session·재시도·rate limit 상태를 보유."""
 
@@ -65,13 +76,21 @@ class _HttpClient:
         timeout: float = 30.0,
         retries: int = 3,
         retry_delay: float = 0.5,
-        max_per_minute: int = 700,
+        max_per_minute: Optional[int] = None,
+        rate_limit_retries: int = 5,
+        rate_limit_delay: float = 5.0,
     ) -> None:
         self.timeout = timeout
         self.retries = retries
-        self.retry_delay = retry_delay  # 지수 백오프 기준값(초)
-        # KOSIS 한도는 1분 1000콜. 여유를 둬 기본 700/min. 0이면 비활성.
+        self.retry_delay = retry_delay  # 네트워크 오류용 지수 백오프 기준값(초)
+        # 분당 호출 상한(슬라이딩 윈도우). KOSIS 한도가 키/엔드포인트마다 달라
+        # 보수적으로 잡고 KOSIS_MAX_PER_MINUTE 로 튜닝한다. 0이면 비활성.
+        if max_per_minute is None:
+            max_per_minute = int(os.getenv("KOSIS_MAX_PER_MINUTE", "300"))
         self.max_per_minute = max_per_minute
+        # KOSIS rate limit(err=40)은 일시적이므로 대기 후 재시도한다(네트워크 재시도와 별도 예산).
+        self.rate_limit_retries = rate_limit_retries
+        self.rate_limit_delay = rate_limit_delay  # rate limit 재시도 백오프 기준(초)
         self._session = requests.Session()
         self._rate_lock = threading.Lock()
         self._call_times: deque[float] = deque()  # 최근 60초 호출 시각(슬라이딩 윈도우)
@@ -108,10 +127,17 @@ class _HttpClient:
         require_list: bool = False,
         timeout: Optional[float] = None,
     ) -> list[dict]:
-        """KOSIS GET. format=json + jsonVD=Y 를 강제로 주입(호출자 값이 우선)."""
+        """KOSIS GET. format=json + jsonVD=Y 를 강제로 주입(호출자 값이 우선).
+
+        재시도 예산은 둘로 나뉜다:
+          - 네트워크/파싱 오류: self.retries 회, 지수 백오프.
+          - rate limit(err=40): self.rate_limit_retries 회, 대기 후 재시도.
+        KOSIS 는 한도 초과를 HTTP 200 + err=40 으로 주므로 예외가 아닌 본문 검사로 잡는다.
+        """
         params = {"format": "json", "jsonVD": "Y", **params}
-        last_exc: Optional[Exception] = None
-        for attempt in range(1, self.retries + 1):
+        net_attempt = 0
+        rl_attempt = 0
+        while True:
             try:
                 self._apply_rate_limit()
                 t0 = time.perf_counter()
@@ -125,15 +151,33 @@ class _HttpClient:
                     time.perf_counter() - t0,
                 )
             except (requests.RequestException, json.JSONDecodeError) as exc:
-                last_exc = exc
-                if attempt < self.retries:
-                    wait = self.retry_delay * 2 ** (attempt - 1)  # 지수 백오프
-                    logger.warning(
-                        "KOSIS 요청 실패 (%d/%d): %s — %.1fs 후 재시도",
-                        attempt, self.retries, exc, wait,
-                    )
-                    time.sleep(wait)
+                net_attempt += 1
+                if net_attempt >= self.retries:
+                    raise KosisError(f"최대 재시도 초과: {exc}") from exc
+                wait = self.retry_delay * 2 ** (net_attempt - 1)  # 지수 백오프
+                logger.warning(
+                    "KOSIS 요청 실패 (%d/%d): %s — %.1fs 후 재시도",
+                    net_attempt, self.retries, exc, wait,
+                )
+                time.sleep(wait)
                 continue
+
+            # rate limit(err=40)은 일시적 → 대기 후 재시도(그 외 err 는 즉시 실패).
+            if isinstance(data, dict) and _is_rate_limit_error(data):
+                rl_attempt += 1
+                if rl_attempt > self.rate_limit_retries:
+                    raise KosisError(
+                        f"rate limit 재시도 초과: "
+                        f"{data.get('err', '?')}: {data.get('errMsg', data)}"
+                    )
+                wait = min(self.rate_limit_delay * 2 ** (rl_attempt - 1), 60.0)
+                logger.warning(
+                    "KOSIS rate limit 초과(err=40) — %.1fs 후 재시도 (%d/%d)",
+                    wait, rl_attempt, self.rate_limit_retries,
+                )
+                time.sleep(wait)
+                continue
+
             if isinstance(data, dict) and ("err" in data or "errMsg" in data):
                 raise KosisError(
                     f"{data.get('err', '?')}: {data.get('errMsg', data)}"
@@ -145,7 +189,6 @@ class _HttpClient:
                     raise KosisError(f"리스트 응답 아님 (인증 실패?): {data}")
                 return [data]
             return []
-        raise KosisError(f"최대 재시도 초과: {last_exc}")
 
 
 # 모듈 전역 공유 클라이언트 — Session 재사용 + rate limit 을 호출 전반에 적용.

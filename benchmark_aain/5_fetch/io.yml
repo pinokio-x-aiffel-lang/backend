@@ -1,0 +1,22 @@
+module: fetch_kosis_data
+step: 5
+folder: "5_fetch"
+title: "KOSIS 셀 값 조회"
+description: "후보 표별로 항목/분류축을 매칭해 셀 값을 조회하고 매칭된 셀을 evidences 로 적재한다."
+reads:
+  - field: "claims"
+    type: "list[Claim]"
+    desc: "subject/population/period 매칭 기준"
+  - field: "analysis[*].candidates"
+    type: "list[KosisCandidate]"
+    desc: "[4] 후보 표 풀"
+writes:
+  - field: "analysis[*].kosis_query"
+    type: "KosisQuery"
+    desc: "statisticsData 호출 로그"
+  - field: "analysis[*].cell_attempts"
+    type: "list[CellAttempt]"
+    desc: "후보 표별 매칭 시도(디버깅)"
+  - field: "analysis[*].evidences"
+    type: "list[Evidence]"
+    desc: "매칭된 셀(RANK 순)"

@@ -1,0 +1,16 @@
+module: decide_verdict
+step: 9
+folder: "9_verdict"
+title: "종합 분석·검증 결과 생성"
+description: "metric 으로 claim별 verdict/mismatch_type 을 확정하고 기사 단위 summary(분포·신뢰도·coverage)를 채운다."
+reads:
+  - field: "verifications.claim_results[*].metric"
+    type: "MetricResult"
+    desc: "[7]~[8] 비교·정합성 결과"
+writes:
+  - field: "verifications.claim_results[*].verdict"
+    type: "str"
+    desc: "확정 판정(T/F/M/N)"
+  - field: "verifications.summary"
+    type: "VerificationSummary"
+    desc: "verdict_counts·overall_confidence·coverage"

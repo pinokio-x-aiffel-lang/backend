@@ -1,0 +1,13 @@
+module: check_alignment
+step: 8
+folder: "8_alignment"
+title: "통계수치와 문장의 정합성 판단"
+description: "verdict=T 인 건만 문장 해석 정합성을 LLM 으로 재판정한다(일치→T, 오도/왜곡→M, LLM실패→NEI)."
+reads:
+  - field: "verifications.claim_results[*].metric"
+    type: "MetricResult"
+    desc: "[7] verdict=T 결과"
+writes:
+  - field: "verifications.claim_results[*].metric"
+    type: "MetricResult"
+    desc: "보정 — verdict(T→T/M/NEI) + align_reason/align_source"

@@ -1,0 +1,16 @@
+module: extract_statistical_claims
+step: 2
+folder: "2_claim"
+title: "클레임 추출"
+description: "기사 본문을 원자 문장으로 쪼개 수치 기반 Claim 을 추출한다(claim_type=NONE 포함)."
+reads:
+  - field: "article"
+    type: "Article"
+    desc: "[1]에서 적재된 기사"
+writes:
+  - field: "sentences"
+    type: "list[str]"
+    desc: "필터·원자화된 검증 단위 문장"
+  - field: "claims"
+    type: "list[Claim]"
+    desc: "추출된 수치 주장 (value.llm_value 는 아직 빈값)"

@@ -110,6 +110,7 @@ def map_claim_to_cell_query_traced(
     period_se: str,
     api_key: Optional[str] = None,
     axis_matcher: Optional[AxisMatcher] = None,
+    item_matcher: Optional[AxisMatcher] = None,
 ) -> tuple[Optional[KosisQuery], dict]:
     """map_claim_to_cell_query 와 동일 로직이되 실패해도 raise 하지 않고 (query|None, trace) 반환.
 
@@ -128,6 +129,8 @@ def map_claim_to_cell_query_traced(
       LLM 등 외부 의존 없이 '결정적'으로 동작한다(설계 원칙). 반환 코드는 축 값의 실제
       코드와 대조 검증해 환각을 차단한다. 호출 여부(=비용)는 상위(fetch_kosis_data)가
       후보 전체를 보고 결정한다 — policy/mechanism 분리.
+    item_matcher: 항목(itmId) 매칭이 규칙+동의어로 실패할 때 호출되는 선택적 폴백
+      (axis_matcher 와 동일 시그니처·검증). subject↔표 항목명 의미 매칭용.
     """
     meta = fetch_table_metadata(org_id, tbl_id, api_key)  # ITM+PRD 병렬 → 구조체
 
@@ -141,9 +144,15 @@ def map_claim_to_cell_query_traced(
         # 그 셀은 '요청 집단'이 아니라 '전체'값 → population_fallback=True 로 표시.
         "population_matched": True, "population_fallback": False, "fallback_axes": [],
         "match_source": "rule",  # population 을 LLM 폴백으로 맞추면 "llm" 으로 바뀜
+        "item_match_source": "rule",  # 항목을 LLM 폴백으로 맞추면 "llm" 으로 바뀜
     }
 
     itm_id = _match_code(items_pairs, subject)
+    if itm_id is None and item_matcher is not None and _norm(subject):
+        cand = item_matcher(items_pairs, subject, "항목")
+        if cand is not None and str(cand) in {code for code, _ in items_pairs}:
+            itm_id = str(cand)
+            trace["item_match_source"] = "llm"
     if itm_id is None:
         trace["error"] = f"itmId 매칭 실패: subject={_norm(subject)!r}"
         return None, trace

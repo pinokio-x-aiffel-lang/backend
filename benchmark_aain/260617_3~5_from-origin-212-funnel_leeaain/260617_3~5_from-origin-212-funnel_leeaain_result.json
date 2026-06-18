@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "n_claims": 5,
+    "status_counts": {
+      "loss_stage5": 5
+    },
+    "stage3_err": 0,
+    "reached_stage4": 5,
+    "stage4_loss_no_candidates": 0,
+    "stage4_err": 0,
+    "stage4_survivors_with_candidates": 5,
+    "reached_stage5": 5,
+    "stage5_loss_no_cell": 5,
+    "stage5_err": 0,
+    "final_survivors_with_evidence": 0,
+    "stage4_survival_rate": 1.0,
+    "stage5_survival_rate": 0.0,
+    "end_to_end_survival_rate": 0.0,
+    "wall_s": 15.1
+  },
+  "items": [
+    {
+      "claim_id": "clm-0001",
+      "source_id": 1,
+      "subject": "로봇화 참여 기업 수",
+      "period_raw": "2023년",
+      "value_raw": "2524곳",
+      "n_candidates": 4,
+      "n_evidences": 0,
+      "status": "loss_stage5",
+      "err_step": null,
+      "error": null,
+      "duration_s": 0.91,
+      "sentence": "한국로봇산업진흥원에 따르면 2023년까지 로봇화에 뛰어든 우리 기업은 2524곳으로 지난 2019년보다 13%가량 증가했다."
+    },
+    {
+      "claim_id": "clm-0001",
+      "source_id": 2,
+      "subject": "산업생산",
+      "period_raw": "작년 9월/10월/11월",
+      "value_raw": "-0.4%/-0.2%/-0.4%",
+      "n_candidates": 10,
+      "n_evidences": 0,
+      "status": "loss_stage5",
+      "err_step": null,
+      "error": null,
+      "duration_s": 7.48,
+      "sentence": "작년 9월(-0.4%)·10월(-0.2%)·11월(-0.4%) 등 3개월 연속으로 전월 대비 감소했다."
+    },
+    {
+      "claim_id": "clm-0002",
+      "source_id": 2,
+      "subject": "산업생산",
+      "period_raw": "작년 9월",
+      "value_raw": "-0.4%",
+      "n_candidates": 10,
+      "n_evidences": 0,
+      "status": "loss_stage5",
+      "err_step": null,
+      "error": null,
+      "duration_s": 6.44,
+      "sentence": "작년 9월(-0.4%)·10월(-0.2%)·11월(-0.4%) 등 3개월 연속으로 전월 대비 감소했다."
+    },
+    {
+      "claim_id": "clm-0003",
+      "source_id": 2,
+      "subject": "산업생산",
+      "period_raw": "작년 10월",
+      "value_raw": "-0.2%",
+      "n_candidates": 10,
+      "n_evidences": 0,
+      "status": "loss_stage5",
+      "err_step": null,
+      "error": null,
+      "duration_s": 7.51,
+      "sentence": "작년 9월(-0.4%)·10월(-0.2%)·11월(-0.4%) 등 3개월 연속으로 전월 대비 감소했다."
+    },
+    {
+      "claim_id": "clm-0004",
+      "source_id": 2,
+      "subject": "산업생산",
+      "period_raw": "작년 11월",
+      "value_raw": "-0.4%",
+      "n_candidates": 10,
+      "n_evidences": 0,
+      "status": "loss_stage5",
+      "err_step": null,
+      "error": null,
+      "duration_s": 15.05,
+      "sentence": "작년 9월(-0.4%)·10월(-0.2%)·11월(-0.4%) 등 3개월 연속으로 전월 대비 감소했다."
+    }
+  ]
+}

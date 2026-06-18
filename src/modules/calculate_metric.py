@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.numeric.compare import compute_absolute
+from src.numeric.compare import compute_absolute, compute_change
 from src.numeric.value import ValueKind, parse_claim_value
 from src.schemas.runtime import (
     Claim,
@@ -20,8 +20,11 @@ class CalculateMetricError(Exception):
     """수치 비교 계산 실패."""
 
 
-# 단일 셀 직접비교가 가능한 claim 유형. 나머지(그룹연산)는 상류 미배선(Phase 2).
+# 단일 셀 직접비교가 가능한 claim 유형. 나머지(다중 claim 그룹연산)는 상류 미배선(Phase 2).
 _ABSOLUTE_TYPES = {ClaimType.ABSOLUTE, ClaimType.VERIFIABLE}
+# 단일 표 1:1 비교가 가능한 유형(표 선정 로직 공유) — 절대형 + 증감형(2시점 차).
+# CHANGE_RATE 는 같은 셀의 현재·기준 두 시점을 [5]가 조회해 evidence 에 담아둔다.
+_COMPARABLE_TYPES = _ABSOLUTE_TYPES | {ClaimType.CHANGE_RATE}
 # KOSIS 검증 대상이 아닌 유형.
 _SKIP_TYPES = {ClaimType.METAPHORIC, ClaimType.NONE}
 
@@ -90,10 +93,10 @@ def _decide_metric(
     claim: Claim, evidences: list[Evidence]
 ) -> tuple[MetricResult, bool, str | None]:
     """(대표 metric, needs_hitl, hitl_reason). 표 선정은 [6]이 끝냄 — 여기선 1위부터 비교."""
-    # 비절대형(그룹연산)·검증대상 아님·무증거 → NEI (표 선정과 무관).
+    # 그룹연산(ratio 등)·검증대상 아님·무증거 → NEI (표 선정과 무관).
     if claim.claim_type in _SKIP_TYPES or not evidences:
         return _compute_metric(claim, None), False, None
-    if claim.claim_type not in _ABSOLUTE_TYPES:
+    if claim.claim_type not in _COMPARABLE_TYPES:
         return _compute_metric(claim, evidences[0]), False, None  # 그룹연산 → NEI
 
     # 요청 집단을 어느 표에서도 못 맞춰 전부 전체값 폴백뿐이면 → 검증 불가(NEI).
@@ -149,6 +152,9 @@ def _compute_metric(claim: Claim, evidence: Evidence | None) -> MetricResult:
             verdict=Verdict.NOT_ENOUGH_INFO,
             note="KOSIS 매칭 없음",
         )
+
+    if claim.claim_type == ClaimType.CHANGE_RATE:
+        return compute_change(claim, evidence)  # 2시점 차(현재−기준)
 
     if claim.claim_type in _ABSOLUTE_TYPES:
         return compute_absolute(claim, evidence)

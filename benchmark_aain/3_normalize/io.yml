@@ -1,0 +1,13 @@
+module: normalize_claim
+step: 3
+folder: "3_normalize"
+title: "한국어 수사 산술로 변환"
+description: "claims[*].value.raw(한국어 수사·기간)를 산술/표준형으로 정규화해 llm_value 에 채운다."
+reads:
+  - field: "claims[*].value.raw"
+    type: "str"
+    desc: "한국어 수사 표현(예: 2858만9000명, 지난 3월)"
+writes:
+  - field: "claims[*].value.llm_value"
+    type: "str"
+    desc: "정규화된 산술/표준형(예: 28589000, 2025-03)"
