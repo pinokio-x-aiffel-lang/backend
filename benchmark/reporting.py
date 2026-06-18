@@ -19,8 +19,8 @@ import json
 from datetime import date as _date
 from pathlib import Path
 
-# benchmark/harness/reporting.py → benchmark/ (data·결과 폴더의 부모)
-BENCH_DIR = Path(__file__).resolve().parent.parent
+# benchmark/reporting.py → benchmark/ (data·결과 폴더와 같은 위치)
+BENCH_DIR = Path(__file__).resolve().parent
 SSOT_PATH = BENCH_DIR / "data" / "260614_master_eval_213_parsed_human_checked_SSOT.jsonl"
 
 STAGE_FOLDERS = {

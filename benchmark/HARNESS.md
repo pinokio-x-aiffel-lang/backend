@@ -1,21 +1,21 @@
 # 성능 테스트 하니스 (팀 공용)
 
 모듈별·e2e 성능을 **동일한 방식으로** 측정·기록하기 위한 공용 프레임워크.
-컨벤션 강제는 `.claude/skills/test-convention` 스킬, 코드는 `benchmark/harness/` 패키지.
+컨벤션 강제는 `.claude/skills/test-convention` 스킬, 코드는 `benchmark/` 바로 아래(`scoring.py`·`reporting.py`).
 
 ## 구조
 
 ```
 benchmark/
-  harness/                     # 코드 (import 라이브러리)
-    __init__.py                #   공개 API: load_ssot, save_result, blank_sections, STAGE_SCORERS
-    scoring.py                 #   채점기(순수 함수): prf1·recall@k·macro_f1·wilson_ci·mcnemar·score_*
-    reporting.py               #   SSOT 로드 + 라우팅 + jsonl/md 저장
-    __main__.py                #   python -m benchmark.harness (상태 점검)
+  scoring.py                   # 채점기(순수 함수): prf1·recall@k·macro_f1·wilson_ci·mcnemar·score_*
+  reporting.py                 # SSOT 로드 + 라우팅 + jsonl/md 저장 (load_ssot·save_result·blank_sections·render_md)
+  <테스트 스크립트>.py           # 단계/e2e 러너 (모듈 격리 실행 → records 생성 → 채점·저장)
   data/
     260614_master_eval_213_parsed_human_checked_SSOT.jsonl   # SSOT (정본, 213행 T123/F30/M30/NEI30)
   1_article/ … 10_explanation/ , e2e/                        # 결과만 저장
 ```
+
+모든 코드는 `benchmark/` 바로 아래에 둔다 — 결과 폴더(`<N_module>`·`e2e`)에는 산출물(jsonl·md)만.
 
 ## SSOT (단일 입력 원천)
 
@@ -23,10 +23,11 @@ benchmark/
 
 ## 사용법
 
-`uv run x` 로 실행한다(KOSIS_API_KEY·HCX 등 주입). 작성자는 **모듈을 격리 실행**해 샘플별 record 를 만들고, 채점·저장은 하니스에 맡긴다.
+프로젝트 루트에서 `uv run x` 로 실행한다(KOSIS_API_KEY·HCX 등 주입). 작성자는 **모듈을 격리 실행**해 샘플별 record 를 만들고, 채점·저장은 하니스에 맡긴다.
 
 ```python
-from benchmark.harness import load_ssot, save_result, blank_sections, STAGE_SCORERS
+from benchmark.scoring import STAGE_SCORERS
+from benchmark.reporting import load_ssot, save_result, blank_sections
 
 rows = load_ssot()                       # 고정 SSOT
 
@@ -54,7 +55,7 @@ jsonl, md = save_result(5, "leeaain", records, metrics, sec)
 print(jsonl, md)   # → benchmark/5_fetch/leeaain_<YYMMDD>_NN.jsonl / .md
 ```
 
-상태 점검: `python -m benchmark.harness` (SSOT 로드·폴더·채점기 확인).
+import 방식: 프로젝트 루트에서 실행 시 `from benchmark.scoring import …` / `from benchmark.reporting import …`. 스크립트를 `benchmark/` 안에 두고 직접 실행하면 `import scoring, reporting` (형제 모듈).
 
 ## 결과 저장 규칙
 
