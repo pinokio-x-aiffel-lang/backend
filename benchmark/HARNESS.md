@@ -78,6 +78,15 @@ import 방식: 프로젝트 루트에서 실행 시 `from benchmark.scoring impo
 | 9 | decide_verdict | **exact-match** (결정적, 오차 0) | — |
 | 10 | generate_explanation | **템플릿 accuracy (snapshot)** | opinion은 고정 루브릭(별도) |
 
+## I/O 계약 검증 (wobble 방지)
+
+`reporting.STAGE_IO` 가 단계별 계약을 코드로 보유하고, `save_result()` 가 저장 전 `validate_records()` 로 강제한다.
+
+- **input**: `record["input"]` 에 그 단계가 읽는 상류 슬라이스 키가 있어야 함 → 전후 입력 고정(모듈 격리) 강제.
+- **score**: scorer 가 읽는 채점 필드가 `record` 최상위에 있어야 함 → 누락 시 기본값으로 지표 오염되는 것을 차단.
+- 위반 시 `ContractError`(저장 거부). e2e/미등록 단계는 skip.
+- 계약 근거 문서: `benchmark_aain/<N>/io.yml`(모듈 reads/writes) · `scoring.py` docstring(채점 필드). `STAGE_IO` 는 그 스펙의 **기계 검사 버전**.
+
 ## 전후 비교 방법론 (필수)
 
 성능"평가"가 착시가 되지 않도록 리포트에 강제한다:

@@ -22,6 +22,7 @@ description: Use when starting a performance test, writing eval code, or saving 
 - **파일**(2종, 같은 stem, `save_result()` 가 생성): `<작성자>_<YYMMDD>_<NN>.jsonl` + `.md`. 무엇을 쟀는지는 폴더(단계)+md title 이 담당.
 - **`.jsonl`**: 한 줄 = 한 샘플, 실제 생성된 json 스키마(`input`/`output`/`gold` + 채점 필드).
 - **`.md`**: title(`#`) 외 `###`만. 순서: 개요 → 테스트 방법 → 성능 수치(표) → 분석 → 개선 전후 비교 → 한계·주의.
+- **I/O 계약 검증**: `save_result()` 가 저장 전 `STAGE_IO`(단계별 필수 input 슬라이스 + 채점 필드)로 record 를 검증 — 위반 시 `ContractError`로 저장 거부. 전후 입력이 흔들리거나 채점 필드가 빠지면 즉시 실패.
 
 ## 채점·비교
 

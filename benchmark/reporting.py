@@ -33,6 +33,29 @@ STAGE_MODULES = {
     7: "calculate_metric", 8: "check_alignment", 9: "decide_verdict", 10: "generate_explanation",
 }
 
+# 단계별 I/O 계약 — 전후 비교가 흔들리지 않도록 record 가 만족해야 하는 필드.
+#   input : record["input"] 에 있어야 하는 상류 슬라이스 키 (모듈이 읽는 입력 = 전후 동일해야 wobble 방지)
+#   output: 모듈이 생성하는 슬라이스 키 (문서용 — 무증거 등 빈 산출이 정상이라 강제하지 않음)
+#   score : record 최상위에 있어야 하는 채점 필드 (없으면 scorer 가 조용히 기본값 → 지표 오염)
+# 근거: benchmark_aain/<N>/io.yml (모듈 reads/writes) · scoring.py scorer docstring (채점 필드)
+STAGE_IO = {
+    1:  {"input": ["content"],                 "output": ["article"],             "score": []},
+    2:  {"input": ["article"],                 "output": ["sentences", "claims"], "score": ["gold_claim", "pred_claim"]},
+    3:  {"input": ["claims"],                  "output": ["claims"],              "score": []},
+    4:  {"input": ["claims"],                  "output": ["analysis"],            "score": ["gold_rank"]},
+    5:  {"input": ["claims", "analysis"],      "output": ["analysis"],            "score": ["answered"]},
+    6:  {"input": ["analysis"],                "output": ["analysis"],            "score": ["top1_correct"]},
+    7:  {"input": ["claims", "analysis"],      "output": ["verifications"],       "score": ["gold_verdict", "pred_verdict"]},
+    8:  {"input": ["verifications"],           "output": ["verifications"],       "score": ["gold_M", "pred_M"]},
+    9:  {"input": ["verifications"],           "output": ["verifications"],       "score": ["match"]},
+    10: {"input": ["verifications", "claims"], "output": ["verifications"],       "score": ["template_match"]},
+}
+
+
+class ContractError(Exception):
+    """record 가 단계 I/O 계약(STAGE_IO)을 위반."""
+
+
 # md 섹션 순서 (title 외 전부 h3). "성능 수치"(수치 표)는 render_md 가 자동 삽입.
 SECTION_KEYS = ["개요", "테스트 방법", "분석", "개선 전후 비교", "한계·주의"]
 
@@ -57,6 +80,33 @@ def _target_folder(target) -> Path:
     if isinstance(target, int) and target in STAGE_FOLDERS:
         return BENCH_DIR / STAGE_FOLDERS[target]
     raise ValueError(f"target 은 1..10 정수 또는 'e2e' 여야 합니다. got {target!r}")
+
+
+def validate_records(target, records: list) -> None:
+    """record 가 단계 I/O 계약(STAGE_IO)을 만족하는지 검사. 위반 시 ContractError.
+
+    ① record["input"] 에 계약 input 키 존재 — 상류 입력 고정(전후 wobble 방지)
+    ② record 최상위에 계약 score 필드 존재 — 없으면 scorer 가 기본값으로 지표 오염
+    e2e / 미등록 단계는 고정 계약이 없어 skip. (save_result 가 저장 전 자동 호출)
+    """
+    if target == "e2e" or target not in STAGE_IO:
+        return
+    spec = STAGE_IO[target]
+    problems = []
+    for i, r in enumerate(records):
+        rid = r.get("row_id", i)
+        miss_in = [f for f in spec["input"] if f not in r.get("input", {})]
+        miss_sc = [f for f in spec["score"] if f not in r]
+        if miss_in:
+            problems.append(f"row {rid}: input 누락 {miss_in}")
+        if miss_sc:
+            problems.append(f"row {rid}: 채점필드 누락 {miss_sc}")
+    if problems:
+        raise ContractError(
+            f"[stage {target}] I/O 계약 위반 {len(problems)}건:\n  "
+            + "\n  ".join(problems[:20])
+            + ("\n  …" if len(problems) > 20 else "")
+        )
 
 
 def _next_seq(folder: Path, author: str, date: str) -> int:
@@ -99,7 +149,10 @@ def save_result(target, author: str, records: list, metrics_rows: list,
     records : 샘플별 실제 생성 스키마(jsonl 한 줄씩)
     metrics_rows: scoring.py scorer 결과 → md '성능 수치' 표
     sections: blank_sections() 채운 dict(개요/테스트 방법/분석/개선 전후 비교/한계·주의)
+
+    저장 전 validate_records 로 단계 I/O 계약을 강제한다(위반 시 ContractError, 저장 안 함).
     """
+    validate_records(target, records)
     folder = _target_folder(target)
     folder.mkdir(exist_ok=True)
     date = date or _today()
