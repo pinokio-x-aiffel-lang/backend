@@ -3,25 +3,15 @@
 모듈별·e2e 성능을 **동일한 방식으로** 측정·기록하기 위한 공용 프레임워크.
 컨벤션 강제는 `.claude/skills/test-convention` 스킬, 코드는 `benchmark/` 바로 아래(`scoring.py`·`reporting.py`).
 
-## 구조
-
-```
-benchmark/
-  scoring.py                   # 채점기(순수 함수): prf1·recall@k·macro_f1·wilson_ci·mcnemar·score_*
-  reporting.py                 # SSOT 로드 + 라우팅 + jsonl/md 저장 (load_ssot·save_result·blank_sections·render_md)
-  <테스트 스크립트>.py           # 단계/e2e 러너 (모듈 격리 실행 → records 생성 → 채점·저장)
-  data/
-    260614_master_eval_213_parsed_human_checked_SSOT.jsonl   # SSOT (정본, 213행 T123/F30/M30/NEI30)
-  1_article/ … 10_explanation/ , e2e/                        # 결과만 저장
-```
+### 구조
 
 모든 코드는 `benchmark/` 바로 아래에 둔다 — 결과 폴더(`<N_module>`·`e2e`)에는 산출물(jsonl·md)만.
 
-## SSOT (단일 입력 원천)
+### SSOT (단일 입력 원천)
 
 모든 평가는 `benchmark/data/…_SSOT.jsonl` 한 파일에서만 입력을 받는다. 전후 비교가 성립하려면 입력이 고정이어야 한다. 새 값 생성 금지.
 
-## 사용법
+### 사용법
 
 프로젝트 루트에서 `uv run x` 로 실행한다(KOSIS_API_KEY·HCX 등 주입). 작성자는 **모듈을 격리 실행**해 샘플별 record 를 만들고, 채점·저장은 하니스에 맡긴다.
 
@@ -57,14 +47,14 @@ print(jsonl, md)   # → benchmark/5_fetch/leeaain_<YYMMDD>_NN.jsonl / .md
 
 import 방식: 프로젝트 루트에서 실행 시 `from benchmark.scoring import …` / `from benchmark.reporting import …`. 스크립트를 `benchmark/` 안에 두고 직접 실행하면 `import scoring, reporting` (형제 모듈).
 
-## 결과 저장 규칙
+### 결과 저장 규칙
 
 - **라우팅**: 단계 N 모듈 테스트 → `benchmark/<N_module>/` , e2e → `benchmark/e2e/` .
 - **파일명**: `<작성자>_<YYMMDD>_<NN>` (jsonl·md 동일 stem). `NN` = 같은 폴더·작성자·날짜 순번(01,02…). 무엇을 쟀는지는 **폴더(단계) + md title** 이 담당.
 - **`.jsonl`**: 한 줄 = 한 샘플. 테스트하며 **실제로 생성된 json 스키마**(`input`/`output`/`gold` + 채점 필드)를 기록 → 디버깅·재채점 가능.
 - **`.md`**: 보고서. **title(#) 외에는 `###`(h3)만** 사용. 순서 = 개요 → 테스트 방법 → 성능 수치(표) → 분석 → 개선 전후 비교 → 한계·주의. `render_md` 가 자동 생성하며 분석 narrative 는 작성자가 채운다.
 
-## 단계별 1차 지표 (scoring.STAGE_SCORERS)
+### 단계별 1차 지표 (scoring.STAGE_SCORERS)
 
 | 단계 | 모듈 | 1차 지표 | 보조 |
 |---|---|---|---|
