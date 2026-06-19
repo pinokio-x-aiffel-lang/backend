@@ -1,6 +1,10 @@
-# 테스트셋 보완 — 사람 검수 요청 (leeaain, 2026-06-19, v3)
+# 테스트셋 보완 — 사람 검수 (leeaain, 2026-06-19, v3) ✅ 완료
 
-**검수 대상은 아래 표 하나(7건)뿐입니다.** 맨 오른쪽 `검수` 칸만 채워 주세요. **맞으면 비워두면(=제 초안 채택)** 됩니다.
+> **✅ 검수 완료 (260619): 7건 전부 `magnitude` 확정.**
+> 반영처: `benchmark/data/7_metric/7_source_1.jsonl` — stage7 레코드 있는 187·188·209에 `mismatch_type=magnitude` + `mismatch_type_provenance=human_reviewed(leeaain,260619)`.
+> 189·190·191·194는 무증거(stage7 채점제외)라 적용 대상 없음. 결정적 23건은 기존 magnitude 유지.
+
+**(이력 보존용 — 아래는 검수 요청 원본)** 맨 오른쪽 `검수` 칸은 빈칸=초안(magnitude) 채택.
 
 > 이전 v2의 **B(2단계 슬롯)·C(4단계 델타 기준표)는 검수 불필요로 확정·삭제**했습니다.
 > 근거: 어떤 채점기도 그 gold를 읽지 않음 (`score_extract`=gold_claim/pred_claim/ctype · `score_retrieve`=gold_rank/success). "슬롯 정확도"나 "델타-기준표 채점" 지표를 새로 만들 때만 필요.
