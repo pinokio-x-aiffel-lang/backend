@@ -15,7 +15,16 @@ writes:
     type: "VerificationSummary"
     desc: "verdict_counts·overall_confidence·coverage"
 
-# reads/writes 타입(Claim·Article·ClaimAnalysis 등)은 모두 src/schemas/runtime.py 의 MasterSchema 정의
 schema_source: "src/schemas/runtime.py (MasterSchema)"
-# 테스트셋 레코드(이 단계 *_source_1.jsonl) 의 실제 최상위 필드 (구조 상세는 io.jsonl 예시)
 record_fields: ["group_id", "scenario", "note", "claim_results", "gold"]
+
+# ── 레코드가 담는 4요소 (채점에 꼭 필요) ──
+#   ① 식별(추적): SSOT 역추적·claim 매칭·클래스 (없으면 결과 추적 불가)
+#   ② 입력: 모듈에 넣을 데이터 (없으면 실행/예측대조 불가)
+#   ③ 정답(gold): 채점 기준 (없으면 맞고틀림 판정 불가)
+#   ④ 채점 가능 메타: 채점 가능 여부·사유 (없으면 채점불가 행 섞여 지표 왜곡)
+record_field_roles:
+  "① 식별(추적)": ["group_id", "scenario"]
+  "② 입력": ["claim_results"]
+  "③ 정답(gold)": ["gold"]
+  "④ 채점 가능 메타": ["note"]
