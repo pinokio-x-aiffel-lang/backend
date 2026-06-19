@@ -11,3 +11,8 @@ writes:
   - field: "analysis"
     type: "list[ClaimAnalysis]"
     desc: "claim별 kosis_search 로그 + candidates 풀"
+
+# reads/writes 타입(Claim·Article·ClaimAnalysis 등)은 모두 src/schemas/runtime.py 의 MasterSchema 정의
+schema_source: "src/schemas/runtime.py (MasterSchema)"
+# 테스트셋 레코드(이 단계 *_source_1.jsonl) 의 실제 최상위 필드 (구조 상세는 io.jsonl 예시)
+record_fields: ["row_id", "label", "claim_id", "subject", "unit", "period_type", "population", "claim_value_raw", "candidates", "search_success", "search_hits", "gold_tbl_id", "gold_item_hint", "scorable", "scorable_reason"]

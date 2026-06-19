@@ -11,3 +11,8 @@ writes:
   - field: "claims[*].value.llm_value"
     type: "str"
     desc: "정규화된 산술/표준형(예: 28589000, 2025-03)"
+
+# reads/writes 타입(Claim·Article·ClaimAnalysis 등)은 모두 src/schemas/runtime.py 의 MasterSchema 정의
+schema_source: "src/schemas/runtime.py (MasterSchema)"
+# 테스트셋 레코드(이 단계 *_source_1.jsonl) 의 실제 최상위 필드 (구조 상세는 io.jsonl 예시)
+record_fields: ["provenance", "src_id", "row_id", "base", "value", "period_value", "compare_period_value", "gold", "src_text"]

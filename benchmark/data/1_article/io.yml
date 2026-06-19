@@ -11,3 +11,25 @@ writes:
   - field: "article"
     type: "Article"
     desc: "원문 기사 메타데이터(article_id/title/content/published_at/source/url)"
+
+# 테스트셋 레코드(이 단계 *_source_1.jsonl) 의 실제 최상위 필드 (구조 상세는 io.jsonl 예시)
+schema_source: "src/schemas/runtime.py (MasterSchema)"
+record_fields:
+  [
+    "source_id",
+    "source_sentence",
+    "claim_id",
+    "article_id",
+    "sentence",
+    "claim_type",
+    "subject",
+    "value",
+    "unit",
+    "aggregation",
+    "period_type",
+    "period_value",
+    "compare_period_value",
+    "compare_conquer",
+    "population",
+    "cited_source",
+  ]

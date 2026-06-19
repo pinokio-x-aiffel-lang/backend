@@ -14,3 +14,8 @@ writes:
   - field: "claims"
     type: "list[Claim]"
     desc: "추출된 수치 주장 (value.llm_value 는 아직 빈값)"
+
+# reads/writes 타입(Claim·Article·ClaimAnalysis 등)은 모두 src/schemas/runtime.py 의 MasterSchema 정의
+schema_source: "src/schemas/runtime.py (MasterSchema)"
+# 테스트셋 레코드(이 단계 *_source_1.jsonl) 의 실제 최상위 필드 (구조 상세는 io.jsonl 예시)
+record_fields: ["provenance", "src_id", "label", "claim_type_gold", "src_text", "gold_n_claims", "gold_claims"]
