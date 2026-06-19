@@ -19,8 +19,8 @@ from benchmark.reporting import save_result, blank_sections
 from benchmark.scoring import score_retrieve
 
 ROOT = Path(__file__).resolve().parent.parent
-SSOT = ROOT / "benchmark/data/260614_master_eval_213_parsed_human_checked_SSOT.jsonl"
-S4 = ROOT / "benchmark_aain/4_retrieve/4_source_1.jsonl"
+SSOT = ROOT / "benchmark/data/ssot/260614_master_eval_213_parsed_human_checked_SSOT.jsonl"
+S4 = ROOT / "benchmark/data/4_retrieve/4_source_1.jsonl"
 
 
 def _load(p):
