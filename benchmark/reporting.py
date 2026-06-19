@@ -21,7 +21,8 @@ from pathlib import Path
 
 # benchmark/reporting.py → benchmark/ (data·결과 폴더와 같은 위치)
 BENCH_DIR = Path(__file__).resolve().parent
-SSOT_PATH = BENCH_DIR / "data" / "260614_master_eval_213_parsed_human_checked_SSOT.jsonl"
+# 사람 라벨 정본(SSOT)은 benchmark/data/ssot/ , 테스트셋은 benchmark/data/<N_module>/
+SSOT_PATH = BENCH_DIR / "data" / "ssot" / "260614_master_eval_213_parsed_human_checked_SSOT.jsonl"
 
 STAGE_FOLDERS = {
     1: "1_article", 2: "2_claim", 3: "3_normalize", 4: "4_retrieve", 5: "5_fetch",

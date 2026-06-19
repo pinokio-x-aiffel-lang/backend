@@ -7,10 +7,13 @@ description: Use when starting a performance test, writing eval code, or saving 
 
 모듈별·e2e 성능을 **모든 팀원이 동일하게** 측정·기록한다. 코드·API·예시는 `benchmark/HARNESS.md`.
 
-## SSOT (단일 입력)
+## SSOT · 데이터 위치
 
-입력은 **단 하나**: `benchmark/data/260614_master_eval_213_parsed_human_checked_SSOT.jsonl` (213행 · T123/F30/M30/NEI30).
-**값 생성 금지** — 입력=SSOT, 정답=라벨/공식값/주석. 전후 비교를 위해 입력은 고정.
+- **정본 SSOT(사람 라벨)**: `benchmark/data/ssot/260614_master_eval_213_parsed_human_checked_SSOT.jsonl` (213행 · T123/F30/M30/NEI30). 병인님 라벨 xlsx 등 사람 정본도 모두 **`benchmark/data/ssot/`**.
+- **테스트셋(입력+정답)**: **`benchmark/data/<N_module>/<N>_source_*.jsonl`** (+ `io.yml`/`io.jsonl` = 읽고/쓰는 필드 계약·예시). 예: `benchmark/data/4_retrieve/4_source_1.jsonl`(입력)·`4_source_2.jsonl`(gold).
+- **결과**: `benchmark/<N_module>/` 또는 `benchmark/e2e/` (아래 "결과 저장").
+- **값 생성 금지** — 입력=SSOT, 정답=라벨/공식값/주석. 전후 비교를 위해 입력은 고정.
+- (참고용 옛 eval·원시 소스는 `benchmark_aain/`. 실사용 아님.)
 
 ## 코드 위치
 
