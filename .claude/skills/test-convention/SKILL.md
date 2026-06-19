@@ -31,3 +31,13 @@ description: Use when starting a performance test, writing eval code, or saving 
 
 - 단계별 1차 지표 = `scoring.STAGE_SCORERS[stage]` (지표 목록은 HARNESS.md).
 - **전후 비교 필수**: 고정 SSOT + 모듈 격리(상류 gold 고정) + 비율은 `wilson_ci` + 분류 단계는 `mcnemar`(paired). 단일 숫자만 비교 금지(작은 표본·불균형 착시).
+
+## Gold(정답) 라벨링·보완
+
+테스트셋 gold 가 비거나 부족할 때 채우는 규칙. 핵심은 **비순환(non-circular)**.
+
+- **비순환 원칙**: gold 는 **독립 출처에서만** — SSOT `gold_figures`(사람검수)·병인님 라벨 xlsx·KOSIS raw 확인. 파이프라인이 캡처한 출력값이나 파이프라인 함수(search·map_cell 등)로 gold 를 만들면 순환(자기채점)이라 **금지**(value-scan 류 폐기).
+- **결정적 vs 검수필요 분리** — 보완 항목을 둘로 나눠 처리:
+  - *결정적*(바로 채움): 기계적 매핑(한글 라벨↔enum), 결정적 계산(기사값 vs 공식값 → `magnitude`/`rounding`), 스펙 스냅샷(`_build_explanation` 템플릿), 파생(4 gold → 6 `gold_best_index`).
+  - *검수필요*(해석 개입): %/파생 `mismatch_type`, 텍스트서 추출하는 슬롯(subject/unit/population — 추출기와 오류 겹침), 값-확인 안 되는 델타 기준표. → **초안 + 검수 컬럼 md 표**로 만들어 사람 검수 후 반영.
+- **값-기반 채점(표 라벨링 회피)**: 4단계 retrieval 은 정답 '표'를 라벨링하지 않고 **figure 값이 후보표 셀에 실재하는지 KOSIS raw 로 확인**(value-recall) → `gold_rank`=값 최초 발견 순위. 표 유일성 제약·과소평가 제거, 전 T행 채점 가능. 델타(증감)는 단일 셀에 없어 자연 미검출(검색 탓 아님 → 검수필요 델타로 분리).
