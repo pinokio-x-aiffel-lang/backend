@@ -47,6 +47,28 @@ def close(a, b, rel=0.01):
     return abs(a - b) <= max(0.05, abs(b) * rel)
 
 
+_SUF = ["증감", "전년동월대비", "전년동월비", "전년대비", "전월대비", "전년동월",
+        "전월비", "대비", "기여도", "상승폭", "상승률", "가격", "폭"]
+
+
+def _core(s):
+    s = re.sub(r"\s+", "", str(s or ""))
+    for suf in _SUF:
+        s = s.replace(suf, "")
+    return s
+
+
+def match_fig(subj, vllm, raw, figs):
+    """값-근접 + subject↔item 토큰 일치를 모두 만족하는 figure 만 반환(값 우연일치 오매칭 방지)."""
+    cs = _core(subj)
+    cands = [f for f in figs if close(vllm or raw, f.get("value")) or close(raw, f.get("value"))]
+    for f in cands:
+        fi = _core(f.get("item"))
+        if cs and fi and (cs in fi or fi in cs):
+            return f
+    return None  # 값은 맞아도 주제 불일치 → 확신 없는 gold 는 안 붙임(scorable=False)
+
+
 # 템플릿 스냅샷 (generate_explanation._build_explanation 복제)
 def has_batchim(t):
     for ch in reversed(t):
@@ -174,8 +196,7 @@ def main():
             # ── 5 fetch: gold figure 값(독립) ──
             gold5 = None
             if label == "T":
-                m = next((f for f in sfig if close(vllm or raw, f.get("value"))
-                          or close(raw, f.get("value"))), None)
+                m = match_fig(cl["subject"], vllm, raw, sfig)
                 if m:
                     gold5 = {"value": m.get("value"), "value_source": "SSOT_figure", "period": m.get("period")}
             elif bg and bg.get("official_value") is not None:
@@ -207,7 +228,7 @@ def main():
             if label == "NEI":
                 gv, sc7, rsn7 = "N", True, "NEI 라벨"
             elif label == "T":
-                m = next((f for f in sfig if close(vllm or raw, f.get("value"))), None)
+                m = match_fig(cl["subject"], vllm, raw, sfig)
                 if m and has_ev:
                     gv, sc7, rsn7 = "T", True, "SSOT figure 일치 claim"
                 else:
