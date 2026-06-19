@@ -3,16 +3,19 @@ step: 6
 folder: "6_rank"
 title: "증거 랭킹"
 description: "claim 적합도로 evidences 를 재정렬해 1위 적합 표를 evidences[0] 으로 둔다."
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "analysis[*].evidences"
     type: "list[Evidence]"
     desc: "[5]가 내보낸 매칭 표 n개(RANK 순)"
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "analysis[*].evidences"
     type: "list[Evidence]"
     desc: "재정렬됨 — evidences[0] = 최적 표"
 
 schema_source: "src/schemas/runtime.py (MasterSchema)"
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 record_fields:
   [
     "row_id",

@@ -3,16 +3,19 @@ step: 3
 folder: "3_normalize"
 title: "한국어 수사 산술로 변환"
 description: "claims[*].value.raw(한국어 수사·기간)를 산술/표준형으로 정규화해 llm_value 에 채운다."
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "claims[*].value.raw"
     type: "str"
     desc: "한국어 수사 표현(예: 2858만9000명, 지난 3월)"
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "claims[*].value.llm_value"
     type: "str"
     desc: "정규화된 산술/표준형(예: 28589000, 2025-03)"
 
 schema_source: "src/schemas/runtime.py (MasterSchema)"
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 record_fields:
   [
     "provenance",

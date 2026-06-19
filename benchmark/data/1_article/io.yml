@@ -3,16 +3,18 @@ step: 1
 folder: "1_article"
 title: "기사 내용 확인"
 description: "content(URL 또는 본문 텍스트)를 Article 로 변환한다."
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "content"
     type: "str | None"
     desc: "기사 URL 또는 본문 텍스트 (원본 입력)"
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "article"
     type: "Article"
     desc: "원문 기사 메타데이터(article_id/title/content/published_at/source/url)"
 
-# 테스트셋 레코드(이 단계 *_source_1.jsonl) 의 실제 최상위 필드 (구조 상세는 io.jsonl 예시)
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 schema_source: "src/schemas/runtime.py (MasterSchema)"
 record_fields:
   [

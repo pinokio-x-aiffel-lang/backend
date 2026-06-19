@@ -3,10 +3,12 @@ step: 9
 folder: "9_verdict"
 title: "종합 분석·검증 결과 생성"
 description: "metric 으로 claim별 verdict/mismatch_type 을 확정하고 기사 단위 summary(분포·신뢰도·coverage)를 채운다."
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "verifications.claim_results[*].metric"
     type: "MetricResult"
     desc: "[7]~[8] 비교·정합성 결과"
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "verifications.claim_results[*].verdict"
     type: "str"
@@ -16,6 +18,7 @@ writes:
     desc: "verdict_counts·overall_confidence·coverage"
 
 schema_source: "src/schemas/runtime.py (MasterSchema)"
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 record_fields: ["group_id", "scenario", "note", "claim_results", "gold"]
 
 # ── 레코드가 담는 4요소 (채점에 꼭 필요) ──

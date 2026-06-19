@@ -3,6 +3,8 @@ step: 7
 folder: "7_metric"
 title: "통계 수치 비교 판단"
 description: "정규화된 주장 수치와 KOSIS 공식 수치(evidences[0])를 비교해 MetricResult 를 만든다(verdict T/F/NEI 초기)."
+
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "claims[*].value.llm_value"
     type: "str"
@@ -10,6 +12,8 @@ reads:
   - field: "analysis[*].evidences"
     type: "list[Evidence]"
     desc: "KOSIS 공식 수치(선정 셀)"
+
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "verifications"
     type: "Verifications"
@@ -19,6 +23,7 @@ writes:
     desc: "비교 결과(verdict 초기값)"
 
 schema_source: "src/schemas/runtime.py (MasterSchema)"
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 record_fields:
   [
     "row_id",
@@ -30,7 +35,6 @@ record_fields:
     "scorable",
     "scorable_reason",
   ]
-
 # ── 레코드가 담는 4요소 (채점에 꼭 필요) ──
 #   ① 식별(추적): SSOT 역추적·claim 매칭·클래스 (없으면 결과 추적 불가)
 #   ② 입력: 모듈에 넣을 데이터 (없으면 실행/예측대조 불가)

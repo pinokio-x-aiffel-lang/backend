@@ -3,6 +3,7 @@ step: 5
 folder: "5_fetch"
 title: "KOSIS 셀 값 조회"
 description: "후보 표별로 항목/분류축을 매칭해 셀 값을 조회하고 매칭된 셀을 evidences 로 적재한다."
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "claims"
     type: "list[Claim]"
@@ -10,6 +11,7 @@ reads:
   - field: "analysis[*].candidates"
     type: "list[KosisCandidate]"
     desc: "[4] 후보 표 풀"
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "analysis[*].kosis_query"
     type: "KosisQuery"
@@ -22,6 +24,7 @@ writes:
     desc: "매칭된 셀(RANK 순)"
 
 schema_source: "src/schemas/runtime.py (MasterSchema)"
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 record_fields:
   [
     "row_id",

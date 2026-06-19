@@ -3,10 +3,12 @@ step: 2
 folder: "2_claim"
 title: "클레임 추출"
 description: "기사 본문을 원자 문장으로 쪼개 수치 기반 Claim 을 추출한다(claim_type=NONE 포함)."
+# reads = 모듈이 입력으로 읽는 MasterSchema 필드
 reads:
   - field: "article"
     type: "Article"
     desc: "[1]에서 적재된 기사"
+# writes = 모듈이 출력으로 쓰는 MasterSchema 필드
 writes:
   - field: "sentences"
     type: "list[str]"
@@ -16,6 +18,7 @@ writes:
     desc: "추출된 수치 주장 (value.llm_value 는 아직 빈값)"
 
 schema_source: "src/schemas/runtime.py (MasterSchema)"
+# record_fields = 테스트셋 파일(*_source_1.jsonl) 한 줄(=한 샘플)이 실제로 갖는 최상위 키 목록
 record_fields:
   [
     "provenance",
