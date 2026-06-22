@@ -13,6 +13,7 @@ ChatClient는 SDK를 통해 LLM을 1회 호출하고 ChatResponse를 반환한�
 - JSON 파싱
 """
 from __future__ import annotations
+import json
 import time
 from dataclasses import dataclass
 from typing import Any
@@ -67,19 +68,20 @@ def fetch_hcx_native(
         body["maxCompletionTokens"] = max_tokens
     if temperature is not None:
         body["temperature"] = temperature
+    # HCX-007 v3 native 파라미터 호환 규칙 (실측):
+    #   thinking_effort 있으면 무조건 전송 (tools/json_structure 여부 무관)
+    #   tools: thinking:none 명시 필수 + maxCompletionTokens 제거
+    #   responseFormat: (llm_caller에서 json_structure=None 변환으로 실제 미전송)
     if json_structure is not None:
         hcx_schema = {k: v for k, v in json_structure.items() if k != "additionalProperties"}
-        if supports_thinking:  # thinking과 responseFormat은 동시 사용 불가 → 명시적으로 끔
-            body["thinking"] = {"effort": "none"}
         body["responseFormat"] = {"type": "json", "schema": hcx_schema}
-    elif supports_thinking and thinking_effort is not None:  # 일반 호출의 추론 강도 지정
+    if supports_thinking and thinking_effort is not None:
         body["thinking"] = {"effort": thinking_effort}
     if tools is not None:
+        body.pop("maxCompletionTokens", None)       # tools와 maxCompletionTokens 충돌
         body["tools"] = tools
-        if supports_thinking:  # thinking과 function calling은 동시 사용 불가 → 명시적으로 끔
-            body["thinking"] = {"effort": "none"}
         if tool_choice is not None:
-            body["toolChoice"] = tool_choice  # native: "auto" | "none" | {type, function}
+            body["toolChoice"] = tool_choice
 
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -100,8 +102,18 @@ def fetch_hcx_native(
     result = data.get("result", {})
     usage = result.get("usage", {})
     message = result.get("message", {})
+    # thinking 모드 응답 시 content가 [{type:thinking,...},{type:text,...}] 리스트로 옴.
+    # text 블록만 추출해 문자열로 반환 (thinking 블록은 history에 포함 시 tools와 충돌).
+    raw_content = message.get("content", "")
+    if isinstance(raw_content, list):
+        text = "\n".join(
+            b.get("text", "") for b in raw_content
+            if isinstance(b, dict) and b.get("type") == "text"
+        ).strip()
+    else:
+        text = raw_content or ""
     return ChatResponse(
-        text=message.get("content", ""),
+        text=text,
         total_tokens=usage.get("totalTokens", 0),
         prompt_tokens=usage.get("promptTokens", 0),
         completion_tokens=usage.get("completionTokens", 0),
@@ -199,6 +211,35 @@ class ChatClient:
         )
 
     @staticmethod
+    def _to_responses_input(messages: list[dict]) -> list[dict]:
+        """Chat Completions 메시지 포맷 → Responses API input 포맷 변환."""
+        result = []
+        for msg in messages:
+            role = msg.get("role")
+            if role == "system":
+                result.append({"role": "developer", "content": msg.get("content", "")})
+            elif role in ("user", "assistant") and not msg.get("tool_calls"):
+                result.append({"role": role, "content": msg.get("content") or ""})
+            elif role == "assistant" and msg.get("tool_calls"):
+                if msg.get("content"):
+                    result.append({"role": "assistant", "content": msg["content"]})
+                for tc in msg["tool_calls"]:
+                    args = tc["function"].get("arguments", "{}")
+                    result.append({
+                        "type": "function_call",
+                        "name": tc["function"]["name"],
+                        "call_id": tc["id"],
+                        "arguments": args if isinstance(args, str) else json.dumps(args),
+                    })
+            elif role == "tool":
+                result.append({
+                    "type": "function_call_output",
+                    "call_id": msg.get("tool_call_id", ""),
+                    "output": msg.get("content", ""),
+                })
+        return result
+
+    @staticmethod
     def _build_responses_response(sdk_response: Any, latency_s: float) -> ChatResponse:
         usage = sdk_response.usage
         # Responses API의 function_call 출력 아이템을 chat completions tool_calls 형태로 변환
@@ -230,14 +271,17 @@ class ChatClient:
         max_tokens: int | None = None,
         tools: list[dict] | None = None,
         tool_choice: str | dict | None = None,
+        reasoning_effort: str | None = None,
         timeout: float | None = None,
     ) -> ChatResponse:
-        """OpenAI Responses API (/v1/responses). gpt-5-pro, o1-pro 등 전용.
+        """OpenAI Responses API (/v1/responses). gpt-5.4-mini, gpt-5-pro, o1-pro 등.
 
         tools/tool_choice는 chat completions 포맷으로 받아 Responses 포맷으로 변환한다.
-        (Responses는 function 필드를 중첩하지 않고 평탄화한다.)
+        reasoning_effort(low/medium/high)를 주면 reasoning 토큰이 추가 생성된다.
         """
-        kwargs: dict[str, Any] = {"model": model_name, "input": messages}
+        kwargs: dict[str, Any] = {"model": model_name, "input": self._to_responses_input(messages)}
+        if reasoning_effort and reasoning_effort != "none":
+            kwargs["reasoning"] = {"effort": reasoning_effort}
         if max_tokens is not None:
             kwargs["max_output_tokens"] = max_tokens
         if tools is not None:

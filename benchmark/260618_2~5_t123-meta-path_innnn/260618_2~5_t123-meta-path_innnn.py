@@ -27,6 +27,7 @@ _REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO))
 
 from src.modules.extract_statistical_claims import extract_statistical_claims  # noqa: E402
+from src.modules.map_claim_via_agent import map_claim_via_agent  # noqa: E402
 from src.modules.map_claim_via_meta import map_claim_via_meta  # noqa: E402
 from src.modules.normalize_claim import normalize_claim  # noqa: E402
 from src.observability import flush, instrument_kosis, run_pipeline_traced  # noqa: E402
@@ -96,7 +97,7 @@ def _match_gold(ev_values: list[float], gold_figures: list[dict]) -> list[bool |
     return result
 
 
-async def _run_one(entry: dict) -> dict:
+async def _run_one(entry: dict, kosis_module) -> dict:
     instrument_kosis()
     row_id = entry["row_id"]
     text = entry["text"]
@@ -111,7 +112,7 @@ async def _run_one(entry: dict) -> dict:
 
     err = await run_pipeline_traced(
         ms,
-        (extract_statistical_claims, normalize_claim, map_claim_via_meta),
+        (extract_statistical_claims, normalize_claim, kosis_module),
         root_name=f"t123:{row_id}",
         metadata={"row_id": row_id, "text": text[:120]},
     )
@@ -139,6 +140,8 @@ async def main() -> None:
     ap.add_argument("--ids", default="", help="특정 row_id만(쉼표): 2,6,7,8")
     ap.add_argument("--select-model", default="hcx", choices=["hcx", "claude"],
                     help="SELECT_KOSIS_CELL 모델 선택 (기본: hcx)")
+    ap.add_argument("--module", default="meta", choices=["meta", "agent"],
+                    help="사용할 [4+5] 모듈 (meta=map_claim_via_meta, agent=map_claim_via_agent)")
     args = ap.parse_args()
 
     if args.select_model == "claude":
@@ -154,12 +157,13 @@ async def main() -> None:
     elif args.limit:
         items = items[: args.limit]
 
-    model_tag = args.select_model
+    model_tag = f"{args.module}-{args.select_model}" if args.module == "meta" else "agent"
     out_path = _OUT_DIR / f"{_BASE}_result_{model_tag}.json"
-    print(f"=== t123 map_claim_via_meta eval ({len(items)}건) [select={model_tag}] ===", flush=True)
+    kosis_module = map_claim_via_agent if args.module == "agent" else map_claim_via_meta
+    print(f"=== t123 eval ({len(items)}건) [module={args.module}, select={args.select_model}] ===", flush=True)
     results = []
     for i, entry in enumerate(items, 1):
-        res = await _run_one(entry)
+        res = await _run_one(entry, kosis_module)
         tag = "HIT" if res["sentence_hit"] else ("ERR" if res["error"] else "---")
         print(
             f"  {i:>3}/{len(items)} row={res['row_id']:>3} [{tag}]"

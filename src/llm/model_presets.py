@@ -25,6 +25,7 @@ class ModelPreset:
     model_name: str              # 모델명 (예: "HCX-007")
     max_tokens: int
     temperature: float | None = None
+    thinking_effort: str | None = None  # reasoning 강도: none/low/medium/high
 
 
 # ── 파이프라인 단계별 프리셋 ──────────────────────────────────────────────────
@@ -147,6 +148,51 @@ SELECT_KOSIS_CELL = ModelPreset(
     model_alias="hyperclova",
     model_name="HCX-007",
     max_tokens=512,
+    temperature=0.0,
+)
+
+# KOSIS agent (map_claim_via_agent) — 추론+툴콜링 동시 처리 (Responses API).
+# gpt-5.4-mini + thinking low: reasoning 토큰으로 단위/축 선택 품질 향상.
+MAP_CLAIM_AGENT = ModelPreset(
+    model_alias="openai",
+    model_name="gpt-5.4-mini",
+    max_tokens=4096,
+    temperature=0.0,
+    thinking_effort="low",
+)
+
+# ReAct Thought — HCX-007 전용 (추론만, 함수 호출 없음). thinking_effort=low → max_tokens 2048 자동.
+MAP_CLAIM_THINK = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=2048,
+    temperature=0.0,
+    thinking_effort="low",
+)
+# ReAct Action — HCX-005 (Thought 결과 기반 툴 호출만).
+# HCX-007은 thinking 항상 ON → 멀티-턴 function calling 불가(실측) → HCX-005 사용.
+MAP_CLAIM_ACT = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-005",
+    max_tokens=1024,
+    temperature=0.0,
+)
+
+# SELECT_KOSIS_CELL A/B 비교용 — Claude Sonnet (추론+구조화 출력 동시 처리 가능).
+# KOSIS_SELECT_MODEL=claude 환경변수로 활성화.
+SELECT_KOSIS_CELL_CLAUDE = ModelPreset(
+    model_alias="claude",
+    model_name="claude-sonnet-4-6",
+    max_tokens=1024,
+    temperature=0.0,
+)
+
+# KOSIS agent (map_claim_via_agent) — Claude Sonnet 단일 호출(Think+Act 동시).
+# fetch_chat 경유(OpenAI 호환 엔드포인트). thinking_effort 미지원 → None.
+MAP_CLAIM_AGENT_CLAUDE = ModelPreset(
+    model_alias="claude",
+    model_name="claude-sonnet-4-6",
+    max_tokens=4096,
     temperature=0.0,
 )
 
