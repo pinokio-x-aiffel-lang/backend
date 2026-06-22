@@ -99,18 +99,10 @@ def _decide_metric(
     if claim.claim_type not in _COMPARABLE_TYPES:
         return _compute_metric(claim, evidences[0]), False, None  # 그룹연산 → NEI
 
-    # 요청 집단을 어느 표에서도 못 맞춰 전부 전체값 폴백뿐이면 → 검증 불가(NEI).
-    # (예: '북한'처럼 표 모집단 축에 없는 집단 — 전국 합계로 대체된 값만 남은 상태.
-    #  전체값과 비교해 우연히 T/F 가 나오는 오염을 막는다.)
-    if all(ev.population_fallback for ev in evidences):
-        base = _compute_metric(claim, evidences[0])
-        m = base.model_copy(update={
-            "verdict": Verdict.NOT_ENOUGH_INFO,
-            "mismatch_type": None,
-            "note": (base.note + " | " if base.note else "")
-            + "요청 집단을 어느 표에서도 매칭 못 함(전부 전체값 폴백) → 검증 불가",
-        })
-        return m, False, None
+    # 모집단 폴백(전부 전체값 대체)도 NEI 로 막지 않고 전체값과 수치비교해 T/F 를 낸다.
+    # 7단계는 '값' 만 보고, 요청 집단↔전체 오도(모집단 M)는 [8] check_alignment 가
+    # 원문 맥락으로 판정한다 — 폴백을 7단계에서 NEI 로 죽이면 그 M 판정 기회가 사라진다.
+    # (compute_absolute 가 evidence.population_fallback 를 note 로 남겨 [8] 대상임을 표시.)
 
     top = evidences[0]                       # [6]이 고른 1위 적합 표
     top_metric = _compute_metric(claim, top)

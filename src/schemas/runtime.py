@@ -231,7 +231,7 @@ class MismatchType(str, Enum):
     """verdict=F/M 사유 분류 (MetricResult.mismatch_type).
 
     magnitude/rounding/direction 은 수치 비교([7]), unit/period/population/
-    subject/aggregation 은 정합성([8]) 영역.
+    subject/aggregation/framing 은 정합성([8]) 영역.
     """
 
     MAGNITUDE = "magnitude"      # 값 크기 차이(허용오차 크게 초과)
@@ -242,6 +242,7 @@ class MismatchType(str, Enum):
     POPULATION = "population"    # 모집단 불일치(예: 전체↔청년)
     SUBJECT = "subject"          # 측정 주제 불일치
     AGGREGATION = "aggregation"  # 집계 방식 불일치(평균↔합계 등)
+    FRAMING = "framing"          # 해석 비약·프레이밍(사실문장 A → 기자해석 B 의 왜곡)
 
 
 class HitlCategory(str, Enum):

@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from datetime import date as _date
 from pathlib import Path
 
@@ -111,14 +112,31 @@ def validate_records(target, records: list) -> None:
 
 
 def _next_seq(folder: Path, author: str, date: str) -> int:
-    """같은 폴더·작성자·날짜의 다음 순번(NN). 기존 최대 +1."""
+    """같은 폴더·작성자·날짜의 다음 순번(NN). 기존 최대 +1.
+
+    파일명 = author_date_NN[_sha] 이므로 NN 은 인덱스 2(끝의 sha 무시).
+    """
     n = 0
     for p in folder.glob(f"{author}_{date}_*.jsonl"):
         try:
-            n = max(n, int(p.stem.split("_")[-1]))
-        except ValueError:
+            n = max(n, int(p.stem.split("_")[2]))  # author_date_NN[_sha]
+        except (IndexError, ValueError):
             continue
     return n + 1
+
+
+def _git_sha() -> str:
+    """현재 commit short sha(+미커밋이면 -dirty). 결과↔코드 추적용."""
+    try:
+        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                             cwd=BENCH_DIR, capture_output=True, text=True, timeout=5).stdout.strip()
+        if not sha:
+            return "nogit"
+        dirty = subprocess.run(["git", "status", "--porcelain"],
+                               cwd=BENCH_DIR, capture_output=True, text=True, timeout=5).stdout.strip()
+        return f"{sha}-dirty" if dirty else sha
+    except Exception:  # noqa: BLE001
+        return "nogit"
 
 
 def _md_table(rows: list) -> str:
@@ -158,7 +176,7 @@ def save_result(target, author: str, records: list, metrics_rows: list,
     folder.mkdir(exist_ok=True)
     date = date or _today()
     nn = _next_seq(folder, author, date)
-    stem = f"{author}_{date}_{nn:02d}"
+    stem = f"{author}_{date}_{nn:02d}_{_git_sha()}"
 
     jsonl_path = folder / f"{stem}.jsonl"
     md_path = folder / f"{stem}.md"

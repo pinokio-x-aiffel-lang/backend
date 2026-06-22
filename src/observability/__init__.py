@@ -1,3 +1,3 @@
-from src.observability.tracing import traced_chat
+from src.observability.tracing import set_eval_context, traced_chat
 
-__all__ = ["traced_chat"]
+__all__ = ["set_eval_context", "traced_chat"]
