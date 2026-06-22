@@ -73,8 +73,10 @@ async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--concurrency", type=int, default=4)
+    ap.add_argument("--out", type=str, default=str(OUT))  # 기본=260619 캡처(보존); 새 캡처는 별도 경로 지정
     a = ap.parse_args()
 
+    out_path = Path(a.out)
     rows = _load(SSOT)
     if a.limit:
         rows = rows[: a.limit]
@@ -90,11 +92,12 @@ async def main():
               f"{'FAIL@' + str(st) if st else 'ok'} ({rec['duration_s']}s)", flush=True)
 
     results.sort(key=lambda r: r["row_id"])
-    with OUT.open("w", encoding="utf-8") as f:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", encoding="utf-8") as f:
         for rec in results:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     nfail = sum(1 for r in results if r["failed_step"])
-    print(f"\n캡처 {len(results)}행 → 실패 {nfail} | {OUT}")
+    print(f"\n캡처 {len(results)}행 → 실패 {nfail} | {out_path}")
     # 단계별 도달률
     from collections import Counter
     fc = Counter(r["failed_step"] for r in results if r["failed_step"])

@@ -10,6 +10,8 @@
 from __future__ import annotations
 
 import json
+import os
+import sys
 from pathlib import Path
 
 from benchmark.reporting import save_result, blank_sections
@@ -19,7 +21,9 @@ from benchmark.scoring import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent
-CAP = ROOT / "benchmark_aain/data/260619_capture_v2_snapshots.jsonl"
+# 캡처 경로: argv[1] > CAP_SNAPSHOTS env > 기본(260619). 새 캡처 채점 시 경로 주입.
+_CAP_ARG = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("CAP_SNAPSHOTS")
+CAP = Path(_CAP_ARG) if _CAP_ARG else ROOT / "benchmark_aain/data/260619_capture_v2_snapshots.jsonl"
 DATA = ROOT / "benchmark/data"
 
 
