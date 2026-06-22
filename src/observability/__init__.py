@@ -1,3 +1,17 @@
+from src.observability.trace_tools import (
+    flush,
+    instrument_kosis,
+    observe,
+    run_pipeline_traced,
+    span,
+)
 from src.observability.tracing import traced_chat
 
-__all__ = ["traced_chat"]
+__all__ = [
+    "traced_chat",
+    "span",
+    "instrument_kosis",
+    "run_pipeline_traced",
+    "flush",
+    "observe",
+]

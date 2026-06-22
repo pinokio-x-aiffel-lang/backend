@@ -28,6 +28,7 @@ from src.modules.load_article import load_article
 from src.modules.normalize_claim import normalize_claim
 from src.modules.rank_evidence import rank_evidence
 from src.modules.retrieve_kosis_candidates import retrieve_kosis_candidates
+from src.observability import instrument_kosis, span
 from src.pipeline.events import PipelineEvent, ResultEvent, StepEvent
 from src.schemas.runtime import MasterSchema
 
@@ -35,10 +36,15 @@ from src.schemas.runtime import MasterSchema
 # ── Pipeline ─────────────────────────────────────────────────────────────────
 
 class Pipeline:
-    async def run(self, content: str, on_step=None) -> AsyncGenerator[PipelineEvent, None]:
+    async def run(self, content: str, on_step=None, published_at: str | None = None
+                  ) -> AsyncGenerator[PipelineEvent, None]:
+        instrument_kosis()  # KOSIS 호출 span (멱등; langfuse 비활성 시 no-op)
         master_schema = MasterSchema(content=content)
 
         async for ev in self._step(1, "기사 내용 확인", load_article, master_schema, on_step): yield ev
+        # 발행일 override(상대시점 base) — 호출자가 주면 [1] 직후 주입. 없으면 load_article 기본값.
+        if published_at and master_schema.article is not None:
+            master_schema.article.published_at = published_at
         async for ev in self._step(2, "클레임 추출", extract_statistical_claims, master_schema, on_step): yield ev
         async for ev in self._step(3, "한국어 수사 산술로 변환", normalize_claim, master_schema, on_step): yield ev
         async for ev in self._step(4, "KOSIS 통계표 n개 찾기", retrieve_kosis_candidates, master_schema, on_step): yield ev
@@ -57,7 +63,10 @@ class Pipeline:
         await asyncio.sleep(0.01)  # TEMP(ngrok SSE 테스트): 더미가 즉시 끝나 이벤트가 한 버스트로 몰리는 것 방지. 검증 후 제거.
 
         try:
-            await fn(master_schema)
+            # 단계 실행을 span 으로 — 안에서 await 하는 KOSIS·LLM 호출이 이 단계 아래로 중첩.
+            # (span 안에서 yield 하지 않으므로 generator contextvar 누수 문제 없음)
+            with span(f"[{step}] {name}"):
+                await fn(master_schema)
         except Exception as e:
             yield StepEvent(
                 step=step, name=name, status="error",

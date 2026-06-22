@@ -1,0 +1,53 @@
+{
+  "summary": {
+    "sentence_hit": 0,
+    "sentence_total": 2,
+    "sentence_hit_rate": 0.0,
+    "gold_matched": 0,
+    "gold_total": 4,
+    "gold_recall": 0.0,
+    "errors": 0
+  },
+  "results": [
+    {
+      "row_id": 2,
+      "n_claims": 2,
+      "ev_values": [],
+      "gold_values": [
+        32,
+        129,
+        [
+          135,
+          136,
+          193
+        ]
+      ],
+      "matched": [
+        false,
+        false,
+        null
+      ],
+      "sentence_hit": false,
+      "scalar_total": 2,
+      "scalar_matched": 0,
+      "error": null
+    },
+    {
+      "row_id": 6,
+      "n_claims": 2,
+      "ev_values": [],
+      "gold_values": [
+        300,
+        289
+      ],
+      "matched": [
+        false,
+        false
+      ],
+      "sentence_hit": false,
+      "scalar_total": 2,
+      "scalar_matched": 0,
+      "error": null
+    }
+  ]
+}

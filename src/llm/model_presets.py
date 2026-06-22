@@ -121,3 +121,40 @@ GENERATE_OPINION = ModelPreset(
     max_tokens=512,
     temperature=0.3,
 )
+
+
+# ── [byungin] 하이브리드 검색·항목매처 (추가) ─────────────────────
+NAVIGATE_TREE = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
+
+RESOLVE_ITEM_MATCH = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
+
+
+# ── [kosis-lookup] 검색→메타 판독→표·코드 선택 (map_claim_via_meta) ─────────
+# 후보 표들의 메타(항목·분류축 코드)를 한 번에 보고 표+itmId+축코드를 고르는 단일 호출.
+# 여러 표 구조를 읽고 좌표를 조립하는 열린 선택이라 structured outputs 필요 → HCX-007.
+# 후보·축이 많아 토큰을 NAVIGATE_TREE/RESOLVE 류보다 넉넉히 둔다. 재현성 위해 temp 0.
+SELECT_KOSIS_CELL = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=512,
+    temperature=0.0,
+)
+
+# KOSIS 검색 키워드 생성 (map_claim_via_meta 1단계). 짧은 명사구 2~4개라 저토큰.
+# structured outputs(키워드 배열) 필요 → HCX-007. 재현성 위해 temp 0.
+GEN_KOSIS_KEYWORDS = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
