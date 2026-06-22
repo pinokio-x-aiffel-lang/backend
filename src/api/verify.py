@@ -48,6 +48,11 @@ class Evidence(BaseModel):
     table_name: str | None = None
     url: str | None = None
     last_updated: str | None = None
+    # 증감 비교근거 + 매칭 품질(프론트 표시용)
+    compare_value: str | None = None
+    compare_period: str | None = None
+    population_fallback: bool = False
+    match_source: str | None = None
 
 
 class VerificationSummary(BaseModel):
@@ -55,6 +60,9 @@ class VerificationSummary(BaseModel):
     overall_verdict: str
     average_confidence: float
     overview_reason: str
+    # decide_verdict 가 내는 기사 단위 분포/커버리지(프론트 표시 의도 복원)
+    verdict_counts: dict[str, int] = {}
+    coverage: float = 0.0
 
 
 class ClaimResult(BaseModel):
@@ -64,8 +72,19 @@ class ClaimResult(BaseModel):
     claim_value: str | None = None
     kosis_value: str | None = None
     explanation: str
-    confidence: float
+    # 현재 per-claim confidence 는 미산출 → None(프론트 0% 오표시 방지).
+    # 실제 산출(신호 기반 confidence 엔진)은 별도 도입 시 이 필드로 흐른다.
+    confidence: float | None = None
     evidence: list[Evidence] = []
+    # 증감/비교 판정 근거(프론트 표시용) — metric 에서 끌어옴
+    operation: str | None = None
+    computed_value: str | None = None
+    within_tolerance: bool | None = None
+    rel_diff: float | None = None
+    # HITL 라우팅(전문가 검토 필요 표시용)
+    needs_hitl: bool = False
+    hitl_category: str | None = None
+    hitl_reason: str | None = None
 
 
 class Verifications(BaseModel):
@@ -141,6 +160,7 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
     for r in master_schema.verifications.claim_results:
         code = _verdict_code(r.verdict)
         codes.append(code)
+        m = getattr(r, "metric", None)  # NEI 등 metric 미산출 claim 보호
         claim_results.append(
             ClaimResult(
                 claim_id=r.claim_id,
@@ -149,7 +169,16 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
                 claim_value=r.claim_value,
                 kosis_value=r.kosis_value,
                 explanation=r.explanation,
-                confidence=r.confidence,
+                # 0.0(미설정 기본값)은 0% 오표시이므로 None 으로. 실산출 시 그대로 흐름.
+                confidence=(r.confidence or None),
+                operation=getattr(m, "operation", None) if m else None,
+                computed_value=(str(m.computed_value)
+                                if m and m.computed_value is not None else None),
+                within_tolerance=(m.within_tolerance if m else None),
+                rel_diff=(m.rel_diff if m else None),
+                needs_hitl=getattr(r, "needs_hitl", False),
+                hitl_category=getattr(r, "hitl_category", None),
+                hitl_reason=getattr(r, "hitl_reason", None),
                 evidence=[
                     Evidence(
                         source=e.source,
@@ -161,6 +190,11 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
                         table_name=e.table_name,
                         url=e.url,
                         last_updated=e.last_updated,
+                        compare_value=(str(e.compare_value)
+                                       if getattr(e, "compare_value", None) is not None else None),
+                        compare_period=getattr(e, "compare_period", None),
+                        population_fallback=getattr(e, "population_fallback", False),
+                        match_source=getattr(e, "match_source", None),
                     )
                     for e in r.evidence
                 ],
@@ -174,6 +208,8 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
         average_confidence=s.overall_confidence,
         # [10] generate_explanation 이 생성한 기사 단위 종합 의견. 미생성 시 폴백 문구.
         overview_reason=s.overall_opinion or f"총 {s.total_claims}건의 주장을 분석했습니다.",
+        verdict_counts=dict(s.verdict_counts),
+        coverage=s.coverage,
     )
 
     return VerifyResponse(
