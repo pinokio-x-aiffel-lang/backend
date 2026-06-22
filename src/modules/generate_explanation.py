@@ -27,6 +27,7 @@ _MISMATCH_LABEL = {
     "population": "모집단 차이",
     "subject": "측정 주제 차이",
     "aggregation": "집계 방식 차이",
+    "framing": "해석 비약·프레이밍",
 }
 
 

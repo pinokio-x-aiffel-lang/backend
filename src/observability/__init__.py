@@ -5,9 +5,10 @@ from src.observability.trace_tools import (
     run_pipeline_traced,
     span,
 )
-from src.observability.tracing import traced_chat
+from src.observability.tracing import set_eval_context, traced_chat
 
 __all__ = [
+    "set_eval_context",
     "traced_chat",
     "span",
     "instrument_kosis",

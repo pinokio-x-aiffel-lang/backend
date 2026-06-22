@@ -74,10 +74,15 @@ claim 으로 만들지 않는다. 단, 그 문구에 개별 시점의 수치가 
       absolute(value_raw="2858만9000명") + change_rate(value_raw="19만3000명 증가")
 - change_rate 의 value_raw 는 증감폭이지 절대 수준값이 아니다.
 
-## compare_period_raw (비교 기준 시점)
-수치가 무엇과 비교되었는지 기준 시점 표현을 원문 그대로 추출한다.
-예: "전년 동월 대비" → "전년 동월", "1년 전보다" → "1년 전", "2013년 말 대비" → "2013년 말".
-비교 표현이 문장에 없으면 빈 문자열.
+## compare_period_raw (비교 기준 시점) — change_rate 면 거의 필수
+수치가 무엇과 비교됐는지(증감의 기준 시점)를 원문 그대로 추출한다.
+**change_rate(증감) claim 은 대부분 비교 기준 시점을 가진다 — 절대 빠뜨리지 말 것.**
+- 패턴: "전년 동월 대비"→"전년 동월", "전월 대비"→"전월", "전분기 대비"→"전분기",
+  "전년 대비"·"전년보다"→"전년", "작년 4월보다"→"작년 4월", "1년 전보다"→"1년 전",
+  "2013년 말 대비"→"2013년 말".
+- 비교 기준(compare_period)과 주 시점(period)을 **혼동 금지**:
+  "지난달 취업자는 작년 4월보다 19만명 증가" → period_raw="지난달", compare_period_raw="작년 4월".
+- 비교 표현이 문장에 정말 없을 때만(예: "26만명 증가"처럼 기준 미명시) 빈 문자열.
 
 ## claim_type 분류 (우선순위 순)
 아래 순서대로 판단하여 가장 먼저 해당하는 유형을 선택한다.
@@ -228,22 +233,34 @@ RANK_EVIDENCE_USER = (
 
 CHECK_ALIGNMENT_SYSTEM = (
     "너는 통계 인용 검증기다.\n"
-    "기사의 수치는 KOSIS 공식 수치와 '값'은 이미 일치한다. 네 임무는 기사가 그 수치를\n"
-    "오도(misleading)하거나 강하게 왜곡하지 않고, 수치가 실제로 나타내는 바를 정확히\n"
-    "전달했는지 판정하는 것이다.\n"
-    "점검 차원: subject(측정 주제) · population(모집단) · unit(단위) ·\n"
-    "aggregation(집계 방식) · period(기간).\n"
+    "기사의 수치는 KOSIS 공식 수치와 '값'은 이미 일치한다(T). 네 임무는 기사가 그 정확한\n"
+    "수치를 오도/왜곡 없이 전달했는지 판정하는 것이다. 두 가지를 모두 본다.\n"
+    "\n"
+    "[1] 해석 왜곡 (원문 맥락):\n"
+    "  - 원문에서 이 수치가 실제로 담긴 '사실 문장 A'를 찾는다.\n"
+    "  - A 뒤에 이어지는 기자의 해석·단정·전망 '문장 B'를 찾는다(없으면 B 없음).\n"
+    "  - B가 A(=확인된 사실)에서 정당하게 도출되지 않는 비약·과장·공포조장이면 → 왜곡.\n"
+    "    예: A '합계출산율 0.75명' → B '민족 소멸이 수학적으로 확정된다' = 비약 → 왜곡.\n"
+    "  - B가 없거나, B가 A를 충실히 전달/합리적으로 부연하면 → 정상.\n"
+    "\n"
+    "[2] 메타 정합성:\n"
+    "  - 기사 주장의 주제/모집단/단위/집계/기간이 KOSIS 수치가 실제 나타내는 것과 다른가.\n"
+    "    예: 수치는 '전체'인데 기사는 '청년'이라 단정 → population.\n"
+    "\n"
     "규칙:\n"
-    "1. 기사 주장이 수치가 나타내는 바와 일치하면 aligned=true, dimension=null.\n"
-    "2. 수치가 나타내는 것과 다른 대상/방식을 말하거나(오도) 의미를 강하게 왜곡하면\n"
-    "   aligned=false, dimension 에 핵심 차원 하나(subject|population|unit|aggregation|period).\n"
-    "   예: 수치는 '전체'인데 기사는 '청년'이라 단정 → population.\n"
-    "3. reason 에 판정 근거를 한 문장으로 적는다.\n"
-    "4. 애매하면 보수적으로 aligned=false."
+    "1. [1]·[2] 모두 문제없으면 aligned=true, dimension=null.\n"
+    "2. 둘 중 하나라도 왜곡이면 aligned=false. dimension: 해석 비약이면 'framing',\n"
+    "   메타 불일치면 subject|population|unit|aggregation|period 중 하나.\n"
+    "3. reason 에 A·B(또는 어긋난 차원)를 짚어 한 문장으로 적는다.\n"
+    "4. 명백한 비약·왜곡만 false. 단순 배경설명·통상적 우려·일반적 수사는 aligned=true\n"
+    "   (확신 없으면 true — 과잉탐지 금지)."
 )
 
 CHECK_ALIGNMENT_USER = (
-    "[기사 주장]\n"
+    "[기사 원문]\n"
+    "{article}\n"
+    "\n"
+    "[검증 대상 수치 — KOSIS 공식값과 '값' 일치 확인됨]\n"
     "문장: {sentence}\n"
     "주제: {claim_subject}\n"
     "모집단: {claim_population}\n"
@@ -257,7 +274,9 @@ CHECK_ALIGNMENT_USER = (
     "모집단: {ev_population}\n"
     "단위: {ev_unit}\n"
     "기간: {ev_period}\n"
-    "전체(합계)로 대체됨: {ev_population_fallback}"
+    "전체(합계)로 대체됨: {ev_population_fallback}\n"
+    "\n"
+    "[지시] 원문에서 이 수치의 사실 문장 A와 해석 문장 B를 찾아 [1] 해석 왜곡과 [2] 메타 정합성을 판정하라."
 )
 
 

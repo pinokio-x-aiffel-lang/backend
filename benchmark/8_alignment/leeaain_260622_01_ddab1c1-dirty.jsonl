@@ -1,0 +1,2 @@
+{"row_id": 124, "stage": 8, "label": "M", "input": {"verifications": {"claim_results": [{"claim_id": "clm-0001", "verdict": "T"}]}}, "output": {"verdict_after": "M"}, "gold_M": true, "pred_M": true, "nei": false, "gold_dimension": "극단 프레이밍 단정"}
+{"row_id": 125, "stage": 8, "label": "M", "input": {"verifications": {"claim_results": [{"claim_id": "clm-0001", "verdict": "T"}]}}, "output": {"verdict_after": "M"}, "gold_M": true, "pred_M": true, "nei": false, "gold_dimension": "오도적 수치 결합"}

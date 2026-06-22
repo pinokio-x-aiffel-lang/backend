@@ -110,7 +110,15 @@ def main():
     m = score_retrieve(records)
     sec = blank_sections()
     sec["개요"] = "4단계 **값-기반 Recall** — 파이프라인이 검색한 후보표(candidates) 중 하나라도 figure 값을 실제로 담고 있는지 KOSIS raw로 확인. 정답 '표' 라벨링 없이 figure 값(SSOT, 독립)만으로 측정."
-    sec["테스트 방법"] = f"T {len(records)}개 figure 대상. 각 figure의 값을 후보표들에서 raw call_kosis로 순위대로 조회 → 값이 처음 든 후보 순위=gold_rank → Recall@N/MRR. 비순환(값=독립, 후보=캡처, 확인=raw KOSIS)."
+    sec["테스트 방법"] = (
+        f"T {len(records)}개 figure 대상. 각 figure의 값을 후보표들에서 raw call_kosis로 순위대로 조회 "
+        "→ 값이 처음 든 후보 순위=gold_rank → Recall@N/MRR. 비순환(값=독립, 후보=캡처, 확인=raw KOSIS).\n\n"
+        "**데이터 출처 (골든셋 ≠ 입력, 서로 다른 파일)**\n"
+        "- 골든셋(정답): `benchmark/data/ssot/260614_master_eval_213_parsed_human_checked_SSOT.jsonl` 의 "
+        "`gold_figures` — T행 figure 값(사람검수·독립). 채점 기준.\n"
+        "- 입력(채점 대상): `benchmark/data/4_retrieve/4_source_1.jsonl` 의 `candidates` — "
+        "파이프라인이 검색한 후보 표 풀(캡처). `gold_tbl_id` 칸은 비움(표-라벨링 대신 값-기반 채점).\n"
+        "- 채점 질문: 입력(후보 풀)이 골든셋 figure 값을 담고 있나 → gold_rank.")
     sec["분석"] = (
         "**Recall@N 읽는 법**: @ 뒤 숫자 = 상위 몇 개 후보까지 보는가. "
         "@1=정답이 1순위 / @3=상위 3개 안 / @10=상위 10개 안 비율. 넓게 볼수록(N↑) 값 상승, 만점 1.0. "

@@ -419,19 +419,21 @@ async def _resolve_period(raw: str, base: str) -> str:
 # ── 엔트리포인트 ──────────────────────────────────────────────────────────────
 
 async def _normalize_one(claim: Claim, base: str) -> None:
-    """claim 1건 정규화. value·period·compare_period 병렬 처리."""
-    tasks: list = [
+    """claim 1건 정규화. value·주 시점은 병렬, 비교 기준 시점은 주 시점 기준으로 후처리.
+
+    '전년 동월/전분기/전년 대비' 같은 비교 기준은 발행일이 아니라 **주 시점(period)** 에서
+    빼야 한다(2025-03 의 '전년 동월' = 2024-03). 그래서 주 시점을 먼저 정규화하고 그 값을
+    base 로 삼아 compare_period 를 푼다(발행일 base 면 발행월 기준으로 어긋남 → 증감 NEI).
+    """
+    claim.value.llm_value, claim.period_value.llm_value = await asyncio.gather(
         _resolve_value(claim.value.raw),
         _resolve_period(claim.period_value.raw, base),
-    ]
+    )
     if claim.compare_period_value:
-        tasks.append(_resolve_period(claim.compare_period_value.raw, base))
-
-    results = await asyncio.gather(*tasks)
-    claim.value.llm_value        = results[0]
-    claim.period_value.llm_value = results[1]
-    if claim.compare_period_value:
-        claim.compare_period_value.llm_value = results[2]
+        cmp_base = claim.period_value.llm_value or base
+        claim.compare_period_value.llm_value = await _resolve_period(
+            claim.compare_period_value.raw, cmp_base
+        )
 
 
 async def normalize_claim(master_schema: MasterSchema) -> None:

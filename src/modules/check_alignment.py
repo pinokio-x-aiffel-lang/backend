@@ -42,7 +42,9 @@ _ALIGNMENT_SCHEMA = {
 }
 
 # LLM 이 짚은 오도/왜곡 차원 → mismatch_type 매핑.
+# framing = 사실문장 A 를 기자해석 B 가 비약·왜곡(이 단계의 핵심 탐지 대상).
 _DIMENSION_TO_MISMATCH = {
+    "framing": MismatchType.FRAMING,
     "subject": MismatchType.SUBJECT,
     "population": MismatchType.POPULATION,
     "unit": MismatchType.UNIT,
@@ -95,9 +97,12 @@ async def check_alignment(master_schema: MasterSchema) -> None:
     if not targets:
         return
 
+    # 원문 맥락: 사실 문장 A 와 기자 해석 문장 B 를 LLM 이 찾아 비교(프레이밍 왜곡 탐지).
+    article_text = master_schema.article.content if master_schema.article else ""
+
     judgments = await asyncio.gather(
         *(
-            _judge(claims[cr.claim_id], evidence_by_claim[cr.claim_id])
+            _judge(claims[cr.claim_id], evidence_by_claim[cr.claim_id], article_text)
             for cr in targets
         )
     )
@@ -146,13 +151,18 @@ def apply_alignment(metric: MetricResult, judgment: AlignmentJudgment | None) ->
             metric.mismatch_type = mt
 
 
-async def _judge(claim: Claim, evidence: Evidence) -> AlignmentJudgment | None:
-    """기사 주장이 수치를 오도/왜곡 없이 전달했나 LLM 판정. 실패 시 None."""
+async def _judge(claim: Claim, evidence: Evidence, article: str = "") -> AlignmentJudgment | None:
+    """기사 주장이 수치를 오도/왜곡 없이 전달했나 LLM 판정. 실패 시 None.
+
+    원문(article)을 함께 줘서, LLM 이 수치의 사실 문장 A 와 그 해석 문장 B 를 찾아
+    B 가 A 를 왜곡(framing)하는지 + 메타 정합성(주제/모집단/단위/기간)을 함께 판정한다.
+    """
     messages = [
         {"role": "system", "content": CHECK_ALIGNMENT_SYSTEM},
         {
             "role": "user",
             "content": CHECK_ALIGNMENT_USER.format(
+                article=article or "(원문 없음)",
                 sentence=claim.sentence,
                 claim_subject=claim.subject,
                 claim_population=claim.population or "(불명)",
