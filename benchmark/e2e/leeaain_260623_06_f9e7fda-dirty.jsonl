@@ -1,0 +1,8 @@
+{"stage": "2 claim", "metric": "문장 F1 0.959 (P 0.983·R 0.937) · claim_type acc 0.551", "method": "격리(LLM)"}
+{"stage": "3 normalize", "metric": "value 0.955 · period 0.238", "method": "cascade"}
+{"stage": "4 retrieve", "metric": "Recall@10 0.350 · @1 0.128 · MRR 0.210", "method": "value-recall"}
+{"stage": "5 fetch", "metric": "coverage 0.498 · 셀값 0.411", "method": "cascade"}
+{"stage": "6 rank", "metric": "Top-1 0.516", "method": "cascade"}
+{"stage": "7 metric", "metric": "macro-F1 0.560 · recall[T] 0.154·F 0.667·N 1.0", "method": "cascade"}
+{"stage": "8 alignment", "metric": "M-recall 0.459 (M-precision 0.944·M-F1 0.618)", "method": "cascade"}
+{"stage": "9 verdict", "metric": "exact-match 1.000", "method": "격리(결정적)"}
