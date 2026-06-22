@@ -178,6 +178,16 @@ MAP_CLAIM_ACT = ModelPreset(
     temperature=0.0,
 )
 
+# [P3 실험] HCX-007 단독 FC — thinking 없이 function calling만.
+# tools 전달 시 llm_caller가 thinking을 "none"으로 자동 처리 → 멀티턴 FC 가능.
+MAP_CLAIM_HCX007_FC = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=2048,
+    temperature=0.0,
+    # thinking_effort 미지정 → tools와 함께 호출 시 none으로 처리됨
+)
+
 # SELECT_KOSIS_CELL A/B 비교용 — Claude Sonnet (추론+구조화 출력 동시 처리 가능).
 # KOSIS_SELECT_MODEL=claude 환경변수로 활성화.
 SELECT_KOSIS_CELL_CLAUDE = ModelPreset(
