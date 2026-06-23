@@ -1,0 +1,6 @@
+{"stage": "e2e", "metric": "전체 claim", "before_ad01631_0610": "318", "current_0623": "393", "delta": "(추출 비결정성)"}
+{"stage": "e2e", "metric": "evidence_reach (셀 도달)", "before_ad01631_0610": "79/318 = 24.8%", "current_0623": "161/393 = 41.0%", "delta": "+16.1pp ↑"}
+{"stage": "e2e", "metric": "value_reach (값 도달)", "before_ad01631_0610": "79/318 = 24.8%", "current_0623": "161/393 = 41.0%", "delta": "+16.1pp ↑"}
+{"stage": "e2e", "metric": "coverage (T/F/M 판정)", "before_ad01631_0610": "19/318 = 6.0%", "current_0623": "98/393 = 24.9%", "delta": "+19.0pp ↑"}
+{"stage": "e2e", "metric": "gap (값 왔는데 NEI)", "before_ad01631_0610": "60/318 = 18.9%", "current_0623": "63/393 = 16.0%", "delta": "-2.8pp ↓ (개선)"}
+{"stage": "e2e", "metric": "verdict 분포", "before_ad01631_0610": "N=299, T=1, F=17, M=1", "current_0623": "N=295, T=8, F=71, M=19", "delta": "F 17→71, M 1→19, T 1→8 ↑"}

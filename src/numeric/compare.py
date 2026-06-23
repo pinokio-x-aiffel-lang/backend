@@ -90,6 +90,20 @@ def _parse_range(raw: str) -> tuple[float | None, float | None] | None:
     return None
 
 
+# 단위 메타로 환산이 안 될 때 '스케일 근사 가정비교'를 허용하는 배율 상한.
+# 두 값의 배율이 이 안이면 같은 척도로 보고 비교한다(claim 단위 '불명'·미인식 구제).
+# 세 33.9 ↔ 건 178734(배율 ~5000)처럼 크게 벌어지면 셀 오매칭 신호 → 가정 거부(NEI 유지).
+_ASSUME_SCALE_FACTOR = 100.0
+
+
+def _scale_compatible(a: float, b: float, factor: float = _ASSUME_SCALE_FACTOR) -> bool:
+    """두 값이 같은 척도로 볼 만큼 가까운가(절대값 배율 ≤ factor). 0 은 양쪽 0일 때만 호환."""
+    a, b = abs(a), abs(b)
+    if a == 0 or b == 0:
+        return a == b
+    return max(a, b) / min(a, b) <= factor
+
+
 def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
     """단일 셀 직접비교. evidence.value 가 있는 ABSOLUTE/VERIFIABLE claim 전용.
 
@@ -116,6 +130,17 @@ def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
     # 빈 단위는 '미지의 단위'가 아니라 '메타 누락' — 값이 정확해도 NEI 로 죽던 문제(M→T→[8] 차단)를 푼다.
     if status == "unknown_unit" and not (evidence.unit or "").strip():
         aligned, status = kosis_raw, "assumed_same"
+    # [방법1/3] claim 단위 '불명'·미인식 단위 — 환산은 불가하나 두 값 스케일이 근사하면
+    # 같은 척도로 보고 '가정비교'한다. 이 가정은 근사라 불일치 시 confident F 를 내지 않는다
+    # (아래 회귀 완화). 스케일이 크게 벌어지면 셀 오매칭 신호 → 가정 거부(NEI 유지).
+    unit_assumed = False
+    if (
+        status in ("unknown_unit", "incompatible")
+        and rng is None
+        and parsed.kind == ValueKind.SCALAR
+        and _scale_compatible(parsed.number, kosis_raw)
+    ):
+        aligned, status, unit_assumed = kosis_raw, "assumed_scale", True
     if status in ("incompatible", "unknown_unit", "non_absolute"):
         return MetricResult(
             operation=operation,
@@ -131,6 +156,8 @@ def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
         notes.append(f"단위환산 {evidence.unit}→{claim.unit}")
     elif status == "assumed_same":
         notes.append("KOSIS 단위 메타 누락 → claim 단위로 가정 비교")
+    elif status == "assumed_scale":
+        notes.append(f"단위 미해소(claim={claim.unit!r} kosis={evidence.unit!r}) → 스케일 근사 가정비교")
 
     # 범위 포함 비교 — 경계 [lo,hi] 안에 KOSIS 값이 들어오면 T, 아니면 F(MAGNITUDE).
     if rng is not None:
@@ -158,6 +185,21 @@ def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
 
     tol = tolerance_abs(claim.value.llm_value)
     within = abs_diff <= tol
+
+    # [회귀 완화] 단위를 '가정'해 비교한 경우(assumed_scale) 불일치는 단위·셀 오매칭일 수
+    # 있으므로 confident F 를 내지 않고 NEI(검토필요)로 둔다 — 맞는 기사를 거짓이라 단정하는
+    # false-F 방지. 일치(within)면 T 유지(→[8] 정합성 재검토가 단위 오도를 거른다).
+    if unit_assumed and not within:
+        return MetricResult(
+            operation=operation,
+            claim_value=claim_value,
+            kosis_value=aligned,
+            rel_diff=rel_diff,
+            within_tolerance=False,
+            verdict=Verdict.NOT_ENOUGH_INFO,
+            mismatch_type=MismatchType.UNIT,
+            note="; ".join([*notes, "단위 가정 비교 불일치 → 검토 필요(억지 F 방지)"]) or None,
+        )
 
     verdict = Verdict.TRUE if within else Verdict.FALSE
     mismatch = None if within else _classify_mismatch(claim, evidence, abs_diff, tol)
@@ -220,6 +262,7 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
     claim_num = parsed.number
     unit = (claim.unit or "").strip()
     notes: list[str] = []
+    unit_assumed = False
 
     if unit in _RATE_UNITS:
         if v_old == 0:
@@ -232,6 +275,14 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
     else:
         delta = v_new - v_old
         aligned, status = align_value(delta, evidence.unit, claim.unit)
+        # [방법2] KOSIS 단위 빈(메타 누락) → claim 단위로 가정. 증감은 두 셀(현재·기준)이
+        # 얽혀 셀 오매칭 위험이 커, 빈단위도 '가정'으로 보고 불일치 시 F 를 보류한다
+        # (예: 30~34세 출산율 +3.7 을 합계출산율 셀 0.748 에 매칭 → 억지 F 방지).
+        if status == "unknown_unit" and not (evidence.unit or "").strip():
+            aligned, status, unit_assumed = delta, "assumed_same", True
+        # [방법1/3] claim 단위 '불명'·미인식 — 스케일 근사면 delta 그대로 가정비교(불일치 시 F 보류).
+        if status in ("unknown_unit", "incompatible") and _scale_compatible(claim_num, delta):
+            aligned, status, unit_assumed = delta, "assumed_scale", True
         if status in ("incompatible", "unknown_unit"):
             return MetricResult(
                 operation=operation, claim_value=claim_num, kosis_value=delta,
@@ -239,9 +290,13 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
                 note=f"증감 단위 비교불가({status}): claim={claim.unit!r} kosis={evidence.unit!r}",
             )
         # %p(포인트)는 변화량이라 환산 부적격(non_absolute) → 차이를 그대로 둔다(둘 다 동단위).
-        computed = delta if status == "non_absolute" else aligned
+        computed = delta if status in ("non_absolute", "assumed_same", "assumed_scale") else aligned
         if status == "ok":
             notes.append(f"단위환산 {evidence.unit}→{claim.unit}")
+        elif status == "assumed_same":
+            notes.append("KOSIS 단위 메타 누락 → claim 단위로 가정 비교")
+        elif status == "assumed_scale":
+            notes.append(f"단위 미해소(claim={claim.unit!r} kosis={evidence.unit!r}) → 스케일 근사 가정비교")
         notes.append(f"절대증감 신 {v_new} − 구 {v_old} = {computed:.4g}")
 
     tol = tolerance_abs(claim.value.llm_value)
@@ -256,6 +311,16 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
             mismatch = MismatchType.DIRECTION
         else:
             mismatch = MismatchType.MAGNITUDE
+
+    # [회귀 완화] 단위를 '가정'해 증감 비교한 경우, 불일치는 단위·셀 오매칭일 수 있어
+    # confident F 대신 NEI(검토필요)로 둔다(억지 F 방지). 일치면 T 유지(→[8] 재검토).
+    if unit_assumed and not within:
+        return MetricResult(
+            operation=operation, claim_value=claim_num, kosis_value=v_new,
+            computed_value=round(computed, 4), within_tolerance=False,
+            verdict=Verdict.NOT_ENOUGH_INFO, mismatch_type=MismatchType.UNIT,
+            note="; ".join([*notes, "단위 가정 증감 비교 불일치 → 검토 필요(억지 F 방지)"]) or None,
+        )
 
     if evidence.population_fallback:
         notes.append("population_fallback: 요청 집단 대신 전체값 기준 증감 — [8] 정합성 확인 대상")

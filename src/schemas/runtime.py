@@ -368,6 +368,8 @@ class MasterSchema(BaseModel):
     """
 
     content: str | None = Field(default=None, exclude=True)  # 원본 입력 (URL/본문)
+    # 사용자 입력/웹서치로 해소한 기사 발행일(YYYY-MM[-DD]). load_article 이 article.published_at 에 우선 적용.
+    published_at_override: str | None = Field(default=None, exclude=True)
     article: Article | None = None
     sentences: list[str] = Field(default_factory=list)  # 검증 단위 원자 문장 ([2]에서 적재)
     claims: list[Claim] = Field(default_factory=list)

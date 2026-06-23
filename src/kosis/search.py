@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -95,19 +96,30 @@ def search_tables_many(
     top_n: int = 5,
     sort: str = "RANK",
 ) -> dict[str, list[SearchHit]]:
-    """여러 키워드를 순회 검색. 키워드별 결과 dict + 총/평균 소요시간 로깅."""
-    results: dict[str, list[SearchHit]] = {}
-    t0 = time.perf_counter()
-    for kw in keywords:
+    """여러 키워드를 병렬 검색. 키워드별 결과 dict + 총/평균 소요시간 로깅.
+
+    키워드 변형들을 ThreadPoolExecutor 로 동시 검색한다(fetch_table_metadata 와 동일 패턴).
+    rate limit·Session 은 공유 client 가 보장하므로 동시 발사해도 분당 한도를 넘지 않는다
+    (한도 도달 시 공유 client 가 대기시킴 → 폭증 없음). 한 키워드 실패(KosisError)는 흡수해
+    빈 리스트로 두고 다른 변형 결과는 보존한다.
+    """
+    if not keywords:
+        return {}
+
+    def _one(kw: str) -> list[SearchHit]:
         try:
-            results[kw] = search_tables(kw, api_key, top_n=top_n, sort=sort)
+            return search_tables(kw, api_key, top_n=top_n, sort=sort)
         except KosisError as exc:
             # 한 키워드 실패가 다른 변형 결과까지 버리지 않게 흡수([4] 다중검색용).
             logger.warning("KOSIS 검색 '%s' 실패(흡수): %s", kw, exc)
-            results[kw] = []
+            return []
+
+    t0 = time.perf_counter()
+    with ThreadPoolExecutor(max_workers=len(keywords)) as ex:
+        results = dict(zip(keywords, ex.map(_one, keywords)))
     total = time.perf_counter() - t0
     logger.info(
-        "KOSIS 검색 %d개 키워드: 총 %.3fs (평균 %.3fs/키워드)",
+        "KOSIS 검색 %d개 키워드(병렬): 총 %.3fs (평균 %.3fs/키워드)",
         len(keywords), total, total / len(keywords) if keywords else 0.0,
     )
     return results

@@ -1,0 +1,8 @@
+{"stage": 2, "method": "isolated-LLM", "metrics": {"sent_F1": 0.959, "P": 0.983, "R": 0.937, "ctype_acc": 0.551}, "n": 100, "src": "benchmark/2_claim/leeaain_260623_01"}
+{"stage": 3, "method": "cascade", "metrics": {"value_acc": 1.0, "period_acc": 0.238}, "n": 22, "src": "benchmark/3_normalize/leeaain_260623_01"}
+{"stage": 4, "method": "value-recall", "metrics": {"R@1": 0.128, "R@3": 0.279, "R@10": 0.35, "MRR": 0.21}, "n": 226, "src": "benchmark/4_retrieve/leeaain_260623_01"}
+{"stage": 5, "method": "cascade", "metrics": {"coverage": 0.493, "cell_acc": 0.415}, "n": 215, "src": "benchmark/5_fetch/leeaain_260623_01"}
+{"stage": 6, "method": "cascade", "metrics": {"top1": 0.548}, "n": 31, "src": "benchmark/6_rank/leeaain_260623_01"}
+{"stage": 7, "method": "cascade", "metrics": {"macro_F1": 0.506, "recall_T": 0.103, "recall_F": 0.583, "recall_N": 1.0}, "n": 126, "src": "benchmark/7_metric/leeaain_260623_01"}
+{"stage": 8, "method": "cascade", "metrics": {"M_recall": 0.486, "M_precision": 0.947, "M_F1": 0.643}, "n": 166, "src": "benchmark/8_alignment/leeaain_260623_01"}
+{"stage": 9, "method": "isolated-deterministic", "metrics": {"exact_match": 1.0}, "n": 11, "src": "benchmark/9_verdict/leeaain_260623_01"}

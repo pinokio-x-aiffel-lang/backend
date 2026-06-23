@@ -36,10 +36,9 @@ from src.schemas.runtime import MasterSchema
 # ── Pipeline ─────────────────────────────────────────────────────────────────
 
 class Pipeline:
-    async def run(self, content: str, on_step=None, published_at: str | None = None
-                  ) -> AsyncGenerator[PipelineEvent, None]:
+    async def run(self, content: str, on_step=None, published_at: str | None = None) -> AsyncGenerator[PipelineEvent, None]:
         instrument_kosis()  # KOSIS 호출 span (멱등; langfuse 비활성 시 no-op)
-        master_schema = MasterSchema(content=content)
+        master_schema = MasterSchema(content=content, published_at_override=published_at)
 
         async for ev in self._step(1, "기사 내용 확인", load_article, master_schema, on_step): yield ev
         # 발행일 override(상대시점 base) — 호출자가 주면 [1] 직후 주입. 없으면 load_article 기본값.

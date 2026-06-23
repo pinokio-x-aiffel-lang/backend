@@ -1,12 +1,20 @@
 from __future__ import annotations
 
+import logging
+import re
 from typing import Optional
 
 import requests
 from selectolax.lexbor import LexborHTMLParser
 
 from src.article import asiae, chosun, generic, naver, newstapa, ohmynews
+from src.article.websearch import build_query, search_news
 from src.schemas.runtime import Article, MasterSchema
+
+logger = logging.getLogger(__name__)
+
+# 발행일을 찾으려 크롤할 검색결과 상한(비용·지연 게이팅).
+_SEARCH_CRAWL_CAP = 5
 
 # 일부 언론사가 기본 UA 를 차단하므로 브라우저류 UA 로 요청한다.
 _USER_AGENT = (
@@ -122,6 +130,73 @@ def _overlay(article: Article, meta: dict[str, Optional[str]]) -> None:
 
 
 # --------------------------------------------------------------------------- #
+# 발행일 웹 검색 (본문 입력 + 발행일 미입력 시 폴백)
+# --------------------------------------------------------------------------- #
+def _norm(s: str) -> str:
+    """본문 일치 비교용 — 공백 제거."""
+    return re.sub(r"\s+", "", s or "")
+
+
+def _salient_numbers(text: str) -> list[str]:
+    """본문의 특징 수치(3자리+ 연속 숫자) 집합 — 통계 기사의 '지문'.
+
+    같은 통계를 다룬 기사는 같은 수치(예: '2858'·'9000'·'3000')를 공유한다.
+    리드 문장 표현은 언론사마다 달라도 핵심 수치는 같으므로 매칭에 견고하다.
+    """
+    groups = re.findall(r"\d+", text or "")
+    return list(dict.fromkeys(g for g in groups if len(g) >= 3))
+
+
+def _same_article(src: str, cand: str) -> bool:
+    """입력 본문(src)과 크롤한 후보 기사(cand)가 같은 기사(같은 사건)인지.
+
+    ① 앞부분 스니펫(공백 무시)이 그대로 들어 있으면 동일(신디케이션) 기사.
+    ② 또는 본문의 특징 수치(3자리+)가 다수 일치하면 같은 통계 기사로 본다 — 언론사마다
+       리드 표현이 달라 ①만으론 놓치므로(붙여넣은 본문 ≠ 원문 리드) 보강.
+    엉뚱한 기사·원문 source 채택을 막는 안전장치.
+    """
+    src_n, cand_n = _norm(src), _norm(cand)
+    if not cand_n:
+        return False
+    if len(src_n) >= 15 and src_n[:40] in cand_n:
+        return True
+    nums = _salient_numbers(src)
+    if len(nums) >= 2:
+        cand_digits = re.sub(r"\D", "", cand)
+        hit = sum(1 for n in nums if n in cand_digits)
+        return hit >= max(2, round(len(nums) * 0.6))
+    return False
+
+
+def resolve_published_at_from_web(content: str) -> Optional[str]:
+    """본문 입력일 때 네이버 뉴스 검색으로 원문 기사를 찾아 발행일을 가져온다. 실패 시 None.
+
+    네이버가 원문 URL(originallink)+발행일(pubDate)을 주므로: 후보를 기존 크롤러로 크롤해
+    본문이 입력과 일치하는 기사(=원문 source 아닌 그 기사)만 채택하고, 그 기사의 발행일을
+    쓴다. 크롤이 발행일을 못 뽑으면 네이버 pubDate 로 폴백. 동기 함수 — 호출부가
+    asyncio.to_thread 로 감싸 비차단 실행한다.
+    """
+    hits = search_news(build_query(content), num=_SEARCH_CRAWL_CAP)
+    for h in hits:
+        try:
+            cand = _load_from_url(h.url)
+        except LoadArticleError as exc:
+            logger.warning("발행일 검색: 크롤 실패 %s — %s", h.url, exc)
+            # 크롤 실패 시 제목+요약으로 일치 추정 + 네이버 pubDate 폴백
+            if h.pub_date and _same_article(content, f"{h.title} {h.description}"):
+                logger.info("발행일 검색(네이버 pubDate): %s → %s", h.url, h.pub_date)
+                return h.pub_date
+            continue
+        if _same_article(content, cand.content or ""):
+            published = cand.published_at if isinstance(cand.published_at, str) else None
+            result = published or h.pub_date
+            logger.info("발행일 검색 성공: %s → published_at=%s", h.url, result)
+            return result
+    logger.info("발행일 검색: 일치 기사 없음(검색결과 %d건)", len(hits))
+    return None
+
+
+# --------------------------------------------------------------------------- #
 # pipeline step
 # --------------------------------------------------------------------------- #
 async def load_article(master_schema: MasterSchema) -> None:
@@ -150,3 +225,8 @@ async def load_article(master_schema: MasterSchema) -> None:
         master_schema.article = _load_from_url(content)
     else:
         master_schema.article = _load_from_text(content)
+
+    # 발행일 우선순위: 사용자 입력/웹서치로 해소한 값(published_at_override) > 크롤/더미값.
+    # (상대시점 "지난달/전년"을 기사별 실제 발행일 기준으로 정규화하기 위함.)
+    if master_schema.published_at_override:
+        master_schema.article.published_at = master_schema.published_at_override

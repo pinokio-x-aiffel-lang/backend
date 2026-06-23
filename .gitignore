@@ -48,6 +48,9 @@ kosis/aain/*.jsonl
 kosis/aain/*.idx
 kosis/aain/*.backup
 
+# === benchmark capture snapshots (regenerable, ~20MB each, local-only) ===
+benchmark_aain/data/*_capture_v2_snapshots.jsonl
+
 data/*.*
 
 # === large processed data (regenerable, >50 MB) ===

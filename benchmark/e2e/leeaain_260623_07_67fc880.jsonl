@@ -1,0 +1,15 @@
+{"stage": "e2e", "metric": "기사 완주율", "value": "1.000 (213/213)"}
+{"stage": "e2e", "metric": "추출 claim 수", "value": "392"}
+{"stage": "e2e", "metric": "[4] 검색 hit>0", "value": "1.000 (392/392)"}
+{"stage": "e2e", "metric": "[5] evidence 확보", "value": "0.390 (153/392)"}
+{"stage": "e2e", "metric": "판정값 도달(value-reach)", "value": "0.390 (153/392)"}
+{"stage": "e2e", "metric": "최종 판정 분포", "value": "T 8·F 74·M 18·N 292"}
+{"stage": "e2e", "metric": "coverage(생존율)", "value": "0.255 (100/392)"}
+{"stage": "e2e", "metric": "gap", "value": "0.135"}
+{"stage": "e2e", "metric": "최종 verdict macro-F1", "value": "0.552"}
+{"stage": "e2e", "metric": "recall[T]", "value": "0.132 (5/38)"}
+{"stage": "e2e", "metric": "recall[F]", "value": "0.686 (24/35)"}
+{"stage": "e2e", "metric": "recall[N]", "value": "1.000 (50/50)"}
+{"stage": "e2e", "metric": "M-recall", "value": "0.459 (17/37)"}
+{"stage": "e2e", "metric": "M-precision", "value": "0.944 (17/18)"}
+{"stage": "e2e", "metric": "집계 exact-match", "value": "1.000"}
