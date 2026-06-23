@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from pydantic import BaseModel, Field
 
 from src.schemas.runtime import MasterSchema
@@ -128,6 +130,17 @@ def _overall_verdict(codes: list[str]) -> str:
     return "+".join(present) if present else "NEI"
 
 
+# 표시용 수치 가드(최종 방어선): 숫자/부호/범위(~)/비율(:)/% 꼴 전체일치만 통과시키고
+# 그 외(한글·메타문장·'불명'·숫자로 시작하는 산문)는 None → 프론트가 "—" 로 표시.
+# 프론트 fmtNumeric 은 비숫자 문자열을 그대로 노출하므로 경계에서 차단해야 한다.
+_NUMERIC = re.compile(r"[+\-]?\d[\d,]*(?:\.\d+)?(?:[~:]\d[\d,]*(?:\.\d+)?)?%?")
+
+
+def _numeric_or_none(s: str | None) -> str | None:
+    s = (s or "").strip()
+    return s if s and _NUMERIC.fullmatch(s) else None
+
+
 def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
     """완성된 MasterSchema를 프론트 계약(VerifyResponse)으로 변환."""
     if master_schema.article is None or master_schema.verifications is None:
@@ -148,14 +161,14 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
                 subject=c.subject,
                 claim_type=c.claim_type,
                 claim_value=c.value.raw,
-                normalized_value=c.value.llm_value or None,
-                unit=c.unit,
-                period=c.period_value.llm_value or c.period_value.raw,
+                normalized_value=_numeric_or_none(c.value.llm_value),
+                unit=c.unit or None,
+                period=(c.period_value.llm_value or c.period_value.raw) or None,
                 compare_period=(
                     c.compare_period_value.llm_value if c.compare_period_value else None
                 ),
-                population=c.population,
-                cited_source=c.cited_source,
+                population=c.population or None,
+                cited_source=c.cited_source or None,
             ),
         )
         for c in master_schema.claims
@@ -172,7 +185,7 @@ def to_verify_response(master_schema: MasterSchema) -> VerifyResponse:
                 claim_id=r.claim_id,
                 verdict=code,
                 mismatch_type=r.mismatch_type,
-                claim_value=r.claim_value,
+                claim_value=_numeric_or_none(r.claim_value),
                 kosis_value=r.kosis_value,
                 explanation=r.explanation,
                 # 0.0(미설정 기본값)은 0% 오표시이므로 None 으로. 실산출 시 그대로 흐름.

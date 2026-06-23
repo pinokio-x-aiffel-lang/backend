@@ -32,11 +32,28 @@ _VALID_CLAIM_TYPES: frozenset[str] = frozenset(
 )
 
 
-def _to_str(val: object, fallback: str = "불명") -> str:
-    """LLM이 문자열 대신 리스트나 None을 반환할 때 안전하게 문자열로 변환."""
+def _to_str(val: object, fallback: str = "") -> str:
+    """LLM이 문자열 대신 리스트나 None을 반환할 때 안전하게 문자열로 변환.
+
+    누락 필드의 기본값은 빈 문자열이다. '불명' 같은 미상 sentinel 을 데이터에 채우면
+    정규화가 LLM 을 부르거나(메타응답 누수) KOSIS 검색을 오염시키므로 넣지 않는다.
+    미상 라벨('불명'/'—')은 표시 경계(DTO/프론트)에서만 입힌다.
+    """
     if isinstance(val, list):
         return ", ".join(str(v) for v in val) if val else fallback
     return str(val) if val else fallback
+
+
+# LLM 이 미상 표기로 출력할 수 있는 토큰들 — 데이터 계층에서 빈값으로 흡수한다.
+_UNKNOWN_TOKENS: frozenset[str] = frozenset({
+    "불명", "미상", "알 수 없음", "알수없음", "해당 없음", "해당없음",
+    "확인 불가", "확인불가", "정보 없음", "정보없음", "n/a", "na",
+})
+
+
+def _blank_if_unknown(s: str) -> str:
+    """미상 sentinel('불명'·'알 수 없음'·'N/A' 등) 전체 일치면 빈값으로. 그 외는 원문 보존."""
+    return "" if s.strip().lower() in _UNKNOWN_TOKENS else s
 
 
 def _parse_claim_type(raw: object) -> ClaimType:
@@ -171,27 +188,29 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
         if period_type not in _VALID_PERIOD_TYPES:
             period_type = "Y"
 
-        compare_raw = _to_str(item.get("compare_period_raw"), "").strip()
+        compare_raw = _blank_if_unknown(_to_str(item.get("compare_period_raw")).strip())
         compare_period_value = (
             ValueSlot(raw=compare_raw, llm_value="", is_inferred=False)
-            if compare_raw and compare_raw != "불명" else None
+            if compare_raw else None
         )
 
         claims.append(
             Claim(
                 claim_id=f"clm-{idx:04d}",
                 article_id=master_schema.article.article_id,
-                sentence=_to_str(item.get("sentence"), ""),
+                sentence=_to_str(item.get("sentence")),
                 claim_type=_parse_claim_type(item.get("claim_type")),
-                subject=_to_str(item.get("subject")),
-                value=ValueSlot(raw=_to_str(item.get("value_raw")), llm_value="", is_inferred=False),
-                unit=_to_str(item.get("unit")),
+                subject=_blank_if_unknown(_to_str(item.get("subject"))),
+                value=ValueSlot(raw=_blank_if_unknown(_to_str(item.get("value_raw")).strip()),
+                                llm_value="", is_inferred=False),
+                unit=_blank_if_unknown(_to_str(item.get("unit"))),
                 aggregation="값",
                 period_type=period_type,
-                period_value=ValueSlot(raw=_to_str(item.get("period_raw")), llm_value="", is_inferred=False),
+                period_value=ValueSlot(raw=_blank_if_unknown(_to_str(item.get("period_raw")).strip()),
+                                       llm_value="", is_inferred=False),
                 compare_period_value=compare_period_value,
-                population=_to_str(item.get("population")),
-                cited_source=_to_str(item.get("cited_source")),
+                population=_blank_if_unknown(_to_str(item.get("population"))),
+                cited_source=_blank_if_unknown(_to_str(item.get("cited_source"))),
             )
         )
 
