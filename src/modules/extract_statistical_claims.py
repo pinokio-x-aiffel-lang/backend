@@ -6,6 +6,7 @@ import re
 
 from src.llm.client import LlmError
 from src.llm.model_presets import EXTRACT_CLAIMS
+from src.modules.normalize_claim import _parse_value
 from src.modules.preprocess_article import atomize_sentences, clean_and_split
 from src.observability.tracing import traced_chat
 from src.prompts.prompts import EXTRACT_CLAIMS_SYSTEM, EXTRACT_CLAIMS_USER
@@ -21,6 +22,10 @@ _RE_STAT_CANDIDATE = re.compile(
     r"|절반|반토막|갑절|곱절"
     r"|(?:두|세|네|다섯|여섯|일곱|여덟|아홉|열|스무|몇)\s?배"
 )
+
+# 퍼센트포인트(%p) 진위 판별 — raw 에 이 마커가 있으면 진짜 %p, 없이 그냥 '%'면 증감률(%).
+# LLM 이 "X% 증가"(증감률)를 %p 로 오라벨하는 걸 데이터 계층에서 교정하기 위함.
+_PCT_POINT_MARKER = re.compile(r"%\s*p|%\s*포인트|퍼센트\s*포인트")
 
 
 def _filter_stat_candidates(sentences: list[str]) -> list[str]:
@@ -54,6 +59,19 @@ _UNKNOWN_TOKENS: frozenset[str] = frozenset({
 def _blank_if_unknown(s: str) -> str:
     """미상 sentinel('불명'·'알 수 없음'·'N/A' 등) 전체 일치면 빈값으로. 그 외는 원문 보존."""
     return "" if s.strip().lower() in _UNKNOWN_TOKENS else s
+
+
+def _blank_if_non_numeric(s: str) -> str:
+    """수치 신호 없는 value_raw(방향·서술어 '하향 조정' 등)는 빈값으로.
+
+    아라비아 숫자가 있거나 룰 파서가 수치로 바꿀 수 있으면(절반·두 배·백만·61조원 등)
+    그대로 둔다. 둘 다 아니면 value 슬롯에 방향어가 들어온 것 → 비운다.
+    하류 정규화가 '조정'의 '조'를 조(10**12)로 오인하기 전에 입력 단계에서 차단한다.
+    """
+    s = s.strip()
+    if not s or re.search(r"\d", s):
+        return s
+    return s if _parse_value(s) is not None else ""
 
 
 def _parse_claim_type(raw: object) -> ClaimType:
@@ -194,6 +212,16 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
             if compare_raw else None
         )
 
+        value_raw = _blank_if_non_numeric(
+            _blank_if_unknown(_to_str(item.get("value_raw")).strip())
+        )
+        unit = _blank_if_unknown(_to_str(item.get("unit")))
+        # %p 오라벨 교정: "X% 증가"(증감률)를 LLM 이 %p 로 잘못 달면 % 로 되돌린다. 진짜
+        # 퍼센트포인트는 raw 에 '%p'/'%포인트' 마커가 있다. compute_change 가 %=증감률·%p=
+        # 절대증감 공식을 타므로, 오라벨 시 카운트 차이를 율과 비교해 거짓 F 가 난다.
+        if unit.strip().lower() == "%p" and "%" in value_raw and not _PCT_POINT_MARKER.search(value_raw):
+            unit = "%"
+
         claims.append(
             Claim(
                 claim_id=f"clm-{idx:04d}",
@@ -201,9 +229,8 @@ async def extract_statistical_claims(master_schema: MasterSchema) -> None:
                 sentence=_to_str(item.get("sentence")),
                 claim_type=_parse_claim_type(item.get("claim_type")),
                 subject=_blank_if_unknown(_to_str(item.get("subject"))),
-                value=ValueSlot(raw=_blank_if_unknown(_to_str(item.get("value_raw")).strip()),
-                                llm_value="", is_inferred=False),
-                unit=_blank_if_unknown(_to_str(item.get("unit"))),
+                value=ValueSlot(raw=value_raw, llm_value="", is_inferred=False),
+                unit=unit,
                 aggregation="값",
                 period_type=period_type,
                 period_value=ValueSlot(raw=_blank_if_unknown(_to_str(item.get("period_raw")).strip()),

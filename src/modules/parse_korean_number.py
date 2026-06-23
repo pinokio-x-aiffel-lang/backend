@@ -134,6 +134,12 @@ def _parse_native(s: str) -> int | None:
 def _parse_number_rule(raw: str) -> str | None:
     """아라비아+큰수단위(만/억/조/경) 규칙 파싱. 실패 시 None."""
     s = raw.strip().replace(",", "")
+    # 아라비아 숫자가 전혀 없으면 이 규칙 대상이 아니다 — 순수 한국어 수사는
+    # _parse_korean_numeral_rule 가 처리한다(_parse_value 에서 먼저 시도됨).
+    # '조정'의 '조', '명백'의 '백'처럼 단어 일부가 단위로 오인돼 허수가
+    # 생기는 것을 큰수·작은수 단위 공통으로 원천 차단한다.
+    if not re.search(r"\d", s):
+        return None
     # 한자어 숫자 글자가 단위 글자 바로 앞에 오면 처리 불가 → LLM에게
     # 예: "오천억"(오+천), "이십만"(이+십) — 일반 단어의 "사과","이유"는 제외
     if re.search(rf"[{_SINO_DIGIT}][{_UNIT_CHARS}]", s):
@@ -148,6 +154,11 @@ def _parse_number_rule(raw: str) -> str | None:
     for unit_char, unit_val in _BIG:
         if unit_char in s:
             pre, s = s.split(unit_char, 1)
+            # 단위 앞에 실제 계수(숫자·천/백/십)가 없으면 비수치어에서 온 단위 글자다.
+            # 예: "하향 조정"→"조", "억대"→"억" 처럼 단어 일부가 단위로 오인돼
+            # 1조(10**12)·1억 같은 허수가 만들어지는 것을 차단한다.
+            if not re.search(r"[\d천백십]", pre):
+                return None
             total += _coeff(pre) * unit_val
     for m in re.finditer(r"(\d*(?:\.\d+)?)\s*([천백십])", s):
         total += float(m.group(1) or "1") * _SMALL[m.group(2)]

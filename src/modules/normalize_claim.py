@@ -392,11 +392,18 @@ async def _llm_normalize_period(raw: str, base: str) -> str:
 
 # ── resolve (룰 베이스 → LLM 폴백) ───────────────────────────────────────────
 
+_HAS_ARABIC = re.compile(r"\d")
+
+
 async def _resolve_value(raw: str) -> str:
-    result = _parse_value(raw)                     # 룰 전부 시도(동기)
-    if result is None:
-        result = await _llm_normalize_value(raw)   # 전부 실패 시에만 LLM 1회
-    return result
+    result = _parse_value(raw)                      # 룰 전부 시도(동기)
+    if result is not None:
+        return result
+    # 룰 실패 & 아라비아 숫자도 없음 → 수치가 아닌 서술어('하향 조정' 등).
+    # LLM 폴백은 비수치 입력에서 그럴듯한 환각·메타응답을 내므로 호출하지 않고 빈값 반환.
+    if not _HAS_ARABIC.search(raw):
+        return ""
+    return await _llm_normalize_value(raw)          # 아라비아 숫자는 있으나 룰 미스 → LLM 1회
 
 
 _ABS_YEAR = re.compile(r"\d{4}")
