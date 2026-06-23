@@ -32,6 +32,42 @@ description: Use when starting a performance test, writing eval code, or saving 
 - 단계별 1차 지표 = `scoring.STAGE_SCORERS[stage]` (지표 목록은 HARNESS.md).
 - **전후 비교 필수**: 고정 SSOT + 모듈 격리(상류 gold 고정) + 비율은 `wilson_ci` + 분류 단계는 `mcnemar`(paired). 단일 숫자만 비교 금지(작은 표본·불균형 착시).
 
+## 측정 방식 통일 (frozen-독립 · e2e · cascade) — 팀 공통
+
+측정 도구를 단계마다 갈아끼우면 점수가 *모듈 품질*이 아니라 *측정법*을 반영한다 → "개선했는데 점수가 깎이는" 착시가 생긴다. 그래서 **역할별로 한 가지 측정법으로 고정**한다(단계마다 두 코드 왔다갔다 금지).
+
+- **모듈 품질 = `frozen-독립` 한 가지로만.** 독립 입력으로 `MasterSchema` 를 직접 구성 → **그 모듈만** 실행 → 독립 gold 로 채점. 표준 패턴 = `benchmark/eval_stage8.py`, 파일명 `eval_stage<N>_frozen.py`.
+  - **입력도 gold 도 둘 다 독립**이어야 한다. gold 만 독립이고 입력이 **파이프라인 캡처**(예 `v2_capture260619`)면, 상류 개선 시 캡처가 stale 해져 모듈을 *옛 상류 출력*으로 채점한다 — "캡처를 얼린 cascade"라 **금지**. 독립 입력 출처: SSOT claim · 병인님 `official_value`·`gold_tbl_id`·`gold_best_index` 등.
+  - frozen 은 **입력만 고정**이다. 모듈 내부의 LLM·KOSIS 호출은 그대로 발동(예: 5단계 frozen 도 라이브 KOSIS 호출). 격리 = 입력 독립이지 결정성 아님.
+- **e2e = 한 가지(신선 라이브 + 독립 최종 gold).** 제품/사용자 결과 측정용. **모듈 품질로 쓰지 않는다.**
+- **cascade(상류 라이브 전파) = 진단 전용.** "어디서 깨지나"만 본다. **품질 점수로 쓰지 않는다** — cascade 점수엔 모듈품질 × 상류상태 × LLM노이즈가 섞여 귀속 불가(같은 모듈이 cascade 0.0 vs 격리 0.46 사례). 모듈 .md 의 1차 지표는 frozen-독립으로 낸다.
+
+요약: **모듈 = frozen-독립 / 제품 = e2e / 진단 = cascade.** 셋의 역할을 섞지 않는다.
+
+## e2e 결과 출력 형식 (필수)
+
+e2e 테스트(`eval_e2e_full.py`) 실행 후에는 **반드시 아래 2개 표로** 보고한다(러너가 둘 다 출력). 비교가 쉽도록 형식·행을 고정한다.
+
+### [표A] 단계별 성적표
+컬럼: `단계 | 1차 지표 | 방법 | 평가`. 행 = 단계 **2~9**(각 1행).
+- **1차 지표** = `STAGE_SCORERS[단계]` 핵심 수치(예 2=문장 F1(P·R)·ctype, 7=macro-F1·recall[T/F/N], 8=M-recall(M-precision·M-F1)).
+- **방법** = `격리` / `frozen-독립` / `value-recall`. cascade 수치는 진단용이라 품질표 단독 인용 금지 — 부득이 쓰면 `🔶` 표시.
+- **평가** = ✅/⚠️/❌/△ + 한 줄(병목·해석).
+
+### [표B] e2e funnel
+컬럼: `지표 | <실행1> | <실행2> | … | 현재 | 변화(vs 최초)`. 행은 **고정 6개, 순서 고정**:
+1. `전체 claim` — 완주 기사의 추출 claim 수
+2. `evidence_reach (셀 도달)` — 분자/분모 = %
+3. `value_reach (값 도달)` — 분자/분모 = %
+4. `coverage (T/F/M 판정)` — 분자/분모 = %  ((T+F+M)/total)
+5. `gap (값 왔는데 NEI)` — 분자/분모 = %  (value_reach − coverage)
+6. `verdict 분포` — `N…·T…·F…·M…`
+
+- 비율 셀은 **`분자/분모 = %`** 형식(예 `155/392 = 39.5%`).
+- **변화 컬럼은 *최초 실행* 대비**(직전 아님) pp 차이 + ↑/↓.
+- 권장 1줄 추가: 최종 `macro-F1`(after9 vs 독립 gold) + recall[T/F/N]·M-recall.
+- 캡처 비결정성(LLM)으로 단일 숫자는 흔들리니 **CI/macro-F1 중심**으로 읽는다고 명시.
+
 ## Gold(정답) 라벨링·보완
 
 테스트셋 gold 가 비거나 부족할 때 채우는 규칙. 핵심은 **비순환(non-circular)**.
