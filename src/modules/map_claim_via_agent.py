@@ -226,11 +226,17 @@ def _exec_cell(
     period: str, period_type: str,
     axis_codes: list[dict],
 ) -> str:
-    if org_id in ("001", "", None):
+    # HCX-005가 인자를 int로 넘기는 경우 방어
+    org_id = str(org_id) if org_id is not None else ""
+    tbl_id = str(tbl_id) if tbl_id is not None else ""
+    itm_id = str(itm_id) if itm_id is not None else ""
+    if org_id in ("001", "", None, "None"):
         org_id = "101"
-    prd = period.replace("-", "")
+    prd = str(period).replace("-", "")
     if period_type == "Y":
         prd = prd[:4]
+    # axis_codes 항목이 dict가 아닌 경우(str/int) 방어
+    axis_codes = [ac for ac in (axis_codes or []) if isinstance(ac, dict)]
     n = len(axis_codes)
     chosen = {ac.get("code", "") for ac in axis_codes}
     api_key = resolve_api_key()
@@ -276,7 +282,11 @@ def _exec_cell(
                 return f"값: {float(val)}{unit_str}"
             except (TypeError, ValueError):
                 return f"값: {val}{unit_str}"
-    return "셀 조회 실패: 일치하는 행 없음"
+        # itm_id가 있는 행이 없음 → 가용 itm_id 목록 반환해 Think가 재시도할 수 있게
+        if rows:
+            available = sorted({r.get("ITM_ID", "") for r in rows if r.get("ITM_ID")})
+            return f"셀 조회 실패: itm_id={itm_id!r} 없음. 가용 항목: {available[:10]}"
+    return "셀 조회 실패: 데이터 없음 (period/tbl_id 확인 필요)"
 
 
 def _exec_tool(fn: str, args: dict, cell_history: list[tuple[str, str, str]]) -> str:
@@ -297,7 +307,9 @@ def _exec_tool(fn: str, args: dict, cell_history: list[tuple[str, str, str]]) ->
 
 
 def _parse_args(raw) -> dict:
-    return json.loads(raw) if isinstance(raw, str) else (raw or {})
+    result = json.loads(raw) if isinstance(raw, str) else (raw or {})
+    # json.loads가 dict 아닌 값(str/int/list) 반환 시 안전하게 {} 반환
+    return result if isinstance(result, dict) else {}
 
 
 # ── 메시지 빌더 ───────────────────────────────────────────────────────────────
@@ -456,44 +468,47 @@ def _loop_split(
         if not thought:
             break
 
-        # Think 분석을 Act에게 user 메시지로 전달 (tool 충돌 방지)
-        messages.append({"role": "user", "content": f"[분석]\n{thought}\n\n{_ACT_TRIGGER}"})
+        # ── 방향 B: Think JSON → Python 직접 실행 (Act 완전 제거) ─────────────
+        # Think(HCX-007, thinking:low)가 JSON을 출력하면 Python이 직접 실행.
+        # 자연어 출력 시 JSON 형식 재요청 1회 후 포기.
+        try:
+            plan = json.loads(thought.strip())
+            if isinstance(plan, list) and plan and isinstance(plan[0], dict) and "name" in plan[0]:
+                for step in plan:
+                    fn = step.get("name", "")
+                    args = step.get("arguments") or step.get("args") or {}
+                    if not isinstance(args, dict):
+                        args = {}
 
-        # --- Act ---
-        act_resp = traced_chat(
-            model_alias=act_preset.model_alias,
-            model_name=act_preset.model_name,
-            messages=messages,
-            max_tokens=act_preset.max_tokens,
-            temperature=act_preset.temperature,
-            function_calling=True,
-            tools=_TOOLS,
-            tool_choice="auto",
-            trace_name=f"map_claim_via_agent:act:t{turn}",
-        )
-        total_tokens += act_resp.total_tokens or 0
+                    if fn == "report_result":
+                        return _make_evidence(args, claim, cell_history), total_tokens
+                    if fn == "report_not_found":
+                        return None, total_tokens
 
-        if not act_resp.tool_calls:
+                    result = _exec_tool(fn, args, cell_history)
+                    args_str = json.dumps(args, ensure_ascii=False)[:80]
+                    # 결과를 다음 Think에 전달 (tool-call 형식 아닌 일반 user 메시지)
+                    messages.append({
+                        "role": "user",
+                        "content": f"조회결과: {fn} → {result[:300]}",
+                    })
+                continue  # 다음 Think 턴
+
+        except (json.JSONDecodeError, TypeError, KeyError, AttributeError):
+            pass
+
+        # Think가 자연어를 출력한 경우 — JSON 형식 재요청 1회
+        if turn < _MAX_TURNS - 1:
+            messages.append({
+                "role": "user",
+                "content": (
+                    f"[참고]\n{thought[:200]}\n\n"
+                    "반드시 JSON 배열 형식으로만 응답하라:\n"
+                    '[{"name": "툴이름", "arguments": {"인자": "값"}}]'
+                ),
+            })
+        else:
             break
-
-        # HCX v3 native는 camelCase "toolCalls" 키를 사용 (OpenAI snake_case와 다름)
-        messages.append({
-            "role": "assistant",
-            "content": act_resp.text or "",
-            "toolCalls": act_resp.tool_calls,
-        })
-
-        for tc in act_resp.tool_calls:
-            fn = tc["function"]["name"]
-            args = _parse_args(tc["function"].get("arguments", {}))
-
-            if fn == "report_result":
-                return _make_evidence(args, claim, cell_history), total_tokens
-            if fn == "report_not_found":
-                return None, total_tokens
-
-            result = _exec_tool(fn, args, cell_history)
-            messages.append({"role": "tool", "tool_call_id": tc["id"], "content": result})
 
     logger.warning("agent(split) max turns reached: claim=%s", claim.claim_id)
     return None, total_tokens
@@ -514,6 +529,10 @@ def _run_agent(
 def _make_evidence(
     args: dict, claim: Claim, cell_history: list[tuple[str, str, str]]
 ) -> Evidence | None:
+    # args가 dict가 아니면 처리 불가 (HCX가 JSON string으로 넘기는 경우 방어)
+    if not isinstance(args, dict):
+        return None
+
     # 1순위: report_result에 명시한 value (에이전트가 계산한 증감·변화율 포함)
     value: float | None = None
     try:
@@ -535,16 +554,37 @@ def _make_evidence(
     if value is None:
         return None
 
+    # evidence.unit: report_result args > cell_history 마지막 KOSIS 단위 > claim.unit
+    # KOSIS 단위를 정확히 설정해야 7단계 compute_change의 unit 변환이 올바르게 동작한다.
+    kosis_unit: str | None = None
+    for fn, _, res in reversed(cell_history):
+        if fn == "fetch_kosis_cell" and res.startswith("값:"):
+            # "값: 29028.5 (단위: 천명)" 형태에서 단위 추출
+            import re as _re
+            m = _re.search(r"\(단위:\s*([^)]+)\)", res)
+            if m:
+                kosis_unit = m.group(1).strip()
+            break
+
+    unit = args.get("unit") or kosis_unit or claim.unit
+
+    # org_id는 str 타입 필수 (에이전트가 int 101을 넘기는 경우 방어)
+    org_id = args.get("org_id")
+    if org_id is not None:
+        org_id = str(org_id)
+
     return Evidence(
         claim_id=claim.claim_id,
         source="KOSIS",
         subject=claim.subject,
-        unit=args.get("unit") or claim.unit,
+        unit=unit,
         period_type=claim.period_type,
-        period=args.get("period") or claim.period_value.llm_value,
+        period=(lambda p: p[0] if isinstance(p, list) else p)(
+            args.get("period") or claim.period_value.llm_value or ""
+        ) or "",
         population=claim.population,
         value=value,
-        kosis_org_id=args.get("org_id"),
+        kosis_org_id=org_id,
         kosis_tbl_id=args.get("tbl_id"),
         kosis_item_id=args.get("itm_id"),
     )

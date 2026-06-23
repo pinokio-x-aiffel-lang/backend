@@ -250,6 +250,8 @@ async def _run_row(row: dict, sem: asyncio.Semaphore) -> list[dict]:
             records.append(rec)
 
         # claim 0건 row → placeholder
+        # s2_n_claims는 실제 추출 수 사용 — 4+5 에러로 ms.analysis가 비어도
+        # 2단계가 성공했으면 올바르게 반영되어야 함.
         if not records:
             records.append({
                 "row_id": row["row_id"],
@@ -258,8 +260,8 @@ async def _run_row(row: dict, sem: asyncio.Semaphore) -> list[dict]:
                 "label": label,
                 "input": {"text": row["text"][:200]},
                 "output": {
-                    "s2_n_claims": 0,
-                    "s2_claim_types": [],
+                    "s2_n_claims": s2_n_claims,
+                    "s2_claim_types": s2_claim_types,
                     "s3_value_normalized": None,
                     "s3_period_normalized": None,
                     "found_value": None,
