@@ -104,6 +104,16 @@ def _scale_compatible(a: float, b: float, factor: float = _ASSUME_SCALE_FACTOR) 
     return max(a, b) / min(a, b) <= factor
 
 
+def _popfb_demote(within: bool, evidence: Evidence, verdict: Verdict,
+                  mismatch: "MismatchType | None") -> "tuple[Verdict, MismatchType | None]":
+    """모집단 폴백(요청 집단 대신 전체값 비교) 상태의 불일치(F)는 잘못된 모집단으로 비교한
+    것이라 confident F 를 보류 → NEI(POPULATION). precision-first: false-F 방지.
+    일치(T)·비폴백은 그대로 둔다(단위 가정비교 NEI 선례와 동일 정책)."""
+    if (not within) and evidence.population_fallback and verdict == Verdict.FALSE:
+        return Verdict.NOT_ENOUGH_INFO, MismatchType.POPULATION
+    return verdict, mismatch
+
+
 def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
     """단일 셀 직접비교. evidence.value 가 있는 ABSOLUTE/VERIFIABLE claim 전용.
 
@@ -166,14 +176,20 @@ def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
         bound = f"{'-∞' if lo is None else lo}~{'∞' if hi is None else hi}"
         notes.append(f"범위 포함비교 [{bound}] ∋ {aligned}? {'예' if within else '아니오'}")
         if evidence.population_fallback:
-            notes.append("population_fallback: 요청 집단 대신 전체(합계)값과 비교 — [8] 정합성 확인 대상")
+            notes.append("population_fallback: 요청 집단 대신 전체(합계)값과 비교 "
+                         "— 일치 시 [8] 정합성 확인, 불일치는 NEI(거짓 단정 보류)")
+        verdict, mismatch = _popfb_demote(
+            within, evidence,
+            Verdict.TRUE if within else Verdict.FALSE,
+            None if within else MismatchType.MAGNITUDE,
+        )
         return MetricResult(
             operation=operation,
             claim_value=None,
             kosis_value=aligned,
             within_tolerance=within,
-            verdict=Verdict.TRUE if within else Verdict.FALSE,
-            mismatch_type=None if within else MismatchType.MAGNITUDE,
+            verdict=verdict,
+            mismatch_type=mismatch,
             note="; ".join(notes) or None,
         )
 
@@ -204,10 +220,12 @@ def compute_absolute(claim: Claim, evidence: Evidence) -> MetricResult:
     verdict = Verdict.TRUE if within else Verdict.FALSE
     mismatch = None if within else _classify_mismatch(claim, evidence, abs_diff, tol)
 
-    # 모집단 폴백 — '전체(합계)' 대체값과 비교. 7단계는 수치로만 T/F 를 내고,
-    # 요청 집단↔전체 오도 여부는 [8] check_alignment 가 (T인 경우) 판단한다.
+    # 모집단 폴백 — '전체(합계)' 대체값과 비교. 일치(T)면 [8] check_alignment 가 요청 집단↔
+    # 전체 오도 여부를 판단한다. 불일치는 잘못된 모집단으로 비교한 것이라 confident F 보류→NEI.
     if evidence.population_fallback:
-        notes.append("population_fallback: 요청 집단 대신 전체(합계)값과 비교 — [8] 정합성 확인 대상")
+        notes.append("population_fallback: 요청 집단 대신 전체(합계)값과 비교 "
+                     "— 일치 시 [8] 정합성 확인, 불일치는 NEI(거짓 단정 보류)")
+    verdict, mismatch = _popfb_demote(within, evidence, verdict, mismatch)
 
     return MetricResult(
         operation=operation,
@@ -323,7 +341,10 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
         )
 
     if evidence.population_fallback:
-        notes.append("population_fallback: 요청 집단 대신 전체값 기준 증감 — [8] 정합성 확인 대상")
+        notes.append("population_fallback: 요청 집단 대신 전체값 기준 증감 "
+                     "— 일치 시 [8] 정합성 확인, 불일치는 NEI(거짓 단정 보류)")
+    verdict, mismatch = _popfb_demote(
+        within, evidence, Verdict.TRUE if within else Verdict.FALSE, mismatch)
 
     return MetricResult(
         operation=operation,
@@ -332,7 +353,7 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
         computed_value=round(computed, 4),
         rel_diff=abs_diff / rel_base if rel_base > 0 else None,
         within_tolerance=within,
-        verdict=Verdict.TRUE if within else Verdict.FALSE,
+        verdict=verdict,
         mismatch_type=mismatch,
         note="; ".join(notes) or None,
     )
