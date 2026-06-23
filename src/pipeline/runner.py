@@ -35,8 +35,8 @@ from src.schemas.runtime import MasterSchema
 # ── Pipeline ─────────────────────────────────────────────────────────────────
 
 class Pipeline:
-    async def run(self, content: str, on_step=None) -> AsyncGenerator[PipelineEvent, None]:
-        master_schema = MasterSchema(content=content)
+    async def run(self, content: str, on_step=None, published_at: str | None = None) -> AsyncGenerator[PipelineEvent, None]:
+        master_schema = MasterSchema(content=content, published_at_override=published_at)
 
         async for ev in self._step(1, "기사 내용 확인", load_article, master_schema, on_step): yield ev
         async for ev in self._step(2, "클레임 추출", extract_statistical_claims, master_schema, on_step): yield ev

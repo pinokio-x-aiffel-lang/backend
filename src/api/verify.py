@@ -11,6 +11,12 @@ class VerifyRequest(BaseModel):
         description="기사 URL 또는 기사 본문 텍스트",
         examples=["통계청에 따르면 2024년 합계출산율은 0.72명이다."]
     )
+    published_at: str | None = Field(
+        default=None,
+        description="기사 발행일(YYYY-MM 또는 YYYY-MM-DD). 본문 입력 시 상대시점('지난달' 등) "
+                    "정규화 기준일. 미입력이면 웹서치로 원문을 찾아 발행일을 추정한다.",
+        examples=["2025-05"],
+    )
 
 
 class Article(BaseModel):

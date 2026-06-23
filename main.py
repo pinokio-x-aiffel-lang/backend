@@ -100,7 +100,9 @@ async def health_check():
 async def verify(request: VerifyRequest):
     job_id = str(uuid.uuid4())
     q: asyncio.Queue = asyncio.Queue()
-    task = asyncio.create_task(run_pipeline_with_queue(q, request.content))
+    task = asyncio.create_task(
+        run_pipeline_with_queue(q, request.content, request.published_at)
+    )
     jobs[job_id] = (q, task)
     return {"job_id": job_id}
 

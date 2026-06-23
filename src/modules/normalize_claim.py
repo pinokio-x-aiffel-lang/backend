@@ -339,7 +339,13 @@ def _normalize_period(raw: str, base: str = "") -> str | None:
 # ── LLM 폴백 ──────────────────────────────────────────────────────────────────
 
 async def _llm_normalize_value(raw: str) -> str:
-    """수치 LLM 폴백. 실패 시 원문 반환."""
+    """수치 LLM 폴백. 실패·검증 실패 시 원문 반환.
+
+    출력 검증: 정규화된 값은 숫자/부호/범위/비 꼴의 짧은 문자열이라 한글이 없다.
+    HCX 가 변환 대신 메타응답("숫자가 없으니 빈 문자열을 반환합니다" 등)을 뱉으면
+    그 설명문이 value 로 새어 프론트에 노출되므로(시점 폴백과 달리 검증이 없던 버그),
+    한글 포함·장문 출력은 거부하고 raw 를 돌려준다.
+    """
     messages = [
         {"role": "system", "content": NORMALIZE_VALUE_SYSTEM},
         {"role": "user",   "content": NORMALIZE_VALUE_USER.format(raw=raw)},
@@ -353,7 +359,10 @@ async def _llm_normalize_value(raw: str) -> str:
             max_tokens=NORMALIZE_VALUE.max_tokens,
             trace_name="normalize_claim:value_llm",
         )
-        return response.text.strip() or raw
+        result = response.text.strip()
+        if result and len(result) <= 40 and not re.search(r"[가-힣]", result):
+            return result
+        return raw
     except (LlmError, AttributeError):
         return raw
 

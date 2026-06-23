@@ -9,16 +9,28 @@ from __future__ import annotations
 import asyncio
 
 from src.api.verify import to_verify_response
+from src.modules.load_article import resolve_published_at_from_web
 from src.pipeline import Pipeline, ResultEvent, StepEvent
 from src.pipeline.result_md import make_result_recorder
 
 
-async def run_pipeline_with_queue(q: asyncio.Queue, content: str) -> None:
+def _is_url(content: str) -> bool:
+    return content.strip().startswith(("http://", "https://"))
+
+
+async def run_pipeline_with_queue(
+    q: asyncio.Queue, content: str, published_at: str | None = None
+) -> None:
     try:
         pipeline = Pipeline()
         # 매 요청마다 tests/result.md 를 단계별 기록으로 갱신(GET /result 가 읽는 파일).
         recorder = make_result_recorder(content)
-        async for event in pipeline.run(content, on_step=recorder):
+        # 발행일 해소: 입력값 우선, 없고 '본문 텍스트' 입력이면 웹서치로 원문 발행일 추정
+        # (상대시점 '지난달/전년'을 기사별 실제 발행일 기준으로 정규화하기 위함). 동기 크롤은 to_thread.
+        resolved_at = published_at
+        if not resolved_at and not _is_url(content):
+            resolved_at = await asyncio.to_thread(resolve_published_at_from_web, content)
+        async for event in pipeline.run(content, on_step=recorder, published_at=resolved_at):
             if isinstance(event, StepEvent):
                 await q.put({
                     "event": "step",
