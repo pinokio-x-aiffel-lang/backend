@@ -137,15 +137,35 @@ def _norm(s: str) -> str:
     return re.sub(r"\s+", "", s or "")
 
 
-def _same_article(src: str, cand: str) -> bool:
-    """입력 본문(src)과 크롤한 후보 기사(cand)가 같은 기사인지.
+def _salient_numbers(text: str) -> list[str]:
+    """본문의 특징 수치(3자리+ 연속 숫자) 집합 — 통계 기사의 '지문'.
 
-    입력 앞부분 특징 스니펫(공백 무시)이 후보 본문에 들어 있으면 동일 기사로 본다.
-    엉뚱한 기사 발행일을 가져오는 것을 막는 안전장치.
+    같은 통계를 다룬 기사는 같은 수치(예: '2858'·'9000'·'3000')를 공유한다.
+    리드 문장 표현은 언론사마다 달라도 핵심 수치는 같으므로 매칭에 견고하다.
+    """
+    groups = re.findall(r"\d+", text or "")
+    return list(dict.fromkeys(g for g in groups if len(g) >= 3))
+
+
+def _same_article(src: str, cand: str) -> bool:
+    """입력 본문(src)과 크롤한 후보 기사(cand)가 같은 기사(같은 사건)인지.
+
+    ① 앞부분 스니펫(공백 무시)이 그대로 들어 있으면 동일(신디케이션) 기사.
+    ② 또는 본문의 특징 수치(3자리+)가 다수 일치하면 같은 통계 기사로 본다 — 언론사마다
+       리드 표현이 달라 ①만으론 놓치므로(붙여넣은 본문 ≠ 원문 리드) 보강.
+    엉뚱한 기사·원문 source 채택을 막는 안전장치.
     """
     src_n, cand_n = _norm(src), _norm(cand)
-    snippet = src_n[:40]
-    return len(snippet) >= 15 and snippet in cand_n
+    if not cand_n:
+        return False
+    if len(src_n) >= 15 and src_n[:40] in cand_n:
+        return True
+    nums = _salient_numbers(src)
+    if len(nums) >= 2:
+        cand_digits = re.sub(r"\D", "", cand)
+        hit = sum(1 for n in nums if n in cand_digits)
+        return hit >= max(2, round(len(nums) * 0.6))
+    return False
 
 
 def resolve_published_at_from_web(content: str) -> Optional[str]:
