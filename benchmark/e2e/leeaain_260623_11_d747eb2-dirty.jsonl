@@ -1,0 +1,8 @@
+{"m": "발행일 출처"}
+{"m": "3 normalize period accuracy"}
+{"m": "7 metric macro-F1"}
+{"m": "7 recall[T]"}
+{"m": "e2e coverage"}
+{"m": "e2e 분포 T(진짜=정답)"}
+{"m": "e2e 최종 macro-F1(after9)"}
+{"m": "5 fetch 셀값"}

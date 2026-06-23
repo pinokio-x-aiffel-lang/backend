@@ -1,0 +1,12 @@
+{"m": "발행일 웹서치 해소"}
+{"m": "추출 claim"}
+{"m": "[4] hit>0"}
+{"m": "[5] evidence 확보"}
+{"m": "coverage(생존율)"}
+{"m": "gap(값왔는데 NEI)"}
+{"m": "최종 판정 분포"}
+{"m": "최종 verdict macro-F1"}
+{"m": "recall[T]"}
+{"m": "recall[F]"}
+{"m": "M-recall"}
+{"m": "집계 exact-match"}

@@ -1,0 +1,8 @@
+{"stage": "2 claim"}
+{"stage": "3 normalize"}
+{"stage": "4 retrieve"}
+{"stage": "5 fetch"}
+{"stage": "6 rank"}
+{"stage": "7 metric"}
+{"stage": "8 alignment"}
+{"stage": "9 verdict"}
