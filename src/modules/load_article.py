@@ -8,7 +8,7 @@ import requests
 from selectolax.lexbor import LexborHTMLParser
 
 from src.article import asiae, chosun, generic, naver, newstapa, ohmynews
-from src.article.websearch import build_query, search_article_urls
+from src.article.websearch import build_query, search_news
 from src.schemas.runtime import Article, MasterSchema
 
 logger = logging.getLogger(__name__)
@@ -149,24 +149,30 @@ def _same_article(src: str, cand: str) -> bool:
 
 
 def resolve_published_at_from_web(content: str) -> Optional[str]:
-    """본문 입력일 때 구글로 원문 기사를 찾아 발행일을 가져온다. 실패 시 None.
+    """본문 입력일 때 네이버 뉴스 검색으로 원문 기사를 찾아 발행일을 가져온다. 실패 시 None.
 
-    기존 언론사별 크롤러(_load_from_url)를 재사용해 검색 상위 URL 의 발행일을 추출하고,
-    본문이 입력과 일치하는 기사만 채택한다(엉뚱한 기사 방지). 동기 함수 — 호출부가
+    네이버가 원문 URL(originallink)+발행일(pubDate)을 주므로: 후보를 기존 크롤러로 크롤해
+    본문이 입력과 일치하는 기사(=원문 source 아닌 그 기사)만 채택하고, 그 기사의 발행일을
+    쓴다. 크롤이 발행일을 못 뽑으면 네이버 pubDate 로 폴백. 동기 함수 — 호출부가
     asyncio.to_thread 로 감싸 비차단 실행한다.
     """
-    urls = search_article_urls(build_query(content), num=_SEARCH_CRAWL_CAP)
-    for url in urls:
+    hits = search_news(build_query(content), num=_SEARCH_CRAWL_CAP)
+    for h in hits:
         try:
-            cand = _load_from_url(url)
+            cand = _load_from_url(h.url)
         except LoadArticleError as exc:
-            logger.warning("발행일 검색: 크롤 실패 %s — %s", url, exc)
+            logger.warning("발행일 검색: 크롤 실패 %s — %s", h.url, exc)
+            # 크롤 실패 시 제목+요약으로 일치 추정 + 네이버 pubDate 폴백
+            if h.pub_date and _same_article(content, f"{h.title} {h.description}"):
+                logger.info("발행일 검색(네이버 pubDate): %s → %s", h.url, h.pub_date)
+                return h.pub_date
             continue
-        published = cand.published_at if isinstance(cand.published_at, str) else None
-        if published and _same_article(content, cand.content or ""):
-            logger.info("발행일 검색 성공: %s → published_at=%s", url, published)
-            return published
-    logger.info("발행일 검색: 일치 기사 없음(검색결과 %d건)", len(urls))
+        if _same_article(content, cand.content or ""):
+            published = cand.published_at if isinstance(cand.published_at, str) else None
+            result = published or h.pub_date
+            logger.info("발행일 검색 성공: %s → published_at=%s", h.url, result)
+            return result
+    logger.info("발행일 검색: 일치 기사 없음(검색결과 %d건)", len(hits))
     return None
 
 
