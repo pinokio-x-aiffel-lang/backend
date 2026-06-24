@@ -44,6 +44,31 @@ description: Use when starting a performance test, writing eval code, or saving 
 
 요약: **모듈 = frozen-독립 / 제품 = e2e / 진단 = cascade.** 셋의 역할을 섞지 않는다.
 
+## 테스트 시작 전: 측정 모드 선택 (필수)
+
+사용자가 "테스트/평가 돌려줘"라고 하면 **코드 실행 전에 반드시 묻는다**: **독립(frozen-격리)으로 할지, cascade로 할지.** 임의 기본값으로 진행 금지.
+
+- **독립(frozen-격리)**: 위 "측정 방식 통일" 규칙대로 모듈별 상한/실력 측정.
+- **cascade 선택 시**: 상류 라이브 전파를 그대로 둔 단계별 성적표. cascade 점수는 *모듈품질 단독 귀속*엔 여전히 못 쓰지만(상류상태·LLM노이즈 혼입), 사용자가 명시적으로 cascade 모드를 고르면 "현재 파이프라인이 실제로 내는 단계별 현황"으로 보고한다. 진행은 **아래 단계별 방법 고정표**를 따른다.
+
+### cascade 단계별 방법 (고정)
+
+"cascade 모드"라도 모든 단계를 cascade로 재지 않는다 — 단계별 방법이 아래로 고정이다. **1차 지표 이름·방법은 이 표를 따르고, 숫자는 실행마다 갱신되는 예시값**이다.
+
+| 단계 | 1차 지표 | 방법 |
+|---|---|---|
+| 2 claim | 문장 F1 (P·R) · ctype | 격리(LLM) |
+| 3 normalize | value · period | cascade |
+| 4 retrieve | Recall@10 · @1 · MRR | value-recall |
+| 5 fetch | coverage · 셀값 | cascade |
+| 6 rank | Top-1 | cascade |
+| 7 metric | macro-F1 · recall[T/F/N] | cascade |
+| 8 alignment | M-recall (M-precision·M-F1) | cascade |
+| 9 verdict | exact-match | 격리(결정적) |
+
+- **2·9 는 cascade 모드에서도 격리**(LLM 유형분류·결정적 산식은 상류 노이즈와 무관하게 측정), **4 는 value-recall**, 나머지(3·5·6·7·8)는 cascade.
+- 보고 표 컬럼 = `단계 | 1차 지표 | 방법 | 평가`. 평가 = ✅/⚠️/❌/△ + 한 줄(병목·해석). 예: `4 ❌ 정답표 65% 놓침`, `7 ✅ 0.560→0.602 (발행일 효과)`, `8 ✅ M 탐지 유지`.
+
 ## e2e 결과 출력 형식 (필수)
 
 e2e 테스트(`eval_e2e_full.py`) 실행 후에는 **반드시 아래 2개 표로** 보고한다(러너가 둘 다 출력). 비교가 쉽도록 형식·행을 고정한다.
