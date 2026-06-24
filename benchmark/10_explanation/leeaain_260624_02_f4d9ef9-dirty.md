@@ -1,0 +1,25 @@
+# leeaain_260624_02_f4d9ef9-dirty — [10] generate_explanation 성능 평가
+
+### 개요
+10단계 generate_explanation — ① claim 템플릿 실측 회귀 ② overall_opinion LLM-심판 루브릭(분포반영·모순없음·환각없음).
+
+### 테스트 방법
+입력=260619 캡처 after9(판정 고정)→generate_explanation 실제 실행. ① 템플릿: 모듈 claim 설명 vs gold_template(=_build_explanation 스냅샷) 실비교. ② opinion: overall_opinion 을 심판 LLM(GENERATE_OPINION preset)이 3기준 O/X.
+
+### 성능 수치
+| 지표 | 종류 | 값 | 95% CI |
+|---|---|---|---|
+| 템플릿 accuracy(snapshot) | accuracy | 1.000 (407/407) | [0.991, 1.000] |
+| opinion: 분포 반영 | rubric | 0.986 (210/213) | [0.959, 0.995] |
+| opinion: verdict 모순 없음 | rubric | 1.000 (213/213) | [0.982, 1.000] |
+| opinion: 환각 없음 | rubric | 1.000 (213/213) | [0.982, 1.000] |
+| opinion 생성/채점 수 | count | 213/213 | — |
+
+### 분석
+템플릿은 결정적이라 ~1.0(회귀 정상). 의미 있는 품질은 opinion 루브릭 통과율. 하드코딩 True 제거 — 이제 실측.
+
+### 개선 전후 비교
+_(작성 필요)_
+
+### 한계·주의
+LLM-심판은 1회·temperature=0(변동 최소화)이나 사람 검증 아님. opinion 은 cascade 판정(거의 N) 기반이라 분포반영이 'N 다수'를 반영했나로 치우칠 수 있음.
