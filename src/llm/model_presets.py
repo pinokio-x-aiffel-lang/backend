@@ -25,6 +25,7 @@ class ModelPreset:
     model_name: str              # 모델명 (예: "HCX-007")
     max_tokens: int
     temperature: float | None = None
+    thinking_effort: str | None = None  # reasoning 강도: none/low/medium/high
 
 
 # ── 파이프라인 단계별 프리셋 ──────────────────────────────────────────────────
@@ -120,4 +121,96 @@ GENERATE_OPINION = ModelPreset(
     model_name="HCX-005",
     max_tokens=512,
     temperature=0.3,
+)
+
+
+# ── [byungin] 하이브리드 검색·항목매처 (추가) ─────────────────────
+NAVIGATE_TREE = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
+
+RESOLVE_ITEM_MATCH = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
+)
+
+
+# ── [kosis-lookup] 검색→메타 판독→표·코드 선택 (map_claim_via_meta) ─────────
+# 후보 표들의 메타(항목·분류축 코드)를 한 번에 보고 표+itmId+축코드를 고르는 단일 호출.
+# 여러 표 구조를 읽고 좌표를 조립하는 열린 선택이라 structured outputs 필요 → HCX-007.
+# 후보·축이 많아 토큰을 NAVIGATE_TREE/RESOLVE 류보다 넉넉히 둔다. 재현성 위해 temp 0.
+SELECT_KOSIS_CELL = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=512,
+    temperature=0.0,
+)
+
+# KOSIS agent (map_claim_via_agent) — 추론+툴콜링 동시 처리 (Responses API).
+# gpt-5.4-mini + thinking low: reasoning 토큰으로 단위/축 선택 품질 향상.
+MAP_CLAIM_AGENT = ModelPreset(
+    model_alias="openai",
+    model_name="gpt-5.4-mini",
+    max_tokens=4096,
+    temperature=0.0,
+    thinking_effort="low",
+)
+
+# ReAct Thought — HCX-007 전용 (추론만, 함수 호출 없음). thinking_effort=low → max_tokens 2048 자동.
+MAP_CLAIM_THINK = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=2048,
+    temperature=0.0,
+    thinking_effort="low",
+)
+# ReAct Action — HCX-005 (Thought 결과 기반 툴 호출만).
+# HCX-007은 thinking 항상 ON → 멀티-턴 function calling 불가(실측) → HCX-005 사용.
+MAP_CLAIM_ACT = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-005",
+    max_tokens=1024,
+    temperature=0.0,
+)
+
+# [P3 실험] HCX-007 단독 FC — thinking 없이 function calling만.
+# tools 전달 시 llm_caller가 thinking을 "none"으로 자동 처리 → 멀티턴 FC 가능.
+MAP_CLAIM_HCX007_FC = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=2048,
+    temperature=0.0,
+    # thinking_effort 미지정 → tools와 함께 호출 시 none으로 처리됨
+)
+
+# SELECT_KOSIS_CELL A/B 비교용 — Claude Sonnet (추론+구조화 출력 동시 처리 가능).
+# KOSIS_SELECT_MODEL=claude 환경변수로 활성화.
+SELECT_KOSIS_CELL_CLAUDE = ModelPreset(
+    model_alias="claude",
+    model_name="claude-sonnet-4-6",
+    max_tokens=1024,
+    temperature=0.0,
+)
+
+# KOSIS agent (map_claim_via_agent) — Claude Sonnet 단일 호출(Think+Act 동시).
+# fetch_chat 경유(OpenAI 호환 엔드포인트). thinking_effort 미지원 → None.
+MAP_CLAIM_AGENT_CLAUDE = ModelPreset(
+    model_alias="claude",
+    model_name="claude-sonnet-4-6",
+    max_tokens=4096,
+    temperature=0.0,
+)
+
+# KOSIS 검색 키워드 생성 (map_claim_via_meta 1단계). 짧은 명사구 2~4개라 저토큰.
+# structured outputs(키워드 배열) 필요 → HCX-007. 재현성 위해 temp 0.
+GEN_KOSIS_KEYWORDS = ModelPreset(
+    model_alias="hyperclova",
+    model_name="HCX-007",
+    max_tokens=128,
+    temperature=0.0,
 )

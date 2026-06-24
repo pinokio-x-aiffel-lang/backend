@@ -1,0 +1,47 @@
+{
+ "mode": "hcx",
+ "pass": 4,
+ "total": 5,
+ "results": [
+  {
+   "claim_id": "c1",
+   "subject": "취업자 수",
+   "tbl": "DT_1DA7001S",
+   "expect": 28589,
+   "got": 28589.0,
+   "pass": true
+  },
+  {
+   "claim_id": "c2",
+   "subject": "청년 실업률",
+   "tbl": "DT_1DA7102S",
+   "expect": 7.5,
+   "got": null,
+   "pass": false
+  },
+  {
+   "claim_id": "c3",
+   "subject": "소비자물가 상승률",
+   "tbl": "DT_1J22003",
+   "expect": 2.2,
+   "got": 2.2444,
+   "pass": true
+  },
+  {
+   "claim_id": "c4",
+   "subject": "석유류 물가 상승률",
+   "tbl": "DT_1J22002",
+   "expect": 6.3,
+   "got": 6.2694,
+   "pass": true
+  },
+  {
+   "claim_id": "c5",
+   "subject": "제조업 취업자 수",
+   "tbl": "DT_1DA7E43S_NEW",
+   "expect": 4414,
+   "got": 4413.6,
+   "pass": true
+  }
+ ]
+}
