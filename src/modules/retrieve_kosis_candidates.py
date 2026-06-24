@@ -9,9 +9,14 @@ from src.kosis.client import KosisError, kosis_get, resolve_api_key
 from src.kosis.keyword_expand import expand_subject
 from src.kosis.search import SearchHit, search_tables, search_tables_many
 from src.llm.client import LlmError
-from src.llm.model_presets import NAVIGATE_TREE
+from src.llm.model_presets import EXPAND_KEYWORDS, NAVIGATE_TREE
 from src.observability.tracing import traced_chat
-from src.prompts.prompts import NAVIGATE_TREE_SYSTEM, NAVIGATE_TREE_USER
+from src.prompts.prompts import (
+    EXPAND_KEYWORDS_SYSTEM,
+    EXPAND_KEYWORDS_USER,
+    NAVIGATE_TREE_SYSTEM,
+    NAVIGATE_TREE_USER,
+)
 from src.schemas.runtime import (
     Claim,
     ClaimAnalysis,
@@ -43,7 +48,8 @@ _DATA_API = "statisticsData.do"  # [5] placeholder query 표시용(값은 [5]가
 _VW_CD = "MT_ZTITLE"
 
 TOP_N = 10          # [5]로 넘길 최종 후보 상한
-MAX_VARIANTS = 4    # subject당 검색 키워드 변형 상한(핵심명사·동의어·상위어)
+MAX_VARIANTS = 4    # subject당 룰 변형 상한(핵심명사·동의어·상위어)
+LLM_KEYWORDS = 6    # 룰 변형에 LLM 이 항상 추가로 생성하는 검색 키워드 수(룰수 + 6)
 BEAM_WIDTH = 3      # 각 트리 level 에서 LLM 이 고르는 분류 수(빔 폭)
 KEYWORD_TOP_N = 100  # 키워드 검색 후보 풀(스코핑 전). 넉넉히 받아 조사 스코프로 거른다.
 
@@ -105,6 +111,42 @@ def _merge_dedup(variants: list[str], hits_by_kw: dict[str, list[SearchHit]]) ->
     return out
 
 
+_EXPAND_SCHEMA = {
+    "type": "object",
+    "properties": {"keywords": {"type": "array", "items": {"type": "string"}}},
+    "required": ["keywords"],
+}
+
+
+def _llm_expand_keywords(subject: str, n: int) -> list[str]:
+    """subject → KOSIS 표명 어휘의 검색어 후보 n개(동의어·상위어·연관지표). 실패·빈 응답은 [].
+
+    룰 변형(expand_subject)에 더해 LLM 이 강한 후보 n개를 추가 생성한다(동의어 사전 한계 보강).
+    structured outputs(JSON 배열)로 닫힌 형식 강제. 공백 제거로 룰 변형과 정규화 통일.
+    """
+    if not subject.strip() or n <= 0:
+        return []
+    messages = [
+        {"role": "system", "content": EXPAND_KEYWORDS_SYSTEM},
+        {"role": "user", "content": EXPAND_KEYWORDS_USER.format(subject=subject, n=n)},
+    ]
+    try:
+        resp = traced_chat(
+            model_alias=EXPAND_KEYWORDS.model_alias,
+            model_name=EXPAND_KEYWORDS.model_name,
+            messages=messages,
+            max_tokens=EXPAND_KEYWORDS.max_tokens,
+            temperature=EXPAND_KEYWORDS.temperature,
+            json_structure=_EXPAND_SCHEMA,
+            trace_name="retrieve_kosis_candidates:expand_keywords",
+        )
+        data = json.loads(resp.text.strip())
+    except (LlmError, AttributeError, json.JSONDecodeError) as exc:
+        logger.warning("키워드 확장 LLM 실패(%s): %s", subject, exc)
+        return []
+    return ["".join(str(k).split()) for k in (data.get("keywords") or []) if k]
+
+
 async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
     """claim 1건 → 조사 스코핑 + 다변형 키워드 검색 → ClaimAnalysis (후보 풀 포함)."""
     keyword = _preprocess_subject(claim.subject or "")
@@ -119,6 +161,18 @@ async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
         # 파이프라인처럼 subject 를 다변형 확장(핵심명사·동의어·상위어, 공백 제거)해
         # 병렬 검색·병합한다 → retrieve recall 회복.
         variants = expand_subject(claim.subject or "", max_variants=MAX_VARIANTS) or [keyword]
+        # 룰 변형(동의어 사전이 작아 흔히 1~2개)에 LLM 으로 강한 후보 키워드를 항상
+        # LLM_KEYWORDS 개 추가한다(룰수 + 6). 중복 키워드는 제외(헛 검색 방지),
+        # 중복 표는 아래 _merge_dedup 이 tbl_id 로 거른다(표는 한 번만 후보화).
+        seen = set(variants)
+        added = 0
+        for kw in await asyncio.to_thread(_llm_expand_keywords, claim.subject or "", LLM_KEYWORDS):
+            if kw and kw not in seen:
+                seen.add(kw)
+                variants.append(kw)
+                added += 1
+                if added >= LLM_KEYWORDS:
+                    break
         hits_by_kw = await asyncio.to_thread(search_tables_many, variants, top_n=KEYWORD_TOP_N)
         hits = _merge_dedup(variants, hits_by_kw)
     except (KosisError, ValueError) as exc:

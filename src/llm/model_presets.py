@@ -83,12 +83,12 @@ RESOLVE_AXIS_MATCH = ModelPreset(
 )
 
 # KOSIS 검색 키워드 확장 LLM 폴백 ([4] retrieve_kosis_candidates)
-# 룰 사전이 변형을 못 만들 때만 호출. subject → KOSIS 표명 어휘의 검색어 몇 개를
-# 자유 생성(동의어·상위어). 짧은 목록이라 저토큰. structured outputs(JSON) → HCX-007.
+# 룰 변형이 빈약할 때 subject → KOSIS 표명 어휘 검색어를 보강 생성(동의어·상위어·핵심명사).
+# 룰 변형에 LLM_KEYWORDS(6) 개를 더 받으므로 토큰 여유를 둔다. JSON → HCX-007.
 EXPAND_KEYWORDS = ModelPreset(
     model_alias="hyperclova",
     model_name="HCX-007",
-    max_tokens=128,
+    max_tokens=256,
     temperature=0.0,
 )
 
