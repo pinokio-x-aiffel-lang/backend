@@ -6,7 +6,8 @@ import logging
 import time
 
 from src.kosis.client import KosisError, kosis_get, resolve_api_key
-from src.kosis.search import SearchHit, search_tables
+from src.kosis.keyword_expand import expand_subject
+from src.kosis.search import SearchHit, search_tables, search_tables_many
 from src.llm.client import LlmError
 from src.llm.model_presets import NAVIGATE_TREE
 from src.observability.tracing import traced_chat
@@ -42,6 +43,7 @@ _DATA_API = "statisticsData.do"  # [5] placeholder query 표시용(값은 [5]가
 _VW_CD = "MT_ZTITLE"
 
 TOP_N = 10          # [5]로 넘길 최종 후보 상한
+MAX_VARIANTS = 4    # subject당 검색 키워드 변형 상한(핵심명사·동의어·상위어)
 BEAM_WIDTH = 3      # 각 트리 level 에서 LLM 이 고르는 분류 수(빔 폭)
 KEYWORD_TOP_N = 100  # 키워드 검색 후보 풀(스코핑 전). 넉넉히 받아 조사 스코프로 거른다.
 
@@ -91,8 +93,20 @@ async def retrieve_kosis_candidates(master_schema: MasterSchema) -> None:
     )
 
 
+def _merge_dedup(variants: list[str], hits_by_kw: dict[str, list[SearchHit]]) -> list[SearchHit]:
+    """변형별 검색 결과를 변형 순서대로 병합·중복 제거(표 단위, 최초 RANK 유지)."""
+    seen: set[str] = set()
+    out: list[SearchHit] = []
+    for kw in variants:
+        for h in hits_by_kw.get(kw, []):
+            if h.tbl_id not in seen:
+                seen.add(h.tbl_id)
+                out.append(h)
+    return out
+
+
 async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
-    """claim 1건 → 조사 스코핑 + 키워드 검색 → ClaimAnalysis (후보 풀 포함)."""
+    """claim 1건 → 조사 스코핑 + 다변형 키워드 검색 → ClaimAnalysis (후보 풀 포함)."""
     keyword = _preprocess_subject(claim.subject or "")
     period = f"{claim.period_type}:{claim.period_value.llm_value}"
     t0 = time.perf_counter()
@@ -101,27 +115,37 @@ async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
         survey_ids, major_ids = await _navigate_to_surveys(
             claim, keyword, period, api_key
         )
-        hits = await asyncio.to_thread(search_tables, keyword, top_n=KEYWORD_TOP_N)
+        # 단일 키워드는 KOSIS 표명과 잘 안 맞아 정답 표를 놓친다(merge 회귀). 옛 결정적
+        # 파이프라인처럼 subject 를 다변형 확장(핵심명사·동의어·상위어, 공백 제거)해
+        # 병렬 검색·병합한다 → retrieve recall 회복.
+        variants = expand_subject(claim.subject or "", max_variants=MAX_VARIANTS) or [keyword]
+        hits_by_kw = await asyncio.to_thread(search_tables_many, variants, top_n=KEYWORD_TOP_N)
+        hits = _merge_dedup(variants, hits_by_kw)
     except (KosisError, ValueError) as exc:
         return _analysis(
             claim.claim_id, keyword, candidates=[],
             success=0, error_msg=str(exc), duration_ms=_ms_since(t0),
         )
 
-    # 조사 스코프로 거른다. 비면 대분류로 완화, 그래도 비면 무스코프(최후 — [6]이 재정렬).
-    scoped = _scope_hits(hits, survey_ids)
-    scope = "survey"
-    if not scoped and major_ids:
-        scoped, scope = _scope_hits(hits, major_ids), "major"
-    if not scoped:
-        scoped, scope = hits, "unscoped"
-    candidates = scoped[:TOP_N]
+    # 조사 스코프는 '하드 필터'가 아니라 '소프트 부스트' — 스코프 내 표를 앞으로 당기되
+    # 키워드가 찾은 표는 버리지 않는다(스코프 오판이 정답 표를 후보 풀에서 제거하던 회귀 방지).
+    # 우선순위: 조사(survey) > 대분류(major) > 무스코프. 동순위는 키워드 RANK 보존(안정 정렬).
+    def _scope_rank(h: SearchHit) -> int:
+        path = _path_ids(h)
+        if survey_ids and (path & survey_ids):
+            return 0
+        if major_ids and (path & major_ids):
+            return 1
+        return 2
+
+    candidates = sorted(hits, key=_scope_rank)[:TOP_N]
+    n_scoped = sum(1 for h in candidates if _scope_rank(h) < 2)
 
     logger.info(
-        "KOSIS 후보 '%s': 검색 %d건 → %s 스코프 %d건 (조사=%s)",
-        keyword, len(hits), scope, len(candidates), sorted(survey_ids) or "(없음)",
+        "KOSIS 후보 '%s': 검색 %d건 → soft-boost %d건 (스코프 상위 %d건, 조사=%s)",
+        keyword, len(hits), len(candidates), n_scoped, sorted(survey_ids) or "(없음)",
     )
-    err = None if candidates else "스코프 내 후보 0건"
+    err = None if candidates else "검색 결과 0건"
     return _analysis(
         claim.claim_id, keyword, candidates=candidates,
         success=1 if candidates else 0, error_msg=err, duration_ms=_ms_since(t0),
