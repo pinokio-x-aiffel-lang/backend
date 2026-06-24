@@ -235,16 +235,23 @@ async def _navigate_to_surveys(
         return set(), set()
     major_ids = {str(r.get("LIST_ID", "")) for r in chosen_majors}
 
-    # [통계조사] 멀티쿼리(fan-out)는 L1(대분류)에서만 — 그 아래로는 1위 대분류 하나만
-    # 타고 내려간다(레벨당 1쿼리, 단일 경로). 못 든 대분류의 조사는 아래 soft-boost 의
-    # major 티어로 남아 후보에서 안 버려진다 → 호출량↓, recall 보존.
-    top_major = chosen_majors[0]
-    surveys = _folders(
-        await asyncio.to_thread(_list_children, _VW_CD, str(top_major.get("LIST_ID", "")), api_key)
+    # [통계조사] L1 이 고른 대분류 '전부'의 자식(조사)을 조회(fan-out) → survey 후보 합침.
+    # 중복 조사는 LIST_ID 로 제거(키워드검색 _merge_dedup 과 동일 원리). 정답표 조사가
+    # 1위 아닌 대분류 밑에 있어도 survey 스코프(tier 0)에 들어가 TOP_N 컷에서 생존.
+    child_lists = await asyncio.gather(
+        *(asyncio.to_thread(_list_children, _VW_CD, str(r.get("LIST_ID", "")), api_key)
+          for r in chosen_majors)
     )
+    surveys, _seen_lid = [], set()
+    for rows in child_lists:
+        for r in _folders(rows):
+            lid = str(r.get("LIST_ID", ""))
+            if lid and lid not in _seen_lid:
+                _seen_lid.add(lid)
+                surveys.append(r)
     survey_picks = await _llm_pick(
         claim, keyword, period,
-        "상위: " + _node_label(top_major),
+        "상위: " + ", ".join(_node_label(r) for r in chosen_majors),
         [_node_label(r) for r in surveys],
     )
     chosen_surveys = [surveys[i] for i in survey_picks]
