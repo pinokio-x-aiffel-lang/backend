@@ -16,9 +16,12 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import math
+import os
 from pathlib import Path
 from typing import Any
 
+from src.embedding.clova_client import ClovaEmbeddingClient, EmbeddingError
 from src.kosis import (
     KosisError,
     call_kosis,
@@ -192,11 +195,70 @@ def _survey_tier(hit: SearchHit) -> int:
     return 0
 
 
+# ── 검색 결과 임베딩 재랭킹 (B 전용) ──────────────────────────────────────────
+# search_tables 가 준 후보(_SEARCH_TOP_N)를 keyword↔표명 의미유사도로 재정렬해
+# 상위 _META_TOP_K 만 LLM 에 보여준다. survey_tier 단독 정렬은 정답 표가 15위 밖이면
+# LLM 시야에서 잘려 못 고르던 누수를 풀기 위함. 임베딩은 LLM(생성) 호출이 아니라
+# 벡터 서비스 — src/embedding 전용 클라이언트 사용. 키 없음·호출 실패 시 None 을 돌려
+# _exec_search 가 기존 survey_tier 폴백으로 복귀한다(회귀 안전).
+_EMB_RERANK = os.environ.get("KOSIS_AGENT_EMB_RERANK", "1") != "0"
+_EMB_CLIENT: ClovaEmbeddingClient | None = None
+_EMB_CACHE: dict[str, list[float]] = {}   # tbl_id → 표명 임베딩(세션 캐시)
+_EMB_DISABLED = False                      # 키 없음/반복 실패 시 세션 내 재시도 중단
+
+
+def _embed_client() -> ClovaEmbeddingClient | None:
+    global _EMB_CLIENT, _EMB_DISABLED
+    if _EMB_DISABLED or not _EMB_RERANK:
+        return None
+    if _EMB_CLIENT is None:
+        key = os.environ.get("CLOVASTUDIO_API_KEY", "")
+        if not key:
+            logger.warning("임베딩 재랭킹 비활성: CLOVASTUDIO_API_KEY 없음 → survey_tier 폴백")
+            _EMB_DISABLED = True
+            return None
+        _EMB_CLIENT = ClovaEmbeddingClient(api_key=key)
+    return _EMB_CLIENT
+
+
+def _cosine(a: list[float], b: list[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(y * y for y in b))
+    return dot / (na * nb) if na and nb else 0.0
+
+
+def _rerank_by_embedding(keyword: str, hits: list[SearchHit]) -> list[SearchHit] | None:
+    """keyword↔(표명+조사명) 코사인으로 hits 재정렬(동점=survey_tier). 불가 시 None(폴백)."""
+    global _EMB_DISABLED
+    client = _embed_client()
+    if client is None or not hits or not keyword.strip():
+        return None
+    try:
+        q = client.embed(keyword).vector
+        scored: list[tuple[float, SearchHit]] = []
+        for h in hits:
+            vec = _EMB_CACHE.get(h.tbl_id)
+            if vec is None:
+                text = f"{h.tbl_nm} {h.stat_nm or ''}".strip()
+                vec = client.embed(text).vector
+                _EMB_CACHE[h.tbl_id] = vec
+            scored.append((_cosine(q, vec), h))
+    except EmbeddingError as e:
+        logger.warning("임베딩 재랭킹 실패(survey_tier 폴백): %s", e)
+        _EMB_DISABLED = True   # 반복 실패 방지 — 세션 내 폴백 고정
+        return None
+    scored.sort(key=lambda sh: (-sh[0], _survey_tier(sh[1])))
+    return [h for _, h in scored]
+
+
 def _exec_search(keyword: str) -> str:
     try:
-        hits = sorted(search_tables(keyword, top_n=_SEARCH_TOP_N), key=_survey_tier)
+        hits = search_tables(keyword, top_n=_SEARCH_TOP_N)
     except Exception as e:
         return f"검색 오류: {e}"
+    reranked = _rerank_by_embedding(keyword, hits)
+    hits = reranked if reranked is not None else sorted(hits, key=_survey_tier)
     lines = [
         f"org={h.org_id} tbl={h.tbl_id} | {h.tbl_nm} ({h.stat_nm or ''})"
         for h in hits[:_META_TOP_K]
