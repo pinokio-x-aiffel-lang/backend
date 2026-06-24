@@ -191,7 +191,7 @@ def map_claim_to_cell_query_traced(
 
     itm_id = _match_code(items_pairs, subject)
     if itm_id is None and item_matcher is not None and _norm(subject):
-        cand = item_matcher(items_pairs, subject, "항목")
+        cand = item_matcher(items_pairs, subject)
         if cand is not None and str(cand) in {code for code, _ in items_pairs}:
             itm_id = str(cand)
             trace["item_match_source"] = "llm"
