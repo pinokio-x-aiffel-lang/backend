@@ -156,7 +156,7 @@ class LlmCaller:
                 messages=messages,
                 max_tokens=max_tokens,
                 temperature=temperature,
-                json_structure=None,
+                json_structure=json_structure,
                 tools=tools,
                 tool_choice=tool_choice,
                 supports_thinking=model_name.lower() in HCX_THINKING_MODELS,
