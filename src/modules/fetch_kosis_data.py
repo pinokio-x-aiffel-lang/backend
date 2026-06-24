@@ -14,6 +14,7 @@ from src.kosis import (
     map_claim_to_cell_query_traced,
     resolve_api_key,
 )
+from src.kosis.client import kosis_call_count
 from src.llm.client import LlmError
 from src.observability.tracing import traced_chat
 from src.llm.model_presets import RESOLVE_AXIS_MATCH, RESOLVE_ITEM_MATCH
@@ -111,6 +112,8 @@ async def _fetch_one(
     [2] 못 얻었고(폴백/실패) population 이 있으면 RANK 순 LLM 폴백 재조회(첫 성공에서 중단).
     LLM 호출 여부는 후보 전체를 본 이 상위 함수가 결정한다(비용 게이팅)."""
     t0 = time.perf_counter()
+    _kc = [0]
+    kosis_call_count.set(_kc)  # 이 claim 의 [5] KOSIS 호출 카운트(to_thread 로 공유)
     if claim is None or not analysis.candidates:
         analysis.kosis_query = _log(
             "", success=0, error_msg="후보 표 또는 claim 없음", duration_ms=_ms(t0),
@@ -189,6 +192,7 @@ async def _fetch_one(
             + (f" (예: {reasons[0]})" if reasons else ""),
             duration_ms=_ms(t0),
         )
+        analysis.kosis_calls += _kc[0]
         return
 
     # 매칭된 모든 셀은 위에서 analysis.evidences 에 담았다. 여기선 로그/경고만.
@@ -203,6 +207,7 @@ async def _fetch_one(
         cand.tbl_id, success=1, rows_returned=len(analysis.evidences),
         params=_params_log(query), duration_ms=_ms(t0),
     )
+    analysis.kosis_calls += _kc[0]
 
 
 def _cap(names: list, n: int) -> list[str]:

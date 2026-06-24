@@ -297,6 +297,7 @@ class ClaimAnalysis(BaseModel):
     # [5] 매칭된 모든 후보 셀(RANK 순). [6]이 1위 적합 표를 evidences[0]으로 정렬,
     # [7] calculate_metric 이 evidences[0]부터 origin 과 비교한다.
     evidences: list[Evidence] = Field(default_factory=list)
+    kosis_calls: int = 0  # [4]+[5] 이 claim 처리에 발생한 KOSIS HTTP 호출 수(관측)
 
     model_config = ConfigDict(populate_by_name=True)
 

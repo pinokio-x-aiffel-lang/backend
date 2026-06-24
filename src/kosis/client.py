@@ -67,6 +67,15 @@ def _is_rate_limit_error(data: dict[str, Any]) -> bool:
     return err in _RATE_LIMIT_ERR_CODES or "호출가능건수" in msg
 
 
+import contextvars
+
+# KOSIS 호출 관측(옵트인): 호출부가 [count] 리스트를 set 하면 logical GET 마다 1 증가.
+# set 안 했으면 무동작 → 평소엔 비용·동작 변화 없음.
+kosis_call_count: "contextvars.ContextVar" = contextvars.ContextVar(
+    "kosis_call_count", default=None
+)
+
+
 class _HttpClient:
     """공유 HTTP 클라이언트. Session·재시도·rate limit 상태를 보유."""
 
@@ -134,6 +143,9 @@ class _HttpClient:
           - rate limit(err=40): self.rate_limit_retries 회, 대기 후 재시도.
         KOSIS 는 한도 초과를 HTTP 200 + err=40 으로 주므로 예외가 아닌 본문 검사로 잡는다.
         """
+        _ctr = kosis_call_count.get()
+        if _ctr is not None:
+            _ctr[0] += 1  # logical GET 1회(재시도는 미포함)
         params = {"format": "json", "jsonVD": "Y", **params}
         net_attempt = 0
         rl_attempt = 0

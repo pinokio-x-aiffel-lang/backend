@@ -5,7 +5,7 @@ import json
 import logging
 import time
 
-from src.kosis.client import KosisError, kosis_get, resolve_api_key
+from src.kosis.client import KosisError, kosis_call_count, kosis_get, resolve_api_key
 from src.kosis.keyword_expand import expand_subject
 from src.kosis.search import SearchHit, search_tables, search_tables_many
 from src.llm.client import LlmError
@@ -152,6 +152,8 @@ async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
     keyword = _preprocess_subject(claim.subject or "")
     period = f"{claim.period_type}:{claim.period_value.llm_value}"
     t0 = time.perf_counter()
+    _kc = [0]
+    kosis_call_count.set(_kc)  # 이 claim 의 [4] KOSIS 호출 카운트(스레드 to_thread 로 공유)
     try:
         # 트리 스코핑과 키워드 검색은 독립이라 동시에.
         survey_ids, major_ids = await _navigate_to_surveys(
@@ -179,6 +181,7 @@ async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
         return _analysis(
             claim.claim_id, keyword, candidates=[],
             success=0, error_msg=str(exc), duration_ms=_ms_since(t0),
+            kosis_calls=_kc[0],
         )
 
     # 조사 스코프는 '하드 필터'가 아니라 '소프트 부스트' — 스코프 내 표를 앞으로 당기되
@@ -203,6 +206,7 @@ async def _search_one_claim(claim: Claim, api_key: str) -> ClaimAnalysis:
     return _analysis(
         claim.claim_id, keyword, candidates=candidates,
         success=1 if candidates else 0, error_msg=err, duration_ms=_ms_since(t0),
+        kosis_calls=_kc[0],
     )
 
 
@@ -365,6 +369,7 @@ def _analysis(
     success: int,
     error_msg: str | None,
     duration_ms: int,
+    kosis_calls: int = 0,
 ) -> ClaimAnalysis:
     # 선정은 [5]/[6]의 몫. RANK 1위를 임시 선정값으로 둬 [5]가 동작하게 한다.
     top = candidates[0] if candidates else None
@@ -383,6 +388,7 @@ def _analysis(
         ),
         candidates=[_candidate(h) for h in candidates],
         kosis_query=_placeholder_query(),
+        kosis_calls=kosis_calls,
     )
 
 
