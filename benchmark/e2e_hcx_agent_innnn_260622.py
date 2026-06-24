@@ -1,7 +1,7 @@
-"""E2E 벤치마크: HCX-007 Think + HCX-005 Act, 아인님 모듈 통합 + Langfuse 트레이싱.
+"""E2E 벤치마크: 단일 에이전트(MAP_CLAIM_AGENT, 추론+툴콜 동시), 아인님 모듈 통합 + Langfuse 트레이싱.
 
 입력  : SSOT 213행 (T123/F30/M30/NEI30)
-파이프라인 : 1→2→3→[4+5 agent: HCX-007+HCX-005]→6→7→8→9→10
+파이프라인 : 1→2→3→[4+5 agent: 단일 호출 MAP_CLAIM_AGENT]→6→7→8→9→10
 트레이싱 : Langfuse row별 root span + 단계 span + KOSIS HTTP span
 
 측정 지표:
@@ -30,7 +30,7 @@ from benchmark.scoring import (
     prop_row, score_alignment, score_decide_verdict,
     score_fetch, score_rank, score_verdict_metric, value_row,
 )
-from src.llm.model_presets import MAP_CLAIM_ACT, MAP_CLAIM_THINK
+from src.llm.model_presets import MAP_CLAIM_AGENT
 from src.modules.calculate_metric import calculate_metric
 from src.modules.check_alignment import check_alignment
 from src.modules.decide_verdict import decide_verdict
@@ -104,14 +104,14 @@ async def _run_row(row: dict, sem: asyncio.Semaphore) -> list[dict]:
                 except Exception as e:
                     error_stage = f"[3] normalize_claim: {e}"
 
-            # [4+5] map_claim_via_agent (HCX-007 Think + HCX-005 Act)
+            # [4+5] map_claim_via_agent (단일 에이전트: MAP_CLAIM_AGENT, 추론+툴콜 동시)
             if not error_stage:
                 try:
                     with span("[4+5] map_claim_via_agent"):
                         await map_claim_via_agent(
                             ms,
-                            think_preset=MAP_CLAIM_THINK,
-                            act_preset=MAP_CLAIM_ACT,
+                            think_preset=MAP_CLAIM_AGENT,
+                            act_preset=None,
                         )
                 except Exception as e:
                     error_stage = f"[4+5] map_claim_via_agent: {e}"
@@ -379,9 +379,9 @@ async def main() -> None:
 
     sec = blank_sections()
     sec["개요"] = (
-        f"HCX-007 Think + HCX-005 Act, 아인님 2·3·6~10단계 통합 e2e 파이프라인 평가. "
+        f"단일 에이전트(MAP_CLAIM_AGENT, 추론+툴콜 동시), 아인님 2·3·6~10단계 통합 e2e 파이프라인 평가. "
         f"SSOT {len(rows)}행 (T{ld['T']}/F{ld['F']}/M{ld['M']}/NEI{ld['NEI']}). "
-        f"[4+5]: map_claim_via_agent (HCX-007 think:low → HCX-005 FC). "
+        f"[4+5]: map_claim_via_agent (단일 호출, 검색결과 임베딩 재랭킹). "
         f"Langfuse 트레이싱: row별 root span + 단계 span + KOSIS HTTP span."
     )
     sec["테스트 방법"] = (
