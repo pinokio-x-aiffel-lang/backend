@@ -1,0 +1,2403 @@
+[
+  {
+    "row_id": 1,
+    "subject": "취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난 3월의 취업자 수는 2858만 9000명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "취업자 수는 전년 동월 대비 19만 3000명 증가했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 6,
+    "subject": "청년층 실업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "청년 실업자는 지난달 28만9000명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "이민자체류실태및고용조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7300AS",
+          "DT_1DA9008S",
+          "DT_1DA7300A",
+          "DT_1DA7090S",
+          "DT_1DA7089S",
+          "DT_1DA7086S",
+          "DT_1DA7095S",
+          "DT_1DA7087S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "2023년 3월에는 청년 실업자가 30만 명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "이민자체류실태및고용조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7300AS",
+          "DT_1DA9008S",
+          "DT_1DA7300A",
+          "DT_1DA7090S",
+          "DT_1DA7089S",
+          "DT_1DA7086S",
+          "DT_1DA7095S",
+          "DT_1DA7087S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 7,
+    "subject": "청년실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "청년 실업률은 7.5%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "코로나 대유행이 한창이던 2021년 6월 청년 실업률은 8.9%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 8,
+    "subject": "청년실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "2021년 3월의 청년 실업률은 10%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 9,
+    "subject": "청년실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 청년층 실업률은 전체 연령대의 2.4배였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "이민자체류실태및고용조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S",
+          "DT_1DA7001S",
+          "DT_1DA9001S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "전체 연령대 실업률은 3.1%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "이민자체류실태및고용조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S",
+          "DT_1DA7001S",
+          "DT_1DA9001S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 15,
+    "subject": "한국 노년 부양비",
+    "gold_tbl_id": "DT_1BPA002",
+    "gold_tbl_candidates": [
+      "DT_1BPA002",
+      "DT_2KAA202"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "한국의 노년 부양비는 2024년에 27.4명이었다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사",
+          "장래인구추계",
+          "장래가구추계"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1BPA002",
+          "DT_1BPB002",
+          "DT_1BPA401",
+          "DT_1IN2030",
+          "DT_1IN15SD",
+          "DT_1GOOO28",
+          "DT_1GOOO27",
+          "DT_XNN0011",
+          "DT_2KAA202",
+          "DT_XNS0011"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "노년 부양비는 2072년에 104.2명으로 증가한다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "장래인구추계"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1BPA002",
+          "DT_1BPB002",
+          "DT_1BPA401",
+          "DT_1IN2030",
+          "DT_1IN15SD",
+          "DT_1GOOO28",
+          "DT_1GOOO27",
+          "TX_11025_A016_A",
+          "TX_11025_A014_A",
+          "TX_11025_A015_A"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "노년 부양비 증가율은 3.8배이다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사",
+          "장래인구추계",
+          "장래가구추계"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1BPA002",
+          "DT_1BPB002",
+          "DT_1BPA401",
+          "DT_1IN2030",
+          "DT_358005_012",
+          "DT_358005_013",
+          "DT_IZGI04_001",
+          "DT_XNN0011",
+          "DT_2KAA202",
+          "DT_XNS0011"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 16,
+    "subject": "청년층 고용률",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 청년층 고용률은 45.1%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "청년패널조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S",
+          "DT_1ES3A01S",
+          "DT_1ES3D11S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "청년층 고용률은 1년 전에 비해 0.7%p 낮아졌다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "청년패널조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S",
+          "DT_1ES3A01S",
+          "DT_1ES3D11S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 21,
+    "subject": "전체 취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 15세 이상 취업자는 2909만1000명으로 전년 동월 대비 18만3000명 증가했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7003S",
+          "DT_1ES3A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3B02S",
+          "DT_1ES3B01S",
+          "DT_1ES3D11S",
+          "DT_1DA7012S",
+          "DT_1DA7015S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 22,
+    "subject": "전체 고용률",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "고용률은 63.6%였다.",
+        "L1_chosen_majors": [
+          "노동",
+          "경제일반ㆍ경기",
+          "임금"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S",
+          "DT_1ES3A01S",
+          "DT_1ES3D11S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "고용률은 전년 동월 대비 0.1%포인트 증가했다.",
+        "L1_chosen_majors": [
+          "노동",
+          "경제일반ㆍ경기",
+          "임금"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S",
+          "DT_1ES3A01S",
+          "DT_1ES3D11S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 23,
+    "subject": "15~64세 고용률",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "국제 비교 기준인 15~64세 고용률은 70.3%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "지역별고용조사",
+          "고령자고용현황",
+          "고용행정통계"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1ES3A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S",
+          "DT_1ES3A02",
+          "DT_1ES3A01",
+          "DT_1ES3A03_A01",
+          "DT_1ES3A03_A03",
+          "DT_1ES3A03_A02"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 24,
+    "subject": "보건·사회복지서비스업 취업자 수",
+    "gold_tbl_id": "DT_1DA9003S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S",
+      "DT_1DA9003S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 보건·사회복지서비스업 취업자는 323만4000명이었다.",
+        "L1_chosen_majors": [
+          "노동",
+          "보건",
+          "복지"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1ES3D11J",
+          "DT_1ES3D12J",
+          "DT_1ES3D13J",
+          "DT_1ES3B06S",
+          "DT_1ES3D12S",
+          "DT_1ES3D13S",
+          "DT_1ES3D11S",
+          "DT_1ES3B31J",
+          "DT_1ES3B32S",
+          "DT_1ES3B06J"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "지난해 같은 달 보건·사회복지서비스업 취업자는 301만8000명이었다.",
+        "L1_chosen_majors": [
+          "노동",
+          "보건",
+          "복지"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1ES3D11J",
+          "DT_1ES3D12J",
+          "DT_1ES3D13J",
+          "DT_1ES3B06S",
+          "DT_1ES3D12S",
+          "DT_1ES3D13S",
+          "DT_1ES3D11S",
+          "DT_1ES3B31J",
+          "DT_1ES3B32S",
+          "DT_1ES3B06J"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "보건·사회복지서비스업 취업자가 전년 동월 대비 21만6000명 증가했다.",
+        "L1_chosen_majors": [
+          "노동",
+          "보건",
+          "복지"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1ES3D11J",
+          "DT_1ES3D12J",
+          "DT_1ES3D13J",
+          "DT_1ES3B06S",
+          "DT_1ES3D12S",
+          "DT_1ES3D13S",
+          "DT_1ES3D11S",
+          "DT_1ES3B31J",
+          "DT_1ES3B32S",
+          "DT_1ES3B06J"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 26,
+    "subject": "제조업 취업자 수",
+    "gold_tbl_id": "DT_1DA9003S",
+    "gold_tbl_candidates": [
+      "DT_1DA9003S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "반면 국내 산업 중 가장 많은 인력을 고용하는 제조업의 지난달 취업자 수는 441만4000명이었다.",
+        "L1_chosen_majors": [
+          "광업ㆍ제조업"
+        ],
+        "L2_chosen_surveys": [
+          "광업제조업조사",
+          "광업제조업동향조사",
+          "제조업경기조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_11533N_013",
+          "DT_115042_25_010",
+          "DT_11533N_015",
+          "DT_11533N_014",
+          "DT_115040_26",
+          "DT_115040_27",
+          "DT_380002_A0794_7TH",
+          "DT_11827_A002",
+          "DT_113_STBL_1032318",
+          "DT_142017N_205"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "제조업 취업자 수는 전년 동월 대비 8만3000명 감소했다.",
+        "L1_chosen_majors": [
+          "광업ㆍ제조업"
+        ],
+        "L2_chosen_surveys": [
+          "광업제조업조사",
+          "광업제조업동향조사",
+          "제조업경기조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_11533N_013",
+          "DT_115042_25_010",
+          "DT_11533N_015",
+          "DT_11533N_014",
+          "DT_115040_26",
+          "DT_115040_27",
+          "DT_380002_A0794_7TH",
+          "DT_11827_A002",
+          "DT_113_STBL_1032318",
+          "DT_142017N_205"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 27,
+    "subject": "건설업 취업자 수",
+    "gold_tbl_id": "INH_2OEEM2005",
+    "gold_tbl_candidates": [
+      "DT_1DA7012S",
+      "DT_1DA7024S",
+      "DT_1DA9003S",
+      "INH_2OEEM2005"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 건설업 취업자는 196만명이었다.",
+        "L1_chosen_majors": [
+          "노동",
+          "광업ㆍ제조업",
+          "건설"
+        ],
+        "L2_chosen_surveys": [
+          "건설업조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1G160005",
+          "DT_2FB020F",
+          "TX_36601_A091",
+          "TX_36601_A057",
+          "DT_1ES4J004J",
+          "DT_2FB021F",
+          "DT_KWMP_2020102",
+          "DT_1DE5046S",
+          "DT_1DE6074",
+          "DT_11827_A002"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "지난해 같은 달 건설업 취업자는 205만7000명이었다.",
+        "L1_chosen_majors": [
+          "노동",
+          "건설",
+          "임금"
+        ],
+        "L2_chosen_surveys": [
+          "건설업조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1G160005",
+          "DT_2FB020F",
+          "TX_36601_A091",
+          "TX_36601_A057",
+          "DT_1ES4J004J",
+          "DT_2FB021F",
+          "DT_KWMP_2020102",
+          "DT_1DE5046S",
+          "DT_1DE6074",
+          "DT_11827_A002"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "건설업 취업자가 전년 동월 대비 9만7000명 감소했다.",
+        "L1_chosen_majors": [
+          "노동",
+          "건설",
+          "임금"
+        ],
+        "L2_chosen_surveys": [
+          "건설업조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1G160005",
+          "DT_2FB020F",
+          "TX_36601_A091",
+          "TX_36601_A057",
+          "DT_1ES4J004J",
+          "DT_2FB021F",
+          "DT_KWMP_2020102",
+          "DT_1DE5046S",
+          "DT_1DE6074",
+          "DT_11827_A002"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0004",
+        "sentence": "건설업 취업자 수가 200만명을 밑돌았다.",
+        "L1_chosen_majors": [
+          "노동",
+          "건설",
+          "임금"
+        ],
+        "L2_chosen_surveys": [
+          "건설업조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1G160005",
+          "DT_2FB020F",
+          "TX_36601_A091",
+          "TX_36601_A057",
+          "DT_1ES4J004J",
+          "DT_2FB021F",
+          "DT_KWMP_2020102",
+          "DT_1DE5046S",
+          "DT_1DE6074",
+          "DT_11827_A002"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 28,
+    "subject": "단기 근로자 수",
+    "gold_tbl_id": "DT_1DA7011S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7011S",
+      "DT_1DA7012S",
+      "DT_1DA7024S",
+      "DT_1DA7029S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "주당 근로시간이 36시간 미만인 단기 근로자 비율은 10년 동안 두 배 증가하여 전체 근로자의 30%를 초과하였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)",
+          "노동생산성지수"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_38304_2013_N015",
+          "DT_383003_P050",
+          "DT_38303N_0155",
+          "DT_111014_C006",
+          "DT_380002_B004",
+          "DT_380002_B004A",
+          "DT_38003N_004",
+          "DT_118N_N021",
+          "DT_118N_N023",
+          "DT_38304_2013_N007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "10년 전 단기 근로자 비율은 현재의 절반에 불과했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)",
+          "노동생산성지수"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_38304_2013_N015",
+          "DT_383003_P050",
+          "DT_38303N_0155",
+          "DT_111014_C006",
+          "DT_380002_B004",
+          "DT_380002_B004A",
+          "DT_38003N_004",
+          "DT_118N_N021",
+          "DT_118N_N023",
+          "DT_38304_2013_N007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 29,
+    "subject": "전체 근로자 수",
+    "gold_tbl_id": "DT_1DA7011S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7011S",
+      "DT_1DA7012S",
+      "DT_1DA7024S",
+      "DT_1DA7029S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난해 일주일에 36시간 미만으로 일한 근로자는 881만명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "사업체노동력조사(구. 사업체임금근로시간조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE7101S",
+          "DT_1DE7100S",
+          "DT_1DE7101",
+          "DT_1DE7100",
+          "DT_118N_MON054",
+          "DT_118N_MON055",
+          "DT_118N_MON051",
+          "DT_118N_MON052",
+          "DT_1DE7097S",
+          "DT_1DE7098S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "전체 근로자는 2857만6000명이었다.",
+        "L1_chosen_majors": [
+          "노동",
+          "경제일반ㆍ경기",
+          "교통ㆍ물류"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_118N_PAYN42",
+          "DT_118N_PAYN49",
+          "DT_118N_PAYN43",
+          "DT_1DE7070S",
+          "DT_1DE7071S",
+          "DT_118N_PAY0004",
+          "DT_118N_LCE309",
+          "DT_118N_LCE305",
+          "DT_118N_LCE310",
+          "DT_118N_LCE0001"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "이는 전체 근로자의 30.8%에 해당한다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "사업체노동력조사(구. 사업체임금근로시간조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE7101S",
+          "DT_1DE7100S",
+          "DT_1DE7101",
+          "DT_1DE7100",
+          "DT_1DE7096S",
+          "DT_1DE7083S",
+          "DT_1DE7085S",
+          "DT_1DE7084",
+          "DT_1DE7096",
+          "DT_1DE7080S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 30,
+    "subject": "단기 근로자 수",
+    "gold_tbl_id": "DT_1DA7011S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7011S",
+      "DT_1DA7012S",
+      "DT_1DA7024S",
+      "DT_1DA7029S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "10년 전인 2014년의 단기 근로자 비율은 15.4%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE7085S",
+          "DT_1DE7083S",
+          "DT_1DE7084",
+          "DT_1DE7086S",
+          "DT_1DE7085",
+          "DT_1DE7080S",
+          "DT_1DE7081S",
+          "DT_1DE7087S",
+          "DT_1DE7084S",
+          "DT_1DE7083"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "현재 단기 근로자 비율은 그 때와 비교해 2배가 되었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE7085S",
+          "DT_1DE7083S",
+          "DT_1DE7084",
+          "DT_1DE7086S",
+          "DT_1DE7085",
+          "DT_1DE7080S",
+          "DT_1DE7081S",
+          "DT_1DE7087S",
+          "DT_1DE7084S",
+          "DT_1DE7083"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 31,
+    "subject": "14시간 이하 근로자 수",
+    "gold_tbl_id": "DT_1DA7011S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7011S",
+      "DT_1DA7012S",
+      "DT_1DA7024S",
+      "DT_1DA7029S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "통계청에 따르면, 지난해 초단기 근로자는 174만2000명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_118N_LCE305",
+          "DT_118N_LCE0001",
+          "DT_118N_PAY0004",
+          "DT_118N_LCE0007",
+          "DT_118N_LCE0002",
+          "DT_118N_PAYN49",
+          "DT_PAY0012",
+          "DT_1DE5043S",
+          "DT_118N_PAYM41",
+          "DT_118N_LCE306"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "이는 전체 근로자의 6%에 해당한다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE7096S",
+          "DT_1DE7083S",
+          "DT_1DE7085S",
+          "DT_1DE7084",
+          "DT_1DE7096",
+          "DT_1DE7080S",
+          "DT_1DE7081S",
+          "DT_1DE7086S",
+          "DT_1DE7087S",
+          "DT_1DE7084S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 32,
+    "subject": "소비자물가지수",
+    "gold_tbl_id": "DT_2IFS002",
+    "gold_tbl_candidates": [
+      "DT_1J22002",
+      "DT_2IFS002"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 소비자물가지수는 115.71이었다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "소비자물가지수는 전년 동월 대비 2.2% 상승했다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 37,
+    "subject": "소비자물가지수",
+    "gold_tbl_id": "DT_2IFS002",
+    "gold_tbl_candidates": [
+      "DT_1J22002",
+      "DT_2IFS002"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 소비자물가지수는 116.08이었다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "지난해 같은 달의 소비자물가지수는 전년 동월 대비 2% 상승했다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 50,
+    "subject": "청년실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "청년 실업률은 지난달 7.5%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 52,
+    "subject": "청년 실업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 15~29세 청년 실업자는 28만9000명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7086S",
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7300AS",
+          "DT_1DA9008S",
+          "DT_1DA7300A",
+          "DT_1DE9055S",
+          "DT_1DE9057S",
+          "DT_1DE9053S",
+          "DT_1DE9052S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "이는 전년 동월 대비 2만6000명 증가한 수치이다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "청년패널조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7086S",
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7300AS",
+          "DT_1DA9008S",
+          "DT_1DA7300A",
+          "DT_38304_2013_N006",
+          "DT_38304_2013_N004",
+          "DT_38304_2013_N003",
+          "DT_38304_2020_N030"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 53,
+    "subject": "청년실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "청년 실업률은 7.5%에 달했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 54,
+    "subject": "청년실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "이는 2021년 6월에 8.9%였다.",
+        "L1_chosen_majors": [
+          "경제일반ㆍ경기"
+        ],
+        "L2_chosen_surveys": [
+          "경기종합지수",
+          "경제심리지수",
+          "설비투자지수"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1C8016",
+          "DT_1C8015",
+          "DT_1F70012",
+          "DT_513Y001",
+          "DT_1F70013",
+          "DT_1F70011",
+          "DT_1C800A",
+          "DT_303005_CI001",
+          "DT_1JH20201",
+          "DT_1JH20202"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 58,
+    "subject": "전체 취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 증가했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "지난달 취업자는 2888만7000명으로 작년 4월보다 19만4000명 증가했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 64,
+    "subject": "소비자물가",
+    "gold_tbl_id": "DT_2IFS002",
+    "gold_tbl_candidates": [
+      "DT_1J22002",
+      "DT_2IFS002"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 소비자물가지수는 117.06(2020=100)이었다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "지난달 소비자물가는 전년 동월 대비 2.1% 상승했다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22009",
+          "DT_1J22042",
+          "DT_1J22041",
+          "DT_1J22001",
+          "DT_1J22017",
+          "DT_1J22002",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 75,
+    "subject": "15세 이상 취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 15세 이상 취업자는 2915만4000명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7003S",
+          "DT_1ES3A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3B02S",
+          "DT_1ES3B01S",
+          "DT_1ES3D11S",
+          "DT_1DA7012S",
+          "DT_1DA7015S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "이는 전년 동월 대비 31만2000명 증가한 수치이다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7003S",
+          "DT_1ES3A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3B02S",
+          "DT_1ES3B01S",
+          "DT_1ES3D11S",
+          "DT_1DA7012S",
+          "DT_1DA7015S",
+          "DT_1DA7004S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 81,
+    "subject": "전체 취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 취업자 수는 2804만1000명이었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "이는 전년 동월 대비 5만2000명 감소한 것이다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 83,
+    "subject": "전체 취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 취업자는 2787만8000명으로 집계되었다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "이는 1년 전의 2774만3000명에 비해 13만5000명이 증가한 수치이다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 86,
+    "subject": "65세 이상 실업률",
+    "gold_tbl_id": "DT_1DA7102S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7102S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "65세 이상의 실업률은 9.6%이다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "고령자고용현황"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_11831_N003",
+          "DT_11831_N001",
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_38304_2013_N003",
+          "DT_38304_2013_N004",
+          "DT_1ES3A01S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "65세 이상 실업률은 전년 동월 대비 0.2%포인트 상승했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고령자고용현황"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S",
+          "DT_1DA7001S",
+          "DT_1DA9001S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 89,
+    "subject": "출생아 수",
+    "gold_tbl_id": "DT_1B8000G",
+    "gold_tbl_candidates": [
+      "DT_1B8000F",
+      "DT_1B8000G",
+      "DT_1B8000H",
+      "DT_1B80A03",
+      "INH_1B8000F_01"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "작년 출생아 수는 23만8300명이었다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B8000G",
+          "INH_1B8000F_01",
+          "DT_1B81A28",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1BB0005",
+          "DT_1BB0007",
+          "DT_1BB0006",
+          "DT_1B81A23",
+          "INH_1B8000F_02"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "전년 출생아 수는 23만 명이었다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B8000G",
+          "INH_1B8000F_01",
+          "DT_1B81A28",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1BB0005",
+          "DT_1BB0007",
+          "DT_1BB0006",
+          "DT_1B81A23",
+          "INH_1B8000F_02"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "작년 출생아 수는 전년 대비 8300명 증가했다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B8000G",
+          "INH_1B8000F_01",
+          "DT_1B81A28",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1BB0005",
+          "DT_1BB0007",
+          "DT_1BB0006",
+          "DT_1B81A23",
+          "INH_1B8000F_02"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 91,
+    "subject": "합계출산율",
+    "gold_tbl_id": "DT_1B8000G",
+    "gold_tbl_candidates": [
+      "DT_1B8000F",
+      "DT_1B8000G",
+      "DT_1B8000H",
+      "DT_1B81A21",
+      "DT_2KAA207",
+      "INH_1B8000F_01"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "여성 한 명이 낳을 것으로 예상되는 아이 수를 뜻하는 합계출산율도 작년 0.75명으로 전년(0.72명) 대비 0.03명 늘었다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B81A17",
+          "DT_1B81A23",
+          "DT_1B81A21",
+          "INH_1B8000F_01",
+          "DT_1B8000G",
+          "DT_1B8000F",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1B81A19",
+          "DT_1B80A03"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 92,
+    "subject": "30~34세 여성 출산율",
+    "gold_tbl_id": "DT_1B81A21",
+    "gold_tbl_candidates": [
+      "DT_1B80A03",
+      "DT_1B81A21"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난해 30~34세 여성의 출산율은 70.4명이었다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B81A17",
+          "DT_1B81A23",
+          "DT_1B81A21",
+          "INH_1B8000F_01",
+          "DT_1B81A22",
+          "DT_1B8000G",
+          "DT_1B8000F",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1B81A20"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "전년 같은 연령대의 출산율은 66.7명이었다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B81A17",
+          "DT_1B81A23",
+          "DT_1B81A21",
+          "INH_1B8000F_01",
+          "DT_1B81A22",
+          "DT_1B8000G",
+          "DT_1B8000F",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1B81A20"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "이는 전년 대비 3.7명 증가한 수치이다.",
+        "L1_chosen_majors": [
+          "인구"
+        ],
+        "L2_chosen_surveys": [
+          "인구동향조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B81A17",
+          "DT_1B81A23",
+          "DT_1B81A21",
+          "INH_1B8000F_01",
+          "DT_1B81A22",
+          "DT_1B8000G",
+          "DT_1B8000F",
+          "DT_1B8000H",
+          "DT_1B8000I",
+          "DT_1B81A20"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 93,
+    "subject": "첫째아 출산 수",
+    "gold_tbl_id": "DT_1B80A03",
+    "gold_tbl_candidates": [
+      "DT_1B80A03"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "특히 첫째아가 14만6100명으로 전년(13만8400명)보다 7700명 늘었다.",
+        "L1_chosen_majors": [
+          "인구",
+          "복지",
+          "교육ㆍ훈련"
+        ],
+        "L2_chosen_surveys": [
+          "인구총조사",
+          "인구동향조사",
+          "장래인구추계"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1B81A12",
+          "DT_1B81A19",
+          "DT_1B85007",
+          "DT_1B85025",
+          "DT_1B85026",
+          "DT_1B8000K",
+          "DT_1IN1502",
+          "DT_1PB1607",
+          "DT_1JC1503",
+          "DT_1IN1503"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "특히 첫째아가 14만6100명으로 전년(13만8400명)보다 7700명 늘었다.",
+        "L1_chosen_majors": [
+          "인구",
+          "복지",
+          "교육ㆍ훈련"
+        ],
+        "L2_chosen_surveys": [
+          "인구총조사",
+          "인구동향조사",
+          "장래인구추계"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1BB0007",
+          "DT_1PF2001",
+          "DT_1PF2004",
+          "DT_1PF2005",
+          "DT_1PF2006",
+          "DT_1PF2007",
+          "DT_1JD1501",
+          "DT_1JD1511",
+          "DT_1JD1505",
+          "DT_1PO2009"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": false
+      }
+    ]
+  },
+  {
+    "row_id": 95,
+    "subject": "소비자물가지수",
+    "gold_tbl_id": "DT_2IFS002",
+    "gold_tbl_candidates": [
+      "DT_1J22002",
+      "DT_2IFS002"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 소비자물가 지수는 116.38이었다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "지난해 같은 달의 소비자물가 지수는 전년 동월 대비 2.1% 상승했다.",
+        "L1_chosen_majors": [
+          "물가"
+        ],
+        "L2_chosen_surveys": [
+          "소비자물가조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1J22002",
+          "DT_1J22001",
+          "DT_1J22003",
+          "DT_1J22010",
+          "DT_1J22006",
+          "DT_1J22112",
+          "DT_1J22136",
+          "DT_1J22135",
+          "DT_1J22004",
+          "DT_1J22007"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 106,
+    "subject": "취업자 수",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7001S",
+      "DT_1DA7002S",
+      "DT_1DA7012S",
+      "DT_1DA7024S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난달 취업자는 2916만 명으로 전년 동월 대비 24만 5000명 증가했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7011S",
+          "DT_118N_LCE309",
+          "DT_118N_LCE0008",
+          "DT_1ES4I001S",
+          "DT_1DA7035S",
+          "DT_1DA7036S",
+          "DT_1DA7010S",
+          "DT_1DA7028S",
+          "DT_1DA7024S",
+          "DT_1DA7029S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 114,
+    "subject": "청년고용률",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "지난해 12월 20대 이하 청년 고용률은 44.7%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "청년패널조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "청년 고용률은 1년 전에 비해 1.3%포인트 감소했다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "청년패널조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0003",
+        "sentence": "고용률은 지난해 5월부터 8개월째 감소세를 보였다.",
+        "L1_chosen_majors": [
+          "노동",
+          "경제일반ㆍ경기",
+          "임금"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S",
+          "DT_1ES3A01S",
+          "DT_1ES3D11S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 115,
+    "subject": "청년고용률",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "청년 고용률은 45% 아래로 떨어졌다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "고용형태별노동실태조사(구. 고용형태별근로실태조사)"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_1ES3A03_A02S"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      },
+      {
+        "claim_id": "clm-0002",
+        "sentence": "이는 코로나가 한창이던 2021년 5월의 44.4% 이후 처음 있는 일이다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "이민자체류실태및고용조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DE9046S",
+          "DT_1DE9046",
+          "DT_1DA7001S",
+          "DT_1DA7004S",
+          "DT_1DA7002S",
+          "DT_1ES3A03_A01S",
+          "DT_1ES3A02S",
+          "DT_1ES3D11J",
+          "DT_1ES3A03_A03S",
+          "DT_2FA002F"
+        ],
+        "gold_primary_in_candidates": true,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  },
+  {
+    "row_id": 116,
+    "subject": "청년고용률",
+    "gold_tbl_id": "DT_1DA7002S",
+    "gold_tbl_candidates": [
+      "DT_1DA7002S",
+      "DT_1DA7012S"
+    ],
+    "claims": [
+      {
+        "claim_id": "clm-0001",
+        "sentence": "12월 기준으로 지난 2020년 12월의 실업률은 41.3%였다.",
+        "L1_chosen_majors": [
+          "노동"
+        ],
+        "L2_chosen_surveys": [
+          "경제활동인구조사",
+          "지역별고용조사",
+          "이민자체류실태및고용조사"
+        ],
+        "final_candidate_tbl_ids": [
+          "DT_1DA7105S",
+          "DT_1DA7107S",
+          "DT_1DA7103S",
+          "DT_1DA7104S",
+          "DT_1DA7102S",
+          "DT_1ES3A01S",
+          "DT_1DA7012S",
+          "DT_1DA7004S",
+          "DT_1DA7001S",
+          "DT_1DA9001S"
+        ],
+        "gold_primary_in_candidates": false,
+        "any_gold_candidate_in_candidates": true
+      }
+    ]
+  }
+]
