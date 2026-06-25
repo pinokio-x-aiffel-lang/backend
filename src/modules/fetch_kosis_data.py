@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import asyncio
+import dataclasses
 import json
 import logging
 import re
 import time
-from dataclasses import replace
 from datetime import datetime, timezone
 
 from src.kosis import (
@@ -17,12 +17,10 @@ from src.kosis import (
 from src.kosis.client import kosis_call_count
 from src.llm.client import LlmError
 from src.observability.tracing import traced_chat
-from src.llm.model_presets import RESOLVE_AXIS_MATCH, RESOLVE_ITEM_MATCH
+from src.llm.model_presets import RESOLVE_AXIS_MATCH
 from src.prompts.prompts import (
     RESOLVE_AXIS_MATCH_SYSTEM,
     RESOLVE_AXIS_MATCH_USER,
-    RESOLVE_ITEM_MATCH_SYSTEM,
-    RESOLVE_ITEM_MATCH_USER,
 )
 from src.schemas.runtime import (
     CellAttempt,
@@ -51,16 +49,6 @@ _AXIS_MATCH_SCHEMA = {
 # LLM 에 보여줄 분류축 값 보기 상한(축이 수백 값이면 토큰 폭증 방지).
 _AXIS_OPTIONS_CAP = 60
 
-# LLM 항목 매칭 응답 구조(structured outputs). 항목 코드 중 하나 또는 기권(null).
-_ITEM_MATCH_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "itm_code": {"type": ["string", "null"]},
-        "matched": {"type": "boolean"},
-    },
-    "required": ["matched", "itm_code"],
-}
-
 
 class FetchKosisDataError(Exception):
     """KOSIS 통계자료 조회 실패."""
@@ -87,7 +75,9 @@ async def fetch_kosis_data(master_schema: MasterSchema) -> None:
 # 디버깅 표시용 항목/분류값 샘플 상한 (큰 표는 항목이 수백 개)
 _ITEMS_CAP = 25
 _AXIS_VALS_CAP = 15
-_PASS2_LLM_CAP = 5  # claim당 Pass2 LLM 재조회 상한(비용 게이팅)
+
+# Pass2 에서 claim 당 LLM 재조회할 후보 표 상한 (비용 게이팅).
+_PASS2_LLM_CAP = 5
 
 
 def _select_match(results: list[tuple]) -> tuple | None:
@@ -118,69 +108,75 @@ async def _fetch_one(
         analysis.kosis_query = _log(
             "", success=0, error_msg="후보 표 또는 claim 없음", duration_ms=_ms(t0),
         )
+        analysis.kosis_calls += _kc[0]
         return
 
     period = _to_kosis_period(claim.period_type, claim.period_value.llm_value)
+    # CHANGE_RATE(증감)면 기준 시점도 같은 셀 좌표로 조회해 evidence.compare_value 에 담는다.
+    compare_period = _compare_period(claim)
     # [Pass 1] 후보 표 전체 동시 조회(결정적, LLM 미사용). early-stop 없이 모두 시도.
     results = list(await asyncio.gather(
         *(
-            asyncio.to_thread(_resolve_and_fetch_one, cand, claim, period, api_key)
+            asyncio.to_thread(
+                _resolve_and_fetch_one, cand, claim, period, api_key,
+                None, None, compare_period,
+            )
             for cand in analysis.candidates
         )
     ))
     chosen = _select_match(results)
 
-    # [Pass 2] 결정적으로 못 얻었으면 LLM 폴백 재조회 — 두 갈래를 한 번에 메운다:
-    #   (1) 항목(itm) 미매칭 표: _llm_item_matcher 로 subject→itmId (예: 상승률→전년동월비)
-    #   (2) 모집단 폴백 표: _llm_axis_matcher 로 population→분류축 코드
-    # 트리거: 아직 모집단 특정값을 못 얻었고(폴백/실패), 모집단이 있거나 항목 미매칭 표가
-    # 있을 때. RANK 순 순차, 특정 매칭 첫 성공에서 중단 → claim 당 LLM 호출 최소화.
-    # 항목 미매칭 표가 있으면, 이미 다른 표가 (지수레벨 등으로) 매칭됐더라도 LLM 패스를
-    # 돈다 — 그 미매칭 표(예: 등락률)가 사실 정답일 수 있어 evidence 에 넣어야 [6]이 고른다.
-    has_unmatched_itm = any(att.itm_id is None for att, _ in results)
-    need_llm = chosen is None or chosen[0].population_fallback or has_unmatched_itm
-    if need_llm:
+    # [Pass 2] LLM 폴백 재조회 — 항목(itmId) 미매칭이나 모집단 폴백/미매칭 후보를 RANK 순.
+    # 항목 실패는 population 유무와 무관 → 확보 실패(chosen None)면 항상 시도. 분류축·항목
+    # 둘 다 LLM 폴백 주입. claim 당 재조회는 _PASS2_LLM_CAP 개로 제한(비용 게이팅), 첫 성공 중단.
+    pop = (claim.population or "").strip()
+    if chosen is None or chosen[0].population_fallback:
         llm_tries = 0
         for i, cand in enumerate(analysis.candidates):
             if llm_tries >= _PASS2_LLM_CAP:
                 break
-            base = results[i][0]
-            if results[i][1] is not None and not base.population_fallback:
-                continue                            # 이미 모집단까지 특정 매칭(스킵)
+            att_i, m_i = results[i]
+            if m_i is not None and not att_i.population_fallback:
+                continue                            # 이미 모집단 특정값(스킵)
+            # 재조회가 의미 있는 경우만: 항목 미매칭(항목 LLM) 또는 모집단 폴백/미매칭(축 LLM).
+            retryable = att_i.itm_id is None or (pop and (att_i.population_fallback or m_i is None))
+            if not retryable:
+                continue
             llm_tries += 1
             att2, m2 = await asyncio.to_thread(
                 _resolve_and_fetch_one, cand, claim, period, api_key,
-                _llm_axis_matcher, _llm_item_matcher,
+                _llm_axis_matcher, _llm_axis_matcher, compare_period,  # 분류축+항목 LLM, 증감 기준시점
             )
-            results[i] = (att2, m2)                 # 기록 갱신(LLM 결과 반영)
+            results[i] = (att2, m2)                  # 기록 갱신(LLM 결과 반영)
             if m2 is not None and not att2.population_fallback:
                 logger.info(
-                    "KOSIS LLM 매칭 성공: claim=%s tbl=%s itm=%s",
-                    claim.claim_id, cand.tbl_id, att2.itm_id,
+                    "KOSIS LLM 매칭 성공(Pass2): claim=%s tbl=%s",
+                    claim.claim_id, cand.tbl_id,
                 )
-                break                               # 특정값 확보 → 중단
+                break                                # 특정값 확보 → 중단
         chosen = _select_match(results)
 
     attempts = [att for att, _ in results]  # 후보 순서(=RANK 순) 유지
     analysis.cell_attempts = attempts  # 표별 조회 시도 기록(디버깅)
-
-    # [5b] change_rate 두 시점 계산: 품목별처럼 '전년동월비' 항목이 없어 지수 레벨만
-    # 잡힌 표(itm_is_rate=False)는, 동일 좌표의 전년 동기 셀을 한 번 더 조회해
-    # (now/prev−1)×100 (%) 로 변화율을 직접 계산한다. 등락률 항목(itm_is_rate=True)은
-    # 셀값이 이미 변화율이라 그대로 둔다. 실패(전년 셀 없음 등)는 override 없음 → 원래 값.
-    rate_override = await _change_rate_overrides(claim, results, period, api_key)
 
     # [5] 고르지 않고, 매칭된 모든 후보 셀을 evidences 로 내보낸다(RANK 순) — [7]이 n:1 비교.
     analysis.evidences = [
         _to_evidence(
             claim, m[0].org_id, m[0].tbl_id, m[1], m[2], m[0].tbl_nm,
             population_fallback=att.population_fallback, match_source=att.match_source,
-            value_override=rate_override.get(idx),
+            compare_cell=m[3],
         )
-        for idx, (att, m) in enumerate(results) if m is not None  # m = (cand, query, cell)
+        for att, m in results if m is not None  # m = (cand, query, cell, compare_cell)
     ]
 
-    if chosen is None:
+    # [Pass 3] 값앵커 역매칭(절대형): 비폴백 확정 매치가 없으면 후보 슬라이스에서 값+라벨
+    # 셀을 직접 찾아 evidence 앞에 추가(라벨검증=비폴백 → [7] _decide_metric 값앵커가 T 승격).
+    if claim.claim_type in _REVERSE_TYPES and not _has_value_match(claim, analysis.evidences):
+        rev = _reverse_match_candidates(claim, analysis.candidates, period, api_key)
+        if rev:
+            analysis.evidences = rev + analysis.evidences
+
+    if chosen is None and not analysis.evidences:
         reasons = [
             f"{a.tbl_id}: {a.error}"
             for a in attempts
@@ -197,16 +193,23 @@ async def _fetch_one(
 
     # 매칭된 모든 셀은 위에서 analysis.evidences 에 담았다. 여기선 로그/경고만.
     # (표 선정은 [6] rank_evidence, 비교는 [7] 가 evidences[0]부터 수행)
-    chosen_att, (cand, query, _cell) = chosen
-    if chosen_att.population_fallback:
-        logger.warning(
-            "KOSIS 모집단 폴백: claim=%s population=%r 미매칭 → 전체값으로 대체 (tbl=%s)",
-            claim.claim_id, claim.population, cand.tbl_id,
+    if chosen is not None:
+        chosen_att, (cand, query, _cell, _compare_cell) = chosen
+        if chosen_att.population_fallback:
+            logger.warning(
+                "KOSIS 모집단 폴백: claim=%s population=%r 미매칭 → 전체값으로 대체 (tbl=%s)",
+                claim.claim_id, claim.population, cand.tbl_id,
+            )
+        analysis.kosis_query = _log(
+            cand.tbl_id, success=1, rows_returned=len(analysis.evidences),
+            params=_params_log(query), duration_ms=_ms(t0),
         )
-    analysis.kosis_query = _log(
-        cand.tbl_id, success=1, rows_returned=len(analysis.evidences),
-        params=_params_log(query), duration_ms=_ms(t0),
-    )
+    else:
+        # 결정적 매치는 없고 Pass3 역매칭만 성공한 경우.
+        analysis.kosis_query = _log(
+            analysis.evidences[0].kosis_tbl_id, success=1,
+            rows_returned=len(analysis.evidences), duration_ms=_ms(t0),
+        )
     analysis.kosis_calls += _kc[0]
 
 
@@ -259,53 +262,18 @@ def _llm_axis_matcher(
     return str(code) if code is not None else None
 
 
-def _llm_item_matcher(values: list[tuple[str, str]], subject: str) -> str | None:
-    """규칙 이름매칭 실패 항목의 LLM 폴백: 보기(코드:이름) 중 subject 에 맞는 항목 코드.
-
-    map_claim_to_cell 에 주입되는 ItemMatcher. 닫힌 보기 중 선택(+기권)이라 환각 위험이
-    낮고, 반환 코드의 대조 검증은 map_claim_to_cell 이 한 번 더 한다. 호출 실패/기권은 None.
-    주 용도: '소비자물가 상승률'처럼 항목명 직매칭이 안 되는 주제 → '전년동월비(%)'.
-    """
-    options = "\n".join(
-        f"  {code}: {name}" for code, name in values[:_AXIS_OPTIONS_CAP]
-    )
-    messages = [
-        {"role": "system", "content": RESOLVE_ITEM_MATCH_SYSTEM},
-        {"role": "user", "content": RESOLVE_ITEM_MATCH_USER.format(
-            subject=subject, options=options,
-        )},
-    ]
-    try:
-        resp = traced_chat(
-            model_alias=RESOLVE_ITEM_MATCH.model_alias,
-            model_name=RESOLVE_ITEM_MATCH.model_name,
-            messages=messages,
-            max_tokens=RESOLVE_ITEM_MATCH.max_tokens,
-            temperature=RESOLVE_ITEM_MATCH.temperature,
-            json_structure=_ITEM_MATCH_SCHEMA,
-            trace_name="fetch_kosis_data:item_match",
-        )
-    except (LlmError, AttributeError) as exc:
-        logger.warning("KOSIS 항목 LLM 매칭 실패: %s", exc)
-        return None
-    try:
-        data = json.loads(resp.text.strip())
-    except (json.JSONDecodeError, AttributeError):
-        return None
-    if not data.get("matched"):
-        return None
-    code = data.get("itm_code")
-    return str(code) if code is not None else None
-
-
-def _resolve_and_fetch_one(cand, claim, period, api_key, axis_matcher=None,
-                           item_matcher=None):
+def _resolve_and_fetch_one(
+    cand, claim, period, api_key,
+    axis_matcher=None, item_matcher=None, compare_period=None,
+):
     """후보 표 1건을 좌표 해소(getMeta)+셀 조회. to_thread 로 동시 호출된다.
 
-    axis_matcher: 규칙+동의어 실패 축의 폴백(보통 None=결정적; Pass2 에서만 LLM 주입).
+    axis_matcher: 규칙+동의어 실패 '분류축'의 폴백(보통 None=결정적; Pass2 에서만 LLM 주입).
+    item_matcher: 규칙+동의어 실패 '항목(itmId)'의 폴백(동일 — Pass2 에서만 LLM 주입).
+    compare_period: CHANGE_RATE 면 같은 셀 좌표를 이 기준 시점으로 한 번 더 조회(증감 계산용).
 
     Returns:
-        (CellAttempt, matched | None) — matched = (cand, query, cell).
+        (CellAttempt, matched | None) — matched = (cand, query, cell, compare_cell|None).
         매칭 실패 사유는 CellAttempt.error 에, 항목·분류축은 디버깅용으로 남긴다.
     """
     try:
@@ -313,7 +281,8 @@ def _resolve_and_fetch_one(cand, claim, period, api_key, axis_matcher=None,
             cand.org_id, cand.tbl_id,
             subject=claim.subject, population=claim.population,
             period=period, period_se=claim.period_type, api_key=api_key,
-            axis_matcher=axis_matcher, item_matcher=item_matcher,
+            axis_matcher=axis_matcher,
+            item_matcher=item_matcher,
         )
     except (KosisError, ValueError) as exc:
         return CellAttempt(
@@ -330,7 +299,6 @@ def _resolve_and_fetch_one(cand, claim, period, api_key, axis_matcher=None,
         },
         population_fallback=bool(trace.get("population_fallback")),
         match_source=str(trace.get("match_source") or "rule"),
-        itm_is_rate=bool(trace.get("itm_is_rate")),
     )
     if query is None:  # 좌표 해소 실패(항목/분류 매칭 실패)
         att.error = trace.get("error")
@@ -346,7 +314,16 @@ def _resolve_and_fetch_one(cand, claim, period, api_key, axis_matcher=None,
     att.matched = True
     att.value = cell.value
     att.unit = cell.unit
-    return att, (cand, query, cell)
+    # 증감형 — 같은 셀 좌표를 기준 시점으로 한 번 더 조회(현재−기준 = 증감). 실패는 무시(None).
+    compare_cell = None
+    if compare_period and compare_period != query.period:
+        try:
+            compare_cell = fetch_cell_with_retry(
+                dataclasses.replace(query, period=compare_period), api_key
+            )
+        except (KosisError, ValueError):
+            compare_cell = None
+    return att, (cand, query, cell, compare_cell)
 
 
 def _to_kosis_period(period_type: str, raw: str) -> str:
@@ -369,6 +346,20 @@ def _to_kosis_period(period_type: str, raw: str) -> str:
         if m:
             return f"{m.group(1)}{int(m.group(2)):02d}"
     return re.sub(r"\D", "", s)
+
+
+def _compare_period(claim: Claim) -> str | None:
+    """증감형 claim 의 기준 시점(compare_period)을 KOSIS PRD_DE 로. 비증감/미추출이면 None.
+
+    [2]가 '전년 동월 대비' 같은 비교 기준을 compare_period_value.raw 로 뽑고 [3]이 정규화한다.
+    같은 셀 좌표를 이 시점으로 한 번 더 조회해 (현재−기준) 증감을 계산한다([7] compute_change).
+    """
+    if claim.claim_type != ClaimType.CHANGE_RATE or not claim.compare_period_value:
+        return None
+    cp = (claim.compare_period_value.llm_value or "").strip()
+    if not cp:
+        return None
+    return _to_kosis_period(claim.period_type, cp)
 
 
 def _log(tbl_id, *, success, rows_returned=0, params="", error_msg=None, duration_ms=0):
@@ -394,71 +385,23 @@ def _params_log(query) -> str:
     )
 
 
-async def _change_rate_overrides(
-    claim: Claim, results: list, period: str, api_key: str
-) -> dict[int, float]:
-    """change_rate claim 의 '지수 레벨' 매칭 표를 전년 동기 셀로 YoY 직접계산한 값 맵.
-
-    반환: {results index → 변화율(%)}. 등락률 항목(itm_is_rate)·계산 실패는 제외.
-    """
-    if claim.claim_type != ClaimType.CHANGE_RATE:
-        return {}
-    prev_period = _yoy_prev_period(period, claim.period_type)
-    if not prev_period:
-        return {}
-    out: dict[int, float] = {}
-    for idx, (att, m) in enumerate(results):
-        if m is None or att.itm_is_rate:
-            continue                       # 비율 항목이면 셀값이 이미 변화율
-        _cand, query, cell = m
-        rate = await asyncio.to_thread(_compute_yoy, query, cell, prev_period, api_key)
-        if rate is not None:
-            out[idx] = rate
-            logger.info(
-                "KOSIS YoY 직접계산: claim=%s tbl=%s %s→%s rate=%.2f%%",
-                claim.claim_id, query.tbl_id, prev_period, period, rate,
-            )
-    return out
-
-
-def _yoy_prev_period(period: str, period_type: str) -> str | None:
-    """전년 동기 KOSIS 기간 — 연도 4자리만 −1 (M/Q/S 는 뒤 2자리 유지). 파싱불가 None."""
-    p = str(period or "")
-    return str(int(p[:4]) - 1) + p[4:] if len(p) >= 4 and p[:4].isdigit() else None
-
-
-def _compute_yoy(query: KosisQuery, cell, prev_period: str, api_key: str) -> float | None:
-    """동일 좌표의 전년 동기 셀을 조회해 (now/prev−1)×100(%) 반환. 실패 시 None."""
-    try:
-        now = float(cell.value)
-        prev_cell = fetch_cell_with_retry(replace(query, period=prev_period), api_key)
-        if prev_cell is None or prev_cell.value is None:
-            return None
-        prev = float(prev_cell.value)
-        if prev == 0:
-            return None
-        return round((now / prev - 1) * 100, 4)
-    except (KosisError, ValueError, TypeError):
-        return None
-
-
 def _to_evidence(
     claim, org_id, tbl_id, query, cell, table_name,
-    population_fallback=False, match_source="rule", value_override=None,
+    population_fallback=False, match_source="rule", compare_cell=None,
 ) -> Evidence:
     """KosisCell → Evidence. unit/period 는 KOSIS 응답값을 그대로 싣는다.
 
     population_fallback=True 면 요청 모집단을 못 맞춰 전체값으로 대체됐다는 표시.
     match_source 는 모집단 매칭 출처("rule"|"llm").
-    value_override 가 있으면(change_rate 두시점 계산) 셀값 대신 그 변화율(%)을 싣는다.
+    compare_cell 은 증감형 기준 시점 셀(있으면 compare_value/compare_period 로 싣는다).
     """
     return Evidence(
         claim_id=claim.claim_id, source="KOSIS",
-        subject=claim.subject,
-        unit="%" if value_override is not None else cell.unit,
+        subject=claim.subject, unit=cell.unit,
         period_type=claim.period_type, period=cell.period,
-        population=claim.population,
-        value=value_override if value_override is not None else cell.value,
+        population=claim.population, value=cell.value,
+        compare_value=compare_cell.value if compare_cell else None,
+        compare_period=compare_cell.period if compare_cell else None,
         kosis_org_id=org_id, kosis_tbl_id=tbl_id, table_name=table_name,
         kosis_item_id=query.itm_id, classification=dict(query.match_filters),
         last_updated=cell.lst_chn_de,
@@ -466,6 +409,122 @@ def _to_evidence(
         population_fallback=population_fallback,
         match_source=match_source,
     )
+
+
+# [Pass3] 값앵커 역매칭 대상(절대형). 증감형은 델타라 슬라이스 스캔 부적합 → 제외.
+_REVERSE_TYPES = {ClaimType.ABSOLUTE, ClaimType.VERIFIABLE}
+_REVERSE_CAND_CAP = 6  # 후보당 슬라이스 fetch 1콜 → 비용 게이팅
+
+
+def _reverse_match_one(claim: Claim, cand, period: str, api_key: str):
+    """후보표 슬라이스(objL=ALL)에서 값≈claim & 라벨≈population 셀 1개. 단일 명확매치만.
+
+    값 충돌(false-T)을 막으려 '값+라벨 모두 만족하는 셀이 정확히 1개'일 때만 반환한다.
+    캐시된 메타로 itmId·축라벨을 알아내 직접 비교(역매칭). 실패/모호는 None.
+    """
+    from src.kosis.cell import KosisQuery, build_params, to_cell
+    from src.kosis.client import call_kosis
+    from src.kosis.map_claim_to_cell import _expand, _match_code, _norm
+    from src.kosis.metadata import fetch_table_metadata
+    from src.numeric.value import parse_claim_value
+
+    parsed = parse_claim_value(claim.value.llm_value)
+    if parsed.number is None:
+        return None, None
+    try:
+        meta = fetch_table_metadata(cand.org_id, cand.tbl_id, api_key)  # 캐시 우선
+    except KosisError:
+        return None, None
+    itm = _match_code([(i.itm_id, i.itm_nm) for i in meta.items], claim.subject or "")
+    if itm is None:
+        return None, None
+    nax = len(meta.axes)
+    q = KosisQuery(
+        org_id=cand.org_id, tbl_id=cand.tbl_id, itm_id=itm,
+        period=period, period_se=claim.period_type,
+        obj_l1="ALL" if nax >= 1 else "", obj_l2="ALL" if nax >= 2 else "",
+        obj_l3="ALL" if nax >= 3 else "", obj_l4="ALL" if nax >= 4 else "",
+    )
+    try:
+        rows = call_kosis(build_params(q, api_key))
+    except KosisError:
+        return None, None
+
+    target = parsed.number
+
+    def _vmatch(v: float) -> bool:
+        for s in (1.0, 1000.0, 0.001):  # 천명↔명 등 스케일 허용
+            if abs(v * s - target) <= max(1.0, abs(target) * 0.03):
+                return True
+        return False
+
+    vm = []
+    for r in rows:
+        if r.get("PRD_DE") != period or r.get("DT") in (None, ""):
+            continue
+        try:
+            dv = float(r["DT"])
+        except (TypeError, ValueError):
+            continue
+        if _vmatch(dv):
+            vm.append(r)
+    if not vm:
+        return None, None
+
+    # 라벨검증: 집단(population) + subject 의 구분 한정어(산업/연령 등) 로 셀 축라벨을 검증
+    # (값 충돌 false-T 차단). '제조업 취업자'처럼 subject 에 박힌 한정어(=objL 값)도 포함.
+    pop = claim.population or ""
+    cands = {c for c in _expand(pop) if c}
+    for tok in (claim.subject or "").split():
+        t = _norm(tok)
+        if len(t) >= 2:
+            cands.add(t)
+    if cands:
+
+        def _label_ok(r) -> bool:
+            for ax_i, ax in enumerate(meta.axes):
+                code = r.get(f"C{ax_i + 1}")
+                for c, name in ax.values:
+                    if c == code:
+                        nn = _norm(name)
+                        if nn and (nn in cands or any(x in nn or nn in x for x in cands)):
+                            return True
+            return False
+
+        vm = [r for r in vm if _label_ok(r)]
+    if len(vm) != 1:  # 단일 명확매치만 채택(다중·라벨모호 → 기권)
+        return None, None
+    return to_cell(vm[0]), q
+
+
+def _has_value_match(claim: Claim, evidences) -> bool:
+    """기존 evidence 중 claim 값과 (스케일 허용) 일치하는 게 있나 — Pass3 발동 게이트."""
+    from src.numeric.value import parse_claim_value
+
+    p = parse_claim_value(claim.value.llm_value)
+    if p.number is None:
+        return False
+    t = p.number
+    for e in evidences:
+        if not isinstance(e.value, (int, float)):
+            continue
+        for s in (1.0, 1000.0, 0.001):
+            if abs(e.value * s - t) <= max(1.0, abs(t) * 0.03):
+                return True
+    return False
+
+
+def _reverse_match_candidates(claim: Claim, candidates, period: str, api_key: str):
+    """후보들을 역매칭해 (값+라벨) 셀을 evidence 로 만든다(라벨검증=비폴백). 비용상 상위 N개만."""
+    out = []
+    for cand in candidates[:_REVERSE_CAND_CAP]:
+        cell, q = _reverse_match_one(claim, cand, period, api_key)
+        if cell is not None:
+            out.append(_to_evidence(
+                claim, cand.org_id, cand.tbl_id, q, cell, cand.tbl_nm,
+                population_fallback=False, match_source="reverse",
+            ))
+    return out
 
 
 def _ms(t0: float) -> int:

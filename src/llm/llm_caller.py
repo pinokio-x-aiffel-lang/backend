@@ -121,7 +121,7 @@ class LlmCaller:
         ):
             raise LlmError("structured outputs를 지원하지 않는 모델입니다")
 
-        if thinking_on and model_lower not in HCX_THINKING_MODELS and model_name not in GPT_RESPONSES_MODELS:
+        if thinking_on and model_lower not in HCX_THINKING_MODELS:
             raise LlmError("thinking(추론) 모드를 지원하지 않는 모델입니다")
 
         if model_alias not in PROVIDERS:
@@ -137,18 +137,7 @@ class LlmCaller:
         if model_alias == "hyperclova" and model_name.lower() in HCX_NATIVE_MODELS:
             if provider.native_url is None:
                 raise LlmError("native_url이 설정되지 않았습니다.")
-
             api_key = _get_required_env(provider.api_key_env)
-            # HCX-007 v3 native: thinking 기본 ON.
-            # - tools 호출: thinking:none 명시 필수 + maxCompletionTokens 제거 (fetch_hcx_native 내부 처리)
-            # - json_structure: responseFormat + thinking 충돌 → responseFormat 제거 +
-            #   thinking:none 명시해 일반 텍스트 응답 유도.
-            effective_thinking = (
-                "none"
-                if (json_structure is not None or tools is not None)
-                   and model_name.lower() in HCX_THINKING_MODELS
-                else thinking_effort
-            )
             return self._with_retry(
                 fetch_hcx_native,
                 api_key=api_key,
@@ -160,7 +149,7 @@ class LlmCaller:
                 tools=tools,
                 tool_choice=tool_choice,
                 supports_thinking=model_name.lower() in HCX_THINKING_MODELS,
-                thinking_effort=effective_thinking,
+                thinking_effort=thinking_effort,
                 timeout=timeout or 60.0,
             )
 
@@ -175,7 +164,6 @@ class LlmCaller:
                     max_tokens=max_tokens,
                     tools=tools,
                     tool_choice=tool_choice,
-                    reasoning_effort=thinking_effort if thinking_on else None,
                     timeout=timeout,
                 )
             return self._with_retry(

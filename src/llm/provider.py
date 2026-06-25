@@ -52,10 +52,6 @@ GPT_RESPONSES_MODELS: frozenset[str] = frozenset({
     "gpt-5.4-pro",
     "gpt-5-pro",
     "o1-pro",
-    # reasoning(thinking) + tool calling 동시 지원 — Responses API 경유
-    "gpt-5.4-mini",
-    "gpt-5.4",
-    "gpt-5.5",
 })
 
 # 출처: https://guide.ncloud-docs.com/docs/clovastudio-model (2026-05 기준)

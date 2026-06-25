@@ -213,7 +213,6 @@ class CellAttempt(BaseModel):
     axes: dict[str, list[str]] = Field(default_factory=dict)  # 분류축명 → 값명 샘플
     population_fallback: bool = False  # 모집단 매칭 실패 → 합계 대체 여부
     match_source: str = "rule"         # population 매칭 출처: "rule" | "llm"
-    itm_is_rate: bool = False          # 매칭 항목이 변화율(전년동월비 등)인지 — [5] change_rate 처리용
     error: str | None = None
 
     model_config = ConfigDict(populate_by_name=True)

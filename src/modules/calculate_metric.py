@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.numeric.compare import compute_absolute, compute_change
+from src.numeric.compare import _is_delta_evidence, compute_absolute, compute_change
 from src.numeric.value import ValueKind, parse_claim_value
 from src.schemas.runtime import (
     Claim,
@@ -104,24 +104,39 @@ def _decide_metric(
     # 원문 맥락으로 판정한다 — 폴백을 7단계에서 NEI 로 죽이면 그 M 판정 기회가 사라진다.
     # (compute_absolute 가 evidence.population_fallback 를 note 로 남겨 [8] 대상임을 표시.)
 
+    # CHANGE_RATE 는 증감표(value=델타)가 절대표보다 정답 소스 → 앞으로 당김(안정 정렬).
+    if claim.claim_type == ClaimType.CHANGE_RATE:
+        evidences = sorted(evidences, key=lambda e: 0 if _is_delta_evidence(e) else 1)
+
     top = evidences[0]                       # [6]이 고른 1위 적합 표
     top_metric = _compute_metric(claim, top)
     if top_metric.verdict == Verdict.TRUE:   # 1위 표와 일치 → 확정(→[8] 정합성)
         return top_metric, False, None
 
-    # 1위 표 불일치 → 나머지 표에 근사값(허용오차 내 = T 가능)이 있나?
-    has_other_T = any(
-        _compute_metric(claim, ev).verdict == Verdict.TRUE for ev in evidences[1:]
-    )
-    if has_other_T:
-        # 적합 표는 불일치인데 다른 표는 맞음 → 애매 → NEI + HITL(라벨러 판단).
+    # 1위 불일치 → [값앵커 역매칭] 나머지 표를 전부 비교한다.
+    #   값 일치 + 라벨검증(그 셀의 집단이 claim 집단에 실제 매칭 = population_fallback 아님)인
+    #   표가 있으면 채택해 T(NEI 누수 방지). 라벨검증이 우연 값충돌(false-T)을 막는 핵심:
+    #   값만 같고 집단이 안 맞으면(폴백=전체값 대체) 승격하지 않는다.
+    fallback_T = False
+    for ev in evidences[1:]:
+        m = _compute_metric(claim, ev)
+        if m.verdict != Verdict.TRUE:
+            continue
+        if not getattr(ev, "population_fallback", False):
+            note = (m.note + " | " if m.note else "") \
+                + "1위 불일치 → 값·집단라벨 일치하는 타 표 채택(값앵커 역매칭)"
+            return m.model_copy(update={"note": note}), False, None
+        fallback_T = True
+
+    if fallback_T:
+        # 값은 맞지만 집단 라벨 미검증(전체값 폴백) → 우연 충돌 위험 → NEI + HITL(라벨러 판단).
         m = top_metric.model_copy(update={
             "verdict": Verdict.NOT_ENOUGH_INFO,
             "mismatch_type": None,
             "note": (top_metric.note + " | " if top_metric.note else "")
-            + "1위 적합 표와는 불일치하나 타 표에 근사값 존재 → 라벨러 검토",
+            + "1위 불일치·타 표는 값만 맞고 집단 라벨 미검증(폴백) → 라벨러 검토",
         })
-        return m, True, "1위 적합 표와 불일치하나 다른 표에 근사값이 있어 사람 판단 필요"
+        return m, True, "타 표 값일치하나 집단 라벨 미검증(폴백) → 사람 판단 필요"
 
     # 어느 표에도 근사값 없음 → 1위 표 기준 거짓(F).
     return top_metric, False, None

@@ -10,7 +10,6 @@ type별로 조회한다. 셀 조회(cell.fetch_cell)에 필요한 itmId/objL/prd
 """
 from __future__ import annotations
 
-import contextvars
 import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -247,6 +246,26 @@ def _parse_periods(prd_rows: list) -> list[Period]:
     return periods
 
 
+def _try_meta_cache(org_id: str, tbl_id: str) -> Optional[TableMetadata]:
+    """로컬 메타 캐시(3.9GB 크롤 스냅샷) 시도. 비활성/미스/파싱실패/오류는 None.
+
+    env KOSIS_META_CACHE=0 으로 끌 수 있다(기본 on). 순환 import 방지로 지연 import.
+    캐시 items/axes(=itmId·objL)는 live 와 동일 검증됨; period END 만 스냅샷 시점이라
+    약간 stale 할 수 있다(과거 시점 claim 엔 무영향). 캐시 문제는 절대 전파 안 함 → live 폴백.
+    """
+    import os
+
+    if os.environ.get("KOSIS_META_CACHE", "1") == "0":
+        return None
+    try:
+        from src.kosis.meta_cache import get_cached_metadata
+
+        return get_cached_metadata(org_id, tbl_id)
+    except Exception as exc:  # noqa: BLE001 — 캐시 문제로 파이프라인을 깨지 않는다
+        logger.debug("메타 캐시 폴백 tbl=%s: %s", tbl_id, exc)
+        return None
+
+
 def fetch_table_metadata(
     org_id: str,
     tbl_id: str,
@@ -265,17 +284,14 @@ def fetch_table_metadata(
         KosisError: getMeta(ITM) 호출 실패 또는 ITM 응답이 list 가 아님(인증 실패 등).
         ValueError: API 키가 없는 경우.
     """
+    cached = _try_meta_cache(org_id, tbl_id)  # 로컬 캐시 우선(있으면 getMeta 생략)
+    if cached is not None:
+        return cached
+
     key = resolve_api_key(api_key)  # 키 1회 검증/확보(스레드 진입 전)
-    # 현재 컨텍스트(contextvars)를 워커 스레드로 복사 전파 — ThreadPoolExecutor 는
-    # asyncio.to_thread 와 달리 자동 복사하지 않는다. 이게 없으면 스레드 안의 getMeta
-    # 호출이 트레이싱 부모 span 을 잃고 orphan 트레이스가 된다.
-    # 컨텍스트 복사본은 submit 마다 별도로 — 같은 Context 객체를 두 스레드가 동시에
-    # ctx.run 하면 "already entered" 에러가 난다.
     with ThreadPoolExecutor(max_workers=2) as ex:
-        f_itm = ex.submit(contextvars.copy_context().run,
-                          fetch_meta_item, org_id, tbl_id, "ITM", key)
-        f_prd = ex.submit(contextvars.copy_context().run,
-                          fetch_meta_item, org_id, tbl_id, "PRD", key)
+        f_itm = ex.submit(fetch_meta_item, org_id, tbl_id, "ITM", key)
+        f_prd = ex.submit(fetch_meta_item, org_id, tbl_id, "PRD", key)
         itm = f_itm.result()  # ITM 실패는 치명적 — 예외 그대로 전파
         # PRD 실패는 주기 없이 진행(periods=[]); KosisError 만 흡수, 그 외 예외는 전파.
         try:

@@ -229,6 +229,19 @@ _CHANGE_REL_TOL = 0.02
 _RATE_UNITS = {"%", "퍼센트", "percent", "프로"}
 
 
+_DELTA_MARKERS = ("증감", "증가수", "증감률", "증감액", "감소수")
+
+
+def _is_delta_evidence(evidence: Evidence) -> bool:
+    """표/주제 이름이 '증감' 류면 evidence.value 가 이미 델타(변화량)다.
+
+    이 경우 compute_change 는 기준시점(compare_value) 없이 value 를 델타로 직접 비교한다
+    (증감표는 현재−기준이 아니라 변화량 자체를 한 셀에 담음). 휴리스틱이라 불일치는 NEI.
+    """
+    text = f"{getattr(evidence, 'table_name', '') or ''} {getattr(evidence, 'subject', '') or ''}"
+    return any(m in text for m in _DELTA_MARKERS)
+
+
 def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
     """두 시점 증감 비교. CHANGE_RATE claim 전용.
 
@@ -240,8 +253,9 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
     """
     operation = claim.claim_type.value
     parsed = parse_claim_value(claim.value.llm_value)
+    is_delta_tbl = _is_delta_evidence(evidence)  # 증감표: value 가 이미 델타(기준시점 불요)
 
-    if evidence.value is None or evidence.compare_value is None:
+    if evidence.value is None or (evidence.compare_value is None and not is_delta_tbl):
         return MetricResult(
             operation=operation,
             claim_value=parsed.number,
@@ -265,15 +279,22 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
     unit_assumed = False
 
     if unit in _RATE_UNITS:
-        if v_old == 0:
+        if is_delta_tbl:
+            computed = v_new  # 증감(률)표: value 가 이미 변화량/률
+            unit_assumed = True  # 휴리스틱 → 불일치 시 confident F 보류(NEI)
+            notes.append(f"증감표 직접비교(델타={v_new})")
+        elif v_old == 0:
             return MetricResult(
                 operation=operation, claim_value=claim_num, kosis_value=v_new,
                 verdict=Verdict.NOT_ENOUGH_INFO, note="증감률 산출 불가(기준값 0)",
             )
-        computed = (v_new - v_old) / v_old * 100.0
-        notes.append(f"증감률 (신 {v_new} − 구 {v_old})/구 ×100 = {computed:.4g}%")
+        else:
+            computed = (v_new - v_old) / v_old * 100.0
+            notes.append(f"증감률 (신 {v_new} − 구 {v_old})/구 ×100 = {computed:.4g}%")
     else:
-        delta = v_new - v_old
+        delta = v_new if is_delta_tbl else (v_new - v_old)
+        if is_delta_tbl:
+            unit_assumed = True  # 증감표 직접비교(휴리스틱) → 불일치 시 NEI(억지 F 방지)
         aligned, status = align_value(delta, evidence.unit, claim.unit)
         # [방법2] KOSIS 단위 빈(메타 누락) → claim 단위로 가정. 증감은 두 셀(현재·기준)이
         # 얽혀 셀 오매칭 위험이 커, 빈단위도 '가정'으로 보고 불일치 시 F 를 보류한다
@@ -297,7 +318,10 @@ def compute_change(claim: Claim, evidence: Evidence) -> MetricResult:
             notes.append("KOSIS 단위 메타 누락 → claim 단위로 가정 비교")
         elif status == "assumed_scale":
             notes.append(f"단위 미해소(claim={claim.unit!r} kosis={evidence.unit!r}) → 스케일 근사 가정비교")
-        notes.append(f"절대증감 신 {v_new} − 구 {v_old} = {computed:.4g}")
+        notes.append(
+            f"증감표 델타={computed:.4g}" if is_delta_tbl
+            else f"절대증감 신 {v_new} − 구 {v_old} = {computed:.4g}"
+        )
 
     tol = tolerance_abs(claim.value.llm_value)
     abs_diff = abs(claim_num - computed)

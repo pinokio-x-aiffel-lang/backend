@@ -71,12 +71,30 @@ def _drop_lead_modifier(subject: str) -> str | None:
     return None
 
 
+def _lead_drop_variants(subject: str) -> list[str]:
+    """선행 토큰(한정어: 산업·연령·근로형태 등)을 순차로 떼어 base 명사 꼬리를 만든다.
+
+    예: '건설업 취업자 수'→['취업자 수'], '30~34세 여성 출산율'→['여성 출산율','출산율'].
+    한정어가 표명이 아니라 분류축(objL) 값일 때 일반 표('산업별 취업자' 등)를 검색에
+    걸리게 한다(그 표에서 stage5 가 objL 로 한정어를 해소). 너무 짧은 꼬리(수/율)는 제외.
+    """
+    toks = subject.split()
+    out: list[str] = []
+    for i in range(1, len(toks)):
+        tail = " ".join(toks[i:])
+        if len(tail.replace(" ", "")) >= 2:
+            out.append(tail)
+    return out
+
+
 def _apply_synonyms(subject: str) -> list[str]:
     """subject 에 동의어 key 가 있으면 치환본들 생성."""
     out: list[str] = []
     for key, alts in _SYNONYMS.items():
         if key in subject:
-            out.extend(subject.replace(key, alt) for alt in alts)
+            # 이미 subject 에 든 치환어는 건너뜀(예 '소비자물가지수'에 '물가'→'소비자물가지수'
+            # 치환 시 '소비자소비자물가지수지수' 중복 생성 방지).
+            out.extend(subject.replace(key, alt) for alt in alts if alt not in subject)
     return out
 
 
@@ -95,10 +113,14 @@ def expand_subject(subject: str, *, max_variants: int = 5) -> list[str]:
     if cleaned and cleaned != subject:
         raw.append(_normalize(cleaned))
 
-    for src in (subject, cleaned):                   # 수식어 분리본
+    for src in (subject, cleaned):                   # 수식어 분리본(연령 등 사전 기반)
         core = _drop_lead_modifier(src)
         if core:
             raw.append(_normalize(core))
+
+    for src in (subject, cleaned):                   # 선행 한정어 분리(산업·근로형태 등 일반)
+        for tail in _lead_drop_variants(src):
+            raw.append(_normalize(tail))
 
     for src in (subject, cleaned):                   # 동의어 치환본
         for syn in _apply_synonyms(src):

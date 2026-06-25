@@ -24,28 +24,18 @@ logger = logging.getLogger("kosis")
 # 두고 주입한다 — 이 모듈 자체는 외부 의존(LLM) 없이 결정적으로 유지.
 AxisMatcher = Callable[[list[tuple[str, str]], str, str], Optional[str]]
 
-# 항목(itm) 값 매칭 폴백 콜백: (항목 [(코드,이름)], subject) -> 선택한 itm 코드 | None.
-# 규칙 이름매칭이 실패한 항목에만 호출된다(예: '소비자물가 상승률' → '전년동월비(%)').
-# AxisMatcher 와 같은 정책: 구현(LLM)은 상위(fetch_kosis_data)에 두고 주입한다.
-ItemMatcher = Callable[[list[tuple[str, str]], str], Optional[str]]
-
 # 분류축에서 '대상 미지정 시' 잡을 합계/전체 카테고리 이름 후보.
-# '총지수'는 지수형 축(지수종류·품목별)의 전체값 — 합계/전국과 같은 '전체' 의미.
-_TOTAL_NAMES = {"계", "전체", "합계", "전국", "소계", "총계", "총지수"}
+_TOTAL_NAMES = {"계", "전체", "합계", "전국", "소계", "총계"}
 # 접미사 매칭용(예: '15세 이상 전체'). 짧고 모호한 '계'는 제외 — '통계/관계/시계'
 # 같은 오탐 방지(그 짧은 토큰은 정확매칭 _TOTAL_NAMES 로만 잡는다).
 _TOTAL_SUFFIXES = ("전체", "합계", "총계", "소계", "전국")
 
-# 전국 단위 표지 — 모집단이 아니라 '전체'를 뜻한다(extract 가 전국 claim 에 population 을
-# '대한민국' 등으로 박는 경우). 이런 값은 분류축 값으로 매칭하려 하면 오염되므로 빈
-# 모집단으로 취급해 각 축이 합계/전체로 떨어지게 한다. (case C 보완)
-_NATIONWIDE_POP = {"대한민국", "한국", "우리나라", "전국", "전체", "우리국민"}
-
 # 모집단 동의어(_SYNONYMS): claim '청년' → 축값 '15~29세' 갭을 메운다(case C).
 # 도메인 데이터라 src/kosis/synonyms.py 로 분리. 표기차(15-29세/15~29세)는 _norm 흡수.
 
-# 공백 + 하이픈/대시류(- ‐-―) + 물결(~)을 제거 — '15 - 29세'·'15~29세' 동일화.
-_STRIP = re.compile(r"[\s\-‐-―~]")
+# 공백 + 하이픈/대시류(- ‐-―) + 물결(~) + 나열 구분자(중점 ·ㆍ･・, 슬래시 /／, 쉼표 ,，)
+# 를 제거 — '15 - 29세'·'15~29세' 동일화, '보건·사회복지'의 중점 흡수. (형태소 글자는 제외)
+_STRIP = re.compile(r"[\s\-‐-―~·ㆍ･・/／,，]")
 
 
 class ClaimMappingError(Exception):
@@ -55,36 +45,6 @@ class ClaimMappingError(Exception):
 def _norm(s: Any) -> str:
     """공백·대시·물결 제거 정규화. 이름 비교용(연령대 표기차 흡수)."""
     return _STRIP.sub("", str(s or ""))
-
-
-def _normalize_population(population: str) -> str:
-    """전국 단위 표지('대한민국/전국' 등)는 모집단 아님 → 빈 모집단으로(case C)."""
-    return "" if _norm(population) in {_norm(p) for p in _NATIONWIDE_POP} else population
-
-
-# 변화율 항목 이름 — 등락률 표의 표준 항목. subject 직매칭 실패 시 결정적으로 고른다.
-_RATE_ITEM_YOY = ("전년동월비", "전년동기비", "전년동분기비", "전년비", "전년동월대비")
-_RATE_ITEM_MOM = ("전월비", "전기비", "전월대비")
-_RATE_ITEM_ANY = _RATE_ITEM_YOY + _RATE_ITEM_MOM + ("전년누계비", "증감률", "등락률")
-
-
-def _rate_item_code(pairs: list[tuple[str, str]], subject: str) -> Optional[str]:
-    """등락률류 표(항목이 변화율)에서 subject 직매칭 실패 시 변화율 항목을 결정적으로 고른다.
-
-    LLM 항목매처의 비결정성을 제거한다 — '소비자물가 상승률'·'소비자물가'(change_rate)가
-    이름 직매칭은 안 돼도 등락률 표면 표준 변화율 항목을 집는다. subject 에 '전월/전기'가
-    있으면 전월비, 아니면 전년동월비(YoY 기본). 변화율 항목이 없는 표면 None.
-    """
-    names = [(_norm(name), code) for code, name in pairs]
-    if not any(any(k in n for k in _RATE_ITEM_ANY) for n, _ in names):
-        return None  # 등락률 표 아님(레벨 항목만) → 관여 안 함
-    nsub = _norm(subject)
-    prefer = _RATE_ITEM_MOM if ("전월" in nsub or "전기" in nsub) else _RATE_ITEM_YOY
-    for keys in (prefer, _RATE_ITEM_YOY, _RATE_ITEM_MOM):
-        for n, code in names:
-            if any(k in n for k in keys):
-                return code
-    return None
 
 
 def _expand(target: str) -> list[str]:
@@ -151,7 +111,7 @@ def map_claim_to_cell_query_traced(
     period_se: str,
     api_key: Optional[str] = None,
     axis_matcher: Optional[AxisMatcher] = None,
-    item_matcher: Optional[ItemMatcher] = None,
+    item_matcher: Optional[AxisMatcher] = None,
 ) -> tuple[Optional[KosisQuery], dict]:
     """map_claim_to_cell_query 와 동일 로직이되 실패해도 raise 하지 않고 (query|None, trace) 반환.
 
@@ -174,7 +134,6 @@ def map_claim_to_cell_query_traced(
       (axis_matcher 와 동일 시그니처·검증). subject↔표 항목명 의미 매칭용.
     """
     meta = fetch_table_metadata(org_id, tbl_id, api_key)  # ITM+PRD 병렬 → 구조체
-    population = _normalize_population(population)  # 전국 표지 → 빈 모집단(case C)
 
     items_pairs = [(it.itm_id, it.itm_nm) for it in meta.items]
     trace: dict = {
@@ -191,33 +150,23 @@ def map_claim_to_cell_query_traced(
 
     itm_id = _match_code(items_pairs, subject)
     if itm_id is None and item_matcher is not None and _norm(subject):
-        cand = item_matcher(items_pairs, subject)
+        cand = item_matcher(items_pairs, subject, "항목")
         if cand is not None and str(cand) in {code for code, _ in items_pairs}:
             itm_id = str(cand)
             trace["item_match_source"] = "llm"
     if itm_id is None:
-        # 등락률 표면 표준 변화율 항목(전년동월비 등)을 결정적으로 — LLM 비결정성 제거.
-        itm_id = _rate_item_code(items_pairs, subject)
-    if itm_id is None:
-        # 항목이 하나뿐인 표는 subject 가 항목명이 아니라 분류축 값(품목 등)일 수 있다
-        # (예: '수산물 가격' → 항목은 '소비자물가지수' 하나, '수산물'은 품목별 축 값).
-        # 그 단일 항목을 itmId 로 쓰고, subject 는 아래 축 매칭이 분류축 값으로 집는다(case A).
-        if len(items_pairs) == 1:
-            itm_id = items_pairs[0][0]
-        elif item_matcher is not None:
-            # 항목 여럿 중 규칙 매칭 실패 → LLM 폴백(예: '상승률'→'전년동월비(%)').
-            # 반환 코드는 실제 항목 코드와 대조 검증해 환각 차단(축 매칭과 동일 정책).
-            cand = item_matcher(items_pairs, subject)
-            if cand is not None and str(cand) in {code for code, _ in items_pairs}:
-                itm_id = str(cand)
-                trace["match_source"] = "llm"
-        if itm_id is None:
-            trace["error"] = f"itmId 매칭 실패: subject={_norm(subject)!r}"
-            return None, trace
+        trace["error"] = f"itmId 매칭 실패: subject={_norm(subject)!r}"
+        return None, trace
     trace["itm_id"] = itm_id
-    # 매칭 항목이 변화율(전년동월비 등)인지 — [5] 가 change_rate 처리(직접비교 vs 두시점계산)에 쓴다.
-    _itm_nm = next((nm for c, nm in items_pairs if c == itm_id), "")
-    trace["itm_is_rate"] = any(k in _norm(_itm_nm) for k in _RATE_ITEM_ANY)
+
+    # [forward fix] subject 의 구분 한정어(제조업·청년 등 = objL 값) 추출 — 매칭된 항목명에
+    # 안 든 subject 토큰만(측정대상이 아닌 한정어). population 으로 못 맞춘 축을 이걸로 매칭한다.
+    item_nm = next((nm for c, nm in items_pairs if c == itm_id), "")
+    _item_norm = _norm(item_nm)
+    subject_mods = [
+        t for t in (subject or "").split()
+        if len(_norm(t)) >= 2 and _norm(t) not in _item_norm
+    ]
 
     if meta.axis_count > 4:  # axes 는 OBJ_ID_SN 순(=C1,C2… 대응)
         trace["error"] = f"분류축 {meta.axis_count}개(>4) 미지원"
@@ -225,28 +174,36 @@ def map_claim_to_cell_query_traced(
 
     pop_provided = bool(_norm(population))
     pop_match_count = 0          # population 을 '실제로' 매칭한 축 수(합계 폴백 제외)
+    spec_match_count = 0         # subject 한정어(제조업/청년 등)로 맞춘 축 수(forward fix)
     llm_used = False
     fallback_axes: list[str] = []
     codes: list[str] = []
     for i, ax in enumerate(meta.axes):
         pairs = ax.values
         matched = _match_code(pairs, population)
-        by_subject = False
-        # 모집단으로 못 맞춘 축은 subject 를 축 값으로 시도(case A) — '생활물가지수'·'수산물'
-        # 처럼 subject 가 품목별/지수종류 축의 값인 경우. (population 매칭이 우선)
-        if matched is None and _norm(subject):
-            cand = _match_code(pairs, subject)
-            if cand is not None:
-                matched, by_subject = cand, True
         # 규칙+동의어 실패 시에만 LLM 폴백(있으면). 반환 코드는 축 값과 대조 검증.
         if matched is None and axis_matcher is not None and pop_provided:
             cand = axis_matcher(pairs, population, ax.name)
             if cand is not None and str(cand) in {code for code, _ in pairs}:
                 matched = str(cand)
                 llm_used = True
+        # [forward fix] population 으로 못 맞춘 축은 subject 한정어(제조업/청년 등)로도 매칭 시도.
+        spec_hit = False
+        if matched is None:
+            for tok in subject_mods:
+                m = _match_code(pairs, tok)
+                if m is not None:
+                    matched = m
+                    spec_hit = True
+                    break
+        # [#3] 결정적(_match_code)으로도 못 맞춘 축은 LLM 축매처를 subject 한정어로 호출
+        # (닫힌 축값 중 선택 → 환각 낮음). '보건·사회복지서비스업'류 어휘차 회수.
+        # (#3 LLM 축매처 한정어 확장은 recall[T]·M-recall 하락으로 폐기 — deterministic 매칭만 유지)
         if matched is not None:
             code = matched
-            if not by_subject:           # subject 로 맞춘 축은 '모집단 매칭'이 아니다
+            if spec_hit:
+                spec_match_count += 1
+            else:
                 pop_match_count += 1
         else:
             code = _total_code(pairs)        # population 못 맞춘 축 → 합계로 대체
@@ -261,8 +218,8 @@ def map_claim_to_cell_query_traced(
         codes.append(code)
     trace["obj_codes"] = codes
     # 요청 집단(population)을 '어느 축에도' 못 박았으면 = 사실상 전체값 → 폴백 표시.
-    trace["population_matched"] = pop_match_count > 0
-    trace["population_fallback"] = pop_provided and pop_match_count == 0
+    trace["population_matched"] = pop_match_count > 0 or spec_match_count > 0
+    trace["population_fallback"] = pop_provided and pop_match_count == 0 and spec_match_count == 0
     trace["fallback_axes"] = fallback_axes
     if llm_used:
         trace["match_source"] = "llm"
@@ -297,7 +254,6 @@ def map_claim_to_cell_query(
     period_se: str,
     api_key: Optional[str] = None,
     axis_matcher: Optional[AxisMatcher] = None,
-    item_matcher: Optional[ItemMatcher] = None,
 ) -> KosisQuery:
     """선정표(org_id/tbl_id) + claim 좌표 → fetch_cell 입력 KosisQuery.
 
@@ -313,7 +269,7 @@ def map_claim_to_cell_query(
     query, trace = map_claim_to_cell_query_traced(
         org_id, tbl_id, subject=subject, population=population,
         period=period, period_se=period_se, api_key=api_key,
-        axis_matcher=axis_matcher, item_matcher=item_matcher,
+        axis_matcher=axis_matcher,
     )
     if query is None:
         raise ClaimMappingError(trace["error"] or "셀 좌표 매핑 실패")

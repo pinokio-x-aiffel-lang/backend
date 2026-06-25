@@ -48,6 +48,9 @@ kosis/aain/*.jsonl
 kosis/aain/*.idx
 kosis/aain/*.backup
 
+# === kosis/metadata/ local meta-cache snapshot (regenerable, ~4.7GB) ===
+kosis/metadata/
+
 # === benchmark capture snapshots (regenerable, ~20MB each, local-only) ===
 benchmark_aain/data/*_capture_v2_*.jsonl
 
